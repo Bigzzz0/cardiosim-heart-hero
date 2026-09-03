@@ -44,6 +44,13 @@
    - แป้นพิมพ์ตัวเลขอัตโนมัติ (`inputMode="numeric"`)
    - รองรับการกด **Add to Home Screen (PWA)** เล่นเต็มจอเสมือน Native App
 
+6. **ระบบจำลองอุปกรณ์ทางการแพทย์และกายวิภาคแบบโต้ตอบ (Interactive Clinical Visualizers)**:
+   - **Interactive Patient Bed SVG**: เตียงคนไข้ไฟฟ้า 90° High Fowler's, หมอนหนุน 2 ใบ, ปอดโปร่งแสงพร้อมระลอกคลื่นน้ำคั่งในถุงลม (Alveolar Fluid Transudation Ripples) และหัวใจห้องล่างซ้ายเต้นตามอัตราชีพจรจริง 112 bpm
+   - **Furosemide Syringe & Ampoules Visualizer**: หลอดยาแก้วสีชา 2 หลอด (40 mg) พร้อมกระบอกฉีดยา 5 mL สเกลละเอียด และปุ่มกดดูดยา 4 mL โต้ตอบได้จริง
+   - **Fluid Balance Visualizer**: เสาน้ำเกลือ IV Drip กระเปาะหยดน้ำเกลือกะพริบเรียลไทม์ และถุงระบายปัสสาวะสายสวนโฟเลย์ระดับ 350 mL บ่งบอกสมดุลสารน้ำสุทธิ -200 mL
+   - **Hemodynamic Stability Meter**: เกจวัดความปลอดภัยหน้าปัดโค้ง 240° (Speedometer Arc) และชีพจรหัวใจกะพริบตามจังหวะ HR บน Vitals Ribbon
+   - **Doctor Approved Rubber Stamp**: ตรายางประทับอนุมัติคำสั่งแพทย์หมึกแดง และแท็กบาร์โค้ดประจำตัวผู้ป่วย
+
 ---
 
 ## เทคโนโลยีที่ใช้ (Tech Stack)
