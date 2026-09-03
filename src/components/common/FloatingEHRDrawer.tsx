@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CASE_1_EHR } from '../../data/ehrCase1Data';
 import { FileText, X, ClipboardList, FlaskConical, Stethoscope, Pill, AlertTriangle, CheckCircle2, Clock, User, ShieldCheck } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { DoctorApprovedStamp, PatientBarcodeTag } from './DoctorApprovedStamp';
 
 export const FloatingEHRDrawer: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -183,6 +184,14 @@ export const FloatingEHRDrawer: React.FC = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Official Physician Verification Stamp */}
+              <div className="flex justify-end pt-3">
+                <DoctorApprovedStamp
+                  doctorName="นพ. ธีระศักดิ์ (ว. 48921)"
+                  timestamp="08:30 น. STAT VERIFIED"
+                />
               </div>
             </div>
           )}

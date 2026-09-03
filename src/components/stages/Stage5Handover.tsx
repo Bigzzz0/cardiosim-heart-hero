@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CASE_1_DETAILS } from '../../data/case1Data';
 import { Volume2, VolumeX, Play, Pause, FileText, Stethoscope, ChevronRight, User, AlertCircle, Clock, HeartPulse, ClipboardCheck } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { DoctorApprovedStamp, PatientBarcodeTag } from '../common/DoctorApprovedStamp';
 
 interface Stage5HandoverProps {
   onComplete: () => void;
@@ -49,26 +50,30 @@ export const Stage5Handover: React.FC<Stage5HandoverProps> = ({ onComplete }) =>
           </p>
         </div>
 
-        {/* Audio Voiceover Simulated Bar */}
-        <div className="flex items-center gap-3 bg-rose-50/80 border border-rose-100 px-4 py-2.5 rounded-2xl self-start md:self-center">
-          <button
-            onClick={handleToggleAudio}
-            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-              isPlayingAudio
-                ? 'bg-rose-600 text-white animate-pulse'
-                : 'bg-rose-500 hover:bg-rose-600 text-white shadow-sm'
-            }`}
-          >
-            {isPlayingAudio ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-white ml-0.5" />}
-          </button>
-          <div>
-            <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <Volume2 className="w-3.5 h-3.5 text-rose-500" />
-              <span>เสียงบรรยายสรุปเคส</span>
+        {/* Patient Barcode Tag & Audio Voiceover Simulated Bar */}
+        <div className="flex flex-wrap items-center gap-3 self-start md:self-center">
+          <PatientBarcodeTag hn="HN 65-098231" patientName={patient.name} />
+
+          <div className="flex items-center gap-3 bg-rose-50/80 border border-rose-100 px-4 py-2.5 rounded-2xl">
+            <button
+              onClick={handleToggleAudio}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                isPlayingAudio
+                  ? 'bg-rose-600 text-white animate-pulse'
+                  : 'bg-rose-500 hover:bg-rose-600 text-white shadow-sm'
+              }`}
+            >
+              {isPlayingAudio ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-white ml-0.5" />}
+            </button>
+            <div>
+              <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <Volume2 className="w-3.5 h-3.5 text-rose-500" />
+                <span>เสียงบรรยายสรุปเคส</span>
+              </div>
+              <span className="text-[11px] text-slate-500 font-mono">
+                {isPlayingAudio ? 'กำลังเล่นเสียงรายงานเวร...' : 'กดเพื่อฟังเสียงรายงานเคส'}
+              </span>
             </div>
-            <span className="text-[11px] text-slate-500 font-mono">
-              {isPlayingAudio ? 'กำลังเล่นเสียงรายงานเวร...' : 'กดเพื่อฟังเสียงรายงานเคส'}
-            </span>
           </div>
         </div>
       </div>
@@ -186,6 +191,14 @@ export const Stage5Handover: React.FC<Stage5HandoverProps> = ({ onComplete }) =>
                   <span>{order}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Official Physician Verification Stamp */}
+            <div className="flex justify-end pt-3">
+              <DoctorApprovedStamp
+                doctorName="นพ. ธีระศักดิ์ (ว. 48921)"
+                timestamp="08:30 น. STAT VERIFIED"
+              />
             </div>
           </div>
         )}

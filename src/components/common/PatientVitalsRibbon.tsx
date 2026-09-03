@@ -1,6 +1,7 @@
 import React from 'react';
 import { GameStage } from '../../types/game';
 import { Heart, Activity, Wind, AlertOctagon, ShieldAlert, BedDouble, User } from 'lucide-react';
+import { HemodynamicStabilityMeter } from './HemodynamicStabilityMeter';
 
 interface PatientVitalsRibbonProps {
   currentStage: GameStage;
@@ -98,11 +99,16 @@ export const PatientVitalsRibbon: React.FC<PatientVitalsRibbonProps> = ({ curren
             </span>
           </div>
 
-          {/* HR */}
+          {/* HR with Synchronized Pulse */}
           <div className="flex items-center gap-1 bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-200">
-            <Heart className={`w-3.5 h-3.5 ${isCrisis ? 'text-rose-600 animate-pulse' : 'text-rose-500'}`} />
+            <Heart
+              className="w-3.5 h-3.5 text-rose-500 shrink-0"
+              style={{
+                animation: `cardiacBeep ${(60 / vitals.hr).toFixed(2)}s ease-in-out infinite`
+              }}
+            />
             <span className="text-slate-400 font-medium text-[10px]">HR:</span>
-            <span className={`font-mono font-bold ${isCrisis ? 'text-rose-600 animate-pulse' : 'text-slate-800'}`}>
+            <span className={`font-mono font-bold ${isCrisis ? 'text-rose-600' : 'text-slate-800'}`}>
               {vitals.hr} <span className="text-[9px] font-normal text-slate-400">bpm</span>
             </span>
           </div>
@@ -140,6 +146,9 @@ export const PatientVitalsRibbon: React.FC<PatientVitalsRibbonProps> = ({ curren
             <Activity className="w-3 h-3" />
             <span>{vitals.rhythm}</span>
           </div>
+
+          {/* Hemodynamic Stability Index Gauge */}
+          <HemodynamicStabilityMeter currentStage={currentStage} compact={true} />
         </div>
       </div>
     </div>

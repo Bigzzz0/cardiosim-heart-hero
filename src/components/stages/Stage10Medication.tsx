@@ -4,6 +4,7 @@ import { MedicationStep } from '../../types/game';
 import { Pill, CheckCircle2, ChevronRight, AlertTriangle, ShieldCheck, ArrowDown, ArrowUp, Sparkles, FileCheck, Lightbulb } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { ClinicalHintModal } from '../common/ClinicalHintModal';
+import { FurosemideSyringeVisualizer } from '../medical/FurosemideSyringeVisualizer';
 
 interface Stage10MedicationProps {
   onComplete: () => void;
@@ -152,6 +153,9 @@ export const Stage10Medication: React.FC<Stage10MedicationProps> = ({ onComplete
           </div>
         </div>
       </div>
+
+      {/* Interactive Medical Equipment: Syringe & Ampoule Simulation */}
+      <FurosemideSyringeVisualizer />
 
       {/* Part 2: Order 7 Steps */}
       <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-7 shadow-xl mb-6">

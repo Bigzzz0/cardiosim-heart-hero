@@ -4,6 +4,7 @@ import { CanvasEKG } from '../ekg/CanvasEKG';
 import { AlertOctagon, Bell, Siren, CheckCircle2, XCircle, ChevronRight, Activity, ShieldAlert, HeartPulse, Lightbulb } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { ClinicalHintModal } from '../common/ClinicalHintModal';
+import { CrisisVignetteOverlay } from '../common/CrisisVignetteOverlay';
 
 interface Stage12CrisisEventProps {
   onComplete: () => void;
@@ -66,7 +67,10 @@ export const Stage12CrisisEvent: React.FC<Stage12CrisisEventProps> = ({ onComple
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-4 py-8">
+    <div className="max-w-5xl mx-auto p-4 py-8 relative">
+      {/* Emergency Pulsing Red Vignette Screen Ambience */}
+      <CrisisVignetteOverlay active={!isResolved} />
+
       {/* Flashing Emergency Header Banner */}
       <div className={`rounded-3xl p-6 sm:p-7 mb-6 shadow-xl border-2 transition-all ${
         isResolved

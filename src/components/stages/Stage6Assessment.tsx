@@ -3,6 +3,7 @@ import { CASE_1_HOTSPOTS } from '../../data/case1Data';
 import { ClinicalHotspot } from '../../types/game';
 import { CanvasEKG } from '../ekg/CanvasEKG';
 import { AudioWaveformVisualizer } from '../common/AudioWaveformVisualizer';
+import { InteractivePatientBedSVG } from '../medical/InteractivePatientBedSVG';
 import { Stethoscope, CheckCircle2, ChevronRight, Activity, X, Volume2, Eye, User, Heart, Monitor, FileText, Sparkles, Wind, Droplet } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 
@@ -90,65 +91,14 @@ export const Stage6Assessment: React.FC<Stage6AssessmentProps> = ({ onComplete }
       {/* Main Simulation Viewport */}
       <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-7 shadow-xl mb-6 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Bed & Patient Interactive Canvas (7 cols) */}
-          <div className="lg:col-span-7 relative aspect-[4/3] bg-gradient-to-b from-rose-50/40 via-sky-50/20 to-slate-50 rounded-3xl border-2 border-pink-200 flex items-center justify-center overflow-hidden p-4 shadow-inner">
-            {/* Clinical Ambient Accessories (IV Pole & Monitor Stand) */}
-            <div className="absolute left-6 top-6 flex flex-col items-center opacity-80 pointer-events-none">
-              <div className="w-6 h-8 bg-sky-100 border border-sky-300 rounded-md flex items-center justify-center">
-                <Droplet className="w-3.5 h-3.5 text-sky-500" />
-              </div>
-              <div className="w-1 h-32 bg-slate-300"></div>
-              <div className="w-8 h-1.5 bg-slate-400 rounded-full"></div>
-            </div>
-
-            {/* Patient Bed Silhouette in High Fowler's 90 degrees */}
-            <div className="relative w-64 h-80 flex flex-col items-center justify-center">
-              {/* Head with Nasal Cannula */}
-              <div className="relative w-28 h-28 rounded-full bg-gradient-to-tr from-rose-100 to-pink-50 border-2 border-rose-200 flex items-center justify-center shadow-md mb-2">
-                <User className="w-14 h-14 text-rose-400" />
-                <div className="absolute -bottom-1 bg-sky-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow flex items-center gap-1">
-                  <Wind className="w-2.5 h-2.5" />
-                  <span>O2 Cannula 3L</span>
-                </div>
-              </div>
-
-              {/* Chest in High Fowler's position */}
-              <div className="w-52 h-36 bg-white border-2 border-rose-200/80 rounded-3xl shadow-md flex flex-col items-center justify-center relative p-3">
-                <span className="text-xs text-rose-700 font-bold mb-1">
-                  ท่า High Fowler's (90 องศา)
-                </span>
-                <span className="text-[10px] text-slate-500 font-mono">
-                  หนุนหมอนสูง 2 ใบ บรรเทา Orthopnea
-                </span>
-              </div>
-
-              {/* Legs with Pretibial area */}
-              <div className="w-44 h-16 bg-slate-100/90 border border-slate-200 rounded-2xl mt-2 flex items-center justify-center">
-                <span className="text-[11px] text-slate-500 font-medium">ขาและข้อเท้าทั้งสองข้าง</span>
-              </div>
-            </div>
-
-            {/* Hotspot Buttons positioned on screen */}
-            {hotspots.map(h => {
-              return (
-                <button
-                  key={h.id}
-                  onClick={() => handleTapHotspot(h)}
-                  style={{ top: `${h.y}%`, left: `${h.x}%` }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all transform hover:scale-125 active:scale-95 z-20 group shadow-md ${
-                    h.discovered
-                      ? 'bg-rose-500 border-white text-white shadow-rose-300 ring-2 ring-rose-200'
-                      : 'bg-pink-500 border-white text-white animate-pulse ring-4 ring-pink-200'
-                  }`}
-                  title={h.title}
-                >
-                  <Stethoscope className="w-5 h-5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-800 text-white text-xs font-bold py-1 px-2.5 rounded-xl whitespace-nowrap shadow-lg border border-slate-700">
-                    {h.title}
-                  </span>
-                </button>
-              );
-            })}
+          {/* Bed & Patient Interactive SVG Vector Canvas (7 cols) */}
+          <div className="lg:col-span-7">
+            <InteractivePatientBedSVG
+              hotspots={hotspots}
+              onTapHotspot={handleTapHotspot}
+              activeHotspotId={activeModalHotspot?.id}
+              heartRate={112}
+            />
           </div>
 
           {/* Right: Auscultation Waveform & Realtime Monitor (5 cols) */}

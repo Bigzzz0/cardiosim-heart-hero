@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Droplet, CheckCircle2, XCircle, ChevronRight, Calculator, AlertCircle, Sparkles, FileSpreadsheet, Lightbulb, ArrowDown, TrendingDown } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { ClinicalHintModal } from '../common/ClinicalHintModal';
+import { FluidBalanceVisualizer } from '../medical/FluidBalanceVisualizer';
 
 interface Stage11IORecordProps {
   onComplete: (errors: number) => void;
@@ -98,6 +99,9 @@ export const Stage11IORecord: React.FC<Stage11IORecordProps> = ({ onComplete }) 
         isOpen={showHintModal}
         onClose={() => setShowHintModal(false)}
       />
+
+      {/* Interactive Medical Equipment: IV Drip & Foley Bag Simulation */}
+      <FluidBalanceVisualizer intakeTotal={150} outputTotal={350} />
 
       {/* Main Clinical Table & Form */}
       <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-8 shadow-xl mb-6">
