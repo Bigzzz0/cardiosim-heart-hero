@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { PRETEST_QUESTIONS } from '../../data/preTestData';
 import { CheckCircle2, ChevronRight, ChevronLeft, HelpCircle, Send, FileQuestion, UserCheck } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
+import { AnimatedCounter } from '../ui/AnimatedCounter';
 
 interface Stage1PreTestProps {
   onComplete: (score: number, answers: Record<number, string>) => void;
@@ -48,8 +51,11 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-4 py-8">
-      {/* Top Banner (Matching PDF Page 1 Pre-Test banner) */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 mb-6 shadow-md relative overflow-hidden">
+      {/* Top Banner with SpotlightCard */}
+      <SpotlightCard
+        className="p-6 mb-6 shadow-md border-pink-100/80"
+        spotlightColor="rgba(244, 63, 94, 0.08)"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-400 text-white flex items-center justify-center shadow-md shadow-rose-200 shrink-0">
@@ -74,7 +80,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
             <div className="text-right">
               <div className="text-xs text-slate-500 font-medium">ตอบแล้ว</div>
               <div className="text-base font-bold font-mono text-rose-600">
-                {answeredCount} / {totalQuestions}
+                <AnimatedCounter value={answeredCount} /> / {totalQuestions}
               </div>
             </div>
             <div className="w-10 h-10 rounded-full border-4 border-rose-100 border-t-rose-500 flex items-center justify-center font-bold text-xs text-rose-600 font-mono">
@@ -83,42 +89,45 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
           </div>
         </div>
 
-        {/* Question Pills Navigation */}
-        <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-slate-100">
+        {/* Question Palette Dots */}
+        <div className="flex items-center gap-1.5 mt-5 pt-4 border-t border-slate-100 overflow-x-auto pb-1">
           {PRETEST_QUESTIONS.map((q, idx) => {
-            const isAnswered = answers[q.id] !== undefined;
+            const isAnswered = !!answers[q.id];
             const isCurrent = idx === currentIdx;
             return (
               <button
                 key={q.id}
                 onClick={() => setCurrentIdx(idx)}
-                className={`w-9 h-9 rounded-xl font-mono text-xs font-bold transition-all ${
+                className={`w-7 h-7 rounded-lg text-xs font-mono font-bold transition-all shrink-0 ${
                   isCurrent
-                    ? 'bg-rose-500 text-white shadow-md shadow-rose-200 scale-105'
+                    ? 'bg-rose-500 text-white shadow-sm ring-2 ring-rose-300 scale-110'
                     : isAnswered
-                    ? 'bg-pink-100/90 text-rose-700 border border-pink-200'
-                    : 'bg-slate-50 text-slate-500 border border-slate-200 hover:border-slate-300'
+                    ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
-                {q.id}
+                {idx + 1}
               </button>
             );
           })}
         </div>
-      </div>
+      </SpotlightCard>
 
-      {/* Question Card */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-8 shadow-xl">
-        <div className="flex items-start gap-4 mb-6">
-          <div className="w-9 h-9 rounded-xl bg-pink-100 text-rose-600 font-bold font-mono flex items-center justify-center shrink-0 border border-pink-200">
-            {question.id}
-          </div>
-          <div className="flex-1">
-            <h3 className="text-base sm:text-lg font-bold text-slate-800 leading-relaxed">
-              {question.question}
-            </h3>
-          </div>
+      {/* Main Question Card */}
+      <SpotlightCard
+        className="p-6 sm:p-8 shadow-xl border-pink-100/90"
+        spotlightColor="rgba(244, 63, 94, 0.08)"
+      >
+        <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+          <span className="text-xs font-mono font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full">
+            ข้อที่ {currentIdx + 1} จาก {totalQuestions}
+          </span>
+          <span className="text-xs text-slate-400 font-mono">CHF-PRE-{question.id}</span>
         </div>
+
+        <h3 className="text-base sm:text-lg font-bold text-slate-800 leading-relaxed mb-6">
+          {question.question}
+        </h3>
 
         {/* Options */}
         <div className="space-y-3 mb-8">
@@ -128,7 +137,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
               <button
                 key={opt.key}
                 onClick={() => handleSelectOption(opt.key)}
-                className={`w-full text-left p-4 sm:p-4.5 rounded-2xl border transition-all flex items-start gap-3.5 group ${
+                className={`w-full text-left p-4 sm:p-4.5 rounded-2xl border transition-all flex items-start gap-3.5 group active:scale-[0.99] ${
                   isSelected
                     ? 'bg-rose-50/90 border-rose-400 text-rose-950 shadow-sm ring-1 ring-rose-300'
                     : 'bg-slate-50/60 border-slate-200/80 text-slate-700 hover:border-slate-300 hover:bg-white'
@@ -156,29 +165,31 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
           <button
             onClick={handlePrev}
             disabled={currentIdx === 0}
-            className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50"
+            className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>ข้อก่อนหน้า</span>
           </button>
 
           {currentIdx < totalQuestions - 1 ? (
-            <button
+            <ShinyButton
               onClick={handleNext}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white text-sm font-bold flex items-center gap-1.5 shadow-md shadow-rose-200 transition-all"
+              variant="primary"
+              size="md"
+              icon={<ChevronRight className="w-4 h-4" />}
             >
-              <span>ข้อถัดไป</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
+              ข้อถัดไป
+            </ShinyButton>
           ) : (
-            <button
+            <ShinyButton
               onClick={handleSubmit}
               disabled={answeredCount < totalQuestions}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white text-sm font-bold flex items-center gap-2 shadow-md shadow-teal-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              variant="success"
+              size="md"
+              icon={<Send className="w-4 h-4" />}
             >
-              <Send className="w-4 h-4" />
-              <span>ส่งแบบทดสอบ & ไปต่อ</span>
-            </button>
+              ส่งแบบทดสอบ & ไปต่อ
+            </ShinyButton>
           )}
         </div>
 
@@ -188,7 +199,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
             กรุณาตอบคำถามให้ครบทั้ง 10 ข้อก่อนกดยืนยันส่งแบบทดสอบ
           </p>
         )}
-      </div>
+      </SpotlightCard>
     </div>
   );
 };

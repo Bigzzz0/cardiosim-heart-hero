@@ -21,8 +21,16 @@ export const FloatingEHRDrawer: React.FC = () => {
         setIsOpen(false);
       }
     };
+    const handleToggleEvent = () => {
+      setIsOpen(prev => !prev);
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('toggle-ehr-drawer', handleToggleEvent);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('toggle-ehr-drawer', handleToggleEvent);
+    };
   }, [isOpen]);
 
   return (

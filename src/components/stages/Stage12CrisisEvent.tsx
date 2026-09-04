@@ -5,6 +5,8 @@ import { AlertOctagon, Bell, Siren, CheckCircle2, XCircle, ChevronRight, Activit
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { ClinicalHintModal } from '../common/ClinicalHintModal';
 import { CrisisVignetteOverlay } from '../common/CrisisVignetteOverlay';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
 
 interface Stage12CrisisEventProps {
   onComplete: () => void;
@@ -239,14 +241,15 @@ export const Stage12CrisisEvent: React.FC<Stage12CrisisEventProps> = ({ onComple
           )}
         </p>
 
-        <button
+        <ShinyButton
           onClick={handleNext}
           disabled={!isResolved}
-          className="py-3 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm flex items-center gap-2 shadow-md shadow-rose-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          variant={isResolved ? 'success' : 'crisis'}
+          size="lg"
+          icon={<ChevronRight className="w-4 h-4" />}
         >
-          <span>เข้าสู่การสรุปผลการพยาบาล (Next)</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
+          เข้าสู่การสรุปผลการพยาบาล (Next)
+        </ShinyButton>
       </div>
     </div>
   );

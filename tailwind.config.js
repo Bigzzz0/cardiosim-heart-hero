@@ -49,6 +49,39 @@ export default {
       animation: {
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'pulse-subtle': 'pulseSubtle 2.5s ease-in-out infinite',
+        'shimmer-sweep': 'shimmerSweep 3s linear infinite',
+        'path-flow': 'pathFlow 12s linear infinite',
+        'vignette-pulse': 'vignettePulse 1.2s ease-in-out infinite',
+        'float-slow': 'floatSlow 4s ease-in-out infinite',
+      },
+      keyframes: {
+        pulseSubtle: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.88', transform: 'scale(1.02)' },
+        },
+        shimmerSweep: {
+          '0%': { transform: 'translateX(-150%)' },
+          '100%': { transform: 'translateX(250%)' },
+        },
+        pathFlow: {
+          '0%': { strokeDashoffset: '1000' },
+          '100%': { strokeDashoffset: '0' },
+        },
+        vignettePulse: {
+          '0%, 100%': { opacity: '0.35' },
+          '50%': { opacity: '0.85' },
+        },
+        floatSlow: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-6px)' },
+        }
+      },
+      boxShadow: {
+        'glow-rose': '0 0 25px -5px rgba(244, 63, 94, 0.35)',
+        'glow-teal': '0 0 25px -5px rgba(20, 184, 166, 0.35)',
+        'glow-crisis': '0 0 35px 5px rgba(239, 68, 68, 0.45)',
+        'glow-amber': '0 0 25px -5px rgba(245, 158, 11, 0.35)',
       }
     },
   },

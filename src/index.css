@@ -3,11 +3,18 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --glow-cardiac: 244 63 94;
+    --glow-monitor: 20 184 166;
+    --glow-crisis: 239 68 68;
+    --glow-amber: 245 158 11;
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-gradient-to-br from-pink-50/50 via-white to-sky-50/50 text-slate-800 min-h-screen font-prompt;
+    @apply bg-gradient-to-br from-rose-50/40 via-white to-sky-50/40 text-slate-800 min-h-screen font-prompt;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     overscroll-behavior-y: contain;
@@ -60,4 +67,58 @@
 .teal-gradient-pill {
   background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
   color: #ffffff;
+}
+
+/* 21st.dev inspired styling */
+.neon-border-pulse {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5), inset 0 0 15px rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.8);
+  animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgba(225, 29, 72, 1) 0%,
+    rgba(251, 113, 133, 1) 40%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(251, 113, 133, 1) 60%,
+    rgba(225, 29, 72, 1) 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer-sweep 4s linear infinite;
+}
+
+.holographic-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.holographic-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(244, 63, 94, 0.2) 50%,
+    rgba(20, 184, 166, 0.2) 55%,
+    transparent 70%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.holographic-card:hover::after {
+  opacity: 1;
 }

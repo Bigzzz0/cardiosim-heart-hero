@@ -1,6 +1,8 @@
 import React from 'react';
-import { Award, Printer, X, Heart, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Award, Printer, X, Heart, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
 import { StudentProfile } from '../../types/game';
+import { ShinyButton } from '../ui/ShinyButton';
+import { PulseBadge } from '../ui/PulseBadge';
 
 interface CertificateModalProps {
   isOpen: boolean;
@@ -32,24 +34,24 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white border-2 border-pink-200 rounded-3xl max-w-2xl w-full p-6 sm:p-10 shadow-2xl relative my-8">
+    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+      <div className="bg-white border-2 border-pink-200 rounded-3xl max-w-2xl w-full p-6 sm:p-10 shadow-2xl relative my-8 holographic-card animate-in zoom-in-95 duration-200">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 print:hidden"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 print:hidden transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Certificate Printable Canvas */}
-        <div className="border-4 border-double border-pink-300/80 rounded-2xl p-6 sm:p-8 bg-gradient-to-b from-rose-50/30 via-white to-pink-50/20 text-center relative overflow-hidden">
-          {/* Header Seal */}
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-rose-500 to-pink-500 text-white flex items-center justify-center mx-auto mb-3 shadow-lg shadow-rose-200">
+        <div className="border-4 border-double border-pink-300/90 rounded-2xl p-6 sm:p-8 bg-gradient-to-b from-rose-50/40 via-white to-pink-50/30 text-center relative overflow-hidden shadow-inner">
+          {/* Header Seal with 21st.dev Glow */}
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-400 text-white flex items-center justify-center mx-auto mb-3 shadow-lg shadow-rose-300/80">
             <Award className="w-9 h-9" />
           </div>
 
-          <span className="text-xs font-mono font-bold tracking-widest text-rose-600 uppercase">
+          <span className="text-[11px] font-mono font-bold tracking-widest text-rose-600 uppercase">
             CERTIFICATE OF CLINICAL SIMULATION EXCELLENCE
           </span>
           <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1 mb-1">
@@ -73,18 +75,18 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
           </p>
 
           {/* Score Snapshot Badge */}
-          <div className="flex justify-center gap-4 mb-8 text-xs">
-            <div className="bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm">
+          <div className="flex justify-center gap-3 sm:gap-4 mb-8 text-xs flex-wrap">
+            <div className="bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm">
               <span className="text-slate-400 text-[10px] block">Post-test Score</span>
               <span className="text-base font-bold font-mono text-rose-600">{postScore} / 10</span>
             </div>
-            <div className="bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm">
+            <div className="bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm">
               <span className="text-slate-400 text-[10px] block">Learning Gain (&lt;g&gt;)</span>
               <span className="text-base font-bold font-mono text-emerald-600">{gain}</span>
             </div>
-            <div className="bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm">
-              <span className="text-slate-400 text-[10px] block">สถานะผลการฝึก</span>
-              <span className="text-xs font-bold text-teal-700">ผ่านเกณฑ์ยอดเยี่ยม</span>
+            <div className="bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm flex flex-col justify-center items-center">
+              <span className="text-slate-400 text-[10px] block mb-0.5">สถานะผลการฝึก</span>
+              <PulseBadge status="stable" text="ผ่านเกณฑ์ยอดเยี่ยม" />
             </div>
           </div>
 
@@ -107,18 +109,19 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
         <div className="flex items-center justify-between mt-6 print:hidden">
           <button
             onClick={onClose}
-            className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50"
+            className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors"
           >
             ปิดหน้าต่าง
           </button>
 
-          <button
+          <ShinyButton
             onClick={handlePrint}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-rose-200 transition-all"
+            variant="primary"
+            size="md"
+            icon={<Printer className="w-4 h-4" />}
           >
-            <Printer className="w-4 h-4" />
-            <span>พิมพ์ใบประกาศนียบัตร (Print / Save as PDF)</span>
-          </button>
+            พิมพ์ใบประกาศนียบัตร (Print / PDF)
+          </ShinyButton>
         </div>
       </div>
     </div>

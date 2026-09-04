@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { LEARNING_VIDEOS } from '../../data/learningVideosData';
 import { Play, Pause, CheckCircle2, ChevronRight, Video, Sparkles, Clock, BookOpen, Heart, Stethoscope, Activity, Bed, Pill, ClipboardList } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
+import { AnimatedCounter } from '../ui/AnimatedCounter';
 
 interface Stage2LearningHubProps {
   onComplete: () => void;
@@ -70,44 +73,52 @@ export const Stage2LearningHub: React.FC<Stage2LearningHubProps> = ({ onComplete
 
   return (
     <div className="max-w-6xl mx-auto p-4 py-8">
-      {/* Top Title Banner (Matching PDF Page 4 top banner) */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 mb-6 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
-              ขั้นตอนที่ 2 / คลังความรู้
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
-            คลังความรู้ก่อนเริ่มสถานการณ์ (Knowledge Bank)
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            คลิปวิดีโอในการให้ความรู้ได้รับชมก่อนเริ่มเกมส์ (ความยาว 1–3 นาที ทั้งหมด 6 หัวข้อ)
-          </p>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="text-right bg-rose-50/70 border border-rose-100 px-3.5 py-1.5 rounded-xl">
-            <div className="text-xs text-slate-500 font-medium">ความก้าวหน้า</div>
-            <div className="text-lg font-bold font-mono text-rose-600">
-              {progressPercent}%
+      {/* Top Title Banner */}
+      <SpotlightCard
+        className="p-6 mb-6 shadow-md border-pink-100/80"
+        spotlightColor="rgba(244, 63, 94, 0.08)"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
+                ขั้นตอนที่ 2 / คลังความรู้
+              </span>
             </div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
+              คลังความรู้ก่อนเริ่มสถานการณ์ (Knowledge Bank)
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              คลิปวิดีโอในการให้ความรู้ได้รับชมก่อนเริ่มเกมส์ (ความยาว 1–3 นาที ทั้งหมด 6 หัวข้อ)
+            </p>
           </div>
-          <button
-            onClick={handleMarkAllWatched}
-            className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl transition-all font-medium"
-          >
-            (ลัด) ดูครบทุกหัวข้อ
-          </button>
+
+          <div className="flex items-center gap-4">
+            <div className="text-right bg-rose-50/80 border border-rose-100 px-4 py-2 rounded-2xl">
+              <div className="text-xs text-slate-500 font-medium">ความก้าวหน้า</div>
+              <div className="text-xl font-bold font-mono text-rose-600">
+                <AnimatedCounter value={progressPercent} suffix="%" />
+              </div>
+            </div>
+            <button
+              onClick={handleMarkAllWatched}
+              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-3.5 py-2.5 rounded-xl transition-all font-medium active:scale-95"
+            >
+              (ลัด) ดูครบทุกหัวข้อ
+            </button>
+          </div>
         </div>
-      </div>
+      </SpotlightCard>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Video Player Screen (7 cols) */}
         <div className="lg:col-span-7 flex flex-col gap-4">
           <div className="bg-white border border-pink-100 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-            {/* Simulated Video Canvas with modern medical gradient */}
-            <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-6 border-b border-slate-200">
+            {/* Simulated Video Canvas with 21st.dev modern dark theater gradient */}
+            <div className="relative aspect-video bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center p-6 border-b border-slate-200 overflow-hidden">
+              {/* Subtle Scanline / Ambient Glow */}
+              <div className="absolute inset-0 bg-radial-gradient from-rose-500/10 via-transparent to-transparent pointer-events-none" />
+
               <div className="w-16 h-16 rounded-2xl bg-white/10 text-rose-400 flex items-center justify-center mb-3 shadow-lg backdrop-blur-md border border-white/20">
                 {renderIcon(activeVideo.iconKey, "w-8 h-8")}
               </div>
@@ -122,13 +133,13 @@ export const Stage2LearningHub: React.FC<Stage2LearningHubProps> = ({ onComplete
               {/* Play/Pause Button */}
               <button
                 onClick={handleTogglePlay}
-                className="mt-4 w-14 h-14 rounded-full bg-gradient-to-tr from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white flex items-center justify-center shadow-lg shadow-rose-500/40 transition-transform active:scale-95"
+                className="mt-4 w-14 h-14 rounded-full bg-gradient-to-tr from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white flex items-center justify-center shadow-lg shadow-rose-500/40 transition-transform active:scale-95 hover:scale-105"
               >
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 fill-white ml-0.5" />}
               </button>
 
               {/* Progress Scrubber */}
-              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-700">
+              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800">
                 <div
                   className="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-300"
                   style={{ width: `${simulatedProgress}%` }}
@@ -169,13 +180,14 @@ export const Stage2LearningHub: React.FC<Stage2LearningHubProps> = ({ onComplete
             {videos.map(v => {
               const isCurrent = v.id === selectedVideoId;
               return (
-                <button
+                <SpotlightCard
                   key={v.id}
                   onClick={() => handleSelectVideo(v.id)}
-                  className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3.5 ${
+                  spotlightColor={isCurrent ? "rgba(244, 63, 94, 0.15)" : "rgba(20, 184, 166, 0.08)"}
+                  className={`w-full text-left p-3.5 transition-all flex items-start gap-3.5 cursor-pointer ${
                     isCurrent
-                      ? 'bg-rose-50/80 border-rose-300 ring-1 ring-rose-300 shadow-sm'
-                      : 'bg-white border-slate-200 hover:border-pink-200 hover:bg-slate-50/80'
+                      ? 'bg-rose-50/80 border-rose-300 ring-1 ring-rose-300 shadow-md'
+                      : 'hover:border-pink-200 hover:bg-slate-50/80'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
@@ -197,21 +209,23 @@ export const Stage2LearningHub: React.FC<Stage2LearningHubProps> = ({ onComplete
                       เวลา {v.duration}
                     </span>
                   </div>
-                </button>
+                </SpotlightCard>
               );
             })}
           </div>
 
-          <button
+          <ShinyButton
             onClick={() => {
               clinicalAudio.playHeartBeep(880, 0.1);
               onComplete();
             }}
-            className="mt-2 w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-rose-200 transition-all"
+            variant="primary"
+            size="lg"
+            icon={<ChevronRight className="w-4 h-4" />}
+            className="w-full mt-2"
           >
-            <span>เข้าสู่การเลือกสถานการณ์ (เลือกเคส)</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            เข้าสู่การเลือกสถานการณ์ (เลือกเคส)
+          </ShinyButton>
         </div>
       </div>
     </div>

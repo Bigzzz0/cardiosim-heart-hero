@@ -5,6 +5,8 @@ import { Pill, CheckCircle2, ChevronRight, AlertTriangle, ShieldCheck, ArrowDown
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { ClinicalHintModal } from '../common/ClinicalHintModal';
 import { FurosemideSyringeVisualizer } from '../medical/FurosemideSyringeVisualizer';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
 
 interface Stage10MedicationProps {
   onComplete: () => void;
@@ -50,43 +52,48 @@ export const Stage10Medication: React.FC<Stage10MedicationProps> = ({ onComplete
 
   return (
     <div className="max-w-5xl mx-auto p-4 py-8">
-      {/* Top Banner (Matching PDF Page 9) */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 mb-6 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
-              ภารกิจที่ 5 / บริหารยา & เตรียมยา (NCJMM: Take Action)
-            </span>
-            <span className="text-xs font-mono text-rose-600 font-bold bg-pink-100 px-2.5 py-0.5 rounded-full">
-              ความคืบหน้า 40%
-            </span>
+      {/* Top Banner with SpotlightCard */}
+      <SpotlightCard
+        className="p-6 mb-6 shadow-md border-pink-100/80"
+        spotlightColor="rgba(244, 63, 94, 0.08)"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
+                ภารกิจที่ 5 / บริหารยา & เตรียมยา (NCJMM: Take Action)
+              </span>
+              <span className="text-xs font-mono text-rose-600 font-bold bg-pink-100 px-2.5 py-0.5 rounded-full">
+                ความคืบหน้า 40%
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
+              เลือกยาและเรียงลำดับ 7 ขั้นตอนการเตรียมยา (Medication Safety)
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              เลือกยาตามคำสั่งแพทย์ ตรวจสอบผลข้างเคียง และเรียงลำดับขั้นตอนการบริหารยาตามหลัก 6 Rights
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
-            เลือกยาและเรียงลำดับ 7 ขั้นตอนการเตรียมยา (Medication Safety)
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            เลือกยาตามคำสั่งแพทย์ ตรวจสอบผลข้างเคียง และเรียงลำดับขั้นตอนการบริหารยาตามหลัก 6 Rights
-          </p>
-        </div>
 
-        <div className="flex items-center gap-2 self-start md:self-center">
-          <button
-            onClick={() => setShowHintModal(true)}
-            className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 font-bold shadow-sm"
-          >
-            <Lightbulb className="w-4 h-4 text-amber-500" />
-            <span>ปรึกษาหัวหน้าเวร</span>
-          </button>
+          <div className="flex items-center gap-2 self-start md:self-center">
+            <button
+              onClick={() => setShowHintModal(true)}
+              className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 font-bold shadow-sm active:scale-95"
+            >
+              <Lightbulb className="w-4 h-4 text-amber-500" />
+              <span>ปรึกษาหัวหน้าเวร</span>
+            </button>
 
-          <button
-            onClick={handleAutoSort}
-            className="text-xs bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 font-semibold"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-rose-500" />
-            <span>(เฉลยลัด) เรียง 1-7 ถูกต้อง</span>
-          </button>
+            <button
+              onClick={handleAutoSort}
+              className="text-xs bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 font-semibold active:scale-95"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-rose-500" />
+              <span>(เฉลยลัด) เรียง 1-7 ถูกต้อง</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </SpotlightCard>
 
       <ClinicalHintModal
         currentStage="STAGE6_MEDICATION"
@@ -248,14 +255,15 @@ export const Stage10Medication: React.FC<Stage10MedicationProps> = ({ onComplete
           )}
         </p>
 
-        <button
+        <ShinyButton
           onClick={handleNext}
           disabled={!isSequenceCorrect}
-          className="py-3 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm flex items-center gap-2 shadow-md shadow-rose-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          variant="primary"
+          size="lg"
+          icon={<ChevronRight className="w-4 h-4" />}
         >
-          <span>ไปสู่การบันทึกสารน้ำเข้า-ออก I/O (Next)</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
+          ไปสู่การบันทึกสารน้ำเข้า-ออก I/O (Next)
+        </ShinyButton>
       </div>
     </div>
   );

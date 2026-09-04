@@ -1,6 +1,9 @@
 import React from 'react';
 import { ShieldCheck, Heart, User, CheckCircle2, ChevronRight, Stethoscope, ClipboardList, Pill, Droplet, AlertOctagon, Award, HeartPulse } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
+import { DoctorApprovedStamp } from '../common/DoctorApprovedStamp';
 
 interface Stage4MissionBriefProps {
   onAcceptMission: () => void;
@@ -25,10 +28,13 @@ export const Stage4MissionBrief: React.FC<Stage4MissionBriefProps> = ({ onAccept
 
   return (
     <div className="max-w-5xl mx-auto p-4 py-8">
-      {/* Role Intro Card (Matching PDF Page 6 mockup) */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-8 mb-8 shadow-xl relative overflow-hidden">
+      {/* Role Intro SpotlightCard */}
+      <SpotlightCard
+        className="p-6 sm:p-8 mb-8 shadow-xl border-pink-200/80"
+        spotlightColor="rgba(244, 63, 94, 0.12)"
+      >
         <div className="flex flex-col sm:flex-row items-center gap-6 relative z-10">
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-rose-500 to-pink-400 p-1 shadow-md shadow-rose-200 shrink-0">
+          <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-rose-500 to-pink-400 p-1 shadow-lg shadow-rose-200 shrink-0">
             <div className="w-full h-full bg-white rounded-[22px] flex items-center justify-center text-rose-500">
               <Stethoscope className="w-12 h-12" />
             </div>
@@ -43,21 +49,25 @@ export const Stage4MissionBrief: React.FC<Stage4MissionBriefProps> = ({ onAccept
               คุณคือพยาบาลประจำหอผู้ป่วยกึ่งวิกฤต ศูนย์หัวใจ
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-              ที่ต้องทำภารกิจในการดูแลผู้ป่วยและให้การพยาบาลตลอดทั้งเวร ฝึกการคิดวิเคราะห์และการตัดสินใจทางคลินิก (Clinical Judgment) ในการดูแลผู้ป่วยโรคหัวใจ เพื่อให้ผู้ป่วยปลอดภัยจากภาวะวิกฤต
+              ที่ต้องทำภารกิจในการดูแลผู้ป่วยและให้การพยาบาลตลอดทั้งเวร ฝึกการคิดวิเคราะห์และการตัดสินใจทางคลินิก (Clinical Judgment ตามกรอบ NCJMM) ในการดูแลผู้ป่วยโรคหัวใจ เพื่อให้ผู้ป่วยปลอดภัยจากภาวะวิกฤต
             </p>
           </div>
-        </div>
-      </div>
 
-      {/* 8-Step Roadmap (Matching PDF Page 7 mockup) */}
+          <div className="shrink-0 hidden md:block">
+            <DoctorApprovedStamp />
+          </div>
+        </div>
+      </SpotlightCard>
+
+      {/* 8-Step Roadmap */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <HeartPulse className="w-5 h-5 text-rose-500" />
-            <span>ภารกิจของคุณ (8 ขั้นตอนหลักในการดูแลผู้ป่วย)</span>
+            <span>ภารกิจการตัดสินใจทางคลินิก (8 ขั้นตอนหลักในการดูแลผู้ป่วย)</span>
           </h3>
           <span className="text-xs font-mono font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full">
-            8 ภารกิจ
+            8 ภารกิจ (NCJMM)
           </span>
         </div>
 
@@ -65,9 +75,10 @@ export const Stage4MissionBrief: React.FC<Stage4MissionBriefProps> = ({ onAccept
           {missions.map(m => {
             const Icon = m.icon;
             return (
-              <div
+              <SpotlightCard
                 key={m.num}
-                className="bg-white border border-slate-200 hover:border-rose-300 rounded-2xl p-4 transition-all hover:shadow-md flex flex-col justify-between"
+                spotlightColor="rgba(244, 63, 94, 0.08)"
+                className="p-4 flex flex-col justify-between hover:-translate-y-1 transition-transform"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
@@ -81,21 +92,23 @@ export const Stage4MissionBrief: React.FC<Stage4MissionBriefProps> = ({ onAccept
                   <h4 className="font-bold text-sm text-slate-800 mb-1">{m.title}</h4>
                   <p className="text-xs text-slate-500 leading-relaxed">{m.desc}</p>
                 </div>
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>
       </div>
 
-      {/* Accept Mission Button */}
+      {/* Accept Mission ShinyButton */}
       <div className="flex justify-center">
-        <button
+        <ShinyButton
           onClick={handleStart}
-          className="w-full max-w-md py-4 px-8 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-base shadow-lg shadow-rose-200 flex items-center justify-center gap-2.5 transition-all transform active:scale-[0.98]"
+          variant="primary"
+          size="xl"
+          icon={<ChevronRight className="w-5 h-5" />}
+          className="w-full max-w-md"
         >
-          <span>รับทราบภารกิจ & เริ่มต้นเวรพยาบาล</span>
-          <ChevronRight className="w-5 h-5" />
-        </button>
+          รับทราบภารกิจ & เริ่มต้นเวรพยาบาล
+        </ShinyButton>
       </div>
     </div>
   );

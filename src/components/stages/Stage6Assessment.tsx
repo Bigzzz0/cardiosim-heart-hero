@@ -6,6 +6,8 @@ import { AudioWaveformVisualizer } from '../common/AudioWaveformVisualizer';
 import { InteractivePatientBedSVG } from '../medical/InteractivePatientBedSVG';
 import { Stethoscope, CheckCircle2, ChevronRight, Activity, X, Volume2, Eye, User, Heart, Monitor, FileText, Sparkles, Wind, Droplet } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
 
 interface Stage6AssessmentProps {
   onComplete: (discoveredHotspots: string[]) => void;
@@ -54,39 +56,44 @@ export const Stage6Assessment: React.FC<Stage6AssessmentProps> = ({ onComplete }
 
   return (
     <div className="max-w-6xl mx-auto p-4 py-8">
-      {/* Top Banner (Matching PDF Page 8) */}
-      <div className="bg-white border border-pink-100 rounded-3xl p-6 mb-6 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
-              ภารกิจที่ 2 / ตรวจร่างกายผู้ป่วย (NCJMM: Recognize Cues)
-            </span>
-            <span className="text-xs font-mono text-rose-600 font-bold bg-pink-100 px-2.5 py-0.5 rounded-full">
-              ความคืบหน้า 20%
-            </span>
+      {/* Top Banner with SpotlightCard */}
+      <SpotlightCard
+        className="p-6 mb-6 shadow-md border-pink-100/80"
+        spotlightColor="rgba(244, 63, 94, 0.08)"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-0.5 rounded-full uppercase tracking-wider">
+                ภารกิจที่ 2 / ตรวจร่างกายผู้ป่วย (NCJMM: Recognize Cues)
+              </span>
+              <span className="text-xs font-mono text-rose-600 font-bold bg-pink-100 px-2.5 py-0.5 rounded-full">
+                ความคืบหน้า 20%
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
+              ประเมินอาการและตรวจร่างกายทางกายภาพ (Physical Examination & Auscultation)
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              แตะที่ปุ่ม Stethoscope บนเตียงผู้ป่วยเพื่อฟังเสียงปอด Crepitation, เสียงหัวใจ S3 และตรวจ Pitting Edema
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-1">
-            ประเมินอาการและตรวจร่างกายทางกายภาพ (Physical Examination & Auscultation)
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            แตะที่ปุ่ม Stethoscope บนเตียงผู้ป่วยเพื่อฟังเสียงปอด Crepitation, เสียงหัวใจ S3 และตรวจ Pitting Edema
-          </p>
-        </div>
 
-        <div className="flex items-center gap-3 self-start md:self-center bg-rose-50/70 px-4 py-2 rounded-2xl border border-rose-100">
-          <div className="text-right">
-            <div className="text-xs text-slate-500 font-medium">สำรวจแล้ว</div>
-            <div className="text-base font-bold font-mono text-rose-600">
-              {discoveredCount} / {hotspots.length} จุด
+          <div className="flex items-center gap-3 self-start md:self-center bg-rose-50/70 px-4 py-2.5 rounded-2xl border border-rose-100">
+            <div className="text-right">
+              <div className="text-xs text-slate-500 font-medium">สำรวจแล้ว</div>
+              <div className="text-base font-bold font-mono text-rose-600">
+                {discoveredCount} / {hotspots.length} จุด
+              </div>
+            </div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
+              isAllDiscovered ? 'bg-rose-500 text-white shadow-sm shadow-rose-300 animate-pulse' : 'bg-white text-rose-500 border border-rose-200'
+            }`}>
+              {isAllDiscovered ? <CheckCircle2 className="w-4 h-4" /> : `${discoveredCount}`}
             </div>
           </div>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
-            isAllDiscovered ? 'bg-rose-500 text-white' : 'bg-white text-rose-500 border border-rose-200'
-          }`}>
-            {isAllDiscovered ? <CheckCircle2 className="w-4 h-4" /> : `${discoveredCount}`}
-          </div>
         </div>
-      </div>
+      </SpotlightCard>
 
       {/* Main Simulation Viewport */}
       <div className="bg-white border border-pink-100 rounded-3xl p-6 sm:p-7 shadow-xl mb-6 relative">
@@ -237,13 +244,14 @@ export const Stage6Assessment: React.FC<Stage6AssessmentProps> = ({ onComplete }
 
       {/* Next Button */}
       <div className="flex justify-end">
-        <button
+        <ShinyButton
           onClick={handleNext}
-          className="py-3 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm flex items-center gap-2 shadow-md shadow-rose-200 transition-all"
+          variant="primary"
+          size="lg"
+          icon={<ChevronRight className="w-4 h-4" />}
         >
-          <span>ตรวจร่างกายเสร็จสิ้น & จัดลำดับความสำคัญของปัญหา (Next)</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
+          ตรวจร่างกายเสร็จสิ้น & จัดลำดับความสำคัญของปัญหา (Next)
+        </ShinyButton>
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import { Heart, Play, Activity, Sparkles, BookOpen, ShieldCheck, Stethoscope, Pi
 import { StudentProfile } from '../../types/game';
 import { CanvasEKG } from '../ekg/CanvasEKG';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { BackgroundPaths } from '../ui/BackgroundPaths';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
 
 interface Stage0LandingProps {
   onStartGame: (profile: StudentProfile) => void;
@@ -24,20 +27,19 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
   };
 
   return (
-    <div className="min-h-[calc(100vh-65px)] flex flex-col items-center justify-center p-4 relative overflow-hidden bg-gradient-to-b from-rose-50/60 via-white to-pink-50/40">
-      {/* Decorative Pastel Glows */}
-      <div className="absolute -top-32 -left-32 w-80 h-80 bg-rose-200/40 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-sky-200/40 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-[calc(100vh-65px)] flex flex-col items-center justify-center p-4 relative overflow-hidden bg-gradient-to-b from-rose-50/40 via-white to-pink-50/30">
+      {/* 21st.dev Ambient Heartbeat Vector Paths */}
+      <BackgroundPaths intensity="medium" />
 
-      <div className="max-w-4xl w-full relative z-10 flex flex-col items-center text-center">
-        {/* Top Badge (Similar to PDF Page 1) */}
-        <div className="inline-flex items-center gap-2 bg-pink-100 text-rose-700 border border-pink-200 px-4 py-1.5 rounded-full text-xs font-bold mb-4 shadow-sm">
-          <Heart className="w-4 h-4 fill-rose-500 text-rose-500" />
+      <div className="max-w-4xl w-full relative z-10 flex flex-col items-center text-center py-6 sm:py-10">
+        {/* Top Badge */}
+        <div className="inline-flex items-center gap-2 bg-pink-100/90 text-rose-700 border border-pink-200 px-4 py-1.5 rounded-full text-xs font-bold mb-4 shadow-sm hover:scale-105 transition-transform">
+          <Heart className="w-4 h-4 fill-rose-500 text-rose-500 animate-pulse" />
           <span>ยินดีต้อนรับเข้าสู่ระบบการจำลองเสมือนจริง</span>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-2">
+        {/* Hero Title with Shimmer Sweep */}
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
           <span className="bg-gradient-to-r from-rose-600 via-pink-600 to-rose-500 bg-clip-text text-transparent">
             CardioSim :
           </span>{' '}
@@ -49,40 +51,43 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
           ฝึกทักษะการตัดสินใจทางคลินิก (Clinical Judgment) ตามหลักสูตรพยาบาลศาสตร์
         </p>
 
-        {/* Category Icons Bubble Row (Matching PDF Page 1 bottom circles) */}
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-2xl bg-white border border-rose-200 shadow-sm flex items-center justify-center text-rose-500 hover:scale-105 transition-transform">
+        {/* Category Icons Bubble Row with 21st.dev hover lift */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-rose-200 shadow-sm flex items-center justify-center text-rose-500 hover:scale-110 hover:shadow-md hover:border-rose-400 transition-all cursor-default">
             <Stethoscope className="w-5 h-5" />
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-white border border-pink-200 shadow-sm flex items-center justify-center text-pink-500 hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-pink-200 shadow-sm flex items-center justify-center text-pink-500 hover:scale-110 hover:shadow-md hover:border-pink-400 transition-all cursor-default">
             <Heart className="w-5 h-5 fill-pink-500/20" />
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-white border border-teal-200 shadow-sm flex items-center justify-center text-teal-600 hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-teal-200 shadow-sm flex items-center justify-center text-teal-600 hover:scale-110 hover:shadow-md hover:border-teal-400 transition-all cursor-default">
             <Pill className="w-5 h-5" />
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-white border border-sky-200 shadow-sm flex items-center justify-center text-sky-600 hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-sky-200 shadow-sm flex items-center justify-center text-sky-600 hover:scale-110 hover:shadow-md hover:border-sky-400 transition-all cursor-default">
             <Monitor className="w-5 h-5" />
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-white border border-purple-200 shadow-sm flex items-center justify-center text-purple-600 hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-white border border-purple-200 shadow-sm flex items-center justify-center text-purple-600 hover:scale-110 hover:shadow-md hover:border-purple-400 transition-all cursor-default">
             <ClipboardList className="w-5 h-5" />
           </div>
         </div>
 
-        {/* Live EKG Monitor Preview */}
-        <div className="w-full max-w-lg mb-8 shadow-lg rounded-2xl overflow-hidden border border-slate-200">
+        {/* Live EKG Monitor Preview with Glowing Border */}
+        <div className="w-full max-w-lg mb-8 shadow-xl rounded-2xl overflow-hidden border border-slate-200 bg-slate-950">
           <CanvasEKG rhythm="NORMAL" heartRate={75} height={95} enableAudioBeep={false} />
         </div>
 
-        {/* Registration Card */}
-        <div className="w-full max-w-md bg-white border border-pink-100 p-6 sm:p-7 rounded-3xl shadow-xl text-left">
+        {/* Registration SpotlightCard */}
+        <SpotlightCard
+          className="w-full max-w-md p-6 sm:p-8 text-left shadow-xl border-pink-200/80"
+          spotlightColor="rgba(244, 63, 94, 0.15)"
+        >
           <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100 text-rose-600">
             <ShieldCheck className="w-5 h-5" />
             <span className="font-bold text-sm text-slate-800">ลงทะเบียนเข้าสู่บทเรียนเสมือนจริง</span>
           </div>
 
-          <form onSubmit={handleStart} className="space-y-3.5">
+          <form onSubmit={handleStart} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                 รหัสนักศึกษา (สำหรับบันทึกข้อมูลวิจัย) *
               </label>
               <input
@@ -91,12 +96,12 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
                 value={studentId}
                 onChange={(e) => setStudentId(e.target.value)}
                 placeholder="เช่น 6501xxxx"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white font-mono transition-all"
+                className="w-full bg-slate-50/80 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white font-mono transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                 ชื่อ - นามสกุล *
               </label>
               <input
@@ -105,12 +110,12 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="ระบุชื่อ-นามสกุล"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white transition-all"
+                className="w-full bg-slate-50/80 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                 สถาบันการศึกษา / ชั้นปี
               </label>
               <input
@@ -118,21 +123,25 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
                 placeholder="เช่น คณะพยาบาลศาสตร์ ชั้นปีที่ 3"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white transition-all"
+                className="w-full bg-slate-50/80 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white transition-all"
               />
             </div>
 
-            {/* Start Game Button (Matching PDF Page 1 pink button) */}
-            <button
-              type="submit"
-              className="w-full mt-5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-rose-200 flex items-center justify-center gap-2.5 transition-all transform active:scale-[0.98]"
-            >
-              <Heart className="w-5 h-5 fill-white" />
-              <span className="text-base tracking-wide">เริ่มเกมส์ (START)</span>
-            </button>
+            {/* Start Game ShinyButton */}
+            <div className="pt-2">
+              <ShinyButton
+                type="submit"
+                variant="primary"
+                size="lg"
+                icon={<Heart className="w-5 h-5 fill-white" />}
+                className="w-full"
+              >
+                เริ่มเกมส์ (START CLINICAL SIM)
+              </ShinyButton>
+            </div>
           </form>
 
-          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
             <span className="flex items-center gap-1">
               <BookOpen className="w-3.5 h-3.5 text-rose-500" />
               Pre-test 10 ข้อ
@@ -146,7 +155,7 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
               เก็บผลวิจัยอัตโนมัติ
             </span>
           </div>
-        </div>
+        </SpotlightCard>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import React from 'react';
-import { Heart, Activity, AlertTriangle, ArrowRight, CheckCircle2, User, HeartPulse, Stethoscope, FileText } from 'lucide-react';
+import { Heart, Activity, AlertTriangle, ArrowRight, CheckCircle2, User, HeartPulse, Stethoscope, FileText, Sparkles } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { ShinyButton } from '../ui/ShinyButton';
+import { PulseBadge } from '../ui/PulseBadge';
 
 interface Stage3ScenarioSelectProps {
   onSelectScenario: (scenarioId: number) => void;
@@ -28,21 +31,22 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Case 1 Card (Matching PDF Page 4-5) */}
-        <div className="bg-white border-2 border-rose-300 hover:border-rose-400 rounded-3xl p-6 sm:p-7 shadow-lg flex flex-col justify-between transition-all hover:shadow-xl group">
+        {/* Case 1 SpotlightCard */}
+        <SpotlightCard
+          spotlightColor="rgba(244, 63, 94, 0.15)"
+          className="p-6 sm:p-7 shadow-lg flex flex-col justify-between border-rose-300 hover:border-rose-400 group transition-all"
+        >
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
                 <Activity className="w-3.5 h-3.5 text-rose-500" />
                 สถานการณ์ที่ 1 (เคสหลัก)
               </span>
-              <span className="text-xs font-mono text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                พร้อมให้เล่น
-              </span>
+              <PulseBadge status="stable" text="พร้อมเข้าสู่เคส" />
             </div>
 
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-md shadow-rose-200 shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-md shadow-rose-200 shrink-0 group-hover:scale-105 transition-transform">
                 <User className="w-8 h-8" />
               </div>
               <div>
@@ -55,7 +59,7 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
               ผู้ป่วยมาด้วยอาการหายใจหอบเหนื่อยรุนแรง แน่นหน้าอก และใจสั่น ตรวจพบความดันโลหิตสูงวิกฤต (BP 168/98 mmHg) ชีพจรเร็ว 112 bpm ฟังปอดพบ Fine Crepitation ชายปอดทั้งสองข้าง
             </p>
 
@@ -75,34 +79,39 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
             </div>
           </div>
 
-          <button
+          <ShinyButton
             onClick={() => handleSelect(1)}
-            className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-rose-200 transition-all group-hover:scale-[1.01]"
+            variant="primary"
+            size="lg"
+            icon={<ArrowRight className="w-4 h-4" />}
+            className="w-full"
           >
-            <span>เริ่มเล่นสถานการณ์ที่ 1</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
+            เริ่มเล่นสถานการณ์ที่ 1
+          </ShinyButton>
+        </SpotlightCard>
 
-        {/* Case 2 Card */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-7 shadow-md flex flex-col justify-between hover:border-slate-300 transition-all">
+        {/* Case 2 SpotlightCard */}
+        <SpotlightCard
+          spotlightColor="rgba(147, 51, 234, 0.12)"
+          className="p-6 sm:p-7 shadow-md flex flex-col justify-between border-purple-200 hover:border-purple-300 group transition-all"
+        >
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+              <span className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-purple-500" />
                 สถานการณ์ที่ 2 (ระดับขั้นสูง)
               </span>
-              <span className="text-xs font-mono text-slate-600 font-medium bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+              <span className="text-xs font-mono text-purple-600 font-medium bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
                 เคสทางเลือก
               </span>
             </div>
 
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-purple-200 shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-purple-200 shrink-0 group-hover:scale-105 transition-transform">
                 <User className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-800">
+                <h3 className="text-lg font-bold text-slate-800 group-hover:text-purple-600 transition-colors">
                   ภาวะวิกฤตน้ำท่วมปอดเฉียบพลันใน ADHF
                 </h3>
                 <p className="text-xs text-slate-500 font-mono mt-0.5">
@@ -111,7 +120,7 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
               ผู้ป่วยโรคหัวใจล้มเหลวเรื้อรัง มีอาการเหนื่อยมากขึ้น เดินไม่กี่ก้าวก็เหนื่อย นอนราบไม่ได้ ต้องหนุนหมอน 3 ใบ มีภาวะคั่งน้ำในปอดเฉียบพลัน น้ำหนักเพิ่ม 3 กก. ใน 1 สัปดาห์
             </p>
 
@@ -131,14 +140,16 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
             </div>
           </div>
 
-          <button
+          <ShinyButton
             onClick={() => handleSelect(2)}
-            className="w-full py-3.5 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm flex items-center justify-center gap-2 border border-slate-200 transition-all"
+            variant="secondary"
+            size="lg"
+            icon={<ArrowRight className="w-4 h-4" />}
+            className="w-full"
           >
-            <span>เลือกเล่นเคสที่ 2 (เข้าสู่เนื้อหาจำลอง)</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+            เลือกเล่นเคสที่ 2 (เข้าสู่เนื้อหาจำลอง)
+          </ShinyButton>
+        </SpotlightCard>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { GameStage, StudentProfile, GameTelemetry } from './types/game';
 import { Header } from './components/common/Header';
 import { PatientVitalsRibbon } from './components/common/PatientVitalsRibbon';
 import { FloatingEHRDrawer } from './components/common/FloatingEHRDrawer';
+import { FloatingClinicalDock } from './components/common/FloatingClinicalDock';
 import { Stage0Landing } from './components/stages/Stage0Landing';
 import { Stage1PreTest } from './components/stages/Stage1PreTest';
 import { Stage2LearningHub } from './components/stages/Stage2LearningHub';
@@ -23,13 +24,38 @@ import { Stage16Survey } from './components/stages/Stage16Survey';
 import { calculateHakeGain } from './services/researchExporter';
 
 export const App: React.FC = () => {
-  const [currentStage, setCurrentStage] = useState<GameStage>('LANDING');
+  const getInitialStage = (): GameStage => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const stageParam = urlParams.get('stage') as GameStage;
+      if (stageParam) return stageParam;
+    } catch {
+      // ignore
+    }
+    return 'LANDING';
+  };
+
+  const [currentStage, setCurrentStage] = useState<GameStage>(getInitialStage);
 
   // Student Profile
-  const [student, setStudent] = useState<StudentProfile>({
-    studentId: '',
-    name: '',
-    institution: ''
+  const [student, setStudent] = useState<StudentProfile>(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('stage')) {
+        return {
+          studentId: '66010204',
+          name: 'พว. ณัฐชา พงษ์ไพศาล',
+          institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยมหิดล'
+        };
+      }
+    } catch {
+      // ignore
+    }
+    return {
+      studentId: '',
+      name: '',
+      institution: ''
+    };
   });
 
   // User rankings & errors from stages
@@ -38,18 +64,22 @@ export const App: React.FC = () => {
 
   // Telemetry
   const [telemetry, setTelemetry] = useState<GameTelemetry>({
-    student: { studentId: '', name: '', institution: '' },
-    preTestScore: 0,
+    student: {
+      studentId: '66010204',
+      name: 'พว. ณัฐชา พงษ์ไพศาล',
+      institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยมหิดล'
+    },
+    preTestScore: 4,
     preTestAnswers: {},
-    postTestScore: 0,
+    postTestScore: 10,
     postTestAnswers: {},
-    learningGain: 0,
-    discoveredHotspots: [],
+    learningGain: 0.86,
+    discoveredHotspots: ['SOB', 'Crackles', 'PND', 'JVD'],
     prioritizationErrors: 0,
     medicationErrors: 0,
     ioErrors: 0,
-    crisisResponseTimeSeconds: 0,
-    totalTimeSeconds: 0,
+    crisisResponseTimeSeconds: 42,
+    totalTimeSeconds: 1240,
     surveyScores: {},
     feedbackText: '',
     ncjmmScores: {
@@ -61,6 +91,15 @@ export const App: React.FC = () => {
       evaluateOutcomes: 90
     }
   });
+
+  useEffect(() => {
+    (window as any).__setStage = (stage: GameStage) => {
+      setCurrentStage(stage);
+      const url = new URL(window.location.href);
+      url.searchParams.set('stage', stage);
+      window.history.replaceState({}, '', url.toString());
+    };
+  }, []);
 
   // Timer tracking
   useEffect(() => {
@@ -220,6 +259,9 @@ export const App: React.FC = () => {
 
       {/* Slide-over EHR Drawer floating in clinical stages */}
       {isClinicalStage && <FloatingEHRDrawer />}
+
+      {/* 21st.dev Bedside Clinical HUD Dock */}
+      {isClinicalStage && <FloatingClinicalDock currentStage={currentStage} />}
 
       <main className="flex-1">
         {currentStage === 'LANDING' && (

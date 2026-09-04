@@ -90,11 +90,13 @@ export const Header: React.FC<HeaderProps> = ({
                 {progressPercent}%
               </span>
             </div>
-            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200/80">
+            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200/80 relative">
               <div
-                className="h-full bg-gradient-to-r from-rose-400 via-pink-500 to-rose-500 transition-all duration-500 ease-out rounded-full"
+                className="h-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 transition-all duration-500 ease-out rounded-full relative shadow-xs"
                 style={{ width: `${progressPercent}%` }}
-              />
+              >
+                <div className="absolute top-0 right-0 bottom-0 w-3 bg-white/70 rounded-full animate-pulse" />
+              </div>
             </div>
           </div>
         )}
