@@ -23,6 +23,19 @@ export interface StudentProfile {
   institution?: string;
 }
 
+export interface GameResult {
+  caseId: string;
+  completedAt: string;
+  durationMs: number;
+  attempts: number;
+  mistakes: number;
+  hints: number;
+  findings: string[];
+  clinicalStatus: string;
+  demoScore: number | null;
+  scoreStatus: 'demo' | 'unscored';
+}
+
 export interface QuizQuestion {
   id: number;
   question: string;
@@ -168,4 +181,5 @@ export interface GameTelemetry {
   surveyScores: Record<string, number>;
   feedbackText: string;
   completedAt?: string;
+  gameResult?: GameResult;
 }

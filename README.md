@@ -62,6 +62,17 @@
 - **Graphics & Visuals**: HTML5 Canvas (High-DPI Retina Ready), Lucide Icons
 - **Animation & Effects**: Canvas Confetti, CSS Micro-animations
 
+## Phaser Patient Room Game Module
+
+เกมห้องผู้ป่วยแบบโต้ตอบเปิดได้ที่ `/game.html?case=case-01` หรือ `/game.html?case=case-02` โดยใช้ Phaser 3 สำหรับฉากและการโต้ตอบกับผู้ป่วย และใช้ React สำหรับ HUD กับแผงกิจกรรมในเกม ข้อมูลและเฉลยของ Case 1 เป็นข้อมูล demo ที่ต้องผ่านการตรวจทางคลินิก ส่วน Case 2 จะไม่ให้คะแนนในกิจกรรมที่ข้อมูลต้นทางไม่ครบ
+
+Game checks:
+```bash
+npm run typecheck
+npm run test:game
+npm run test:game:browser
+```
+
 ---
 
 ## การติดตั้งและเริ่มใช้งาน (Getting Started)

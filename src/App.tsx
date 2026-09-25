@@ -22,6 +22,7 @@ import { Stage14PostTest } from './components/stages/Stage14PostTest';
 import { Stage15Results } from './components/stages/Stage15Results';
 import { Stage16Survey } from './components/stages/Stage16Survey';
 import { calculateHakeGain } from './services/researchExporter';
+import { readGameReturn, writeGameReturn } from './types/cardioGameBridge';
 
 export const App: React.FC = () => {
   const getInitialStage = (): GameStage => {
@@ -39,6 +40,8 @@ export const App: React.FC = () => {
 
   // Student Profile
   const [student, setStudent] = useState<StudentProfile>(() => {
+    const gameReturn = readGameReturn();
+    if (gameReturn?.student) return gameReturn.student;
     try {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('stage')) {
@@ -63,7 +66,9 @@ export const App: React.FC = () => {
   const [prioritizationErrors, setPrioritizationErrors] = useState(0);
 
   // Telemetry
-  const [telemetry, setTelemetry] = useState<GameTelemetry>({
+  const [telemetry, setTelemetry] = useState<GameTelemetry>(() => {
+    const returned = readGameReturn()?.telemetry;
+    const defaults: GameTelemetry = {
     student: {
       studentId: '66010204',
       name: 'พว. ณัฐชา พงษ์ไพศาล',
@@ -90,6 +95,8 @@ export const App: React.FC = () => {
       takeAction: 95,
       evaluateOutcomes: 90
     }
+    };
+    return returned ? { ...defaults, ...returned } : defaults;
   });
 
   useEffect(() => {
@@ -155,8 +162,10 @@ export const App: React.FC = () => {
     setCurrentStage('SCENARIO_SELECT');
   };
 
-  const handleSelectScenario = (_scenarioId: number) => {
-    setCurrentStage('MISSION_BRIEF');
+  const handleSelectScenario = (scenarioId: string) => {
+    writeGameReturn({ student, telemetry: { ...telemetry, gameResult: undefined } });
+    try { sessionStorage.removeItem('cardiosim.game.result.v1'); } catch { /* Game launch still works without session storage. */ }
+    window.location.assign(`/game.html?case=${encodeURIComponent(scenarioId)}&from=web`);
   };
 
   const handleAcceptMission = () => {

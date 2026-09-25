@@ -6,11 +6,11 @@ import { ShinyButton } from '../ui/ShinyButton';
 import { PulseBadge } from '../ui/PulseBadge';
 
 interface Stage3ScenarioSelectProps {
-  onSelectScenario: (scenarioId: number) => void;
+  onSelectScenario: (scenarioId: string) => void;
 }
 
 export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSelectScenario }) => {
-  const handleSelect = (id: number) => {
+  const handleSelect = (id: string) => {
     clinicalAudio.playHeartBeep(880, 0.1);
     onSelectScenario(id);
   };
@@ -80,7 +80,7 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
           </div>
 
           <ShinyButton
-            onClick={() => handleSelect(1)}
+            onClick={() => handleSelect('case-01')}
             variant="primary"
             size="lg"
             icon={<ArrowRight className="w-4 h-4" />}
@@ -141,7 +141,7 @@ export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSe
           </div>
 
           <ShinyButton
-            onClick={() => handleSelect(2)}
+            onClick={() => handleSelect('case-02')}
             variant="secondary"
             size="lg"
             icon={<ArrowRight className="w-4 h-4" />}

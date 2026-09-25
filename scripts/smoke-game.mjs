@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({headless:true});
+const page = await browser.newPage({viewport:{width:1440,height:1080}});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:3001/game.html');
+await page.locator('canvas').waitFor();await page.waitForTimeout(1800);
+await page.screenshot({path:'screenshots/game-foundation.png',fullPage:true});
+await page.setViewportSize({width:768,height:1024});await page.waitForTimeout(500);
+if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw Error('Horizontal overflow');
+if(errors.length) throw Error(errors.join('\n'));
+console.log('Foundation: canvas rendered, responsive smoke passed, no runtime errors');
+await browser.close();
