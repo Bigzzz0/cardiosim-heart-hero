@@ -1,8 +1,11 @@
+import {Plus} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { Hotspot, MedicalTool, Point } from '../types';
 
 interface PositionedHotspot extends Hotspot { left: number; top: number; width: number; height: number }
 interface PatientHotspotLayerProps {
+  visibleTargetIds: readonly string[];
+  validTargetIds: readonly string[];
   hotspots: readonly Hotspot[];
   active: boolean;
   dragging: boolean;
@@ -12,7 +15,7 @@ interface PatientHotspotLayerProps {
   onActivate: (point: Point) => void;
 }
 
-export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutorialTargetId, selectedTool, onActivate }: PatientHotspotLayerProps) {
+export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutorialTargetId, selectedTool, onActivate, visibleTargetIds, validTargetIds }: PatientHotspotLayerProps) {
   const [positions, setPositions] = useState<PositionedHotspot[]>([]);
 
   useEffect(() => {
@@ -63,13 +66,14 @@ export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutoria
     {positions.map(hotspot => <button
       key={hotspot.id}
       type="button"
-      className={`hotspot-control ${tutorialTargetId === hotspot.id ? 'tutorial-target' : ''} ${debug ? 'debug-target' : ''}`}
+      className={`hotspot-control ${tutorialTargetId === hotspot.id ? 'tutorial-target' : ''} ${debug ? 'debug-target' : ''} ${visibleTargetIds.includes(hotspot.id)?'has-marker':''} ${validTargetIds.includes(hotspot.id)?'valid-marker':''}`}
+      tabIndex={visibleTargetIds.includes(hotspot.id)?0:-1}
       data-patient-hotspot={hotspot.id}
       data-label={hotspot.label}
       style={{ left: hotspot.left, top: hotspot.top, width: hotspot.width, height: hotspot.height }}
       aria-label={`${hotspot.label}${selectedTool ? ` · ใช้ ${selectedTool.name}` : ' · เลือกเครื่องมือก่อน'}`}
       title={selectedTool ? `ใช้ ${selectedTool.name} ที่ ${hotspot.label}` : `จุดตรวจ ${hotspot.label}`}
       onClick={() => onActivate({ x: hotspot.x, y: hotspot.y })}
-    />)}
+    ><span className="patient-marker" aria-hidden="true"><span className="marker-lens"><Plus size={21}/></span><i/></span></button>)}
   </div>;
 }

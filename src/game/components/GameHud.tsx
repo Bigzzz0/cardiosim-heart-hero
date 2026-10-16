@@ -1,8 +1,11 @@
 import React from 'react';
-import { Activity, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Siren, Volume2, VolumeX } from 'lucide-react';
+import { Activity, ArrowRight, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Siren, Volume2, VolumeX } from 'lucide-react';
 import type { MissionDefinition } from '../types';
 
 type GameHudProps = {
+  nextEnabled: boolean;
+  nextLabel: string;
+  onNext: () => void;
   caseId: string;
   missions: readonly MissionDefinition[];
   missionIndex: number;
@@ -47,6 +50,7 @@ export function GameHud(props: GameHudProps) {
     </a>
 
     <div className="header-center">
+      <h1 className="hud-objective">{missions[missionIndex]?.title.replace(/\n/g, " ")}</h1>
       <span className="live-dot"/>
       <span className="hud-case">PATIENT CARE</span>
       <i/>
@@ -77,6 +81,9 @@ export function GameHud(props: GameHudProps) {
       </span>}
       <span className="hud-clock"><Clock3 size={14}/>{elapsedLabel}</span>
       <span className="mistake-chip" title="จำนวนครั้งที่ลองผิด"><ShieldAlert size={13}/>{mistakeCount}</span>
+      <button className="hud-next" disabled={!props.nextEnabled} onClick={props.onNext} aria-label="ดำเนินภารกิจจากแถบด้านบน" title={props.nextLabel}><ArrowRight aria-hidden="true"/></button>
+    </div>
+    <div className="hud-utilities">
       <button onClick={onToggleAudio} aria-label={audioEnabled ? 'ปิดเสียง' : 'เปิดเสียง'} title={audioEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}>
         {audioEnabled ? <Volume2 size={17}/> : <VolumeX size={17}/>}
       </button>

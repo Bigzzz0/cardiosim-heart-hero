@@ -1,0 +1,283 @@
+/* Reference: the user's bedside UI sketch, 2026-10-16.
+   This presentation is isolated from the website and changes no case rules. */
+.storybook-game {
+  --game-hud-height: 108px;
+  --game-tray-height:158px;
+  --game-tray-bottom:27px;
+  --game-ink: #344d5c;
+  --game-muted: #627781;
+  --game-panel: #fffdf6f5;
+  --game-panel-edge: #91cde9;
+  --game-gold: #edbd6d;
+  --storybook-sky: #9bd5ee;
+  --storybook-outline: #3f4b53;
+  --storybook-paper: #fffdf7;
+  color: var(--game-ink);
+}
+.storybook-game button:focus-visible,.storybook-game a:focus-visible,.storybook-game input:focus-visible,.storybook-game select:focus-visible { outline:3px solid #bd6d3d; outline-offset:4px; }
+.storybook-game .game-hud { top:22px; left:4.5%; right:4.5%; bottom:auto; width:auto; height:76px; padding:0; gap:20px; border:0; background:none; box-shadow:none; backdrop-filter:none; pointer-events:none; }
+.storybook-game .game-hud .brand { display:none; }
+.storybook-game .header-center,.storybook-game .hud-clock,.storybook-game .hud-next {
+  border:2px solid var(--storybook-outline); border-radius:48px;
+  background:var(--storybook-paper); color:#456a7b;
+  box-shadow:inset 0 0 0 5px #fff, inset 0 0 0 13px var(--storybook-sky), 5px 7px 0 #3b4b4c70;
+  pointer-events:auto;
+}
+.storybook-game .header-center { position:relative; flex:0 1 440px; display:grid; grid-template-columns:1fr auto; align-content:center; gap:3px 9px; height:76px; min-width:0; padding:15px 30px; }
+.storybook-game .hud-objective { margin:0; grid-column:1 / -1; color:#3e6174; font-size:19px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.storybook-game .hud-phase { grid-column:1; padding:0; border:0; background:none; color:#6a8390; font-size:10px; letter-spacing:1px; }
+.storybook-game .hud-step-count { grid-column:2; grid-row:2; color:#52778a; font-size:12px; }
+.storybook-game .header-center>.live-dot,.storybook-game .hud-case,.storybook-game .header-center>i,.storybook-game .hud-steps { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); }
+.storybook-game .header-actions { display:flex; align-items:center; margin-left:auto; gap:22px; }
+.storybook-game .hud-clock { height:76px; min-width:176px; justify-content:center; gap:12px; padding:12px 28px; font-size:22px; font-weight:800; letter-spacing:1px; }
+.storybook-game .hud-clock svg { width:20px; height:20px; }
+.storybook-game .header-actions .hud-next { display:grid; place-items:center; width:90px; height:76px; min-height:44px; padding:12px; }
+.storybook-game .hud-next svg { width:34px; height:34px; color:#4a9cc3; filter:drop-shadow(2px 2px 0 #afd9e8); }
+.storybook-game .hud-next:disabled { opacity:.62; cursor:default; }
+.storybook-game .hud-next:enabled:hover { background:#e5f6ff; transform:translateY(-2px); }
+.storybook-game .mistake-chip { display:none; }
+.storybook-game .hud-emergency { position:absolute; left:50%; transform:translateX(-50%); top:14px; height:44px; background:#fff0e6; color:#a74236; border:2px solid #d98470; border-radius:24px; padding:8px 15px; }
+.storybook-game .hud-utilities { position:absolute; top:88px; right:0; display:flex; align-items:center; gap:8px; pointer-events:auto; }
+.storybook-game .hud-utilities button { width:44px; height:44px; min-height:44px; border:2px solid #849ca5; border-radius:50%; background:#fffdf3; color:#547a8d; box-shadow:2px 3px 0 #45586240; }
+.storybook-game .hud-utilities .volume { width:70px; accent-color:#629cba; }
+.storybook-game .hud-utilities .debug-pill { background:#fff7dd; color:#6c5d38; }
+.storybook-game .room-topline,.storybook-game .room-caption { display:none; }
+
+/* A bedside device, with a plastic casing and stand, rather than a web card. */
+.storybook-game .monitor { top:clamp(160px,22vh,210px); left:3%; width:clamp(188px,20vw,258px); padding:13px; border:9px solid #dce0e6; border-radius:23px; outline:2px solid #8e959e; background:#10282d; box-shadow:inset 0 0 0 2px #52636c, 5px 7px 0 #626c7755; }
+.storybook-game .monitor:before { content:""; position:absolute; top:100%; left:46%; width:17px; height:42px; background:linear-gradient(90deg,#a5b4bb,#e8eef1,#9faeb6); border:2px solid #7d8f98; border-top:0; }
+.storybook-game .monitor:after { content:""; position:absolute; top:calc(100% + 35px); left:24%; width:56%; height:12px; border:2px solid #82949d; border-radius:50%; background:#dce8ed; }
+.storybook-game .monitor-title { font-size:10px; color:#d3e5df; }
+.storybook-game .monitor-title>span { color:#91c9b8; }
+.storybook-game .vital-large b { font-size:33px; }
+.storybook-game .monitor-footer { color:#afc8c4; font-size:9px; }
+
+/* Six padded sockets, matching the reference's broad white/blue tool tray. */
+.storybook-game .toolbar { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-items:center; gap:clamp(12px,3vw,45px); left:50%; bottom:calc(var(--game-tray-bottom) + var(--game-safe-bottom)); width:min(1320px,calc(100% - 110px))!important; height:var(--game-tray-height); min-height:0; padding:24px 42px 20px; border:2px solid var(--storybook-outline); border-radius:62px; background:#fffefb; box-shadow:inset 0 0 0 7px #fff, inset 0 0 0 16px var(--storybook-sky), 6px 9px 0 #414e4d75; backdrop-filter:none; }
+.storybook-game .toolbar-guide { display:none; }
+.storybook-game .toolbar button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:100%; min-width:0; min-height:102px; height:108px; padding:0; border:0; border-radius:0; color:#536b77; background:none; box-shadow:none; touch-action:none; }
+.storybook-game .tool-pad { position:relative; display:grid; place-items:center; width:min(100%,134px); height:81px; flex-shrink:0; border:2px solid #9ebfce; border-radius:25px; background:linear-gradient(#ffffff,#edf6fa); box-shadow:0 4px 0 #b0c8d3,inset 0 2px 0 #fff; transition:transform .13s,background .13s; }
+.storybook-game .toolbar button .tool-art { width:62px; height:57px; object-fit:contain; filter:drop-shadow(1px 3px 1px #596b6e42); pointer-events:none; }
+.storybook-game .tool-pad>svg { width:33px; height:33px; color:#7197a9; }
+.storybook-game .toolbar button>.tool-slot-label { font-size:14px; line-height:1.1; color:#4e6b7a; font-weight:700; white-space:nowrap; }
+.storybook-game .toolbar button kbd { top:2px; right:4px; border:0; background:none; color:#8899a0; font-size:10px; }
+.storybook-game .toolbar button:not(:disabled):hover { background:none; box-shadow:none; transform:none; }
+.storybook-game .toolbar button:hover .tool-pad { transform:translateY(-3px); background:linear-gradient(#fff,#e0f2fa); }
+.storybook-game .toolbar button.selected { background:none; border:0; box-shadow:none; transform:none; }
+.storybook-game .toolbar button.selected .tool-pad { background:linear-gradient(#f6fcff,#cbeafa); border-color:#579cbf; transform:translateY(-4px); box-shadow:0 4px 0 #80aec5,0 0 0 3px #daf2ff; }
+.storybook-game .toolbar button:disabled { opacity:.65; }
+.storybook-game .empty-tool-slot { display:flex; justify-content:center; align-items:center; height:108px; padding-bottom:21px; opacity:1; }
+.storybook-game .empty-tool-slot .tool-pad {background:#eef3f5;border:2px dashed #cad9df;box-shadow:inset 0 2px 4px #708d9b12;}
+.storybook-game .tray-count { position:absolute; right:5px; top:4px; display:grid; place-items:center; width:20px; height:20px; border-radius:50%; background:#79b7d2; color:white; font-size:11px; font-style:normal; }
+.storybook-game .tool-held-label { top:-10px; background:#4d87a4; color:white; border-color:#b7e8ff; }
+.storybook-game .tool-tutorial-tip { bottom:calc(100% + 17px); left:50%; width:350px; max-width:90vw; transform:translateX(-50%); padding:11px 15px; border:2px solid #a0c8dc; background:#fffef6; color:#4d7180; border-radius:20px; box-shadow:3px 4px 0 #586f7440; }
+.storybook-game .tool-tutorial-tip b,.storybook-game .tool-tutorial-tip small { display:none; }
+.storybook-game .tool-tutorial-tip span { color:#4c6e7e; font-size:14px; line-height:1.5; }
+
+/* Magnifying-glass markers are placed by the same world mapping as tool drops. */
+.storybook-game .hotspot-control { background:none!important; border:0!important; box-shadow:none!important; opacity:1; outline-offset:1px; }
+.storybook-game .patient-marker { position:absolute; display:none; left:50%; top:50%; width:44px; height:52px; transform:translate(-50%,-50%); pointer-events:none; filter:drop-shadow(2px 3px 0 #4b555b65); }
+.storybook-game .has-marker .patient-marker { display:block; }
+.storybook-game .marker-lens { position:absolute; z-index:1; display:grid; place-items:center; width:39px; height:39px; background:#fffdf8; border:3px solid #49545c; border-radius:50%; box-shadow:0 0 0 4px #f5faff,0 0 0 7px #94d1f08c,inset 0 0 0 3px #e1edf4; color:#db7f80; }
+.storybook-game .patient-marker>i { position:absolute; top:34px; left:26px; width:12px; height:23px; border:3px solid #49545c; border-radius:4px; background:#f4f7f8; transform:rotate(-24deg); }
+.storybook-game .valid-marker .marker-lens { box-shadow:0 0 0 4px #fff,0 0 0 9px #80caeeaa,inset 0 0 0 3px #d0efff; color:#4494bc; }
+.storybook-game .is-dragging .valid-marker .patient-marker { transform:translate(-50%,-50%) scale(1.12); }
+.storybook-game .hotspot-control:after,.storybook-game .hotspot-control:before { display:none!important; }
+
+.storybook-game .mission-panel { color:#456172; background:#fffdf5f5; border:2px solid #7eb7d0; border-radius:25px; box-shadow:4px 6px 0 #4d6a734d; backdrop-filter:blur(5px); scrollbar-color:#b3d7e8 transparent; }
+.storybook-game .mission-panel h2 { color:#3c6178; }
+.storybook-game .mission-panel>p,.storybook-game .phase-label,.storybook-game .mission-compact>p { color:#526a76; }
+.storybook-game .mission-heading,.storybook-game .mission-heading .eyebrow,.storybook-game .mission-step { color:#668da1; }
+.storybook-game .mission-toggle { width:44px; height:44px; min-height:44px; border:2px solid #b1cede; background:#f6fbfe; color:#648b9d; border-radius:50%; }
+.storybook-game .mode-field.mission-collapsed { top:167px!important; bottom:auto!important; right:3%!important; left:auto!important; transform:none!important; width:330px!important; max-width:calc(100% - 24px); height:auto!important; min-height:0!important; max-height:135px; padding:10px 12px; overflow:hidden; border-color:#a9cfdf; border-radius:21px; }
+.storybook-game .mode-field.mission-collapsed>.mission-heading { position:relative; display:flex; height:18px; margin:0 0 3px; }
+.storybook-game .mode-field.mission-collapsed .mission-toggle { position:absolute; top:-3px; right:-4px; }
+.storybook-game .mode-field.mission-collapsed .mission-heading .eyebrow { font-size:9px; }
+.storybook-game .mode-field.mission-collapsed>h2,.storybook-game .mode-field.mission-collapsed>.phase-label { display:none!important; }
+.storybook-game .mode-field.mission-collapsed .action-brief { min-height:30px; margin:3px 32px 4px 0; padding:0; background:none; border:0; color:#4d7384; }
+.storybook-game .mode-field.mission-collapsed .action-brief b { font-size:14px; color:#4e7083; }
+.storybook-game .mode-field.mission-collapsed .action-brief small { display:none; }
+.storybook-game .action-tool-icon { background:#deeff8; color:#6694ad; border-color:#b7d6e5; }
+.storybook-game .mode-field.mission-collapsed .mission-compact { gap:4px; }
+.storybook-game .mode-field.mission-collapsed .mission-compact>p { font-size:14px; padding-right:35px; }
+.storybook-game .objective-pips>i { background:#e0e8eb; }.storybook-game .objective-pips>i.done { background:#7db4cd; }
+.storybook-game .mode-field.mission-collapsed>.feedback { display:none!important; }
+.storybook-game .mode-field:not(.mission-collapsed) { top:116px; bottom:204px; transform:none; max-height:none; }
+.storybook-game .primary { min-height:46px; font-size:14px; border:2px solid #77b0ca; border-radius:18px; color:#3d687d; background:linear-gradient(#f4fbff,#b8e3f6); box-shadow:0 4px 0 #86afc0; }
+.storybook-game .primary:disabled { background:#dce6e9; color:#8598a1; border-color:#c2d2d8; box-shadow:none; }
+.storybook-game .feedback { background:#eaf4f9; color:#57778a; border-color:#bdd9e6; font-size:14px; }
+.storybook-game .feedback.success { background:#edf4e8; color:#527b59; border-color:#b4d2b6; }.storybook-game .feedback.error { background:#fff0e7; color:#a05e49; border-color:#e0b39e; }
+.storybook-game .mission-actions button,.storybook-game .chart-button { background:#f3f9fd; color:#638ba1; border-color:#bbd8e5; }
+.storybook-game .interaction-toast { background:#fffdf4; border:2px solid #a6d3e9; border-radius:19px; color:#4d7181; box-shadow:3px 4px 0 #405f6b40; font-size:14px; }
+.storybook-game .interaction-toast.error { background:#fff0e6; color:#965943; border-color:#deb99f; }
+.storybook-game .chart-modal,.storybook-game .pause-card { background:#fffdf4; color:#456b80; border:3px solid #a0d5ec; border-radius:26px; }
+.storybook-game .chart-header { background:#e4f2fa; color:#557e95; }.storybook-game .chart-entry { background:#f1f7f9; color:#527082; border-color:#c6dde7; }.storybook-game .unknown { color:#7b909c; }
+.storybook-game .resume-banner { top:110px; background:#fff9e9; color:#6d7681; border-color:#b8ccda; border-radius:16px; }
+
+@media (max-width:1100px) and (min-width:761px) {
+  .storybook-game {--game-tray-height:142px;}
+  .storybook-game .header-center { flex-basis:370px; }.storybook-game .hud-objective { font-size:17px; }
+  .storybook-game .toolbar { width:calc(100% - 70px)!important; height:var(--game-tray-height); gap:18px; padding:22px 30px 15px; }
+  .storybook-game .tool-pad { height:73px; }.storybook-game .toolbar button { height:95px; }
+  .storybook-game .empty-tool-slot { height:95px; }.storybook-game .monitor { width:182px; }
+}
+@media(max-width:760px) {
+  .storybook-game { --game-hud-height:106px; --game-tray-height:116px; --game-tray-bottom:18px; }
+  .storybook-game .game-hud { top:14px; left:12px; right:12px; gap:8px; height:62px; }
+  .storybook-game .header-center { height:62px; flex:1; min-width:0; padding:11px 17px; gap:2px; border-radius:32px; box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 8px #9bd5ee,3px 5px 0 #3b4b4c70; }
+  .storybook-game .hud-objective { font-size:14px; }.storybook-game .hud-phase { font-size:8px; letter-spacing:.2px; }.storybook-game .hud-step-count { font-size:10px; }
+  .storybook-game .header-actions { gap:8px; margin-left:0; }
+  .storybook-game .hud-clock { height:54px; min-width:70px; padding:10px; font-size:14px; letter-spacing:0; box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 7px #9bd5ee,3px 5px 0 #3b4b4c70; }
+  .storybook-game .hud-clock svg { display:none; }.storybook-game .header-actions .hud-next { width:52px; height:54px; padding:8px; box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 7px #9bd5ee,3px 5px 0 #3b4b4c70; }
+  .storybook-game .hud-next svg { width:25px; height:25px; }.storybook-game .hud-utilities { top:69px; gap:6px; }.storybook-game .hud-utilities button { width:44px; height:44px; }.storybook-game .hud-utilities>button:last-of-type { display:none; }
+  .storybook-game .hud-utilities .volume { width:55px; }
+  .storybook-game .hud-emergency { top:68px; left:0; transform:none; height:30px; padding:4px 8px; min-height:0; font-size:10px; }
+  .storybook-game .monitor { left:9px; top:165px; width:94px; border-width:5px; padding:7px; border-radius:13px; }
+  .storybook-game .monitor-title { font-size:7px; }.storybook-game .monitor-title>svg,.storybook-game .monitor-title>span,.storybook-game .wave-label,.storybook-game .monitor-footer { display:none; }
+  .storybook-game .monitor-trace canvas { height:28px!important; }.storybook-game .vital-large b { font-size:17px; }.storybook-game .vital-large span { font-size:9px; }.storybook-game .vital-large { min-width:0; padding:3px 0; }.storybook-game .vital-small b { font-size:12px; }.storybook-game .vital-small span { font-size:9px; }
+  .storybook-game .monitor:before { height:26px; width:10px; }.storybook-game .monitor:after { top:calc(100% + 22px); height:7px; }
+  .storybook-game .toolbar { width:calc(100% - 20px)!important; bottom:calc(var(--game-tray-bottom) + var(--game-safe-bottom)); height:var(--game-tray-height); padding:15px 13px 12px; gap:5px; border-radius:35px; box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 10px #9bd5ee,3px 6px 0 #414e4d75; }
+  .storybook-game .toolbar button { height:82px; min-height:44px; gap:5px; }.storybook-game .tool-pad { width:100%; height:52px; border-width:2px; border-radius:16px; box-shadow:0 3px 0 #b0c8d3; }
+  .storybook-game .toolbar button .tool-art { width:39px; height:40px; }.storybook-game .tool-pad>svg { width:25px; height:25px; }.storybook-game .toolbar button>.tool-slot-label { font-size:14px; white-space:normal; text-align:center; line-height:1.1; min-height:21px; }
+  .storybook-game .toolbar button kbd { display:none; }.storybook-game .empty-tool-slot { height:82px; padding-bottom:21px; }.storybook-game .empty-tool-slot .tool-pad {background:#eef3f5;border:2px dashed #cad9df;box-shadow:inset 0 2px 4px #708d9b12;}
+.storybook-game .tray-count { width:15px; height:15px; right:1px; top:1px; font-size:9px; }
+  .storybook-game .tool-tutorial-tip { width:280px; bottom:calc(100% + 13px); padding:9px 12px; }
+  .storybook-game .mode-field.mission-collapsed { top:151px!important; right:10px!important; left:115px!important; width:auto!important; max-width:none; padding:8px 10px; max-height:136px; }
+  .storybook-game .mode-field.mission-collapsed .action-brief b { font-size:14px; }.storybook-game .mode-field.mission-collapsed .action-tool-icon { display:none; }
+  .storybook-game .mode-field.mission-collapsed .mission-compact>p { font-size:14px; }
+  .storybook-game .mode-field:not(.mission-collapsed) { top:144px; bottom:148px; width:calc(100% - 20px); left:10px; right:10px; max-height:none; transform:none; }
+  .storybook-game .mission-panel:not(.mode-field) { border-radius:23px; }
+  .storybook-game .patient-marker { transform:translate(-50%,-50%) scale(.86); }
+  .storybook-game .is-dragging .valid-marker .patient-marker { transform:translate(-50%,-50%); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .storybook-game * { scroll-behavior:auto!important; }.storybook-game .tool-pad,.storybook-game .patient-marker { transition:none; }
+}
+
+/* Final surface pass: neutralize legacy panel/animation skins. */
+.storybook-game .hud-phase.phase-enter {height:auto;max-width:none;box-shadow:none;animation:none;}
+.storybook-game .toolbar button.tutorial-tool:not(:disabled){animation:none;box-shadow:none;}
+.storybook-game .toolbar button.tutorial-tool .tool-pad{border-color:#83b9d3;background:#edf8ff;}
+.storybook-game .toolbar:before,.storybook-game .toolbar:after{display:none;}
+.storybook-game .tool-name-compact{display:none;}
+.storybook-game [data-patient-hotspot="head"] .patient-marker{left:calc(50% + 43px);top:calc(50% + 6px);}
+.storybook-game .mode-field.mission-collapsed{background:#fffdf5f5!important;}
+.storybook-game .mode-field.mission-collapsed .comms-eyebrow{color:#7293a3;}
+.storybook-game .comms-eyebrow>svg{color:#79a6bd;}.storybook-game .comms-eyebrow>i{background:#e5f2f8;color:#6e97aa;border-color:#c4dce6;}
+.storybook-game .mode-briefing{top:160px;bottom:206px;left:auto;right:3%;width:365px;max-height:none;transform:none;padding:20px;}
+.storybook-game .mode-briefing .aside-footer{display:none;}
+.storybook-game .scenario-select{padding:12px;background:#edf5f9;color:#587e93;border-color:#bfd8e5;}
+.storybook-game .scenario-card,.storybook-game .stage-option{background:#fffdf6;color:#567d92;border-color:#bfd8e5;}
+.storybook-game .scenario-card b,.storybook-game .scenario-card small,.storybook-game .stage-select>span,.storybook-game .panel-title,.storybook-game .scenario-number{color:#5a7f91;}
+.storybook-game .stage-option.selected{background:#d6edf9;color:#456b7d;border-color:#a4cce0;}.storybook-game .stage-change-link{color:#6a93a8;}
+.storybook-game .in-room-decision-surface,.storybook-game .in-room-activity-surface{border-color:#9dbdce;background:#fcfaf1;color:#496c7f;box-shadow:4px 6px 0 #415c6c30;}
+.storybook-game .surface-hardware,.storybook-game .activity-surface-hardware{background:linear-gradient(#e2f2fc,#c4e3f3);color:#4c758b;border-color:#9cbfd3;}
+.storybook-game .surface-heading b,.storybook-game .activity-surface-hardware b{color:#476e85;}
+.storybook-game .surface-hardware small,.storybook-game .activity-surface-hardware small,.storybook-game .surface-status{color:#6a8c9e;}
+.storybook-game .surface-content .matching-board,.storybook-game .activity-card,.storybook-game .surface-content,.storybook-game .activity-surface-content{background:#fcfaf3;color:#4f7184;border-color:#c3d9e5;}
+.storybook-game .surface-instruction,.storybook-game .activity-surface-instruction{background:#eef5f8;color:#5b8094;border-color:#c6dce9;}
+.storybook-game .surface-instruction b,.storybook-game .surface-instruction span,.storybook-game .activity-surface-instruction b,.storybook-game .activity-surface-instruction span{color:#5a7b90;}
+.storybook-game .answer-slot{background:#eef5f9;border:2px dashed #a5c3d4;border-radius:14px;}
+.storybook-game .answer-slot>span,.storybook-game .answer-slot>b,.storybook-game .answer-slot>small{color:#5b8094;}
+.storybook-game .answer-slot.filled{background:#deedf5;border-style:solid;border-color:#89b5cc;}
+.storybook-game .answer-card,.storybook-game .decision-option{background:#fffdf5;border:2px solid #c0d2dc;border-radius:13px;box-shadow:0 3px 0 #b4c5cd55;color:#547a90;}
+.storybook-game .answer-card b,.storybook-game .decision-option b{color:#4f7187;font-size:14px;}.storybook-game .answer-card small,.storybook-game .decision-option small{color:#7a929e;}
+.storybook-game .answer-card:hover,.storybook-game .decision-option:hover{background:#eaf5fb;border-color:#91bfd7;}
+.storybook-game .answer-card.chosen,.storybook-game .decision-option.chosen{background:#dbeefa;border-color:#89bbd7;}
+.storybook-game .drag-help,.storybook-game .support-copy,.storybook-game .clinical-pending{color:#7b8990;}
+.storybook-game .activity-notice{background:#fff4dc;color:#897049;border-color:#dfcda5;}
+.storybook-game .activity-fields label,.storybook-game .activity-field label,.storybook-game .activity-field>span{color:#608196;font-size:14px;}
+.storybook-game .activity-fields input,.storybook-game .activity-fields select,.storybook-game .activity-field input,.storybook-game .activity-field select{background:#fffef9;color:#54748a;border-color:#b6d3e1;font-size:14px;min-height:44px;}
+.storybook-game .activity-rows,.storybook-game .activity-rows b,.storybook-game .activity-rows span{color:#5c7c8e;}
+.storybook-game .io-source-tray,.storybook-game .io-calculation-panel,.storybook-game .medication-step{background:#edf5fa;border-color:#bad5e4;color:#557b8f;}
+.storybook-game .io-module-title,.storybook-game .step-copy,.storybook-game .medication-step small{color:#63899d;}
+.storybook-game .io-zone{background:#e9f4fa;border-color:#9bbdd1;color:#577c92;}.storybook-game .io-zone-heading b,.storybook-game .io-zone-items i{color:#577c92;}
+.storybook-game .io-item-token,.storybook-game .balance-options button{background:#fffdf5;color:#5d8093;border-color:#b4ccda;}
+.storybook-game .balance-options button.chosen{background:#deeff9;border-color:#83b4cf;}
+.storybook-game .result-card{color:#55778d;}.storybook-game .result-success{color:#5d879b;}.storybook-game .result-vitals,.storybook-game .result-case-data,.storybook-game .result-metrics{color:#50778b;background:#edf5f9;border-color:#c2d8e5;}
+.storybook-game .result-card small{color:#7e8e97;}
+@media(max-width:760px){
+ .storybook-game .tool-name-full{display:none;}.storybook-game .tool-name-compact{display:inline;}
+ .storybook-game .mode-briefing{top:148px;bottom:148px;left:12px;right:12px;width:auto;padding:16px;}
+ .storybook-game .mode-field.mission-collapsed{top:151px!important;}
+ .storybook-game [data-patient-hotspot="head"] .patient-marker{left:calc(50% + 39px);}
+}
+
+.storybook-game .mission-toggle{background:#f6fbfe!important;color:#648b9d!important;box-shadow:none!important;}
+.storybook-game .mode-briefing>.feedback,.storybook-game .mode-briefing>.phase-label{display:none;}
+.storybook-game .mode-briefing .full-primary{position:sticky;bottom:0;z-index:2;}
+.storybook-game .mode-briefing h2{font-size:22px;line-height:1.3;margin:6px 0 12px;}
+.storybook-game .mode-briefing .scenario-card b{font-size:14px;}.storybook-game .mode-briefing .scenario-card small{font-size:12px;line-height:1.5;}
+.storybook-game .mode-briefing .stage-option{font-size:14px;min-height:44px;}
+
+.storybook-game .mode-field.mission-collapsed[data-toast-active="false"][data-initial-feedback="false"]>.feedback{display:flex!important;max-height:52px;min-height:0;overflow:auto;padding:6px 8px;margin:5px 0 0;font-size:14px;line-height:1.4;}
+.storybook-game .mode-field.mission-collapsed[data-toast-active="false"][data-initial-feedback="false"]:not(:has(.compact-primary)) .mission-compact>p{display:none;}
+.storybook-game .mode-field.mission-collapsed:has(.compact-primary){max-height:190px;}
+
+/* CardioSim controls: code-drawn enamel surfaces; no UI pack bitmaps. */
+.storybook-game .primary:enabled:active{transform:translateY(2px);}
+.storybook-game .answer-slot.filled{box-shadow:inset 0 0 0 2px #b7d8e8;}
+.storybook-game .equipment-token-art img{width:86px;height:86px;object-fit:contain;pointer-events:none;}
+.storybook-game .ecg-console-bezel img{width:38px;height:38px;object-fit:contain;pointer-events:none;}
+@media(max-width:760px){
+ .storybook-game .equipment-token-art img{width:68px;height:68px;}
+}
+
+.storybook-game .mission-panel>.feedback{background:#eaf4f9;color:#57778a;border-color:#bdd9e6;}
+.storybook-game .mission-panel>.feedback.success{background:#edf4e8;color:#527b59;border-color:#b4d2b6;}
+.storybook-game .mission-panel>.feedback.error{background:#fff0e7;color:#a05e49;border-color:#e0b39e;}
+.storybook-game .mission-panel>.mission-actions button{background:#f3f9fd;color:#638ba1;border-color:#bbd8e5;}
+.storybook-game .activity-equipment-token,.storybook-game .syringe-tool-token{background:#fff9eb;color:#78614d;border:2px solid #a1bdcf;box-shadow:0 4px 0 #bacbd3;}
+.storybook-game .equipment-token-art{background:#e7f1f6;border-color:#b1cedd;color:#608395;}
+.storybook-game .activity-equipment-token b,.storybook-game .activity-equipment-token small,.storybook-game .syringe-tool-token b,.storybook-game .syringe-tool-token small{color:#5e7986;}
+.storybook-game .medication-step.current{background:#e0f1fb;border-color:#92bfd6;}.storybook-game .medication-step.complete{background:#edf4e8;color:#658268;}
+.storybook-game .medication-order-card,.storybook-game .station-check-fields{background:#fcfaf1;color:#5e7e8c;border-color:#c5d7df;}
+.storybook-game .order-card-head,.storybook-game .station-subhead{background:#e5f1f8;color:#5c7d8c;border-color:#bad3df;}
+.storybook-game .ecg-review-record{background:#fcfaf1;border-color:#bfd7e3;color:#52778a;}.storybook-game .ecg-review-record>b{color:#52778a;}
+.storybook-game .ecg-console-bezel{background:#d5e9f4;color:#52798e;}
+
+.storybook-game .hud-phase.phase-enter{min-height:0;line-height:1.2;}
+.storybook-game .medication-equipment-tray{background:#f3eddd;color:#657d88;border-color:#c9c1aa;}
+.storybook-game .medication-equipment-tray>.equipment-tray-label{color:#698596;}
+.storybook-game .syringe-minigame{background:#fdf9ec;color:#607f8c;border-color:#bdcfd6;}
+.storybook-game .syringe-workbench{background:#e7eff2;border:2px solid #b6cad7;}
+.storybook-game .syringe-game-instruction{background:#edf2e7;color:#617888;border-color:#c9d8cd;}
+.storybook-game .syringe-game-instruction b,.storybook-game .syringe-game-instruction small,.storybook-game .syringe-volume,.storybook-game .syringe-volume-status{color:#65808c;}
+.storybook-game .mission-panel.mode-medication-station:not(:has(.equipment-ready))>.full-primary{position:static;}
+
+/* Shared enamel treatment keeps buttons legible at every aspect ratio. */
+.storybook-game {
+  --control-edge:#89b6cb;
+  --control-face:linear-gradient(#ffffff,#dfedf5);
+  --control-shadow:0 3px 0 #93b4c5,inset 0 2px 0 #fff;
+}
+.storybook-game .hud-utilities button,
+.storybook-game .mission-toggle {
+  border:2px solid var(--control-edge)!important;
+  background:var(--control-face)!important;
+  color:#47748b!important;
+  box-shadow:var(--control-shadow)!important;
+}
+.storybook-game .mission-toggle svg {visibility:visible;}
+.storybook-game .primary,
+.storybook-game .mission-panel .primary,
+.storybook-game .syringe-confirm {
+  min-height:46px;border:2px solid #73abc6;border-radius:16px;
+  background:linear-gradient(#f5fcff,#badff1);color:#345e74;
+  box-shadow:0 4px 0 #86adbf,inset 0 2px 0 #ffffff;
+  font-size:14px;font-weight:700;
+}
+.storybook-game .primary:enabled:hover,
+.storybook-game .syringe-confirm:enabled:hover {background:linear-gradient(#fff,#d5effb);}
+.storybook-game .primary:disabled,
+.storybook-game .syringe-confirm:disabled {background:#e3ebef;color:#758b96;border-color:#bbced8;box-shadow:none;opacity:.7;}
+.storybook-game .primary:enabled:active,
+.storybook-game .hud-utilities button:active,
+.storybook-game .mission-toggle:active,
+.storybook-game .syringe-confirm:enabled:active {transform:translateY(2px);box-shadow:inset 0 1px 3px #4b6b7b20!important;}
+.storybook-game .tool-tutorial-tip {background:#fffdf4;border:2px solid #a5c8d9;border-radius:18px;box-shadow:0 4px 0 #53708340;padding:12px 18px;}
+.storybook-game .tool-tutorial-tip span {color:#496d80;}
+.storybook-game .answer-slot.locked {position:relative;padding-right:38px;background:#eaf4eb;border-color:#8db79a;}
+.storybook-game .answer-slot.locked:after {content:'✓';position:absolute;right:9px;top:9px;display:grid;place-items:center;width:23px;height:23px;border:1px solid #80ac8d;border-radius:50%;background:#fff;color:#4a7a59;font-weight:800;}
+.storybook-game .ampoule-drop-target {background:#edf6fb;border:2px dashed #8ab5cc;border-radius:18px;box-shadow:inset 0 2px 5px #698c9e14;}
+.storybook-game .ampoule-drop-target.contacted {border-style:solid;border-color:#6eab8b;background:#eaf5ec;}

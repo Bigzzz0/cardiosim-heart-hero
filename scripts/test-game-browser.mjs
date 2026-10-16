@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 
 const port = 4179;
-const server = spawn('npm', ['run','dev','--','--host','127.0.0.1','--port',String(port),'--strictPort'], { stdio:'ignore', shell:true });
+const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'], { stdio:'ignore' });
 const browser = await chromium.launch({headless:true});
 const touchDragGesture = async (page, from, to, id=41) => {
   const cdp=await page.context().newCDPSession(page);
@@ -196,7 +196,7 @@ try {
   const interactionToastLayout=await page.locator('.interaction-toast').evaluate(element=>{const rect=element.getBoundingClientRect();const stage=document.querySelector('.room-stage')?.getBoundingClientRect();const canvas=document.querySelector('.phaser-host canvas')?.getBoundingClientRect();const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');const target=stage&&canvas&&view?{x:canvas.left+(550-view.x)/view.width*canvas.width,y:canvas.top+(280-view.y)/view.height*canvas.height}:null;return{rect:rect.toJSON(),font:parseFloat(getComputedStyle(element).fontSize),stage:stage?.toJSON(),target};});
   if(interactionToastLayout.font<14||interactionToastLayout.rect.left<interactionToastLayout.stage.left||interactionToastLayout.rect.right>interactionToastLayout.stage.right||!interactionToastLayout.target||interactionToastLayout.rect.bottom>=interactionToastLayout.target.y||Math.abs((interactionToastLayout.rect.left+interactionToastLayout.rect.right)/2-interactionToastLayout.target.x)>170)throw new Error(`Interaction feedback should appear beside the patient action: ${JSON.stringify(interactionToastLayout)}`);
   await page.waitForTimeout(900); console.log('after drag',await page.locator('.phase-label').innerText(),await page.locator('.feedback').innerText());
-  await page.getByRole('heading',{name:'ฟังผู้ป่วย ก่อนเริ่มประเมิน'}).waitFor();
+  await page.getByRole('heading',{name:'ฟังผู้ป่วย ก่อนเริ่มประเมิน',level:1}).waitFor();
   await page.getByRole('button',{name:'พักเกม'}).click();
   await page.getByText('SIMULATION PAUSED').waitFor();
   await page.getByRole('button',{name:'กลับไปเล่น'}).click();
@@ -296,17 +296,17 @@ try {
   await ioNumbers.nth(2).fill('-200');
   await page.getByRole('button',{name:/NEGATIVE/}).click(); await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
   await page.locator('.feedback.success').waitFor(); await page.emulateMedia({reducedMotion:'reduce'}); await page.getByRole('button',{name:'Next'}).click();
-  await page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป'}).waitFor();
+  await page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป',level:1}).waitFor();
   const alarmMotion=await page.locator('.emergency-room').evaluate(element=>({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,duration:parseFloat(getComputedStyle(element,'::after').animationDuration)}));
   if(!alarmMotion.reduced||alarmMotion.duration>0.001)throw new Error('Emergency visual motion should honor prefers-reduced-motion');
   await page.waitForTimeout(5300);
-  await page.getByRole('heading',{name:'ประเมิน ABC อย่างเป็นลำดับ'}).waitFor();
+  await page.getByRole('heading',{name:'ประเมิน ABC อย่างเป็นลำดับ',level:1}).waitFor();
   if(!await page.locator('.game-hud.is-emergency .hud-emergency').isVisible())throw new Error('Emergency should visibly change the game HUD and identify the urgent state');
   const hand=tool('ประเมิน ABC');
   for(const [x,y] of [[550,280],[550,395],[602,558]]) { await drag(hand,{x,y}); await page.waitForTimeout(950); }
   await page.screenshot({path:'screenshots/game-emergency.png',fullPage:true});
   await page.getByRole('button',{name:'เตรียมติด ECG'}).click();
-  await page.getByRole('heading',{name:'เชื่อมต่อ สัญญาณหัวใจ'}).waitFor();
+  await page.getByRole('heading',{name:'เชื่อมต่อ สัญญาณหัวใจ',level:1}).waitFor();
   if(!await missionPanel.evaluate(element=>element.classList.contains('mission-collapsed')))throw new Error('ECG placement should start with a compact mission tracker');
   for(const [width,height,path] of [[1440,900,'screenshots/game-ecg-1440x900.png'],[1280,720,'screenshots/game-ecg-1280x720.png'],[1024,768,'screenshots/game-ecg-1024x768.png'],[390,844,'screenshots/game-ecg-390x844.png']])await checkLeadLayout(width,height,path);
   await page.setViewportSize({width:1440,height:1100}); await page.waitForTimeout(120);
@@ -349,11 +349,11 @@ try {
   await dragCardTo('High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน','response');
   await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
   await page.getByRole('button',{name:'Next'}).click();
-  await page.getByRole('heading',{name:'ผู้ป่วยตอบสนอง ต่อการดูแล'}).waitFor();
+  await page.getByRole('heading',{name:'ผู้ป่วยตอบสนอง ต่อการดูแล',level:1}).waitFor();
   if(!await page.locator('.room-stage.recovery-room').isVisible()||await page.locator('.room-stage.emergency-room').count())throw new Error('Patient recovery should shift the room out of emergency mode and acknowledge stabilization in-scene');
   await page.waitForTimeout(6600);
   await page.getByRole('button',{name:'ดูผลภารกิจ'}).click();
-  await page.getByRole('heading',{name:'ดูแลครบ จบภารกิจจำลอง'}).waitFor();
+  await page.getByRole('heading',{name:'ดูแลครบ จบภารกิจจำลอง',level:1}).waitFor();
   for(const [width,height] of [[1440,900],[1280,720],[1024,768],[390,844]]){
     await page.setViewportSize({width,height});await page.waitForTimeout(100);
     const resultLayout=await page.locator('.mission-panel.mode-result').evaluate(element=>{const rect=element.getBoundingClientRect();return{left:rect.left,top:rect.top,right:rect.right,bottom:rect.bottom,width:rect.width,height:rect.height,scrollHeight:element.scrollHeight,clientHeight:element.clientHeight};});
@@ -371,7 +371,7 @@ try {
   const overflow=await mobile.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
   if(overflow)throw new Error('Mobile layout has horizontal overflow');
   await mobile.getByRole('button',{name:'เริ่มดูแลผู้ป่วย'}).tap();
-  await mobile.getByRole('heading',{name:'ฟังผู้ป่วย ก่อนเริ่มประเมิน'}).waitFor();
+  await mobile.getByRole('heading',{name:'ฟังผู้ป่วย ก่อนเริ่มประเมิน',level:1}).waitFor();
   const mobileCanvas=await mobile.locator('.phaser-host canvas').boundingBox();
   const mobileTool=await mobile.locator('.toolbar button').filter({hasText:'ซักประวัติ'}).boundingBox();
   if(!mobileCanvas||!mobileTool)throw new Error('Mobile drag bounds unavailable');
@@ -534,11 +534,11 @@ try {
   await case2Page.getByRole('button',{name:'Confirm · บันทึกข้อมูลที่ไม่มี'}).click();
   if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 I/O entry should be ungraded');
   await case2Page.getByRole('button',{name:'Next'}).click();
-  await case2Page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป'}).waitFor();
+  await case2Page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป',level:1}).waitFor();
   if(!await case2Page.locator('.emergency-room').isVisible()||JSON.stringify(await case2VitalText())!==JSON.stringify(['—','—','—/—','—']))throw new Error('Case 2 emergency must change the scene state while keeping unavailable vitals blank');
   if(!await case2Page.locator('.game-hud.is-emergency .hud-emergency').isVisible())throw new Error('Case 2 emergency state should also be visible in the game HUD');
   await case2Page.waitForTimeout(5300);
-  await case2Page.getByRole('heading',{name:'ประเมิน ABC อย่างเป็นลำดับ'}).waitFor();
+  await case2Page.getByRole('heading',{name:'ประเมิน ABC อย่างเป็นลำดับ',level:1}).waitFor();
   for(const target of [{x:550,y:280},{x:550,y:395},{x:602,y:558}]){
     await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ประเมิน ABC'}),target);
     await case2Page.waitForFunction(count=>document.querySelectorAll('.objective.done').length>=count,await case2Page.locator('.objective.done').count()+1);
@@ -561,7 +561,7 @@ try {
   if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 treatment choice must be recorded without a clinical judgment');
   await case2Page.getByRole('button',{name:'Next'}).click();
   await case2Page.waitForTimeout(6600); await case2Page.getByRole('button',{name:'ดูผลภารกิจ'}).click();
-  await case2Page.getByRole('heading',{name:'ดูแลครบ จบภารกิจจำลอง'}).waitFor();
+  await case2Page.getByRole('heading',{name:'ดูแลครบ จบภารกิจจำลอง',level:1}).waitFor();
   if(await case2Page.getByText('DEMO SCORE').count()||!await case2Page.getByText('PRACTICE RUN').isVisible())throw new Error('Case 2 result must be marked as an unscored practice run');
   await case2Page.screenshot({path:'screenshots/game-case-02-result.png',fullPage:true});
   await case2Page.getByRole('button',{name:'ไปทำ Post-test'}).click();

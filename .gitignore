@@ -29,3 +29,9 @@ dist-ssr
 # Local QA captures and rendered source-document previews
 /screenshots/
 /tmp/
+
+# Supplied source packs stay local; ship only the assets embedded in this game.
+/DEMO_Cozy_UI_Pack_doboui/
+/FREE Healthcare Character/
+/\[AR\] Hospital Assets - FREE/
+__pycache__/

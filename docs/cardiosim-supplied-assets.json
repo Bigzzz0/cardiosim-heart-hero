@@ -1,0 +1,16 @@
+[
+  {
+    "file": "hospital-monitor.webp",
+    "source": "3. Models/gltf/machine_2.glb",
+    "provider": "Atomic Realm",
+    "conversion": "512px orthographic software render, source UV texture, alpha background",
+    "sourceSha256": "f87a61ba0af3350db9f0230cd78c7dc45c2ed09aede8ac27c7e55593067244d7"
+  },
+  {
+    "file": "equipment-cart.webp",
+    "source": "3. Models/gltf/tray_1.glb",
+    "provider": "Atomic Realm",
+    "conversion": "512px orthographic software render, source UV texture, alpha background",
+    "sourceSha256": "e2f94d618c52af830e8b882b17c7695929d981411e79caf034641c611fccee7a"
+  }
+]

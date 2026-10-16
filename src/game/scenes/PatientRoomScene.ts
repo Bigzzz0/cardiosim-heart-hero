@@ -107,6 +107,8 @@ export class PatientRoomScene extends Phaser.Scene {
   /** Convert browser client coordinates into the active Phaser camera's world. */
   clientToWorld(clientX: number, clientY: number): Point | null {
     const bounds = this.game.canvas.getBoundingClientRect();
+    // The room canvas extends beneath the HUD; dropping on UI cancels the drag.
+    if (document.elementFromPoint(clientX,clientY)?.closest('.game-hud,.toolbar,.mission-panel,.monitor,.modal-backdrop,.pause-overlay')) return null;
     if (clientX < bounds.left || clientY < bounds.top || clientX > bounds.right || clientY > bounds.bottom) return null;
     const screenX = (clientX - bounds.left) * this.cameraViewport.width / bounds.width;
     const screenY = (clientY - bounds.top) * this.cameraViewport.height / bounds.height;
@@ -161,8 +163,20 @@ export class PatientRoomScene extends Phaser.Scene {
       ? height / 720
       : Math.min(width / 1000, height / 720);
     const centerX = kind === 'placement' ? 575 : 550;
-    const centerY = kind === 'transition' ? 380 : 360;
+    let centerY = kind === 'transition' ? 380 : 360;
     const appliedZoom = Phaser.Math.Clamp(zoom, .55, 1.35);
+    const root = this.game.canvas.closest('.storybook-game');
+    if (root && kind === 'interaction') {
+      const style = getComputedStyle(root);
+      const trayReserve = (parseFloat(style.getPropertyValue('--game-tray-height')) || 0)
+        + (parseFloat(style.getPropertyValue('--game-tray-bottom')) || 0)
+        + (parseFloat(style.getPropertyValue('--game-safe-bottom')) || 0);
+      const targets = this.engine.hotspots.definitions.filter(target => this.engine.mission.current.objectives?.some(objective => objective.target === target.id));
+      const lowestTarget = Math.max(...targets.map(target => target.y + target.radius));
+      const projectedBottom = (lowestTarget - centerY) * appliedZoom + height / 2;
+      const safeBottom = height - trayReserve - 14;
+      if (Number.isFinite(lowestTarget) && projectedBottom > safeBottom) centerY += (projectedBottom - safeBottom) / appliedZoom;
+    }
     this.cameras.main.setViewport(0, 0, width, height).setZoom(appliedZoom).centerOn(centerX, centerY);
     this.cameraFrameSize = `${width}x${height}`;
     this.cameraViewport = { width, height };
@@ -387,7 +401,7 @@ export class PatientRoomScene extends Phaser.Scene {
         const name = this.hotspotLabels.get(hotspot.id);
         const focused = this.engine.tools.dragging || Boolean(this.engine.tools.selected) || this.engine.hints.visible || (onboardingActive && onboardingObjective?.target === hotspot.id);
         const showFocus = this.debug || validDrop || pending || hinted || hovered || (isNextTarget && focused);
-        const showName = this.debug || validDrop || pending || hinted || hovered || (isNextTarget && focused);
+        const showName = this.debug || hinted;
         if (name) {
           name.setText(isNextTarget && !pending && focused ? `NEXT · ${hotspot.label}` : hotspot.label);
           const view = this.cameraWorldView;
@@ -402,9 +416,9 @@ export class PatientRoomScene extends Phaser.Scene {
           name.setPosition(Phaser.Math.Clamp(preferredX, minX, maxX), Phaser.Math.Clamp(hotspot.y, minY, maxY));
           name.setVisible(showName).setAlpha(pending ? .55 : hovered ? 1 : .92);
         }
-        if (showFocus || (isNextTarget && !focused)) {
+        if (this.debug || pending || (this.engine.tools.dragging && showFocus)) {
           const passiveNext = isNextTarget && !focused && !pending;
-          const color = pending || validDrop || (isNextTarget && !hovered) ? 0x78e6ac : hovered && pointerPreview?.outcome !== 'valid' ? 0xf07c70 : 0x9ad9ba;
+          const color = pending || validDrop || (isNextTarget && !hovered) ? 0x79c7ed : hovered && pointerPreview?.outcome !== 'valid' ? 0xf07c70 : 0x9ad9ba;
           if (passiveNext) {
             const pulse = this.reduceMotion ? 0 : Math.sin(time / 420) * 1.5;
             graphics.fillStyle(color, .85).fillCircle(hotspot.x, hotspot.y, 5 + pulse);

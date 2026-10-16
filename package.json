@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc --noEmit",
+    "test:game:ui": "node scripts/test-game-storybook.mjs",
     "test:game": "tsx --test src/game/tests/*.test.ts",
     "test:game:browser": "node scripts/test-game-browser.mjs",
     "build": "tsc && vite build",
