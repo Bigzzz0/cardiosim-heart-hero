@@ -58,6 +58,8 @@ export function MissionPanel({
 }: MissionPanelProps) {
   const mission = engine.mission.current;
   const decision = mission.decision;
+  const hasWorkbench = Boolean(decision?.presentation || mission.activity?.presentation);
+  const showFeedback = !hasWorkbench || engine.feedback.kind !== 'info' || engine.hints.visible || engine.mission.decisionConfirmed;
   const objectiveCount = mission.objectives?.length ?? 0;
   const objectiveDone = mission.objectives?.filter(item => engine.mission.completed.has(item.id)).length ?? 0;
   const compactProgress = mission.objectives
@@ -132,8 +134,9 @@ export function MissionPanel({
     {mission.kind === 'placement' && <div className="objectives">
       <div className="panel-title">ECG LEADS <span>{engine.ecg.placed.size}/6</span></div>
       <div className="lead-status">{engine.config.ecg.targets.map(lead => <button key={lead.id} className={engine.ecg.placed.has(lead.id) ? 'lead-done' : ''} onClick={() => { engine.ecg.selected = lead.id; engine.refresh(); }} title={lead.hint}>
-        {engine.ecg.placed.has(lead.id) ? <Check size={12}/> : lead.id}
+        {engine.ecg.validated.has(lead.id) ? <Check size={12}/> : lead.id}
       </button>)}</div>
+      {engine.ecg.selected&&engine.ecg.placed.has(engine.ecg.selected)&&!engine.ecg.validated.has(engine.ecg.selected)&&<button className="ecg-return-lead" type="button" onClick={()=>engine.removeLead(engine.ecg.selected!)}>คืน {engine.ecg.selected} เข้าถาด</button>}
       <small className="support-copy">{engine.config.ecg.label}</small>
     </div>}
     {mission.kind === 'summary' && <MissionResultCard
@@ -150,10 +153,10 @@ export function MissionPanel({
       onRestart={onRestart}
       onPostTest={onPostTest}
     />}
-    <div className={`feedback ${engine.feedback.kind}`} role="status" aria-live="polite">
+    {showFeedback && <div className={`feedback ${engine.feedback.kind}`} role="status" aria-live="polite">
       <span className="feedback-symbol">{engine.feedback.kind === 'success' ? <Check size={16}/> : engine.feedback.kind === 'error' ? <X size={16}/> : <Lightbulb size={16}/>}</span>
       <span>{engine.feedback.text}</span>
-    </div>
+    </div>}
     {mission.kind !== 'summary' && <div className="mission-actions">
       <button className="hint-button" onClick={onHint}><Lightbulb size={16}/> Hint</button>
       <button className="chart-button" onClick={onOpenChart}><ClipboardList size={17}/> Patient chart <span>{engine.chart.length}</span></button>
@@ -168,12 +171,13 @@ export function MissionPanel({
       </div>
     </div>}
     {mission.kind === 'decision' && decision && (decision.slots || !mission.activity) && (decision.presentation
-      ? <InRoomDecisionSurface presentation={decision.presentation} missionTitle={mission.title} instruction={mission.description}><DecisionBoard
+      ? <InRoomDecisionSurface findings={engine.chart} presentation={decision.presentation} missionTitle={mission.title} instruction={mission.description}><DecisionBoard
           decision={decision}
           selections={engine.mission.decisions}
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
-          onClickAnswer={onClickAnswer}
+          onAssignSlot={(slotId,optionId)=>engine.chooseForSlot(slotId,optionId)}
+        onClickAnswer={onClickAnswer}
           onChoose={optionId => engine.choose(optionId)}
         /></InRoomDecisionSurface>
       : <DecisionBoard
@@ -181,7 +185,8 @@ export function MissionPanel({
           selections={engine.mission.decisions}
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
-          onClickAnswer={onClickAnswer}
+          onAssignSlot={(slotId,optionId)=>engine.chooseForSlot(slotId,optionId)}
+        onClickAnswer={onClickAnswer}
           onChoose={optionId => engine.choose(optionId)}
         />)}
     {mission.kind === 'decision' && mission.activity && (mission.activity.presentation

@@ -56,22 +56,22 @@ try {
   const phaseBadge=page.locator('.game-hud .hud-phase');
   if(!(await phaseBadge.innerText()).includes('PATIENT INFORMATION')||!await phaseBadge.evaluate(element=>element.classList.contains('phase-enter')))throw new Error('The game HUD should animate and announce the configured current phase');
   if(!await missionPanel.evaluate(element=>element.classList.contains('mission-collapsed')))throw new Error('Field assessment should start with the compact mission tracker');
-  if(!await page.locator('.comms-eyebrow').getByText('CARE TEAM RADIO').isVisible()||await page.locator('.mission-panel.mode-field .mission-step').isVisible())throw new Error('Field prompt should read as an in-game care callout without duplicating the main step counter');
+  if(await page.locator('.comms-eyebrow').isVisible()||await page.locator('.mission-panel.mode-field .mission-step').isVisible())throw new Error('Field prompt must omit duplicate labels and step counters');
   if(!await page.locator('.mission-compact').isVisible()||!await page.locator('.action-brief').isVisible()||!await page.locator('.objective-pips').isVisible()||await page.locator('.compact-primary').isVisible())throw new Error('Compact mission tracker must show the next tool, patient target, and progress without a disabled advance button');
   if(await page.locator('.objective-pips').getAttribute('aria-valuenow')!=='0')throw new Error('Objective progress should expose the current completion count');
   if(!await page.locator('.action-brief').getByText('ซักประวัติ').isVisible()||!await page.locator('.action-brief').getByText('ศีรษะ / ทางเดินหายใจ').isVisible())throw new Error('Patient information objective should name its configured tool and patient hotspot');
   await page.locator('.tool-tutorial-tip').getByText(/กดค้าง.*ลากไป/).waitFor();
   if(!await page.locator('[data-patient-hotspot="head"]').evaluate(element=>element.classList.contains('tutorial-target')))throw new Error('The first real patient hotspot should be highlighted as the in-play drag tutorial');
   for(const [width,height,name] of [[1440,900,'screenshots/game-field-1440x900.png'],[1280,720,'screenshots/game-field-1280x720.png'],[1024,768,'screenshots/game-field-1024x768.png'],[390,844,'screenshots/game-field-390x844.png']]){
-    await page.setViewportSize({width,height});await page.waitForTimeout(120);
+    await page.setViewportSize({width,height});await page.waitForFunction(()=>Math.abs(document.querySelector('.app-shell').getBoundingClientRect().height-innerHeight)<1);await page.waitForTimeout(120);
     const fieldLayout=await page.evaluate(()=>{const room=document.querySelector('.room-stage')?.getBoundingClientRect();const toolbar=document.querySelector('.toolbar')?.getBoundingClientRect();const controls=[...document.querySelectorAll('.toolbar button')].map(element=>{const rect=element.getBoundingClientRect();return{width:rect.width,height:rect.height,visible:rect.width>0&&rect.height>0};});return{width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,room:room?.toJSON(),toolbar:toolbar?.toJSON(),controls};});
     if(fieldLayout.scrollWidth>width||!fieldLayout.room||!fieldLayout.toolbar||fieldLayout.toolbar.left<0||fieldLayout.toolbar.right>width||fieldLayout.toolbar.bottom>height||fieldLayout.controls.some(control=>!control.visible||control.width<44||control.height<44))throw new Error(`Patient-room controls are clipped or below touch size at ${width}x${height}: ${JSON.stringify(fieldLayout)}`);
     if(width<=760&&(!await page.locator('.game-hud .hud-steps').isVisible()||await page.locator('.game-hud .hud-phase').isVisible()||!await page.locator('.game-hud .hud-step-count').isVisible()))throw new Error('Mobile HUD should use a compact progress rail and readable step count instead of clipping the full phase name');
     await page.screenshot({path:name,fullPage:true});
   }
-  await page.setViewportSize({width:1440,height:1100});await page.waitForTimeout(120);
+  await page.setViewportSize({width:1440,height:1100});await page.waitForFunction(()=>Math.abs(document.querySelector('.app-shell').getBoundingClientRect().height-innerHeight)<1);await page.waitForTimeout(120);
   const canvas=page.locator('.phaser-host canvas');
-  const point=async (x,y) => page.evaluate(({x,y})=>{const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Phaser camera world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
+  const point=async (x,y) => page.evaluate(({x,y})=>{const id={'490,442':'arm','526,575':'finger','602,558':'wrist'}[`${x},${y}`];const at=id?JSON.parse(document.querySelector('main')?.getAttribute('data-patient-targets')??'[]').find(t=>t.id===id):null;if(at){x=at.x;y=at.y;}const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Phaser camera world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
   const tap=async(x,y)=>{const p=await point(x,y);await page.mouse.click(p.x,p.y);};
   const drag=async(from,to)=>{const start=await from.boundingBox();if(!start)throw Error('Drag start unavailable');const end=await point(to.x,to.y);await page.mouse.move(start.x+start.width/2,start.y+start.height/2);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:9});await page.mouse.up();};
   const dragCardTo=async(label,slot)=>{
@@ -94,7 +94,7 @@ try {
     catch{await page.screenshot({path:`screenshots/game-answer-drag-${slot}.png`,fullPage:true});throw new Error(`Answer card did not reach ${slot}: ${JSON.stringify({label,start,target,startHit,disabled:await from.isDisabled(),ghost:await page.locator('.answer-ghost').count(),gameState:await page.locator('main').evaluate(element=>({paused:element.dataset.gamePaused,pending:element.dataset.interactionPending,confirmed:element.dataset.decisionConfirmed,decisions:element.dataset.decisionCount})),pointerTrace:await page.evaluate(()=>window.__cardioPointerTrace.slice(-14)),viewport:await page.evaluate(()=>({width:innerWidth,height:innerHeight,devicePixelRatio,scrollX,scrollY})),slotText:await slotLocator.innerText(),feedback:await page.locator('.feedback').innerText()})}`);}
   };
   const checkLeadLayout=async(width,height,screenshot)=>{
-    await page.setViewportSize({width,height}); await page.waitForTimeout(120);
+    await page.setViewportSize({width,height}); await page.waitForFunction(()=>Math.abs(document.querySelector('.app-shell').getBoundingClientRect().height-innerHeight)<1);await page.waitForTimeout(120);
     if(width<=760&&(!await page.locator('.game-hud.is-emergency .hud-emergency').isVisible()||await page.locator('.game-hud.is-emergency .hud-step-count').isVisible()))throw new Error('Emergency mobile HUD should keep the alarm badge and compact progress rail in view');
     const layout=await page.evaluate(()=>{
       const canvas=document.querySelector('.phaser-host canvas');if(!canvas)throw new Error('Missing Phaser canvas');
@@ -147,8 +147,8 @@ try {
     await page.waitForFunction(id=>document.querySelector(`[data-activity-step-target="${id}"]`)?.classList.contains('complete'),stepId,{timeout:2500});
   };
   const dragSyringePlungerTo=async(amount)=>{
-    const plunger=page.locator('[data-syringe-plunger]');const box=await plunger.boundingBox();const maximum=Number(await plunger.getAttribute('max'));if(!box||!maximum)throw Error('Syringe plunger bounds or configured scale are missing');
-    const value=Number(await plunger.inputValue());const usableWidth=Math.max(1,box.width-10);const start={x:box.x+5+usableWidth*value/maximum,y:box.y+box.height/2};const end={x:box.x+5+usableWidth*amount/maximum,y:start.y};
+    const plunger=page.locator('[data-syringe-plunger]');await plunger.scrollIntoViewIfNeeded();const box=await plunger.boundingBox();const instrument=await page.locator('.syringe-instrument').boundingBox();const maximum=Number(await plunger.getAttribute('aria-valuemax'));if(!box||!instrument||!maximum)throw Error('Syringe geometry missing');
+    const value=Number(await plunger.getAttribute('aria-valuenow'));const start={x:box.x+box.width/2,y:box.y+box.height/2};const end={x:start.x+(amount-value)/maximum*instrument.width*.26,y:start.y};
     await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:10});await page.mouse.up();
   };
   const dragIoItemToZone=async(itemId,zoneId)=>{
@@ -183,7 +183,7 @@ try {
   await page.mouse.move(interviewBox.x+interviewBox.width/2,interviewBox.y+interviewBox.height/2); await page.mouse.down(); await page.mouse.move(100,30,{steps:5}); await page.mouse.up();
   if(await interview.getAttribute('aria-pressed')!=='false'||await page.locator('.objective.done').count())throw new Error('Dropping outside the room should cancel the tool drag');
   await interview.click();
-  if(await interview.getAttribute('aria-pressed')!=='false'||await page.locator('.objective.done').count())throw new Error('A click must not latch a tool to the cursor');
+  if(await interview.getAttribute('aria-pressed')!=='true'||await page.locator('.objective.done').count()||await page.evaluate(()=>document.body.classList.contains('dragging')))throw new Error('A click should select the tool without starting a drag or assessment');
   const interviewStart=await interview.boundingBox();if(!interviewStart)throw Error('Interview tool bounds unavailable for focused drag test');
   const interviewTarget=await point(550,280);
   await page.mouse.move(interviewStart.x+interviewStart.width/2,interviewStart.y+interviewStart.height/2);await page.mouse.down();
@@ -258,10 +258,12 @@ try {
   await page.locator('.activity-surface-instruction b').getByText('ตรวจคำสั่งยา และบันทึกการเตรียม').waitFor();
   if(!await missionPanel.evaluate(element=>element.classList.contains('mode-medication-station'))||!await page.locator('[data-room-surface="medication-station"]').isVisible()||!await page.locator('.activity-notice').isVisible())throw new Error('Medication should use the in-room preparation station and show its demo status');
   await checkActivityResponsive('medication-station');
+  await page.locator('.medication-overview').click();
   const prepSteps=await page.locator('[data-activity-step-target]').evaluateAll(elements=>elements.map(element=>element.getAttribute('data-activity-step-target')));
   await dragDomTo(page.locator('.activity-equipment-token'),page.locator(`[data-activity-step-target="${prepSteps[1]}"]`),'incorrect medication order');
   await page.locator('.feedback.error').waitFor();
   if(!await page.locator('.activity-equipment-token').isVisible())throw new Error('Incorrect medication step should return the equipment for retry');
+  await page.locator('.medication-overview').click();
   await dragMedicationStep(prepSteps[0]);
   for(const step of prepSteps.slice(1,3))await dragMedicationStep(step);
   await dragDomTo(page.locator('.syringe-tool-token'),page.locator('[data-syringe-ampoule-target="ampoule"]'),'syringe to ampoule');
@@ -270,7 +272,7 @@ try {
   await page.locator('.syringe-confirm').click();await page.locator('.feedback.error').waitFor();
   if(await page.locator('[data-activity-step-target="step_draw_med"]').evaluate(element=>element.classList.contains('complete')))throw new Error('An incorrect syringe volume should not complete the medication step');
   await dragSyringePlungerTo(4);
-  await page.locator('.syringe-confirm').click();await page.locator('[data-activity-step-target="step_draw_med"].complete').waitFor();
+  await page.locator('.syringe-confirm').click();await page.locator('[data-activity-step-target="step_draw_med"].complete').waitFor({state:'attached'});
   for(const step of prepSteps.slice(4))await dragMedicationStep(step);
   const medicationSelects=page.locator('.activity-card select');
   const medicationNumbers=page.locator('.activity-card input[type="number"]');
@@ -309,7 +311,7 @@ try {
   await page.getByRole('heading',{name:'เชื่อมต่อ สัญญาณหัวใจ',level:1}).waitFor();
   if(!await missionPanel.evaluate(element=>element.classList.contains('mission-collapsed')))throw new Error('ECG placement should start with a compact mission tracker');
   for(const [width,height,path] of [[1440,900,'screenshots/game-ecg-1440x900.png'],[1280,720,'screenshots/game-ecg-1280x720.png'],[1024,768,'screenshots/game-ecg-1024x768.png'],[390,844,'screenshots/game-ecg-390x844.png']])await checkLeadLayout(width,height,path);
-  await page.setViewportSize({width:1440,height:1100}); await page.waitForTimeout(120);
+  await page.setViewportSize({width:1440,height:1100}); await page.waitForFunction(()=>Math.abs(document.querySelector('.app-shell').getBoundingClientRect().height-innerHeight)<1);await page.waitForTimeout(120);
   await page.waitForTimeout(350);
   const ecgLayout=JSON.parse(await page.locator('main').getAttribute('data-ecg-layout')??'{}');
   const configuredLeads=JSON.parse(await page.locator('main').getAttribute('data-ecg-targets')??'[]');
@@ -317,8 +319,8 @@ try {
   const targets=configuredLeads.map(target=>[target.x,target.y]);
   const dragLead=async(index,target)=>{const from=await point(starts[index].x,starts[index].y);const to=await point(target[0],target[1]);await page.mouse.move(from.x,from.y);await page.mouse.down();await page.mouse.move(to.x,to.y,{steps:8});await page.mouse.up();};
   // A deliberately incorrect chest lead should return to its tray and keep the mission retryable.
-  await dragLead(0,targets[1]);
-  await page.locator('.mission-panel .feedback').getByText(/ยังไม่ตรงตำแหน่ง/).waitFor({timeout:12000}).catch(async()=>{
+  await dragLead(0,[targets[0][0]-90,targets[0][1]-60]);
+  await page.locator('.mission-panel .feedback').getByText(/ยังไม่เกาะตำแหน่ง/).waitFor({timeout:12000}).catch(async()=>{
     await page.screenshot({path:'screenshots/game-ecg-wrong-drop-debug.png',fullPage:true});
     throw new Error(`Incorrect ECG placement did not show retry feedback: ${JSON.stringify({feedback:await page.locator('.mission-panel .feedback').innerText(),placed:await page.locator('.lead-status button.lead-done').count(),canvas:await canvas.boundingBox(),camera:await page.locator('.room-stage').evaluate(element=>({world:element.getAttribute('data-world-view'),stage:element.getBoundingClientRect().toJSON(),host:element.querySelector('.phaser-host')?.getBoundingClientRect().toJSON()})),canvasBuffer:await page.locator('.phaser-host canvas').evaluate(element=>({width:element.width,height:element.height})),pointerTrace:await page.evaluate(()=>window.__cardioPointerTrace.slice(-12))})}`);
   });
@@ -333,6 +335,7 @@ try {
   await page.locator('.mission-compact').getByText(/6\/6 leads/).waitFor();
   if(await page.locator('.compact-primary').isDisabled())throw new Error('ECG confirm should be enabled at 6/6 leads');
   await page.screenshot({path:'screenshots/game-ecg.png',fullPage:true});
+  await page.getByRole('button',{name:'Confirm ECG',exact:true}).click();
   await page.getByRole('button',{name:'Confirm · บันทึก ECG'}).click();
   await page.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   const rhythmSelect=page.locator('.ecg-review-console select');
@@ -388,14 +391,14 @@ try {
     observer.observe(document.body,{childList:true,subtree:true,attributes:true});capture();
   }));
   await touchDragGesture(mobile,{x:mobileTool.x+mobileTool.width/2,y:mobileTool.y+mobileTool.height/2},mobileInterviewTarget,11);
-  await mobile.locator('.mission-compact').getByText(/1\/1 จุดตรวจ/).waitFor();
+  await mobile.locator('.objective-pips[aria-valuenow="1"]').waitFor();
   const mobileToast=await mobileInterviewFeedback;
   if(mobileToast.font<13||mobileToast.rect.left<(mobileToast.monitor?.right??0))throw new Error(`Mobile interaction feedback should be readable and clear the monitor: ${JSON.stringify(mobileToast)}`);
   const touchDrag=async(source,target)=>{
     const start=await source.boundingBox();if(!start)throw Error('Touch drag source unavailable');
     const currentCanvas=await mobile.locator('.phaser-host canvas').boundingBox();if(!currentCanvas)throw Error('Touch canvas bounds unavailable');
     const from={x:start.x+start.width/2,y:start.y+start.height/2};
-    const to=target.canvas?await mobile.evaluate(({x,y})=>{const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Phaser world view unavailable for touch');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x:target.x,y:target.y}):await (async()=>{const box=await mobile.locator(`[data-answer-slot="${target.slot}"]`).boundingBox();if(!box)throw Error('Touch answer slot unavailable');return{x:box.x+box.width/2,y:box.y+box.height/2};})();
+    const to=target.canvas?await mobile.evaluate(({x,y})=>{const id={'490,442':'arm','526,575':'finger','602,558':'wrist'}[`${x},${y}`];const at=id?JSON.parse(document.querySelector('main')?.getAttribute('data-patient-targets')??'[]').find(t=>t.id===id):null;if(at){x=at.x;y=at.y;}const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Phaser world view unavailable for touch');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x:target.x,y:target.y}):await (async()=>{const box=await mobile.locator(`[data-answer-slot="${target.slot}"]`).boundingBox();if(!box)throw Error('Touch answer slot unavailable');return{x:box.x+box.width/2,y:box.y+box.height/2};})();
     await touchDragGesture(mobile,from,to,22);
   };
   await mobile.getByRole('button',{name:'เริ่มประเมิน'}).click();
@@ -444,18 +447,18 @@ try {
   const mobileStep=await mobileActivity.locator('[data-activity-step-target="step_order_check"]').boundingBox();
   if(!mobileEquipment||!mobileStep)throw new Error('Mobile medication equipment or step target is not reachable');
   await touchDragGesture(mobileActivity,{x:mobileEquipment.x+mobileEquipment.width/2,y:mobileEquipment.y+mobileEquipment.height/2},{x:mobileStep.x+mobileStep.width/2,y:mobileStep.y+mobileStep.height/2},71);
-  await mobileActivity.locator('[data-activity-step-target="step_order_check"].complete').waitFor();
+  await mobileActivity.locator('[data-activity-step-target="step_order_check"].complete').waitFor({state:'attached'});
   for(const stepId of ['step_label_check','step_handwash_prep']){
     const source=mobileActivity.locator('.activity-equipment-token');const target=mobileActivity.locator(`[data-activity-step-target="${stepId}"]`);const sourceBox=await source.boundingBox(),targetBox=await target.boundingBox();if(!sourceBox||!targetBox)throw Error(`Touch medication step ${stepId} bounds unavailable`);
-    await touchDragGesture(mobileActivity,{x:sourceBox.x+sourceBox.width/2,y:sourceBox.y+sourceBox.height/2},{x:targetBox.x+targetBox.width/2,y:targetBox.y+targetBox.height/2},61);await target.locator('.step-number').waitFor();await mobileActivity.waitForFunction(id=>document.querySelector(`[data-activity-step-target="${id}"]`)?.classList.contains('complete'),stepId);
+    await touchDragGesture(mobileActivity,{x:sourceBox.x+sourceBox.width/2,y:sourceBox.y+sourceBox.height/2},{x:targetBox.x+targetBox.width/2,y:targetBox.y+targetBox.height/2},61);await target.locator('.step-number').waitFor({state:'attached'});await mobileActivity.waitForFunction(id=>document.querySelector(`[data-activity-step-target="${id}"]`)?.classList.contains('complete'),stepId);
   }
   await mobileActivity.waitForFunction(()=>{const element=document.querySelector('.syringe-minigame');const rect=element?.getBoundingClientRect();return !!rect&&rect.top>=0&&rect.bottom<=innerHeight;});
   const mobileSyringe=mobileActivity.locator('.syringe-tool-token');const mobileAmpoule=mobileActivity.locator('[data-syringe-ampoule-target="ampoule"]');const mobileSyringeBox=await mobileSyringe.boundingBox(),mobileAmpouleBox=await mobileAmpoule.boundingBox();if(!mobileSyringeBox||!mobileAmpouleBox)throw Error('Touch syringe or ampoule target is not reachable');
   await touchDragGesture(mobileActivity,{x:mobileSyringeBox.x+mobileSyringeBox.width/2,y:mobileSyringeBox.y+mobileSyringeBox.height/2},{x:mobileAmpouleBox.x+mobileAmpouleBox.width/2,y:mobileAmpouleBox.y+mobileAmpouleBox.height/2},61);
   await mobileActivity.locator('[data-syringe-plunger]').waitFor();
   const mobilePlunger=await mobileActivity.locator('[data-syringe-plunger]').boundingBox();if(!mobilePlunger)throw Error('Touch syringe plunger bounds unavailable');
-  await touchDragGesture(mobileActivity,{x:mobilePlunger.x+5,y:mobilePlunger.y+mobilePlunger.height/2},{x:mobilePlunger.x+mobilePlunger.width*.8,y:mobilePlunger.y+mobilePlunger.height/2},61);
-  if(Number(await mobileActivity.locator('[data-syringe-plunger]').inputValue())<3.5)throw Error('Touch drag should visibly pull the syringe plunger');
+  await touchDragGesture(mobileActivity,{x:mobilePlunger.x+mobilePlunger.width/2,y:mobilePlunger.y+mobilePlunger.height/2},{x:mobilePlunger.x+mobilePlunger.width/2+(await mobileActivity.locator('.syringe-instrument').boundingBox()).width*.26*4/Number(await mobileActivity.locator('[data-syringe-plunger]').getAttribute('aria-valuemax')),y:mobilePlunger.y+mobilePlunger.height/2},61);
+  if(Number(await mobileActivity.locator('[data-syringe-plunger]').getAttribute('aria-valuenow'))<3.5)throw Error('Touch drag should visibly pull the syringe plunger');
   if(await mobileActivity.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw new Error('Mobile medication station has horizontal overflow');
   await mobileActivity.screenshot({path:'screenshots/game-medication-touch-390x844.png',fullPage:true});
 
@@ -479,10 +482,11 @@ try {
     await touchDragGesture(mobileECG,start,end,61);
   };
   for(const [index,id] of ['V1','V2','V3','V4','V5','V6'].entries()){
-    await mobileLeadDrag(id);await mobileECG.locator(`[data-mobile-ecg-target="${id}"].complete`).waitFor();
-    if(await mobileECG.locator('.ecg-mobile-target.complete').count()!==index+1)throw new Error(`Mobile ECG lead count did not advance for ${id}`);
+    await mobileLeadDrag(id);await mobileECG.locator(`[data-ecg-attached="${id}"]`).waitFor();
+    if(await mobileECG.locator('.ecg-attached-lead').count()!==index+1)throw new Error(`Mobile ECG placement count did not advance for ${id}`);
   }
-  await mobileECG.getByRole('button',{name:'Confirm ECG'}).click();
+  await mobileECG.getByRole('button',{name:'Confirm ECG',exact:true}).click();
+  await mobileECG.getByRole('button',{name:'บันทึก ECG',exact:true}).click();
   await mobileECG.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   if(!await mobileECG.locator('.phaser-host canvas').isVisible())throw new Error('Mobile ECG confirmation should remain in the PatientRoomScene');
   if(errors.length)throw new Error(`Mobile ECG browser errors:\n${errors.join('\n')}`);
@@ -502,7 +506,7 @@ try {
   const case2VitalText=()=>case2Page.locator('.monitor .vital-large b, .monitor .vital-small b').allTextContents();
   if(await case2Page.locator('.monitor-no-trace').count()!==1||JSON.stringify(await case2VitalText())!==JSON.stringify(['—','—','—/—','—']))throw new Error('Case 2 must not invent an ECG trace or numeric vital signs');
   const case2Canvas=case2Page.locator('.phaser-host canvas');
-  const case2Point=async(x,y)=>case2Page.evaluate(({x,y})=>{const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Case 2 Phaser world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
+  const case2Point=async(x,y)=>case2Page.evaluate(({x,y})=>{const id={'490,442':'arm','526,575':'finger','602,558':'wrist'}[`${x},${y}`];const at=id?JSON.parse(document.querySelector('main')?.getAttribute('data-patient-targets')??'[]').find(t=>t.id===id):null;if(at){x=at.x;y=at.y;}const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Case 2 Phaser world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
   const case2Drag=async(source,target)=>{const from=await source.boundingBox();if(!from)throw Error('Case 2 drag source bounds unavailable');const end=await case2Point(target.x,target.y);await case2Page.mouse.move(from.x+from.width/2,from.y+from.height/2);await case2Page.mouse.down();await case2Page.mouse.move(end.x,end.y,{steps:9});await case2Page.mouse.up();};
   await case2Page.getByRole('button',{name:'เริ่มดูแลผู้ป่วย'}).click();
   await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ซักประวัติ'}),{x:550,y:280});
@@ -548,6 +552,7 @@ try {
   const case2Layout=JSON.parse(await case2Page.locator('main').getAttribute('data-ecg-layout')??'{}');
   const case2LeadDrag=async(index)=>{const tray=await case2Point(case2Layout.tray.x+index*case2Layout.tray.spacing,case2Layout.tray.y);const target=case2Targets[index];const end=await case2Point(target.x,target.y);await case2Page.mouse.move(tray.x,tray.y);await case2Page.mouse.down();await case2Page.mouse.move(end.x,end.y,{steps:8});await case2Page.mouse.up();};
   for(let index=0;index<6;index++){await case2LeadDrag(index);await case2Page.waitForFunction(count=>document.querySelectorAll('.lead-status button.lead-done').length>=count,index+1);}
+  await case2Page.getByRole('button',{name:'Confirm ECG',exact:true}).click();
   await case2Page.getByRole('button',{name:'Confirm · บันทึก ECG'}).click();
   await case2Page.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   if(await case2Page.locator('.ecg-no-strip').count()!==1||await case2Page.locator('.ecg-readout').count())throw new Error('Case 2 ECG console must show no strip or rhythm readout');

@@ -1,0 +1,219 @@
+[
+  {
+    "key": "ampoule",
+    "master": "art/bedside/masters/ampoule.png",
+    "runtime": "/game/bedside/ampoule.webp",
+    "sha256": "bd86265f113fd8c1e97031529cfb9168f4017e1a4ee4dd2966ee3172b04e5a46",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "assessment-hand",
+    "master": "art/bedside/masters/assessment-hand.png",
+    "runtime": "/game/bedside/assessment-hand.webp",
+    "sha256": "485a4ef2fde2b1549d6d6999cd192c055489ac582652d2ca12b9a538af3b3f99",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "bedside-clipboard",
+    "master": "art/bedside/masters/bedside-clipboard.png",
+    "runtime": "/game/bedside/bedside-clipboard.webp",
+    "sha256": "7d535bfae55b335d574c0213f9d4cd1de85ec5a2b455502e39e20e7542d2a029",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "cuff",
+    "master": "art/bedside/masters/cuff.png",
+    "runtime": "/game/bedside/cuff.webp",
+    "sha256": "69c992ec84fe6a91ac9a0f4fc5f9a9f2ea42640f54a292729a567465f4ff28a5",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "ecg-body",
+    "master": "art/bedside/masters/ecg-body.png",
+    "runtime": "/game/bedside/ecg-body.webp",
+    "sha256": "4c7357a1fca0f6aec89353653cc251babc65d07bdd6dd7233be111e98ccb4d6b",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1312,
+    "masterHeight": 1199,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "electrode",
+    "master": "art/bedside/masters/electrode.png",
+    "runtime": "/game/bedside/electrode.webp",
+    "sha256": "23b2b8255f8f0980674229cffb490ef5766cb623fabbc7b61c60b343d84787f2",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "patient-01",
+    "master": "art/bedside/masters/patient-01.png",
+    "runtime": "/game/bedside/patient-01.webp",
+    "sha256": "bc88755c84c6e9f120d7043bf6fcc9572a002cd8a097a9abf7a876c6e5abf00d",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1024,
+    "masterHeight": 1536,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ]
+  },
+  {
+    "key": "patient-02",
+    "master": "art/bedside/masters/patient-02.png",
+    "runtime": "/game/bedside/patient-02.webp",
+    "sha256": "5c39a507f0cfcab3a7ac909e04d5bc6c7fb9b6d77a4ae8e28c5df74863096a85",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1024,
+    "masterHeight": 1536,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ]
+  },
+  {
+    "key": "bedside-room",
+    "master": "art/bedside/masters/room-master.png",
+    "runtime": "/game/bedside/bedside-room.webp",
+    "sha256": "e9b4abb92002bafa4b39210a95ec9b77aa2852120dfa9456b2fbce1fd55c91ed",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1536,
+    "masterHeight": 1024,
+    "mode": "RGB"
+  },
+  {
+    "key": "sensor",
+    "master": "art/bedside/masters/sensor.png",
+    "runtime": "/game/bedside/sensor.webp",
+    "sha256": "a37afe397e74f128847dc2929da07eca953fa378ac6a8bc84f776b0566a8aab7",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "stethoscope",
+    "master": "art/bedside/masters/stethoscope.png",
+    "runtime": "/game/bedside/stethoscope.webp",
+    "sha256": "69d38f31a1835311b571a060594642592a1fe5a447a257bda75587a991300803",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 1254,
+    "masterHeight": 1254,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "syringe-body",
+    "master": "art/bedside/masters/syringe-body.png",
+    "runtime": "/game/bedside/syringe-body.webp",
+    "sha256": "404223b6138d386199fd01ab79f1d85d4e8ec145cdb9286850c76cea5b3e6dab",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 2172,
+    "masterHeight": 724,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "syringe-plunger",
+    "master": "art/bedside/masters/syringe-plunger.png",
+    "runtime": "/game/bedside/syringe-plunger.webp",
+    "sha256": "cf66377a36d878ab48c29125be2ce4e139aef6c89cb69be6785dfd904af9d3fb",
+    "generations": 1,
+    "tool": "built-in image_gen",
+    "promptSpecification": "docs/cardiosim-bedside-art-manifest.md",
+    "clinicalUse": "illustration only; no embedded labels or clinical values",
+    "masterWidth": 2172,
+    "masterHeight": 724,
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ]
+  }
+]

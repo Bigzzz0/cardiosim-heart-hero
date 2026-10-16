@@ -17,6 +17,15 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     if (typeof data.decisionConfirmed !== 'boolean') return null;
     const objectives = config.missions.flatMap(m => (m.objectives ?? []).map(o => o.id));
     if (data.completed.some(id => !objectives.includes(id)) || data.leads.some(id => !config.ecg.targets.some(target => target.id === id))) return null;
+    if(new Set(data.leads).size!==data.leads.length)return null;
+    const leadPlacements = data.leadPlacements;
+    if(leadPlacements!==undefined && (!record(leadPlacements)||Object.entries(leadPlacements).some(([id,target])=>!config.ecg.targets.some(t=>t.id===id)||typeof target!=='string'||!config.ecg.targets.some(t=>t.id===target))||new Set(Object.values(leadPlacements)).size!==Object.keys(leadPlacements).length||Object.keys(leadPlacements).length!==data.leads.length||data.leads.some(id=>!(id in leadPlacements))))return null;
+    if(data.ecgConfirmed!==undefined && typeof data.ecgConfirmed!=='boolean')return null;
+    if(data.ecgValidated!==undefined && (!strings(data.ecgValidated)||data.ecgValidated.some(id=>!(data.leads as string[]).includes(id))))return null;
+    if(config.gradable && record(leadPlacements) && strings(data.ecgValidated) && data.ecgValidated.some(id=>leadPlacements[id]!==id))return null;
+    if(config.gradable && data.ecgConfirmed===true && record(leadPlacements) && Object.entries(leadPlacements).some(([id,target])=>id!==target))return null;
+    if(data.ecgConfirmed===true && data.leads.length!==config.ecg.targets.length)return null;
+    const legacyECG = data.mission==='ECG_PLACEMENT' && leadPlacements===undefined;
     const active = config.missions.find(m => m.id === data.mission)!;
     if (data.decisions.some(value => {
       const [slotId, optionId] = value.split('::');
@@ -44,7 +53,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     for (const entry of data.chart) if (!record(entry) || !config.findings.some(f => f.id === entry.id) || !nonnegative(entry.at) || !config.missions.some(m => m.id === entry.mission) || (entry.vitals !== undefined && !vitals(entry.vitals))) return null;
     // Replace saved text with trusted configuration text; storage only owns progress.
     const chart = data.chart.map(entry => ({ ...config.findings.find(f => f.id === entry.id)!, at: entry.at as number, mission: entry.mission as Checkpoint['mission'], ...(entry.vitals ? { vitals: entry.vitals as VitalSigns } : {}) }));
-    return { ...data, activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
+    return { ...data, ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
   } catch { return null; }
 }
 export function readCheckpoint(config: GameCase): Checkpoint | null { try { const raw = localStorage.getItem(key(config.id)); return raw ? parseCheckpoint(raw, config) : null; } catch { return null; } }

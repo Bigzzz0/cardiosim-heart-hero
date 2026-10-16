@@ -3,6 +3,8 @@ export function validateCase(config: GameCase) {
   const require = (condition: boolean, message: string) => { if (!condition) throw new Error(`Invalid case "${config.id}": ${message}`); };
   const unique = (ids: string[], label: string) => require(new Set(ids).size === ids.length, `Duplicate ${label}`);
   require(config.missions.length >= 2, 'Missing missions');
+  require(!!config.presentation,'Missing room presentation');
+  for(const layer of [config.presentation.background,config.presentation.patient])require(Object.values(layer).every(Number.isFinite)&&layer.width>0&&layer.height>0,'Invalid room presentation bounds');
   require(config.scenarios.some(scenario => scenario.enabled), 'Missing playable scenario');
   require(config.missions[0].id === 'CASE_INTRO' && config.missions[config.missions.length - 1]?.id === 'CASE_SUMMARY', 'Case must begin with CASE_INTRO and end with CASE_SUMMARY');
   unique(config.missions.map(m => m.id), 'mission'); unique(config.tools.map(t => t.id), 'tool'); unique(config.hotspots.map(h => h.id), 'hotspot'); unique(config.findings.map(f => f.id), 'finding');

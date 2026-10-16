@@ -1,0 +1,92 @@
+/* Illustrated device and paper surfaces; no artwork contains clinical readings. */
+.storybook-game .monitor {padding:14px 13px 34px;border:0;outline:0;background:none;box-shadow:none;overflow:visible;isolation:isolate;display:block;}
+.storybook-game .monitor:before,.storybook-game .monitor:after {display:none;}
+.monitor-housing {position:absolute;inset:0;width:100%;height:100%;z-index:-1;overflow:visible;filter:drop-shadow(3px 7px 3px #253c4c30);}
+.monitor-stand {position:absolute;left:0;top:calc(100% - 3px);width:100%;height:auto;z-index:-2;}
+.monitor-screen {border-radius:10px;background:linear-gradient(125deg,#183139,#0b2027);padding:8px;overflow:hidden;box-shadow:inset 0 1px 7px #0007;}
+.storybook-game .monitor-title {font-size:9px;letter-spacing:.5px;color:#bdcfd0;}
+.storybook-game .monitor-title>span {font-size:8px;padding:2px 4px;border:1px solid #6eae9a55;border-radius:4px;}
+.storybook-game .monitor-trace {border:1px solid #436f6d55;border-radius:5px;overflow:hidden;}
+.storybook-game .monitor-trace {background:#0a0f1d;}
+.storybook-game .vital-large {padding:7px 0;border-color:#86b5b51c;}
+.storybook-game .vital-large b {font-variant-numeric:tabular-nums;font-size:32px;letter-spacing:1px;text-shadow:0 0 12px #80e4bf20;}
+.storybook-game .monitor-footer {font-size:9px;line-height:1.5;color:#a0b9bc;border-top:1px solid #86b5b522;padding-top:7px;}
+.storybook-game .monitor-alarm .monitor-housing {filter:drop-shadow(0 0 8px #e47a6155);}
+
+/* One clipboard, one instruction, one fixed action rail. */
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response) {
+ display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) auto auto auto;gap:7px 12px;
+ padding:14px 16px 10px;border:2px solid #6d96ae;border-radius:22px;background:linear-gradient(135deg,#c5e2ef,#94bdd3);box-shadow:inset 0 2px #effaff,0 6px 0 #51768a,0 12px 24px #22394b55;overflow:visible;
+}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.mission-compact {display:none;}
+.storybook-game .in-room-decision-surface {grid-column:1/-1;grid-row:1;min-height:0;overflow:auto;border:1px solid #c9d4d9;border-top-width:1px;border-radius:10px;padding:12px 14px;background:#fffdf5;box-shadow:0 2px 3px #38556d20;}
+.storybook-game .surface-bedside-clipboard:before {display:none;}
+.storybook-game .surface-hardware {padding:0 0 8px;gap:10px;background:none;border-bottom:1px solid #b5cbd5;min-height:44px;}
+.storybook-game .surface-icon {width:38px;height:38px;flex-basis:38px;border:1px solid #83aec5;border-radius:11px;background:linear-gradient(#e7f5fc,#c7e2ef);color:#4a7d99;box-shadow:0 2px 0 #abc6d5;}
+.storybook-game .surface-instruction {flex:1;padding:0;margin:0;border:0;background:none;gap:1px;}
+.storybook-game .surface-instruction small {font-size:11px;color:#64869a;letter-spacing:.5px;}
+.storybook-game .surface-instruction b {font-size:17px;color:#304f64;line-height:1.35;}
+.surface-guide {position:relative;flex-shrink:0;}
+.surface-guide summary {display:flex;align-items:center;min-height:44px;padding:0 9px;color:#507b93;font-size:14px;cursor:pointer;list-style:none;text-decoration:underline;text-underline-offset:4px;}
+.surface-guide p {position:absolute;right:0;top:100%;z-index:4;width:min(300px,65vw);padding:14px;background:#f5fbff;border:1px solid #9abacc;border-radius:12px;box-shadow:0 8px 18px #29495b30;font-size:14px;color:#36596d;line-height:1.6;}
+.storybook-game .evidence-strip {background:none;border-bottom:1px solid #c4d5db;}
+.storybook-game .evidence-strip summary {min-height:36px;padding:7px 0;font-size:14px;color:#496b7c;}
+.storybook-game .surface-content {background:none;}
+.storybook-game .surface-content .matching-board {padding:8px 0 0;border:0;background:none;gap:7px 18px;}
+.storybook-game .surface-content .panel-title {color:#5a7c8e;font-size:12px;letter-spacing:.4px;margin:0;}
+.storybook-game .surface-content .panel-title>span {border-radius:12px;background:#deecf2;color:#3e677f;padding:3px 9px;font-size:14px;}
+.storybook-game .surface-content .answer-options,.storybook-game .surface-content .answer-slots {gap:8px;}
+@media(min-width:761px) {
+ .storybook-game .surface-content .answer-options {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .storybook-game .surface-content .answer-card {min-height:84px;align-items:flex-start;}
+ .storybook-game .surface-content .answer-card small {font-size:11px;}
+}
+.storybook-game .surface-content .answer-card {position:relative;min-height:54px;padding:9px 12px;border:1px solid #a6bdc8;border-left:5px solid #79b5d1;border-radius:9px;background:linear-gradient(110deg,#fff,#f1f7f9);box-shadow:0 3px 0 #b8cbd4,0 4px 6px #37596c12;color:#42687d;text-align:left;transition:transform .12s,box-shadow .12s;}
+.storybook-game .surface-content .answer-card:hover:not(:disabled) {transform:translateY(-2px);box-shadow:0 5px 0 #9fbac9,0 7px 10px #37596c20;}
+.storybook-game .surface-content .answer-card b {font-size:14px;color:#365a70;line-height:1.4;}
+.storybook-game .surface-content .answer-card small {font-size:12px;color:#607f90;line-height:1.35;}
+
+.storybook-game .surface-content .answer-card>svg {color:#6696af;}
+.storybook-game .surface-content .answer-slot {position:relative;min-height:86px;padding:12px;border:2px dashed #a5bac6;border-radius:11px;background:#e9f0f280;box-shadow:inset 0 2px 6px #47667a0b;}
+.storybook-game .surface-content .answer-slot>span {display:flex;align-items:center;gap:8px;color:#45697e;font-size:12px;font-weight:800;letter-spacing:.5px;}
+.slot-number {display:inline-grid;place-items:center;width:25px;height:25px;border:1px solid #b0c7d4;border-radius:50%;background:#fffdf6;font-size:11px;font-style:normal;letter-spacing:0;}
+.storybook-game .surface-content .answer-slot>small {color:#69899a;font-size:14px;}
+.storybook-game .surface-content .answer-slot.filled {background:#e3eff7;border-style:solid;border-color:#84b2ca;box-shadow:inset 0 0 0 3px #f8fcff;}
+.storybook-game .surface-content .drag-help {color:#5f7f90;font-size:12px;line-height:1.4;}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.feedback {grid-row:2;grid-column:1/-1;margin:0;padding:8px 12px;font-size:14px;}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.mission-actions {grid-row:3;grid-column:1;display:flex;gap:6px;margin:0;align-self:center;}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.mission-actions button {min-height:44px;width:auto;padding:6px 12px;border:1px solid #91b4c7;border-radius:12px;background:#edf7fc;color:#436c85;font-size:14px;}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.full-primary {grid-row:3;grid-column:2;width:auto;min-height:46px;margin:0;padding:9px 22px;border:1px solid #4e8db0;border-radius:13px;background:linear-gradient(#f1fbff,#c9e6f6);box-shadow:0 3px 0 #5b8da8;color:#345e78;font-size:14px;}
+.storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.clinical-pending {grid-row:4;grid-column:1/-1;margin:0;font-size:12px;}
+.storybook-game .mode-monitor-response>.response-timer {display:none;}
+@media(max-width:760px) {
+ .storybook-game .monitor {padding:7px 6px 17px;}
+ .monitor-screen {padding:4px;border-radius:6px;}
+ .storybook-game .monitor-title {font-size:6px;letter-spacing:0;}
+ .storybook-game .vital-large {padding:3px 0;}
+ .storybook-game .vital-large b {font-size:17px;letter-spacing:0;}
+ .storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response) {padding:11px 9px 10px;gap:7px;}
+ .storybook-game .in-room-decision-surface {padding:9px;}
+ .storybook-game .surface-hardware {gap:7px;padding-bottom:6px;}
+ .storybook-game .surface-instruction b {font-size:14px;}
+ .storybook-game .surface-instruction small {font-size:11px;}
+ .storybook-game .surface-icon {width:30px;height:34px;flex-basis:30px;}
+ .surface-guide summary {padding:0 3px;font-size:14px;}
+ .storybook-game .surface-content .answer-slot {min-height:82px;padding:7px;}
+ .storybook-game .surface-content .answer-slot>span {font-size:11px;gap:4px;letter-spacing:0;}
+ .slot-number {width:20px;height:20px;flex-shrink:0;}
+ .storybook-game .surface-content .answer-card {min-height:48px;padding:7px 9px;}
+ .storybook-game .surface-content .answer-card small {display:none;}
+ .storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.mission-actions button {font-size:12px;padding:6px 8px;gap:4px;}
+ .storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response)>.full-primary {max-width:155px;padding:8px 10px;line-height:1.3;}
+}
+@media(prefers-reduced-motion:reduce) {.storybook-game .surface-content .answer-card {transition:none;}}
+
+@media(min-width:761px) and (max-height:800px) {
+ .storybook-game .surface-content .answer-card {min-height:68px;padding:9px 10px;align-items:center;}
+ .storybook-game .surface-content .answer-slot {min-height:68px;padding:8px 12px;}
+ .storybook-game .surface-content .answer-slots {margin-bottom:0;}
+ .storybook-game .surface-content .answer-card small {display:none;}
+ .storybook-game .surface-content .answer-options {gap:6px;}
+ .storybook-game .surface-content .drag-help {display:none;}
+}

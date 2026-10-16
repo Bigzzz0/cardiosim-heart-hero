@@ -19,7 +19,8 @@ export const verticalSlice: GameCase = {
   clinicalStatus: 'CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง',
   gradable: true,
   sources: [storyboard, spec],
-  assets: { room: '/game/room.webp', patient: '/game/patient.webp', patientCritical: '/game/patient-critical.webp', ecgLeads: '/game/ecg-leads.webp', ecgChest: '/game/ecg-chest.png' },
+  assets: { room: '/game/bedside/bedside-room.webp', patient: '/game/bedside/patient-01.webp', patientCritical: '/game/bedside/patient-01.webp', ecgLeads: '/game/bedside/electrode.webp', ecgChest: '/game/bedside/ecg-body.webp' },
+  presentation: { background: { x:550,y:410,width:1500,height:1000 }, patient: { x:550,y:515,width:360,height:630 }, camera: { center:{x:550,y:390}, procedureCenter:{x:575,y:360}, transitionCenter:{x:550,y:400} } },
   initialVitals: { hr: 112, bpSystolic: 168, bpDiastolic: 98, rr: 24, spo2: 95 },
   initialPatient: { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' },
   monitorTraces: {
@@ -34,16 +35,16 @@ export const verticalSlice: GameCase = {
   hotspots: [
     { id: 'head', label: 'ศีรษะ / ทางเดินหายใจ', x: 550, y: 280, radius: 53 },
     { id: 'chest', label: 'ทรวงอก', x: 550, y: 395, radius: 62 },
-    { id: 'arm', label: 'ต้นแขน', x: 490, y: 442, radius: 34 },
-    { id: 'wrist', label: 'ข้อมือ / การไหลเวียน', x: 602, y: 558, radius: 30 },
-    { id: 'finger', label: 'ปลายนิ้ว', x: 526, y: 575, radius: 30 },
+    { id: 'arm', label: 'ต้นแขน', x: 455, y: 470, radius: 34 },
+    { id: 'wrist', label: 'ข้อมือ / การไหลเวียน', x: 655, y: 553, radius: 30 },
+    { id: 'finger', label: 'ปลายนิ้ว', x: 445, y: 584, radius: 30 },
   ],
   tools: [
     { id: 'interview', name: 'ซักประวัติ', icon: 'interview', allowedTargets: ['head'], duration: 700 },
-    { id: 'stethoscope', name: 'Stethoscope', icon: 'stethoscope', sprite: '/game/stethoscope.webp', visual: { heldSize: { x: 68, y: 68 }, heldOffset: { x: 18, y: -20 }, contactSize: { x: 56, y: 56 }, contactOffset: { x: 18, y: -18 }, contactAngle: -12, contactEffect: 'listen' }, allowedTargets: ['chest'], duration: 1500 },
-    { id: 'bp', name: 'BP cuff', icon: 'bp', sprite: '/game/bp-cuff.webp', visual: { heldSize: { x: 72, y: 64 }, heldOffset: { x: 16, y: -16 }, contactSize: { x: 64, y: 56 }, contactOffset: { x: 14, y: -14 }, contactAngle: 8, contactEffect: 'pressure' }, allowedTargets: ['arm'], duration: 1100 },
-    { id: 'spo2', name: 'SpO₂', icon: 'spo2', sprite: '/game/spo2.webp', visual: { heldSize: { x: 58, y: 58 }, heldOffset: { x: 15, y: -18 }, contactSize: { x: 46, y: 46 }, contactOffset: { x: 18, y: -12 }, contactAngle: 0, contactEffect: 'sensor' }, allowedTargets: ['finger'], duration: 900 },
-    { id: 'hand', name: 'ประเมิน ABC', icon: 'hand', allowedTargets: ['head', 'chest', 'wrist'], duration: 900 },
+    { id: 'stethoscope', name: 'Stethoscope', icon: 'stethoscope', sprite: '/game/bedside/stethoscope.webp', visual: { heldSize: { x: 68, y: 68 }, heldOffset: { x: 18, y: -20 }, contactSize: { x: 100, y: 100 }, contactOffset: { x: 0, y: 0 }, contactAngle: -12, contactAnchor: {x:.28,y:.83}, contactEffect: 'listen' }, allowedTargets: ['chest'], duration: 1500 },
+    { id: 'bp', name: 'BP cuff', icon: 'bp', sprite: '/game/bedside/cuff.webp', visual: { heldSize: { x: 72, y: 64 }, heldOffset: { x: 16, y: -16 }, contactSize: { x: 64, y: 56 }, contactOffset: { x: 0, y: 0 }, contactAngle: 8, contactEffect: 'pressure' }, allowedTargets: ['arm'], duration: 1100 },
+    { id: 'spo2', name: 'SpO₂', icon: 'spo2', sprite: '/game/bedside/sensor.webp', visual: { heldSize: { x: 58, y: 58 }, heldOffset: { x: 15, y: -18 }, contactSize: { x: 46, y: 46 }, contactOffset: { x: 0, y: 0 }, contactAngle: 0, contactEffect: 'sensor' }, allowedTargets: ['finger'], duration: 900 },
+    { id: 'hand', name: 'ประเมิน ABC', icon: 'hand', sprite:'/game/bedside/assessment-hand.webp', visual:{heldSize:{x:70,y:70},heldOffset:{x:15,y:-15},contactSize:{x:65,y:65},contactOffset:{x:0,y:0},contactAngle:0,contactAnchor:{x:.17,y:.83},contactEffect:'inspect'}, allowedTargets: ['head', 'chest', 'wrist'], duration: 900 },
   ],
   findings: [
     { id: 'history', section: 'History', title: 'อาการที่ผู้ป่วยบอก', text: '“หายใจไม่ออกค่ะ…” — ข้อความตัวอย่างจากสเปก ยังไม่มี CC / PI / PH ที่รับรอง', source: 'Pasted specification §20' },
@@ -120,7 +121,7 @@ export const verticalSlice: GameCase = {
     } },
     { id: 'IO_BALANCE', kind: 'decision', phase: '06 · INTAKE / OUTPUT', title: 'คำนวณสมดุล\nสารน้ำเข้าและออก', description: 'รวมสารน้ำเข้าและออกในเวรตัวอย่าง กรอกผลคำนวณ เลือกแนวโน้ม แล้ว Confirm', hint: 'Intake: IV 100 mL + oral 50 mL · Output: urine 350 mL', chartFinding: 'io', gradable: true, activity: {
       kind: 'fluid-balance', presentation: 'io-board', gradable: true, source: 'Stage11IORecord.tsx', eyebrow: 'BEDSIDE I/O BOARD · CASE 01 DEMO', title: 'บันทึกสารน้ำข้างเตียง',
-      items: [{ id: 'iv-intake', label: 'IV · 100 mL', zoneId: 'intake' }, { id: 'oral-intake', label: 'Oral · 50 mL', zoneId: 'intake' }, { id: 'urine-output', label: 'Urine · 350 mL', zoneId: 'output' }],
+      items: [{ visual:'iv', id: 'iv-intake', label: 'IV · 100 mL', zoneId: 'intake' }, { visual:'drink', id: 'oral-intake', label: 'Oral · 50 mL', zoneId: 'intake' }, { visual:'urine', id: 'urine-output', label: 'Urine · 350 mL', zoneId: 'output' }],
       zones: [{ id: 'intake', label: 'INTAKE · สารน้ำเข้า' }, { id: 'output', label: 'OUTPUT · สารน้ำออก' }],
       notice: 'ตัวเลขนี้เป็นแบบฝึกเดโมจากเว็บเดิม ไม่ใช่คำแนะนำการรักษา',
       rows: [{ label: 'IV intake', value: '100 mL' }, { label: 'Oral intake', value: '50 mL' }, { label: 'Urine output', value: '350 mL' }],

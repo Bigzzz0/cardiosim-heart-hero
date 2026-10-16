@@ -133,6 +133,8 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.equal(game.placeLead('V1',{x:0,y:0}),false);
   assert.equal(game.ecg.placed.has('V1'),false);
   for (const lead of verticalSlice.ecg.targets) assert.equal(game.placeLead(lead.id,lead),true);
+  assert.equal(game.ecg.complete,false,'placement alone does not grade');
+  assert.equal(game.confirmECG(),true);
   assert.equal(game.ecg.complete,true);
   game.next(); assert.equal(game.mission.current.id, 'ECG_INTERPRETATION');
   game.setResponse('rhythm-answer','not a rhythm'); assert.equal(game.confirmActivity(),false,'ECG interpretation checks the Case 1 demo key');
@@ -200,6 +202,7 @@ test('Case 2 can be completed from briefing to result without inventing numeric 
   for (const target of ['head','chest','wrist']) { game.selectTool('hand'); game.interact(target); game.update(950); }
   game.next();
   for (const lead of case02.ecg.targets) assert.equal(game.placeLead(lead.id,lead),true);
+  assert.equal(game.confirmECG(),true);
   game.next(); game.setResponse('rhythm-answer','unavailable source'); assert.equal(game.confirmActivity(),true); game.next();
   game.chooseForSlot('response',case02.missions.find(mission=>mission.id==='EMERGENCY_TREATMENT')?.decision?.options[0]?.id ?? '');
   assert.equal(game.confirmDecision(),true); game.next(); game.update(6500); game.next();
@@ -242,4 +245,25 @@ test('case validation rejects missing ECG leads and checkpoint validation reject
   assert.equal(treatmentResume.mission.decisionConfirmed, false);
   assert.equal(treatmentResume.chart[0]?.id, 'history', 'previously discovered chart data is preserved');
   assert.equal(treatmentResume.mission.completed.has('history'), true, 'completed mission objectives are preserved');
+});
+
+
+test('ECG placement is tentative, supports rearranging, grades only on Confirm and migrates old active checkpoints',()=>{
+ const game=new CaseEngine(verticalSlice);game.mission.jumpTo('ECG_PLACEMENT');
+ const t=verticalSlice.ecg.targets;const before={...game.score.data};
+ assert.equal(game.placeLead('V1',t[1]),true);assert.equal(game.placeLead('V2',t[0]),true);
+ for(const lead of t.slice(2))game.placeLead(lead.id,lead);
+ assert.deepEqual(game.score.data,before,'placement does not grade');assert.equal(game.ecg.complete,false);
+ const parsed=parseCheckpoint(JSON.stringify(game.checkpoint()),verticalSlice)!;
+ const resumed=new CaseEngine(verticalSlice);resumed.restore(parsed);
+ assert.equal(resumed.ecg.placements.V1,'V2','tentative wrong placements resume as placed');
+ assert.equal(resumed.confirmECG(),false);assert.equal(resumed.ecg.placed.size,4,'correct four remain');
+ assert.equal(resumed.score.data.mistakeCount,1,'one submitted set, one mistake');
+ assert.equal(resumed.placeLead('V1',t[0]),true);assert.equal(resumed.removeLead('V1'),true);
+ assert.equal(resumed.placeLead('V1',t[0]),true);assert.equal(resumed.placeLead('V2',t[1]),true);
+ assert.equal(resumed.confirmECG(),true);assert.equal(resumed.ecg.complete,true);
+ const old={...game.checkpoint(),leadPlacements:undefined,ecgConfirmed:undefined,ecgValidated:undefined};
+ const migrated=parseCheckpoint(JSON.stringify(old),verticalSlice)!;
+ assert.deepEqual(migrated.leads,[]);assert.deepEqual(migrated.leadPlacements,{});
+ assert.deepEqual(migrated.chart,game.chart,'migration keeps discovered information');
 });

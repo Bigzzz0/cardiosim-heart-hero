@@ -10,7 +10,10 @@
     "test:game": "tsx --test src/game/tests/*.test.ts",
     "test:game:browser": "node scripts/test-game-browser.mjs",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:game:workbench": "tsx scripts/test-game-bedside.ts",
+    "test:game:ecg": "tsx scripts/test-game-ecg.ts",
+    "test:game:layout": "tsx scripts/test-game-layout.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

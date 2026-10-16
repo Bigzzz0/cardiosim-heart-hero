@@ -31,7 +31,7 @@ export function IOBalanceBoard({ activity, decision, decisions, placements, sele
       <div className="io-item-list">{activity.items?.map(item => {
         const placed = placements[item.id] !== undefined;
         return <button key={item.id} type="button" data-activity-item={item.id} className={`io-item-token ${selectedItemId === item.id ? 'selected' : ''} ${placed ? 'placed' : ''}`} onPointerDown={event => onStartItemDrag(item.id,event)} onClick={() => onSelectItem(item.id)} disabled={confirmed} aria-label={`ลาก ${item.label} ไปยัง Intake หรือ Output`}>
-          <Droplets size={16}/><b>{item.label}</b>{placed && <Check size={15}/>}<span>⠿</span>
+          <span className={`io-container-art item-${item.visual??'iv'}`} aria-hidden="true"/><b>{item.label}</b>{placed && <Check size={15}/>}<span>⠿</span>
         </button>;
       })}</div>
       <small>ลากรายการไปยังช่อง Intake หรือ Output · แตะเลือกแล้วแตะช่องได้</small>

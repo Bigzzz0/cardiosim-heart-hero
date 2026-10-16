@@ -8,8 +8,8 @@ case02.title = 'ภาวะหัวใจล้มเหลวกำเริ�
 case02.clinicalStatus = 'CASE 02 · STORY-SUMMARY DEMO · ไม่มีค่า vital หรือ answer key';
 case02.gradable = false;
 case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2'];
-case02.assets.patient = '/game/patient-case-02.png';
-case02.assets.patientCritical = '/game/patient-case-02.png';
+case02.assets.patient = '/game/bedside/patient-02.webp';
+case02.assets.patientCritical = '/game/bedside/patient-02.webp';
 case02.initialVitals = { hr: null, bpSystolic: null, bpDiastolic: null, rr: null, spo2: null };
 case02.initialPatient = { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' };
 case02.monitorTraces = undefined;
@@ -37,7 +37,7 @@ case02.findings = case02.findings.map(finding => {
 case02.missions = case02.missions.map(mission => {
   if (mission.id === 'CASE_INTRO') return { ...mission, title: 'รับช่วงต่อ\nดูแลผู้ป่วย', description: 'หญิงอายุ 65 ปี มีประวัติหัวใจล้มเหลวเรื้อรัง ความดันโลหิตสูง และเบาหวาน · เริ่มจากฟังข้อมูลที่มีในเรื่องย่อ', hint: 'ข้อมูล Case 2 เป็นเรื่องย่อสำหรับเล่นเดโม; vital และเฉลยที่ไม่มีต้นทางจะไม่ถูกเติม', button: 'เริ่มดูแลผู้ป่วย' };
   if (mission.id === 'PATIENT_INFORMATION') return { ...mission, title: 'ฟังผู้ป่วย\nและค้นข้อมูลตั้งต้น', description: 'ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดเรื่องย่อใน Chart', hint: 'Case 2 ระบุเหนื่อยเมื่อเดินไม่กี่ก้าว นอนราบไม่ได้ และหนุนหมอน 3 ใบ' };
-  if (mission.id === 'ASSESSMENT') return { ...mission, title: 'ประเมินผู้ป่วย\nจากข้อมูลที่มี', description: 'ใช้เครื่องมือกับผู้ป่วยเพื่อบันทึกว่าทำการประเมินแล้ว · เรื่องย่อไม่มีค่าความดัน SpO₂ หรือผลฟังปอด', hint: 'ผลที่ไม่ปรากฏใน Case 2 จะถูกบันทึกเป็น “ไม่มีข้อมูล”', dataStatus: 'missing', gradable: false, objectives: mission.objectives?.map(objective => ({ ...objective, feedback: objective.tool === 'stethoscope' ? 'บันทึกการตรวจทรวงอกแล้ว · ไม่มีผลฟังปอดใน Case 2' : `บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้`, })) };
+  if (mission.id === 'ASSESSMENT') return { ...mission, title: 'ประเมินผู้ป่วย\nจากข้อมูลที่มี', description: 'ใช้เครื่องมือกับผู้ป่วยเพื่อบันทึกว่าทำการประเมินแล้ว · เรื่องย่อไม่มีค่าความดัน SpO₂ หรือผลฟังปอด', hint: 'ผลที่ไม่ปรากฏใน Case 2 จะถูกบันทึกเป็น “ไม่มีข้อมูล”', dataStatus: 'missing', gradable: false, objectives: mission.objectives?.map(objective => ({ ...objective, sound:undefined, feedback: objective.tool === 'stethoscope' ? 'บันทึกการตรวจทรวงอกแล้ว · ไม่มีผลฟังปอดใน Case 2' : `บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้`, })) };
   if (mission.id === 'DIAGNOSIS' || mission.id === 'NURSING_INTERVENTION') return {
     ...mission, dataStatus: 'missing', gradable: false,
     description: 'วางตัวเลือกทั่วไปลงในแฟ้มฝึก · เรื่องย่อ Case 2 ไม่มีเฉลยการวินิจฉัยหรือแผนการพยาบาล',

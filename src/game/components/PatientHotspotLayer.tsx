@@ -1,3 +1,4 @@
+import {worldToClient} from '../presentationCoordinates';
 import {Plus} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { Hotspot, MedicalTool, Point } from '../types';
@@ -42,8 +43,8 @@ export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutoria
       const scaleY = canvasBounds.height / world.height;
       setPositions(hotspots.map(hotspot => ({
         ...hotspot,
-        left: canvasBounds.left - stageBounds.left + (hotspot.x - world.x) * scaleX,
-        top: canvasBounds.top - stageBounds.top + (hotspot.y - world.y) * scaleY,
+        left: worldToClient(hotspot,world,canvasBounds).x - stageBounds.left,
+        top: worldToClient(hotspot,world,canvasBounds).y - stageBounds.top,
       width: Math.max(44, hotspot.radius * 2 * scaleX),
       height: Math.max(44, hotspot.radius * 2 * scaleY),
       })));
@@ -62,7 +63,12 @@ export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutoria
   }, [hotspots]);
 
   if (!active) return null;
-  return <div className={`hotspot-control-layer ${dragging ? 'is-dragging' : ''}`} aria-label="จุดตรวจผู้ป่วย">
+  const guideTarget=positions.find(target=>target.id===tutorialTargetId);
+  const guideTool=document.querySelector<HTMLElement>('.tutorial-tool')?.getBoundingClientRect();
+  const roomBounds=document.querySelector('.room-stage')?.getBoundingClientRect();
+  const guideStart=guideTool&&roomBounds?{x:guideTool.x+guideTool.width/2-roomBounds.x,y:guideTool.y-roomBounds.y}:null;
+  return <div className={`hotspot-control-layer ${dragging ? 'is-dragging' : ''} ${selectedTool || debug || tutorialTargetId ? 'revealed' : ''}`} aria-label="จุดตรวจผู้ป่วย">
+    {guideTarget&&guideStart&&!selectedTool&&!dragging&&<svg className="drag-onboarding-path" aria-hidden="true"><path id="onboarding-route" d={`M ${guideStart.x} ${guideStart.y} Q ${guideStart.x-60} ${guideTarget.top+80} ${guideTarget.left} ${guideTarget.top+35}`}/><circle r="7"><animateMotion dur="2.4s" repeatCount="2"><mpath href="#onboarding-route"/></animateMotion></circle></svg>}
     {positions.map(hotspot => <button
       key={hotspot.id}
       type="button"

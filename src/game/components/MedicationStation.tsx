@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {suppliedArt} from '../presentationAssets';
 import { Activity, BadgeCheck, ClipboardList, FileText, Hand, IdCard, Pill, ShieldCheck, Syringe } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -40,6 +40,7 @@ const stepIcons: Record<ActivityEquipmentIcon, LucideIcon> = {
 };
 
 export function MedicationStation({ activity, decision, decisions, responses, completedSteps, stepProgress, confirmed, onSetResponse, onChoose, onAcknowledgeMissing, onStartStepDrag, onStartSyringeToolDrag, onCompleteStep, onPlaceSyringeTool, onSetSyringeAmount }: MedicationStationProps) {
+  const [overview,setOverview]=useState(false);
   if (activity.dataStatus === 'missing' && activity.allowMissingDataAcknowledgement) return <MissingDataCard activity={activity} acknowledged={responses['missing-data-ack'] === 'recorded'} onAcknowledge={onAcknowledgeMissing}/>;
   const nextStep = activity.steps?.[completedSteps.length];
   const equipmentSprites: Partial<Record<ActivityEquipmentIcon,string>> = {aseptic:suppliedArt.equipmentCart,monitor:suppliedArt.hospitalMonitor};
@@ -53,7 +54,8 @@ export function MedicationStation({ activity, decision, decisions, responses, co
       {activity.rows?.map(row => <div className="activity-rows" key={row.label}><div><span>{row.label}</span><b>{row.value}</b></div></div>)}
     </div>
     <div className={`medication-procedure ${nextStep?.interaction ? 'has-syringe-activity' : ''}`}>
-      <div className="medication-step-list" aria-label="ลำดับเตรียมยา">
+      <div><button type="button" className="medication-overview" aria-expanded={overview} onClick={()=>setOverview(value=>!value)}>{overview?'ย่อรายการ':'ดูขั้นตอนทั้งหมด'} · {completedSteps.length}/{activity.steps?.length??0}</button>
+      <div className={`medication-step-list ${overview?'expanded':''}`} aria-label="ลำดับเตรียมยา">
         {activity.steps?.map((step,index) => {
           const done = completedSteps.includes(step.id);
           const current = index === completedSteps.length;
@@ -65,7 +67,7 @@ export function MedicationStation({ activity, decision, decisions, responses, co
           </button>;
         })}
       </div>
-      <div className="medication-equipment-tray">
+      </div><div className="medication-equipment-tray">
         <span className="equipment-tray-label">อุปกรณ์ถัดไป</span>
         {nextStep?.interaction?.kind === 'syringe-withdrawal' ? <SyringeWithdrawalMinigame stepId={nextStep.id} equipmentLabel={nextStep.equipmentLabel} interaction={nextStep.interaction} progress={stepProgress[nextStep.id]} confirmed={confirmed} onStartDrag={onStartSyringeToolDrag} onPlaceTool={onPlaceSyringeTool} onSetAmount={onSetSyringeAmount} onComplete={onCompleteStep}/> : nextStep ? <button type="button" className="activity-equipment-token" onPointerDown={event => onStartStepDrag(nextStep.id,event)} onClick={() => onCompleteStep(nextStep.id)} disabled={confirmed} aria-label={`ลาก ${nextStep.equipmentLabel} ไปยังขั้นตอนที่กำลังทำ หรือแตะเพื่อใช้`}>
           <span className="equipment-token-art">{equipmentSprite?<img src={equipmentSprite} alt="" draggable="false"/>:<NextEquipment size={28}/>}</span><b>{nextStep.equipmentLabel}</b><small>กดค้างลากไปขั้นปัจจุบัน · หรือแตะ</small>
@@ -73,9 +75,10 @@ export function MedicationStation({ activity, decision, decisions, responses, co
         <div className="procedure-count"><span>{completedSteps.length}</span> / {activity.steps?.length ?? 0} ขั้นเสร็จ</div>
       </div>
     </div>
-    <div className="station-check-fields"><div className="station-subhead"><Syringe size={16}/> ตรวจข้อมูลการเตรียมก่อนบันทึก</div>
+    {!nextStep&&<div className="station-check-fields"><div className="station-subhead"><Syringe size={16}/> ตรวจข้อมูลการเตรียมก่อนบันทึก</div>
       <ActivityFields activity={activity} responses={responses} confirmed={confirmed} onSetResponse={onSetResponse}/>
     </div>
+    }
     {activity.kind === 'fluid-balance' && decision && <div className="balance-options">{decision.options.map(option => <button key={option.id} className={decisions.includes(option.id) ? 'chosen' : ''} onClick={() => onChoose(option.id)} disabled={confirmed}>
       <ClipboardList size={15}/><b>{option.label}</b><small>{option.detail}</small>
     </button>)}</div>}

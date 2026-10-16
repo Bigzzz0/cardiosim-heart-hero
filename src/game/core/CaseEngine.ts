@@ -64,7 +64,7 @@ export class CaseEngine {
     if (this.paused || this.interaction.pending) return false;
     const current = this.mission.current;
     if (current.kind === 'interaction') return this.mission.interactionComplete();
-    if (current.kind === 'placement') return this.ecg.complete;
+    if (current.kind === 'placement') return this.ecg.complete || this.ecg.placed.size===this.ecg.targets.length;
     if (current.kind === 'decision') {
       if (current.activity?.allowMissingDataAcknowledgement) return this.mission.decisionConfirmed || this.activityReady(current.activity);
       if (current.activity?.kind === 'medication' || current.activity?.kind === 'text-response') return this.mission.decisionConfirmed || this.activityReady(current.activity);
@@ -81,7 +81,10 @@ export class CaseEngine {
       if (!this.mission.decisionConfirmed) return this.mission.current.activity?.allowMissingDataAcknowledgement || this.mission.current.activity?.kind === 'medication' || this.mission.current.activity?.kind === 'text-response' ? this.confirmActivity() : this.confirmDecision();
       if (this.mission.current.chartFinding) this.record(this.mission.current.chartFinding);
     }
-    if (this.mission.current.kind === 'placement') this.record(this.config.ecg.finding);
+    if (this.mission.current.kind === 'placement') {
+      if (!this.ecg.complete) return this.confirmECG();
+      this.record(this.config.ecg.finding);
+    }
     if (this.mission.current.activity) { this.responses = {}; this.activitySteps = []; this.activityPlacements = {}; this.activityStepProgress = {}; }
     if (!this.mission.advance()) return false;
     this.enter(); return true;
@@ -306,10 +309,22 @@ export class CaseEngine {
     if (this.paused || this.mission.current.kind !== 'placement') return false;
     const result = this.ecg.place(id, point);
     if (result === null) return false;
-    this.score.attempt(result);
-    this.feedback = { kind: result ? 'success' : 'error', text: result ? `✓ ${id} ติดแล้ว · ${this.ecg.placed.size}/6` : `✕ ${id} ยังไม่ตรงตำแหน่ง ลองใหม่ได้ · ใช้ Hint ดูคำแนะนำ` };
-    this.emit(result ? 'ECG_LEAD_PLACED' : 'WRONG_ACTION', id); return result;
+    this.feedback = {kind:'info',text:result ? `${id} วางแล้ว · ${this.ecg.placed.size}/${this.ecg.targets.length} · กด Confirm เพื่อตรวจทั้งชุด` : 'ยังไม่เกาะตำแหน่ง · ลองวางใหม่ได้โดยไม่เสียคะแนน'};
+    this.emit(result?'ECG_LEAD_PLACED':'ECG_DROP_CANCELLED',id);return result;
   }
+  removeLead(id:string) {
+    if(this.paused || this.mission.current.kind!=='placement' || !this.ecg.remove(id))return false;
+    this.feedback={kind:'info',text:`คืน ${id} เข้าถาดแล้ว`};this.emit('ECG_LEAD_REMOVED',id);return true;
+  }
+  confirmECG() {
+    if(this.paused || this.mission.current.kind!=='placement')return false;
+    const gradable=this.config.gradable && this.mission.current.gradable!==false;
+    const result=this.ecg.confirm(gradable);if(!result)return false;
+    if(gradable)this.score.attempt(result.valid);
+    this.feedback={kind:result.valid?(gradable?'success':'info'):'error',text:result.valid?(gradable?'ตรวจชุดตำแหน่งเดโมแล้ว · พร้อมบันทึก ECG':'บันทึกการฝึกแล้ว · ไม่มีคะแนนความถูกต้องทางคลินิก'):`${result.wrong.join(', ')} ยังไม่ตรงผังเดโม · คืนเฉพาะชิ้นที่ผิด ลองใหม่ได้`};
+    this.emit(result.valid?'ECG_CONFIRMED':'WRONG_ACTION',this.feedback.text);return result.valid;
+  }
+
   hint() {
     if (this.paused) return;
     if (!this.hints.visible) this.score.hint();
@@ -332,12 +347,13 @@ export class CaseEngine {
     if (this.uiElapsed > 80) { this.uiElapsed = 0; this.refresh(); }
   }
   checkpoint(): Checkpoint {
-    return { version: this.config.version, caseId: this.config.id, mission: this.mission.current.id, completed: [...this.mission.completed], chart: this.chart, leads: [...this.ecg.placed], score: { ...this.score.data }, elapsed: this.elapsed, phaseElapsed: this.mission.phaseElapsed, emergencyElapsed: this.emergency.elapsed, vitals: { ...this.vitals.current }, decisions: this.mission.decisions, decisionConfirmed: this.mission.decisionConfirmed, responses: { ...this.responses }, activitySteps: [...this.activitySteps], activityPlacements: { ...this.activityPlacements }, activityStepProgress: { ...this.activityStepProgress } };
+    return { version: this.config.version, caseId: this.config.id, mission: this.mission.current.id, completed: [...this.mission.completed], chart: this.chart, leads: [...this.ecg.placed], leadPlacements:{...this.ecg.placements},ecgConfirmed:this.ecg.confirmed,ecgValidated:[...this.ecg.validated], score: { ...this.score.data }, elapsed: this.elapsed, phaseElapsed: this.mission.phaseElapsed, emergencyElapsed: this.emergency.elapsed, vitals: { ...this.vitals.current }, decisions: this.mission.decisions, decisionConfirmed: this.mission.decisionConfirmed, responses: { ...this.responses }, activitySteps: [...this.activitySteps], activityPlacements: { ...this.activityPlacements }, activityStepProgress: { ...this.activityStepProgress } };
   }
   restore(checkpoint: Checkpoint) {
     const index = this.config.missions.findIndex(mission => mission.id === checkpoint.mission);
     if (checkpoint.caseId !== this.config.id || checkpoint.version !== this.config.version || index < 0) throw new Error('Checkpoint does not match case');
     const activeDecision = this.config.missions[index]?.decision;
+    const resetLegacyECG = checkpoint.restartNotice==='ecg-placement' || checkpoint.mission==='ECG_PLACEMENT' && checkpoint.leadPlacements===undefined;
     const resetIncompatibleDecision = Boolean(activeDecision?.slots?.length && checkpoint.decisions.some(value => !value.includes('::')));
     const activeActivity = this.config.missions[index]?.activity;
     const validStepIds = new Set(activeActivity?.steps?.map(step => step.id) ?? []);
@@ -351,12 +367,15 @@ export class CaseEngine {
       || (activeActivity.steps?.length && checkpoint.activitySteps.length === 0 && Object.keys(checkpoint.responses).length > 0)
     ));
     this.mission.index = index; this.mission.completed = new Set(checkpoint.completed); this.mission.decisions = resetIncompatibleDecision ? [] : checkpoint.decisions; this.mission.decisionConfirmed = resetIncompatibleDecision ? false : checkpoint.decisionConfirmed; this.mission.phaseElapsed = checkpoint.phaseElapsed; this.responses = resetIncompatibleActivity ? {} : { ...checkpoint.responses }; this.activitySteps = resetIncompatibleActivity ? [] : [...checkpoint.activitySteps]; this.activityPlacements = resetIncompatibleActivity ? {} : { ...checkpoint.activityPlacements }; this.activityStepProgress = resetIncompatibleActivity ? {} : { ...checkpoint.activityStepProgress };
-    this.chart = checkpoint.chart; this.ecg.placed = new Set(checkpoint.leads); this.score.data = { ...checkpoint.score }; this.elapsed = checkpoint.elapsed;
+    this.chart = checkpoint.chart; this.ecg.placed = new Set(checkpoint.leads);
+    this.ecg.placements={...(checkpoint.leadPlacements??Object.fromEntries(checkpoint.leads.map(id=>[id,id])))};
+    this.ecg.confirmed=checkpoint.ecgConfirmed??checkpoint.leads.length===this.ecg.targets.length;
+    this.ecg.validated=new Set(checkpoint.ecgValidated??(this.ecg.confirmed?checkpoint.leads:[])); this.score.data = { ...checkpoint.score }; this.elapsed = checkpoint.elapsed;
     for (const mission of this.config.missions.slice(0, index + 1)) { if (mission.onEnter?.patient) this.patient.apply(mission.onEnter.patient); if (mission.onEnter) this.emergency.apply(mission.onEnter); }
     this.emergency.elapsed = checkpoint.emergencyElapsed;
     this.vitals.current = { ...checkpoint.vitals };
     const effect = this.mission.current.onEnter;
     if (effect?.vitals) this.vitals.transition(effect.vitals, Math.max(0, (effect.duration ?? 0) - checkpoint.phaseElapsed));
-    this.feedback = { kind: 'info', text: resetIncompatibleDecision || resetIncompatibleActivity ? 'มีการปรับรูปแบบกิจกรรม · เริ่มช่วงนี้ใหม่ โดยเก็บ Chart และภารกิจที่จบแล้วไว้' : 'เล่นต่อจากข้อมูลที่บันทึกไว้แล้ว' }; this.emit('CHECKPOINT_RESTORED', checkpoint.mission);
+    this.feedback = { kind: 'info', text: resetLegacyECG || resetIncompatibleDecision || resetIncompatibleActivity ? 'มีการปรับรูปแบบกิจกรรม · เริ่มช่วงนี้ใหม่ โดยเก็บ Chart และภารกิจที่จบแล้วไว้' : 'เล่นต่อจากข้อมูลที่บันทึกไว้แล้ว' }; this.emit('CHECKPOINT_RESTORED', checkpoint.mission);
   }
 }

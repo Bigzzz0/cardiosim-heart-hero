@@ -1,0 +1,186 @@
+/* CardioSim bedside controls. Shared tokens, one responsive breakpoint. */
+.storybook-game {--game-tray-height:112px;--game-tray-bottom:18px;--bedside-edge:#86adc5;--bedside-paper:#fcfdff;--bedside-ink:#36566d;}
+.storybook-game .toolbar {display:flex;width:max-content!important;max-width:calc(100% - 32px);height:var(--game-tray-height);padding:12px 20px;gap:12px;border:1px solid #8eb2c5;border-radius:28px;background:#f7fbfdf5;box-shadow:inset 0 2px #fff,0 6px 16px #20384d30;}
+.storybook-game .toolbar button {flex:0 1 112px;width:112px;height:86px;min-height:44px;gap:5px;}
+.storybook-game .tool-pad {height:60px;width:94px;border-radius:17px;}
+.storybook-game .toolbar button .tool-art {width:50px;height:48px;}
+.storybook-game .tool-slot-label {height:19px;}
+.storybook-game .tray-utilities {display:flex;align-items:center;gap:8px;border-left:1px solid #cbdde7;padding-left:14px;margin-left:4px;}
+.storybook-game .toolbar .tray-utility {width:58px;flex-basis:58px;}
+.storybook-game .tray-utility .tool-pad {width:44px;height:44px;border-radius:50%;box-shadow:none;background:#e8f2f8;border:1px solid #b1cdda;}
+.storybook-game .tray-utility .tool-pad svg {width:23px;height:23px;}
+.storybook-game .tray-utility .tool-slot-label {font-size:12px;}
+.storybook-game .game-hud {height:62px;top:16px;left:22px;right:22px;}
+.storybook-game .header-center {height:62px;flex-basis:360px;padding:12px 22px;box-shadow:inset 0 0 0 4px white,inset 0 0 0 8px #a7d8ed,0 4px 8px #20384d25;}
+.storybook-game .hud-objective {font-size:16px;}
+.storybook-game .hud-clock {height:58px;min-width:125px;font-size:18px;padding:10px 20px;box-shadow:inset 0 0 0 4px white,inset 0 0 0 8px #a7d8ed,0 4px 8px #20384d25;}
+.storybook-game .header-actions {gap:12px;}
+.storybook-game .header-actions .hud-next {width:62px;height:58px;box-shadow:inset 0 0 0 4px white,inset 0 0 0 8px #a7d8ed,0 4px 8px #20384d25;}
+.storybook-game .hud-utilities {top:70px;}
+.storybook-game .monitor {top:150px;width:clamp(164px,17vw,222px);}
+.storybook-game .mode-field.mission-collapsed {top:auto!important;bottom:150px!important;right:24px!important;width:290px!important;border:1px solid #a8c6d7;border-radius:18px;box-shadow:0 4px 14px #1f39442b;}
+.storybook-game .mode-field.mission-collapsed .comms-eyebrow {display:none;}
+.storybook-game .mode-field.mission-collapsed .action-brief {padding-right:34px;}
+.storybook-game .mode-field.mission-collapsed .mission-compact>p {display:none;}
+.storybook-game .patient-marker {display:none!important;}
+.storybook-game .has-marker .patient-marker,.storybook-game .hotspot-control:focus-visible .patient-marker {display:block!important;}
+.storybook-game .hotspot-control-layer:not(.revealed) .patient-marker {display:none!important;}
+.storybook-game .hotspot-control-layer:not(.revealed) .hotspot-control:focus-visible .patient-marker {display:block!important;}
+.storybook-game [data-patient-hotspot="head"] .patient-marker {left:50%;top:50%;}
+.storybook-game .mode-briefing {top:140px;bottom:150px;}
+@media(max-width:760px){
+ .storybook-game {--game-tray-height:104px;--game-tray-bottom:12px;}
+ .storybook-game .game-hud {top:12px;left:10px;right:10px;gap:6px;}
+ .storybook-game .header-center {height:58px;flex:1;padding:10px 15px;}
+ .storybook-game .hud-objective {font-size:14px;}
+ .storybook-game .hud-clock {height:50px;min-width:63px;font-size:14px;padding:8px;}
+ .storybook-game .header-actions .hud-next {height:50px;width:46px;}
+ .storybook-game .header-actions {gap:5px;}
+ .storybook-game .hud-utilities {top:64px;}
+ .storybook-game .toolbar {max-width:calc(100% - 16px);padding:10px;gap:6px;border-radius:23px;}
+ .storybook-game .toolbar button {width:68px;height:78px;flex-basis:68px;}
+ .storybook-game .tool-pad {width:57px;height:51px;border-radius:14px;}
+ .storybook-game .toolbar button .tool-art {width:41px;height:40px;}
+ .storybook-game .toolbar button>.tool-slot-label {font-size:14px;}
+ .storybook-game .tray-utilities {gap:3px;padding-left:6px;margin-left:0;}
+ .storybook-game .toolbar .tray-utility {width:44px;flex-basis:44px;}
+ .storybook-game .tray-utility .tool-pad {width:40px;height:40px;}
+ .storybook-game .tray-utility .tool-slot-label {font-size:12px;}
+ .storybook-game .monitor {top:135px;width:88px;}
+ .storybook-game .mode-field.mission-collapsed {top:auto!important;bottom:133px!important;right:10px!important;left:auto!important;width:250px!important;}
+ .storybook-game .mode-briefing {top:134px;bottom:134px;}
+}
+
+.storybook-game .toolbar button:before,.storybook-game .toolbar button:after {display:none;}
+
+/* Physical preparation bench: fluid, barrel and piston are separate layers. */
+.storybook-game .syringe-workbench {display:flex;align-items:center;justify-content:space-between;min-height:205px;padding:10px;overflow:hidden;}
+.storybook-game .ampoule-drop-target {flex:0 0 72px;min-width:0;width:72px;min-height:140px;padding:6px;}
+.storybook-game .ampoule-art {display:block;width:58px;height:100px;object-fit:contain;pointer-events:none;}
+.storybook-game .ampoule-drop-target small {font-size:12px;color:#43657a;}
+.storybook-game .syringe-instrument {position:relative;display:block;flex:1;width:auto;min-width:0;height:170px;padding:0;overflow:visible;}
+.storybook-game .syringe-body-art {position:absolute;left:0;top:25px;width:78%;height:110px;object-fit:fill;pointer-events:none;z-index:2;}
+.storybook-game .syringe-plunger-art {position:absolute;top:42px;width:42%;height:77px;object-fit:fill;pointer-events:none;z-index:1;}
+.storybook-game .syringe-liquid-volume {position:absolute;left:32%;top:70px;height:24px;background:#6fb5e6b0;z-index:3;pointer-events:none;border-radius:3px;}
+.storybook-game .syringe-scale {position:absolute;top:63px;left:32%;width:26%;height:38px;z-index:4;pointer-events:none;}
+.storybook-game .syringe-scale>span {position:absolute;top:0;border-left:1px solid #526e83;height:10px;font-size:10px;line-height:55px;color:#294a62;}
+.storybook-game .syringe-direct-grip {position:absolute;top:45px;width:44px;height:75px;transform:translateX(-50%);border:2px solid #79aec9;border-radius:12px;background:#cbeafa35;z-index:5;touch-action:none;cursor:ew-resize;user-select:none;}
+.storybook-game .syringe-direct-grip:hover,.storybook-game .syringe-direct-grip:focus-visible {background:#a6d6ed66;border-color:#3b86b0;}
+.storybook-game .grip-dots {font-size:23px;color:#56829c;}
+.storybook-game .syringe-adjust {display:flex;align-items:center;justify-content:center;gap:10px;grid-column:1 / -1;width:100%;}
+.storybook-game .syringe-adjust button {display:grid;place-items:center;width:44px;height:44px;border:1px solid #9fbfce;background:#f6fbff;color:#446f87;}
+.storybook-game .syringe-adjust span {font-size:14px;}
+.storybook-game .syringe-readout {gap:10px;}
+.storybook-game .syringe-volume-status {font-size:14px;}
+.storybook-game .surface-bedside-clipboard {position:relative;border:7px solid #8cb6ce;border-top-width:26px;border-radius:19px;background:#fffdf4;}
+.storybook-game .surface-bedside-clipboard:before {content:'';position:absolute;top:-36px;left:50%;transform:translateX(-50%);width:112px;height:29px;border:2px solid #7e8f9d;border-radius:8px;background:linear-gradient(#ecf2f5,#a9b9c4,#e9eff3);box-shadow:0 3px 4px #304c5c30;}
+.storybook-game .evidence-strip {padding:12px;border-bottom:1px solid #d5e1e5;display:flex;flex-wrap:wrap;gap:6px;background:#f0f5f6;}
+.storybook-game .evidence-strip>span {font-size:14px;color:#45677b;background:#fff;padding:6px 9px;border:1px solid #c2d8e3;border-radius:8px;}
+.storybook-game .evidence-strip>b {width:100%;font-size:14px;color:#45677b;}
+.storybook-game .surface-icon-art {width:38px;height:38px;object-fit:contain;}
+.storybook-game .medication-overview {min-height:44px;width:100%;margin:8px 0;background:#e9f3fa;color:#456c84;border-color:#a9c9db;}
+.storybook-game .medication-step-list:not(.expanded) .medication-step:not(.current):not(.complete) {display:none;}
+.storybook-game .medication-step-list:not(.expanded) .medication-step.complete {min-height:44px;padding:6px;font-size:12px;}
+.storybook-game .medication-step-list:not(.expanded) .medication-step.current {min-height:115px;}
+.storybook-game .medication-procedure {grid-template-columns:minmax(160px,.7fr) minmax(230px,1.3fr);}
+.storybook-game .medication-procedure.has-syringe-activity {grid-template-columns:1fr;}
+.storybook-game .has-syringe-activity .medication-step.current {min-height:60px!important;}
+.storybook-game .has-syringe-activity .medication-equipment-tray {min-height:0;}
+.storybook-game .ecg-attached-lead {position:absolute;z-index:5;transform:translate(-50%,-50%);width:44px;height:44px;border:2px solid #749cb5;border-radius:50%;background:#fff url('/game/bedside/electrode.webp') center/100% 100% no-repeat;color:#254861;font-size:13px;font-weight:800;text-shadow:0 1px 2px white;touch-action:none;}
+.storybook-game .ecg-attached-lead.validated {border-color:#5d9a77;opacity:1;}
+.storybook-game .ecg-mobile-lead.placed {background:#dfedf6;color:#466d86;border-color:#97b7cb;}
+.storybook-game .ecg-return-lead {min-height:44px;padding:6px 14px;background:#f4f9fc;border:1px solid #9dbacd;color:#426a82;border-radius:12px;}
+.storybook-game .ecg-mobile-procedure {background:#f3f9fdf7;border-color:#94b9ce;box-shadow:0 6px 24px #233c5140;}
+.storybook-game .ecg-mobile-heading,.storybook-game .ecg-mobile-heading b {color:#385d78;}
+.storybook-game .ecg-mobile-heading small {color:#5e7787;}
+.storybook-game .ecg-mobile-map {background:#eaf3f8;border-color:#bfd2de;}
+.storybook-game .ecg-mobile-feedback {background:#e9f3f8;color:#4a6c82;border-color:#adc7d7;}
+.storybook-game .ecg-mobile-feedback.error {background:#fff1eb;color:#9c5546;border-color:#d6a496;}
+.storybook-game .ecg-mobile-actions>button:not(.primary),.storybook-game .ecg-mobile-lead {background:#fff;color:#4a7188;border-color:#a1c3d6;}
+.storybook-game .lead-status button.lead-done {background:#dcecf6;color:#41657e;border-color:#8eb2c8;}
+.storybook-game .hud-emergency {background:#fff3eb;color:#b44d3c;border-color:#db8c7e;}
+.storybook-game .game-hud.is-emergency .hud-phase {background:none;color:#a45a50;border:0;box-shadow:none;}
+.storybook-game .game-hud.is-emergency .hud-clock {color:#9e5149;}
+.storybook-game .result-badge {background:#e3f2ea;border-color:#96c6ae;color:#4b8669;}
+.storybook-game .result-card .restart-button {min-height:44px;background:#eef6fb;color:#426b83;border-color:#9ebfd1;}
+.storybook-game .room-alert {background:#fff5ed;color:#a64c3e;border-color:#cf9184;}
+.storybook-game .answer-slot b,.storybook-game .answer-card b,.storybook-game .io-item-token b {font-size:14px;}
+@media(max-width:760px){
+ .storybook-game .medication-procedure {grid-template-columns:1fr;}
+ .storybook-game .medication-step-list:not(.expanded) .medication-step.current {min-height:70px;}
+ .storybook-game .syringe-workbench {min-height:180px;padding:3px;}
+ .storybook-game .ampoule-drop-target {flex-basis:53px;width:53px;}
+ .storybook-game .ampoule-art {width:42px;}
+ .storybook-game .syringe-scale {top:64px;}
+ .storybook-game .syringe-adjust span {font-size:14px;max-width:140px;}
+}
+
+.storybook-game .drag-onboarding-path {position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;}
+.storybook-game .drag-onboarding-path path {fill:none;stroke:#6ea4c7;stroke-width:2;stroke-dasharray:5 7;opacity:.6;}
+.storybook-game .drag-onboarding-path circle {fill:#fff;stroke:#548eae;stroke-width:3;}
+@media(prefers-reduced-motion:reduce){.storybook-game .drag-onboarding-path circle {display:none;}}
+
+/* Keep inspection targets above the contextual prompt and the tool tray. */
+.storybook-game {--game-field-reserve:140px;}
+.storybook-game main[data-interaction-pending="true"] .mode-field.mission-collapsed>.feedback {display:none!important;}
+.storybook-game .evidence-strip {display:block;padding:0;background:#f0f5f6;}
+.storybook-game .evidence-strip summary {min-height:44px;padding:10px 14px;cursor:pointer;font-size:14px;color:#45677b;}
+.storybook-game .evidence-strip>div {display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 12px;}
+.storybook-game .evidence-strip>div>span {font-size:14px;color:#45677b;background:#fff;padding:6px 9px;border:1px solid #c2d8e3;border-radius:8px;}
+.storybook-game .activity-head {display:none;}
+.storybook-game .activity-surface-instruction {padding:7px 12px;}
+.storybook-game .activity-surface-instruction span {display:none;}
+.storybook-game .activity-surface-instruction b {font-size:14px;}
+.storybook-game .activity-surface-hardware {min-height:44px;padding:6px 12px;}
+.storybook-game .activity-surface-hardware small {display:none;}
+.storybook-game .medication-station-card {display:grid;grid-template-columns:minmax(210px,.75fr) minmax(0,1.25fr);gap:10px;}
+.storybook-game .medication-station-card>.activity-notice {grid-column:1 / -1;margin:0;padding:6px 9px;}
+.storybook-game .medication-order-card {align-self:start;margin:0;}
+.storybook-game .medication-order-card .activity-rows {padding:4px 6px;}
+.storybook-game .medication-procedure {display:block;margin:0;}
+.storybook-game .medication-overview {margin:0 0 5px;}
+.storybook-game .medication-step-list:not(.expanded) .medication-step.complete {display:none;}
+.storybook-game .medication-step-list:not(.expanded) .medication-step.current {min-height:60px!important;}
+.storybook-game .medication-step small {font-size:14px;}
+.storybook-game .medication-equipment-tray {padding:8px;min-height:0;}
+.storybook-game .equipment-tray-label {display:none;}
+.storybook-game .procedure-count {color:#55778a;font-size:14px;}
+.storybook-game .procedure-count span {color:#426b80;}
+.storybook-game .station-check-fields {grid-column:1 / -1;}
+.storybook-game .io-balance-board {grid-template-columns:1fr 1fr;grid-template-areas:"notice notice" "source zones" "calc calc";}
+.storybook-game .io-source-tray {grid-area:source;}
+.storybook-game .io-zones {grid-area:zones;}
+.storybook-game .io-calculation-panel {grid-area:calc;}
+.storybook-game .io-source-tray>small,.storybook-game .io-zone>small {color:#5c7787;}
+.storybook-game .io-item-list {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}
+.storybook-game .io-item-token {display:flex;flex-direction:column;min-height:90px;justify-content:center;text-align:center;padding:7px;}
+.storybook-game .io-item-token>span:last-child {display:none;}
+.storybook-game .io-container-art {display:block!important;position:relative;width:26px;height:32px;border:2px solid #7d9fb5;background:linear-gradient(transparent 40%,#b7ddef 40%);border-radius:6px;}
+.storybook-game .io-container-art.item-iv:before {content:'';position:absolute;left:8px;top:-8px;width:7px;height:7px;border:2px solid #7d9fb5;border-radius:50%;}
+.storybook-game .io-container-art.item-drink {border-top:0;border-radius:0 0 7px 7px;}
+.storybook-game .io-container-art.item-drink:before {content:'';position:absolute;left:22px;top:4px;width:9px;height:16px;border:2px solid #7d9fb5;border-left:0;border-radius:0 8px 8px 0;}
+.storybook-game .io-container-art.item-urine {width:30px;border-radius:3px;background:linear-gradient(transparent 65%,#dcd4ac 65%);}
+.storybook-game .io-zone-items i {background:#deedf6;}
+@media(min-width:761px){
+ .storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console,.mode-bedside-clipboard,.mode-monitor-response) {top:auto!important;bottom:16px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:min(1060px,calc(100% - 36px))!important;height:55vh!important;max-height:520px!important;}
+ .storybook-game .surface-content .matching-board {grid-template-columns:1fr 1fr;}
+}
+@media(max-width:760px){
+ .storybook-game .medication-station-card {grid-template-columns:1fr;}
+ .storybook-game .medication-order-card {max-height:none;}
+ .storybook-game .surface-content .answer-card {min-height:48px;}
+ .storybook-game .surface-content .answer-card small,.storybook-game .surface-instruction span,.storybook-game .surface-status {display:none;}
+ .storybook-game .surface-instruction {padding:6px 8px;}
+ .storybook-game .surface-hardware {padding:4px 8px;min-height:36px;}
+ .storybook-game .surface-bedside-clipboard {padding:5px;border-top-width:16px;}
+ .storybook-game .surface-bedside-clipboard:before {top:-25px;height:24px;}
+ .storybook-game .evidence-strip summary {padding:8px;min-height:44px;}
+ .storybook-game .io-balance-board {grid-template-columns:1fr;grid-template-areas:"notice" "source" "zones" "calc";}
+ .storybook-game .io-zone {min-height:95px;}
+ .storybook-game .io-source-tray>small {font-size:12px;}
+}
+
+.storybook-game .answer-slot[aria-pressed="true"] {outline:3px solid #77b6d5;outline-offset:2px;}
+.storybook-game .activity-surface-hardware,.storybook-game .surface-hardware {height:auto;min-height:44px;}
+.storybook-game .medication-order-card .activity-rows {display:block;}
+.storybook-game .medication-order-card .activity-rows>div {display:grid;grid-template-columns:minmax(65px,.35fr) minmax(0,1fr);gap:8px;}

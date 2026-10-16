@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import {clientToWorld,worldToClient,ROOM_UI_OCCLUDERS} from '../presentationCoordinates';
 import type { AudioSystem } from '../systems/AudioSystem';
 import type { CaseEngine } from '../core/CaseEngine';
 import type { InteractionEventData, PatientState, Point } from '../types';
@@ -16,6 +17,7 @@ export class PatientRoomScene extends Phaser.Scene {
   private graphics?: Phaser.GameObjects.Graphics;
   private label?: Phaser.GameObjects.Text;
   private hotspotLabels = new Map<string, Phaser.GameObjects.Text>();
+  private lastDraggedTool: string|null=null;
   private lastKind = '';
   private lastMissionId = '';
   private cameraFrameSize = '';
@@ -39,17 +41,22 @@ export class PatientRoomScene extends Phaser.Scene {
     this.load.image('patient-critical', assets.patientCritical);
     this.load.image('ecg-leads', assets.ecgLeads);
     this.load.image('ecg-chest', assets.ecgChest);
-    for (const tool of this.engine.config.tools) if (tool.sprite) this.load.image(`tool-${tool.id}`, tool.sprite);
+    for (const tool of this.engine.config.tools) {
+      if (tool.sprite) this.load.image(`tool-${tool.id}`, tool.sprite);
+      if (tool.visual?.contactSprite) this.load.image(`tool-contact-${tool.id}`, tool.visual.contactSprite);
+    }
   }
 
   create() {
     const assets = this.engine.config.assets;
     // Extend the room beyond the logical play area so camera framing never
     // exposes empty canvas edges on wide or portrait displays.
-    this.add.image(500, 360, 'room').setDisplaySize(1500, 1100);
-    this.patient = this.add.image(550, 407, 'patient').setDisplaySize(292, 438);
+    const layout = this.engine.config.presentation!;
+    this.add.image(layout.background.x, layout.background.y, 'room').setDisplaySize(layout.background.width, layout.background.height);
+    const body = layout.patient;
+    this.patient = this.add.image(body.x, body.y, 'patient').setDisplaySize(body.width, body.height);
     this.patientBaseScale = { x: this.patient.scaleX, y: this.patient.scaleY };
-    this.criticalPatient = this.add.image(550, 407, 'patient-critical').setDisplaySize(292, 438).setAlpha(0);
+    this.criticalPatient = this.add.image(body.x, body.y, 'patient-critical').setDisplaySize(body.width, body.height).setAlpha(0);
     if (assets.patient === assets.patientCritical) this.criticalPatient.setTint(0xe4b5a8);
     this.graphics = this.add.graphics().setDepth(10);
     this.toolGhost = this.add.image(0, 0, 'ecg-leads').setDisplaySize(54, 54).setAlpha(.85).setDepth(30).setVisible(false);
@@ -65,7 +72,12 @@ export class PatientRoomScene extends Phaser.Scene {
     }
     this.unsubscribeBus = this.engine.bus.subscribe(event => {
       this.showInteractionFeedback(event.interaction);
+      if(event.type==='TOOL_DRAG_STARTED')this.lastDraggedTool=event.detail;
+      if(event.type==='TOOL_DRAG_ENDED'&&event.detail==='cancelled'&&this.lastDraggedTool&&this.toolGhost?.visible)this.returnTool(this.lastDraggedTool,{x:this.toolGhost.x,y:this.toolGhost.y});
+      if (event.interaction && event.interaction.phase !== 'started' && event.interaction.toolId && event.interaction.point) this.returnTool(event.interaction.toolId,event.interaction.point);
+      if (event.type === 'TOOL_DRAG_CANCELLED' && this.toolGhost?.visible) this.returnTool(event.detail,{x:this.toolGhost.x,y:this.toolGhost.y});
       if (event.type === 'MISSION_CHANGED') this.syncMissionView();
+      if (['ECG_CONFIRMED','ECG_LEAD_REMOVED','ECG_LEAD_PLACED'].includes(event.type) || event.type==='WRONG_ACTION' && this.engine.mission.current.kind==='placement') this.syncLeadPositions(event.type==='WRONG_ACTION');
     });
     const motionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     this.reduceMotion = motionPreference?.matches ?? false;
@@ -108,11 +120,9 @@ export class PatientRoomScene extends Phaser.Scene {
   clientToWorld(clientX: number, clientY: number): Point | null {
     const bounds = this.game.canvas.getBoundingClientRect();
     // The room canvas extends beneath the HUD; dropping on UI cancels the drag.
-    if (document.elementFromPoint(clientX,clientY)?.closest('.game-hud,.toolbar,.mission-panel,.monitor,.modal-backdrop,.pause-overlay')) return null;
+    if (document.elementFromPoint(clientX,clientY)?.closest(ROOM_UI_OCCLUDERS)) return null;
     if (clientX < bounds.left || clientY < bounds.top || clientX > bounds.right || clientY > bounds.bottom) return null;
-    const screenX = (clientX - bounds.left) * this.cameraViewport.width / bounds.width;
-    const screenY = (clientY - bounds.top) * this.cameraViewport.height / bounds.height;
-    return this.gamePointToWorld(screenX, screenY);
+    return clientToWorld({x:clientX,y:clientY},this.cameraWorldView,bounds);
   }
 
   /** Kept as a call-site alias while React's drag handlers use the shared mapping. */
@@ -121,11 +131,7 @@ export class PatientRoomScene extends Phaser.Scene {
   /** Convert world points through the same camera view used by pointer input. */
   worldToClient(point: Point): Point {
     const bounds = this.game.canvas.getBoundingClientRect();
-    const view = this.cameraWorldView;
-    return {
-      x: bounds.left + ((point.x - view.x) / view.width) * bounds.width,
-      y: bounds.top + ((point.y - view.y) / view.height) * bounds.height,
-    };
+    return worldToClient(point,this.cameraWorldView,bounds);
   }
 
   private readonly queueResize = () => {
@@ -152,7 +158,7 @@ export class PatientRoomScene extends Phaser.Scene {
   }
 
   private applyCameraFrame(width = this.scale.width, height = this.scale.height) {
-    if (!this.sys.isActive()) return;
+    if (!this.sys.isActive() || this.engine.tools.dragging) return;
     width = Math.max(1, width);
     height = Math.max(1, height);
     const kind = this.engine.mission.current.kind;
@@ -162,15 +168,18 @@ export class PatientRoomScene extends Phaser.Scene {
     const zoom = portrait
       ? height / 720
       : Math.min(width / 1000, height / 720);
-    const centerX = kind === 'placement' ? 575 : 550;
-    let centerY = kind === 'transition' ? 380 : 360;
+    const frame = this.engine.config.presentation!.camera;
+    const center = kind === 'placement' ? frame.procedureCenter : kind === 'transition' ? frame.transitionCenter : frame.center;
+    const centerX = center.x;
+    let centerY = center.y;
     const appliedZoom = Phaser.Math.Clamp(zoom, .55, 1.35);
     const root = this.game.canvas.closest('.storybook-game');
     if (root && kind === 'interaction') {
       const style = getComputedStyle(root);
       const trayReserve = (parseFloat(style.getPropertyValue('--game-tray-height')) || 0)
         + (parseFloat(style.getPropertyValue('--game-tray-bottom')) || 0)
-        + (parseFloat(style.getPropertyValue('--game-safe-bottom')) || 0);
+        + (parseFloat(style.getPropertyValue('--game-safe-bottom')) || 0)
+        + (parseFloat(style.getPropertyValue('--game-field-reserve')) || 0);
       const targets = this.engine.hotspots.definitions.filter(target => this.engine.mission.current.objectives?.some(objective => objective.target === target.id));
       const lowestTarget = Math.max(...targets.map(target => target.y + target.radius));
       const projectedBottom = (lowestTarget - centerY) * appliedZoom + height / 2;
@@ -238,6 +247,18 @@ export class PatientRoomScene extends Phaser.Scene {
     }
   }
 
+  private returnTool(id: string, point: Point) {
+    if (this.reduceMotion) return;
+    const tool = this.engine.tools.get(id);
+    const token = document.querySelector<HTMLElement>(`[data-tool-id="${id}"]`);
+    if (!tool?.sprite || !token || !this.textures.exists(`tool-${id}`)) return;
+    const bounds = this.game.canvas.getBoundingClientRect();
+    const slot = token.getBoundingClientRect();
+    const end = this.gamePointToWorld((slot.x+slot.width/2-bounds.x)*this.cameraViewport.width/bounds.width,(slot.y+25-bounds.y)*this.cameraViewport.height/bounds.height);
+    const sprite = this.add.image(point.x,point.y,`tool-${id}`).setDisplaySize(50,50).setDepth(35);
+    this.tweens.add({targets:sprite,x:end.x,y:end.y,alpha:0,scaleX:sprite.scaleX*.65,scaleY:sprite.scaleY*.65,duration:300,ease:'Cubic.InOut',onComplete:()=>sprite.destroy()});
+  }
+
   playEmergencyImpact() {
     if (this.reduceMotion) return;
     this.cameras.main.shake(420, 0.0025);
@@ -248,10 +269,11 @@ export class PatientRoomScene extends Phaser.Scene {
     const object = this.leads.get(id);
     if (!target || !object) return;
     const valid = this.engine.placeLead(id, point);
+    const snapped = this.engine.ecg.targets.find(t=>t.id===this.engine.ecg.placements[id]);
     const index = this.engine.ecg.targets.indexOf(target);
     const tray = this.engine.config.ecg.layout.tray;
-    this.tweens.add({ targets: object, x: valid ? target.x : tray.x + index * tray.spacing, y: valid ? target.y : tray.y, duration: valid ? 150 : 300, ease: 'Back.Out' });
-    if (valid) { object.disableInteractive(); object.setAlpha(.85); }
+    this.tweens.add({ targets: object, x: snapped ? snapped.x : tray.x + index * tray.spacing, y: snapped ? snapped.y : tray.y, duration: valid ? 150 : 300, ease: 'Back.Out' });
+    if (valid) object.setAlpha(1);
   }
 
   private makeECGBoard() {
@@ -259,10 +281,10 @@ export class PatientRoomScene extends Phaser.Scene {
     const { board: boardLayout, image: imageLayout } = this.engine.config.ecg.layout;
     const casing = this.add.graphics();
     casing.fillStyle(0x0c1b20, .5).fillRoundedRect(boardLayout.x + 7, boardLayout.y + 11, boardLayout.width, boardLayout.height, 19);
-    casing.fillStyle(0x1b3038, .99).fillRoundedRect(boardLayout.x, boardLayout.y, boardLayout.width, boardLayout.height, 18);
-    casing.lineStyle(3, 0x66877a, .98).strokeRoundedRect(boardLayout.x, boardLayout.y, boardLayout.width, boardLayout.height, 18);
-    casing.fillStyle(0x29464a, .99).fillRoundedRect(boardLayout.x + 7, boardLayout.y + 7, boardLayout.width - 14, 37, 11);
-    casing.fillStyle(0xe8f0e6, .99).fillRoundedRect(boardLayout.x + 10, boardLayout.y + 47, boardLayout.width - 20, boardLayout.height - 58, 12);
+    casing.fillStyle(0xc4dfef, .99).fillRoundedRect(boardLayout.x, boardLayout.y, boardLayout.width, boardLayout.height, 18);
+    casing.lineStyle(3, 0x7ca6c0, .98).strokeRoundedRect(boardLayout.x, boardLayout.y, boardLayout.width, boardLayout.height, 18);
+    casing.fillStyle(0x436b87, .99).fillRoundedRect(boardLayout.x + 7, boardLayout.y + 7, boardLayout.width - 14, 37, 11);
+    casing.fillStyle(0xf8fcff, .99).fillRoundedRect(boardLayout.x + 10, boardLayout.y + 47, boardLayout.width - 20, boardLayout.height - 58, 12);
     casing.lineStyle(1, 0xa2bcae, .95).strokeRoundedRect(boardLayout.x + 10, boardLayout.y + 47, boardLayout.width - 20, boardLayout.height - 58, 12);
     objects.push(casing);
     for (const [x, y] of [[boardLayout.x + 19, boardLayout.y + 18], [boardLayout.x + boardLayout.width - 19, boardLayout.y + 18], [boardLayout.x + 19, boardLayout.y + boardLayout.height - 18], [boardLayout.x + boardLayout.width - 19, boardLayout.y + boardLayout.height - 18]]) {
@@ -270,7 +292,7 @@ export class PatientRoomScene extends Phaser.Scene {
     }
     objects.push(this.add.image(imageLayout.x + imageLayout.width / 2, imageLayout.y + imageLayout.height / 2, 'ecg-chest').setDisplaySize(imageLayout.width, imageLayout.height));
     const leadRail = this.add.graphics();
-    leadRail.fillStyle(0xd4e0d7, .96).fillRoundedRect(boardLayout.x + 100, boardLayout.y + boardLayout.height - 55, boardLayout.width - 120, 40, 10);
+    leadRail.fillStyle(0xdcecf5, .96).fillRoundedRect(boardLayout.x + 100, boardLayout.y + boardLayout.height - 55, boardLayout.width - 120, 40, 10);
     leadRail.lineStyle(1, 0x9bb4a4, .95).strokeRoundedRect(boardLayout.x + 100, boardLayout.y + boardLayout.height - 55, boardLayout.width - 120, 40, 10);
     objects.push(leadRail);
     objects.push(this.add.text(boardLayout.x + 29, boardLayout.y + 12, 'ECG LEAD STATION', {fontFamily:'sans-serif',fontSize:'14px',fontStyle:'bold',color:'#ecf8ee'}));
@@ -285,15 +307,28 @@ export class PatientRoomScene extends Phaser.Scene {
     this.engine.ecg.targets.forEach((target, index) => {
       const placed = this.engine.ecg.placed.has(target.id);
       const tray = this.engine.config.ecg.layout.tray;
-      const disc = this.add.circle(0, 0, 20, 0x244b42).setStrokeStyle(3, 0xa7ddc1);
-      const label = this.add.text(0, 0, target.label, {fontFamily:'sans-serif',fontSize:'14px',fontStyle:'bold',color:'#edfff2'}).setOrigin(.5);
+      const disc = this.add.image(0,0,'ecg-leads').setDisplaySize(42,42);
+      const label = this.add.text(0, 0, target.label, {fontFamily:'sans-serif',fontSize:'14px',fontStyle:'bold',color:'#274c67',stroke:'#ffffff',strokeThickness:3}).setOrigin(.5);
       const lead = this.add.container(placed ? target.x : tray.x + index * tray.spacing, placed ? target.y : tray.y, [disc, label]);
       lead.setName(target.id).setSize(44,44);
-      if (!placed) {
+      if (!this.engine.ecg.validated.has(target.id)) {
         lead.setInteractive({ useHandCursor: true }); this.input.setDraggable(lead);
         lead.on('pointerdown', () => { if (!this.engine.paused) { this.engine.ecg.selected = target.id; this.engine.refresh(); } });
       }
       this.leads.set(target.id, lead); this.leadLayer?.add(lead);
+    });
+    this.syncLeadPositions();
+  }
+
+  private syncLeadPositions(animate=false) {
+    const tray=this.engine.config.ecg.layout.tray;
+    this.engine.ecg.targets.forEach((lead,index)=>{
+      const object=this.leads.get(lead.id);if(!object)return;
+      const target=this.engine.ecg.targets.find(t=>t.id===this.engine.ecg.placements[lead.id]);
+      this.tweens.killTweensOf(object);
+      const x=target?.x??tray.x+index*tray.spacing,y=target?.y??tray.y;
+      if(animate&&!this.reduceMotion)this.tweens.add({targets:object,x,y,duration:240,ease:'Back.Out'});else object.setPosition(x,y);
+      if(this.engine.ecg.validated.has(lead.id))object.disableInteractive();
     });
   }
 
@@ -351,8 +386,8 @@ export class PatientRoomScene extends Phaser.Scene {
     const responsePulse = this.engine.paused || this.reduceMotion ? 0 : Math.max(0, 1 - (time - this.patientResponseAt) / 360);
     this.patient?.setScale(this.patientBaseScale.x * (1 + breathing * .002 * severity), this.patientBaseScale.y * (1 + breathing * .006 * severity + responsePulse * .003));
     this.criticalPatient?.setScale(this.patientBaseScale.x * (1 + breathing * .002 * severity), this.patientBaseScale.y * (1 + breathing * .006 * severity + responsePulse * .003));
-    this.patient?.setX(550 + (patient.animation === 'critical' && !this.engine.paused && !this.reduceMotion ? Math.sin(time / 110) * 1.2 : 0));
-    this.criticalPatient?.setX(550 + (patient.animation === 'critical' && !this.engine.paused && !this.reduceMotion ? Math.sin(time / 110) * 1.2 : 0));
+    this.patient?.setX(this.engine.config.presentation!.patient.x + (patient.animation === 'critical' && !this.engine.paused && !this.reduceMotion ? Math.sin(time / 110) * 1.2 : 0));
+    this.criticalPatient?.setX(this.engine.config.presentation!.patient.x + (patient.animation === 'critical' && !this.engine.paused && !this.reduceMotion ? Math.sin(time / 110) * 1.2 : 0));
     const graphics = this.graphics; if (!graphics) return; graphics.clear();
     if (this.engine.emergency.alarm) graphics.lineStyle(7,0xca715f,.2 + (Math.sin(time / 650) + 1) * .08).strokeRect(3,3,994,714);
     this.label?.setVisible(false);
@@ -360,7 +395,7 @@ export class PatientRoomScene extends Phaser.Scene {
     const pending = this.engine.interaction.pending;
     const actionToolId = pending ? this.activeInteraction?.toolId : this.engine.tools.selected;
     const activeTool = actionToolId ? this.engine.tools.get(actionToolId) : undefined;
-    const texture = activeTool?.sprite ? `tool-${activeTool.id}` : '';
+    const texture = pending && activeTool?.visual?.contactSprite ? `tool-contact-${activeTool.id}` : activeTool?.sprite ? `tool-${activeTool.id}` : '';
     const dragPoint = this.toolDragPoint === undefined ? this.gamePointToWorld(pointer.x, pointer.y) : this.toolDragPoint;
     const pendingTarget = pending && this.activeInteraction?.targetId ? this.engine.hotspots.definitions.find(item => item.id === this.activeInteraction?.targetId) : undefined;
     const toolPoint = pendingTarget ? { x: pendingTarget.x, y: pendingTarget.y } : dragPoint;
@@ -372,8 +407,10 @@ export class PatientRoomScene extends Phaser.Scene {
       const size = pending ? visual?.contactSize : visual?.heldSize;
       const offset = pending ? visual?.contactOffset : visual?.heldOffset;
       const lift = pending ? 0 : 5;
-      this.toolGhost?.setTexture(texture)
-        .setDisplaySize(size?.x ?? 72, size?.y ?? 72)
+      const anchor = pending ? visual?.contactAnchor : visual?.heldAnchor;
+      const puff = pending && visual?.contactEffect === 'pressure' && !this.reduceMotion ? 1 + Math.sin(time / 100) * .035 : 1;
+      this.toolGhost?.setTexture(texture).setOrigin(anchor?.x ?? .5,anchor?.y ?? .5)
+        .setDisplaySize((size?.x ?? 72) * puff, (size?.y ?? 72) * puff)
         .setAlpha(pending ? 1 : .94)
         .setPosition(toolPoint.x + (offset?.x ?? 11), toolPoint.y + (offset?.y ?? -17) - lift)
         .setAngle(pending ? visual?.contactAngle ?? 0 : this.engine.tools.dragging ? Phaser.Math.Clamp(pointer.velocity.x / 18, -9, 9) : 0)
@@ -450,13 +487,13 @@ export class PatientRoomScene extends Phaser.Scene {
           graphics.lineStyle(5, 0x244b42, .22).strokeCircle(target.x, target.y, target.radius + 9);
           graphics.beginPath(); graphics.lineStyle(5, 0x42ad7e, .95).arc(target.x, target.y, target.radius + 9, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2).strokePath();
           this.label?.setStyle({ backgroundColor: '#e5f6e9', color: '#245c46' }).setText(`กำลังตรวจ ${Math.round(progress * 100)}%`);
-          this.positionCanvasLabel(target.x + 27, target.y - target.radius - 34);
+          this.positionCanvasLabel(target.x + 27, target.y + target.radius + 15);
           this.label?.setVisible(true);
         }
       }
     }
     if (kind === 'placement' && window.innerWidth > 760) for (const target of this.engine.ecg.targets) {
-      const emphasized = this.engine.hints.visible || this.debug || this.engine.ecg.placed.has(target.id);
+      const emphasized = this.engine.hints.visible || this.debug || this.engine.ecg.validated.has(target.id);
       graphics.lineStyle(emphasized ? 2 : 1, emphasized ? 0x347b62 : 0x648a78, emphasized ? .9 : .55).strokeCircle(target.x,target.y,target.snapRadius);
       graphics.lineStyle(1,emphasized ? 0x347b62 : 0x648a78,emphasized ? .8 : .45).lineBetween(target.x-6,target.y,target.x+6,target.y).lineBetween(target.x,target.y-6,target.x,target.y+6);
       this.leads.get(target.id)?.setScale(this.engine.ecg.selected === target.id ? 1.15 : 1);
