@@ -171,10 +171,29 @@ export class CaseEngine {
     this.mission.decisions = [...this.mission.decisions.filter(value => !value.startsWith(`${slotId}::`)), `${slotId}::${optionId}`];
     this.feedback = { kind: 'info', text: 'วางคำตอบแล้ว · กด Confirm เพื่อตรวจคำตอบ' }; this.emit('DECISION_SELECTED', `${slotId}:${optionId}`);
   }
+  removeDecisionSlot(slotId: string) {
+    if (this.paused || this.mission.current.kind !== 'decision' || this.mission.decisionConfirmed || !this.mission.current.decision?.slots?.some(slot => slot.id === slotId)) return false;
+    const remaining = this.mission.decisions.filter(value => !value.startsWith(`${slotId}::`));
+    if (remaining.length === this.mission.decisions.length) return false;
+    this.mission.decisions = remaining;
+    this.emit('DECISION_REMOVED', slotId);
+    return true;
+  }
   setResponse(id: string, value: string) {
     if (this.paused || this.mission.current.kind !== 'decision' || this.mission.decisionConfirmed) return;
     if (!this.mission.current.activity?.fields?.some(field => field.id === id)) return;
     this.responses = { ...this.responses, [id]: value }; this.refresh();
+  }
+  performActivityStepAction(stepId: string, objectId: string, targetId?: string) {
+    const step = this.mission.current.activity?.steps?.[this.activitySteps.length];
+    if (this.paused || this.mission.current.kind !== 'decision' || this.mission.decisionConfirmed || step?.id !== stepId || !step.interaction || step.interaction.kind === 'syringe-withdrawal') return false;
+    const object = step.interaction.objects.find(item => item.id === objectId);
+    if (!object || (object.targetId && !step.interaction.targets.some(target => target.id === targetId)) || (!object.targetId && targetId !== undefined)) return false;
+    const progress = this.activityStepProgress[stepId];
+    this.activityStepProgress = {...this.activityStepProgress, [stepId]: {toolPlaced:false,amount:0,layoutVersion:1,actions:{...progress?.actions,[objectId]:targetId ?? 'reviewed'}}};
+    this.feedback = {kind:'info',text:'จัดเตรียมแล้ว · ยืนยันขั้นตอนเมื่อพร้อม'};
+    this.emit('ACTIVITY_OBJECT_CHANGED', `${stepId}:${objectId}`);
+    return true;
   }
   completeActivityStep(id: string) {
     const activity = this.mission.current.activity;
@@ -199,6 +218,15 @@ export class CaseEngine {
         this.score.attempt(false);
         this.feedback = { kind: 'error', text: `ปริมาณยังไม่ตรง Order · ปรับแกนให้อยู่ที่ ${next.interaction.targetAmount.toFixed(1)} ${next.interaction.unit} แล้วลองยืนยันอีกครั้ง` };
         this.emit('WRONG_ACTION', this.feedback.text);
+        return false;
+      }
+    }
+    if (next.interaction && next.interaction.kind !== 'syringe-withdrawal') {
+      const actions = this.activityStepProgress[id]?.actions ?? {};
+      if (!next.interaction.objects.every(object => actions[object.id] === (object.targetId ?? 'reviewed'))) {
+        this.score.attempt(false);
+        this.feedback = {kind:'error',text:'ขั้นนี้ยังไม่ครบ · ทบทวนข้อมูลหรือจัดอุปกรณ์ แล้วลองยืนยันอีกครั้ง'};
+        this.emit('WRONG_ACTION',id);
         return false;
       }
     }
@@ -347,7 +375,7 @@ export class CaseEngine {
     if (this.uiElapsed > 80) { this.uiElapsed = 0; this.refresh(); }
   }
   checkpoint(): Checkpoint {
-    return { version: this.config.version, caseId: this.config.id, mission: this.mission.current.id, completed: [...this.mission.completed], chart: this.chart, leads: [...this.ecg.placed], leadPlacements:{...this.ecg.placements},ecgConfirmed:this.ecg.confirmed,ecgValidated:[...this.ecg.validated], score: { ...this.score.data }, elapsed: this.elapsed, phaseElapsed: this.mission.phaseElapsed, emergencyElapsed: this.emergency.elapsed, vitals: { ...this.vitals.current }, decisions: this.mission.decisions, decisionConfirmed: this.mission.decisionConfirmed, responses: { ...this.responses }, activitySteps: [...this.activitySteps], activityPlacements: { ...this.activityPlacements }, activityStepProgress: { ...this.activityStepProgress } };
+    return { version: this.config.version, caseId: this.config.id, mission: this.mission.current.id, completed: [...this.mission.completed], chart: this.chart, leads: [...this.ecg.placed], leadPlacements:{...this.ecg.placements},ecgConfirmed:this.ecg.confirmed,ecgValidated:[...this.ecg.validated], score: { ...this.score.data }, elapsed: this.elapsed, phaseElapsed: this.mission.phaseElapsed, emergencyElapsed: this.emergency.elapsed, vitals: { ...this.vitals.current }, decisions: this.mission.decisions, decisionConfirmed: this.mission.decisionConfirmed, responses: { ...this.responses }, activitySteps: [...this.activitySteps], activityPlacements: { ...this.activityPlacements }, activityStepProgress: Object.fromEntries(Object.entries(this.activityStepProgress).map(([id,value])=>[id,{...value,actions:{...value.actions}}])) };
   }
   restore(checkpoint: Checkpoint) {
     const index = this.config.missions.findIndex(mission => mission.id === checkpoint.mission);
@@ -366,7 +394,7 @@ export class CaseEngine {
       || Object.keys(checkpoint.activityStepProgress).some(id => !validInteractionStepIds.has(id))
       || (activeActivity.steps?.length && checkpoint.activitySteps.length === 0 && Object.keys(checkpoint.responses).length > 0)
     ));
-    this.mission.index = index; this.mission.completed = new Set(checkpoint.completed); this.mission.decisions = resetIncompatibleDecision ? [] : checkpoint.decisions; this.mission.decisionConfirmed = resetIncompatibleDecision ? false : checkpoint.decisionConfirmed; this.mission.phaseElapsed = checkpoint.phaseElapsed; this.responses = resetIncompatibleActivity ? {} : { ...checkpoint.responses }; this.activitySteps = resetIncompatibleActivity ? [] : [...checkpoint.activitySteps]; this.activityPlacements = resetIncompatibleActivity ? {} : { ...checkpoint.activityPlacements }; this.activityStepProgress = resetIncompatibleActivity ? {} : { ...checkpoint.activityStepProgress };
+    this.mission.index = index; this.mission.completed = new Set(checkpoint.completed); this.mission.decisions = resetIncompatibleDecision ? [] : checkpoint.decisions; this.mission.decisionConfirmed = resetIncompatibleDecision ? false : checkpoint.decisionConfirmed; this.mission.phaseElapsed = checkpoint.phaseElapsed; this.responses = resetIncompatibleActivity ? {} : { ...checkpoint.responses }; this.activitySteps = resetIncompatibleActivity ? [] : [...checkpoint.activitySteps]; this.activityPlacements = resetIncompatibleActivity ? {} : { ...checkpoint.activityPlacements }; this.activityStepProgress = resetIncompatibleActivity ? {} : Object.fromEntries(Object.entries(checkpoint.activityStepProgress).filter(([id,progress]) => {const kind=activeActivity?.steps?.find(step=>step.id===id)?.interaction?.kind;return kind==='syringe-withdrawal'||progress.layoutVersion===1;}).map(([id,progress])=>[id,{...progress,actions:{...progress.actions}}]));
     this.chart = checkpoint.chart; this.ecg.placed = new Set(checkpoint.leads);
     this.ecg.placements={...(checkpoint.leadPlacements??Object.fromEntries(checkpoint.leads.map(id=>[id,id])))};
     this.ecg.confirmed=checkpoint.ecgConfirmed??checkpoint.leads.length===this.ecg.targets.length;
@@ -376,6 +404,6 @@ export class CaseEngine {
     this.vitals.current = { ...checkpoint.vitals };
     const effect = this.mission.current.onEnter;
     if (effect?.vitals) this.vitals.transition(effect.vitals, Math.max(0, (effect.duration ?? 0) - checkpoint.phaseElapsed));
-    this.feedback = { kind: 'info', text: resetLegacyECG || resetIncompatibleDecision || resetIncompatibleActivity ? 'มีการปรับรูปแบบกิจกรรม · เริ่มช่วงนี้ใหม่ โดยเก็บ Chart และภารกิจที่จบแล้วไว้' : 'เล่นต่อจากข้อมูลที่บันทึกไว้แล้ว' }; this.emit('CHECKPOINT_RESTORED', checkpoint.mission);
+    this.feedback = { kind: 'info', text: resetLegacyECG || resetIncompatibleDecision || resetIncompatibleActivity || checkpoint.restartNotice==='activity-step' ? 'มีการปรับรูปแบบกิจกรรม · เริ่มช่วงนี้ใหม่ โดยเก็บ Chart และภารกิจที่จบแล้วไว้' : 'เล่นต่อจากข้อมูลที่บันทึกไว้แล้ว' }; this.emit('CHECKPOINT_RESTORED', checkpoint.mission);
   }
 }

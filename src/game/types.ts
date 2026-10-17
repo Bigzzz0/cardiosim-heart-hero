@@ -24,7 +24,7 @@ export interface ToolVisual {
 export interface RoomPresentation {
   background: { x: number; y: number; width: number; height: number };
   patient: { x: number; y: number; width: number; height: number };
-  camera: { center: Point; procedureCenter: Point; transitionCenter: Point };
+  camera: { center: Point; procedureCenter: Point; transitionCenter: Point; contextFocus?: { point: Point; radius: number } };
 }
 export interface MedicalTool { id: string; name: string; icon: 'interview' | 'stethoscope' | 'bp' | 'spo2' | 'hand'; sprite?: string; visual?: ToolVisual; allowedTargets: string[]; duration: number }
 export type ChartSection = 'History' | 'Vital Signs' | 'Respiratory Assessment' | 'Perfusion Assessment' | 'Care Plan' | 'Medication' | 'Intake / Output' | 'ECG';
@@ -36,8 +36,11 @@ export interface DecisionSlot { id: string; label: string; expected: string }
 export type DecisionPresentation = 'bedside-clipboard' | 'monitor-response';
 export type ActivityPresentation = 'medication-station' | 'io-board' | 'ecg-console';
 export type ActivityEquipmentIcon = 'order' | 'ampoule' | 'aseptic' | 'syringe' | 'double-check' | 'patient-id' | 'monitor' | 'intake' | 'output' | 'ecg';
-export interface ActivityStepInteraction { kind: 'syringe-withdrawal'; targetId: string; targetAmount: number; scaleMax: number; accuracyWindow: number; unit: 'mL' }
-export interface ActivityStepProgress { toolPlaced: boolean; amount: number }
+export interface SyringeInteraction { kind: 'syringe-withdrawal'; targetId: string; targetAmount: number; scaleMax: number; accuracyWindow: number; unit: 'mL' }
+export interface WorkbenchObject { id: string; label: string; icon: ActivityEquipmentIcon; visual?: 'needle' | 'pad' | 'wristband' | 'label'; detail?: string; rowLabel?: string; targetId?: string; acknowledgement?: boolean }
+export interface ObjectWorkbenchInteraction { kind: 'inspect' | 'collect' | 'label' | 'identity' | 'record'; objects: WorkbenchObject[]; targets: { id: string; label: string }[]; notice?: string }
+export type ActivityStepInteraction = SyringeInteraction | ObjectWorkbenchInteraction;
+export interface ActivityStepProgress { toolPlaced: boolean; amount: number; actions?: Record<string,string>; layoutVersion?: number }
 export interface ActivityStep { id: string; label: string; detail: string; equipmentLabel: string; icon: ActivityEquipmentIcon; interaction?: ActivityStepInteraction }
 export interface ActivityItem { visual?: 'iv'|'drink'|'urine'; id: string; label: string; zoneId: string }
 export interface ActivityZone { id: string; label: string }
@@ -129,7 +132,7 @@ export interface InteractionPreview {
 }
 export interface GameEvent { type: string; at: number; detail: string; interaction?: InteractionEventData }
 export interface Checkpoint {
-  restartNotice?: 'ecg-placement';
+  restartNotice?: 'ecg-placement' | 'activity-step';
   version: number; caseId: string; mission: MissionState; completed: string[]; chart: ChartEntry[];
   leadPlacements?: Record<string,string>; ecgConfirmed?: boolean; ecgValidated?: string[];
   leads: string[]; score: ScoreData; elapsed: number; phaseElapsed: number; emergencyElapsed: number;

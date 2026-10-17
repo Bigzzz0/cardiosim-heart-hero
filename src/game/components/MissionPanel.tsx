@@ -41,6 +41,7 @@ type MissionPanelProps = {
   onAcknowledgeMissing: () => void;
   onStartActivityStepDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
   onStartSyringeToolDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
+  onStepAction: (stepId:string,objectId:string,targetId?:string)=>void;
   onCompleteActivityStep: (id: string) => void;
   onPlaceSyringeTool: (stepId: string, targetId: string) => void;
   onSetSyringeAmount: (stepId: string, amount: number) => void;
@@ -54,12 +55,13 @@ export function MissionPanel({
   primaryLabel, nextObjective, nextTool, nextHotspot, nextToolIcon: NextToolIcon, onToggle, onMainAction,
   onHint, onOpenChart, onRestart, onPostTest, onStartNormal, onStartEmergency, onStartAnswerDrag, onClickAnswer,
   activitySteps, activityStepProgress, activityPlacements, selectedActivityItemId, onAcknowledgeMissing, onStartActivityStepDrag,
-  onCompleteActivityStep, onPlaceSyringeTool, onStartSyringeToolDrag, onSetSyringeAmount, onStartActivityItemDrag, onSelectActivityItem, onPlaceActivityItem,
+  onStepAction, onCompleteActivityStep, onPlaceSyringeTool, onStartSyringeToolDrag, onSetSyringeAmount, onStartActivityItemDrag, onSelectActivityItem, onPlaceActivityItem,
 }: MissionPanelProps) {
   const mission = engine.mission.current;
   const decision = mission.decision;
   const hasWorkbench = Boolean(decision?.presentation || mission.activity?.presentation);
-  const showFeedback = !hasWorkbench || engine.feedback.kind !== 'info' || engine.hints.visible || engine.mission.decisionConfirmed;
+  const preparing = Boolean(mission.activity?.steps?.length && activitySteps.length < mission.activity.steps.length);
+  const showFeedback = (!hasWorkbench || engine.feedback.kind !== 'info' || engine.hints.visible || engine.mission.decisionConfirmed) && !(mission.kind === 'intro' && engine.feedback.text === mission.description);
   const objectiveCount = mission.objectives?.length ?? 0;
   const objectiveDone = mission.objectives?.filter(item => engine.mission.completed.has(item.id)).length ?? 0;
   const compactProgress = mission.objectives
@@ -84,6 +86,8 @@ export function MissionPanel({
     onAcknowledgeMissing={onAcknowledgeMissing}
     onStartStepDrag={onStartActivityStepDrag}
     onStartSyringeToolDrag={onStartSyringeToolDrag}
+    readings={engine.vitals.current}
+    onStepAction={onStepAction}
     onCompleteStep={onCompleteActivityStep}
     onPlaceSyringeTool={onPlaceSyringeTool}
     onSetSyringeAmount={onSetSyringeAmount}
@@ -97,6 +101,7 @@ export function MissionPanel({
     data-initial-feedback={engine.feedback.text === mission.description}
     data-toast-active={interactionToastActive}
     className={`mission-panel mode-${presentation} ${isOpen ? '' : 'mission-collapsed'}`}
+    data-preparing={preparing}
   >
     <div className="mission-heading">
       <span className={`eyebrow ${presentation === 'field' ? 'comms-eyebrow' : ''}`}>{presentation === 'field' && <Radio size={13}/>}<span>{presentation === 'field' ? 'CARE TEAM RADIO' : presentation === 'procedure' ? 'PROCEDURE' : presentation === 'briefing' ? 'CASE BRIEF' : 'MISSION'}</span>{presentation === 'field' && <i>LIVE</i>}</span>
@@ -153,7 +158,7 @@ export function MissionPanel({
       onRestart={onRestart}
       onPostTest={onPostTest}
     />}
-    {showFeedback && <div className={`feedback ${engine.feedback.kind}`} role="status" aria-live="polite">
+    {showFeedback && !(preparing && engine.feedback.kind === 'success') && <div className={`feedback ${engine.feedback.kind}`} role="status" aria-live="polite">
       <span className="feedback-symbol">{engine.feedback.kind === 'success' ? <Check size={16}/> : engine.feedback.kind === 'error' ? <X size={16}/> : <Lightbulb size={16}/>}</span>
       <span>{engine.feedback.text}</span>
     </div>}
@@ -177,6 +182,7 @@ export function MissionPanel({
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
           onAssignSlot={(slotId,optionId)=>engine.chooseForSlot(slotId,optionId)}
+          onRemoveSlot={slotId=>engine.removeDecisionSlot(slotId)}
         onClickAnswer={onClickAnswer}
           onChoose={optionId => engine.choose(optionId)}
         /></InRoomDecisionSurface>
@@ -186,6 +192,7 @@ export function MissionPanel({
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
           onAssignSlot={(slotId,optionId)=>engine.chooseForSlot(slotId,optionId)}
+          onRemoveSlot={slotId=>engine.removeDecisionSlot(slotId)}
         onClickAnswer={onClickAnswer}
           onChoose={optionId => engine.choose(optionId)}
         />)}

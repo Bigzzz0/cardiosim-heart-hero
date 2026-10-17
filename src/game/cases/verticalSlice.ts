@@ -1,5 +1,6 @@
 import type { GameCase } from '../types';
 import { CASE_1_DETAILS } from '../../data/case1Data';
+import { medicationInteractions } from './medicationWorkbench';
 import { MEDICATION_PREPARATION_STEPS } from '../../data/medicationStepsData';
 
 const spec = 'Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)';
@@ -20,7 +21,7 @@ export const verticalSlice: GameCase = {
   gradable: true,
   sources: [storyboard, spec],
   assets: { room: '/game/bedside/bedside-room.webp', patient: '/game/bedside/patient-01.webp', patientCritical: '/game/bedside/patient-01.webp', ecgLeads: '/game/bedside/electrode.webp', ecgChest: '/game/bedside/ecg-body.webp' },
-  presentation: { background: { x:550,y:410,width:1500,height:1000 }, patient: { x:550,y:515,width:360,height:630 }, camera: { center:{x:550,y:390}, procedureCenter:{x:575,y:360}, transitionCenter:{x:550,y:400} } },
+  presentation: { background: { x:550,y:410,width:1500,height:1000 }, patient: { x:550,y:515,width:360,height:630 }, camera: { center:{x:550,y:390}, procedureCenter:{x:575,y:360}, transitionCenter:{x:550,y:400}, contextFocus:{point:{x:550,y:280},radius:53} } },
   initialVitals: { hr: 112, bpSystolic: 168, bpDiastolic: 98, rr: 24, spo2: 95 },
   initialPatient: { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' },
   monitorTraces: {
@@ -66,12 +67,12 @@ export const verticalSlice: GameCase = {
     finding: 'ecg', label: 'CHEST LEAD PLACEMENT · ผังฝึกจาก storyboard รอตรวจตำแหน่งโดยผู้เชี่ยวชาญ',
     layout: { board: { x: 310, y: 105, width: 530, height: 420 }, image: { x: 423, y: 150, width: 294, height: 300 }, tray: { x: 432, y: 490, spacing: 57 } },
     targets: [
-      { id: 'V1', label: 'V1', x: 535, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .25, y: .28 } },
-      { id: 'V2', label: 'V2', x: 572, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .52, y: .23 } },
-      { id: 'V3', label: 'V3', x: 602, y: 300, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .83, y: .39 } },
-      { id: 'V4', label: 'V4', x: 630, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .57, y: .84 } },
-      { id: 'V5', label: 'V5', x: 667, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .79, y: .84 } },
-      { id: 'V6', label: 'V6', x: 702, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: .92, y: .64 } },
+      { id: 'V1', label: 'V1', x: 535, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.18 } },
+      { id: 'V2', label: 'V2', x: 572, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.18 } },
+      { id: 'V3', label: 'V3', x: 602, y: 300, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.5 } },
+      { id: 'V4', label: 'V4', x: 630, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.5 } },
+      { id: 'V5', label: 'V5', x: 667, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.82 } },
+      { id: 'V6', label: 'V6', x: 702, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.82 } },
     ],
   },
   missions: [
@@ -105,7 +106,7 @@ export const verticalSlice: GameCase = {
     } },
     { id: 'MEDICATION', kind: 'decision', phase: '05 · MEDICATION', title: 'ตรวจคำสั่งยา\nและบันทึกการเตรียม', description: 'อ่าน Doctor Order ใน Case แล้วกรอกยา ขนาด วิธีให้ และสิ่งที่ต้องเฝ้าระวัง ก่อน Confirm', hint: 'ตรวจ order ที่แสดง แล้วเทียบกับข้อมูลยาในแบบฝึก', chartFinding: 'medication', gradable: true, activity: {
       kind: 'medication', presentation: 'medication-station', gradable: true, source: 'ehrCase1Data.ts + medicationStepsData.ts', eyebrow: 'MEDICATION PREP STATION · CASE 01 DEMO', title: 'สถานีเตรียมยา',
-      steps: MEDICATION_PREPARATION_STEPS.map((step,index) => ({ id: step.id, label: medicationEquipment[index]?.label ?? `เตรียมยา · ขั้น ${step.stepNumber}`, detail: step.text.replace(/^\d+\.\s*/, ''), equipmentLabel: medicationEquipment[index]?.equipmentLabel ?? 'อุปกรณ์เตรียมยา', icon: medicationEquipment[index]?.icon ?? 'order', ...(step.id === 'step_draw_med' ? { interaction: { kind: 'syringe-withdrawal' as const, targetId: 'ampoule', targetAmount: 4, scaleMax: 5, accuracyWindow: 0.1, unit: 'mL' as const } } : {}) })),
+      steps: MEDICATION_PREPARATION_STEPS.map((step,index) => ({ id: step.id, label: medicationEquipment[index]?.label ?? `เตรียมยา · ขั้น ${step.stepNumber}`, detail: step.text.replace(/^\d+\.\s*/, ''), equipmentLabel: medicationEquipment[index]?.equipmentLabel ?? 'อุปกรณ์เตรียมยา', icon: medicationEquipment[index]?.icon ?? 'order', interaction: medicationInteractions[step.id] })),
       notice: 'ข้อมูลยาเป็นเนื้อหาเดโมจากเว็บเดิม รอผู้เชี่ยวชาญตรวจรับรอง',
       rows: [{ label: 'Doctor Order', value: 'Furosemide 40 mg IV slow push stat over 2 minutes' }, { label: 'แพ้ยา', value: 'NKDA · ตาม EHR draft' }],
       fields: [

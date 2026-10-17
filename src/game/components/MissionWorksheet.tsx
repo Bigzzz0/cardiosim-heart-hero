@@ -6,6 +6,7 @@ import { ECGReviewConsole } from './ECGReviewConsole';
 
 type MissionWorksheetProps = {
   activity: ActivityConfig;
+  readings?: import('../types').VitalSigns;
   decision?: Decision;
   decisions: readonly string[];
   responses: Readonly<Record<string, string>>;
@@ -19,6 +20,7 @@ type MissionWorksheetProps = {
   onAcknowledgeMissing: () => void;
   onStartStepDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
   onStartSyringeToolDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
+  onStepAction: (stepId:string,objectId:string,targetId?:string)=>void;
   onCompleteStep: (id: string) => void;
   onPlaceSyringeTool: (stepId: string, targetId: string) => void;
   onSetSyringeAmount: (stepId: string, amount: number) => void;
@@ -27,8 +29,8 @@ type MissionWorksheetProps = {
   onPlaceItem: (id: string, zoneId: string) => void;
 };
 
-export function MissionWorksheet({ activity, decision, decisions, responses, confirmed, activitySteps, activityStepProgress, activityPlacements, selectedItemId, onSetResponse, onChoose, onAcknowledgeMissing, onStartStepDrag, onStartSyringeToolDrag, onCompleteStep, onPlaceSyringeTool, onSetSyringeAmount, onStartItemDrag, onSelectItem, onPlaceItem }: MissionWorksheetProps) {
-  if (activity.presentation === 'medication-station') return <MedicationStation activity={activity} decision={decision} decisions={decisions} responses={responses} completedSteps={activitySteps} stepProgress={activityStepProgress} confirmed={confirmed} onSetResponse={onSetResponse} onChoose={onChoose} onAcknowledgeMissing={onAcknowledgeMissing} onStartStepDrag={onStartStepDrag} onStartSyringeToolDrag={onStartSyringeToolDrag} onCompleteStep={onCompleteStep} onPlaceSyringeTool={onPlaceSyringeTool} onSetSyringeAmount={onSetSyringeAmount}/>;
+export function MissionWorksheet({ activity, readings, onStepAction, decision, decisions, responses, confirmed, activitySteps, activityStepProgress, activityPlacements, selectedItemId, onSetResponse, onChoose, onAcknowledgeMissing, onStartStepDrag, onStartSyringeToolDrag, onCompleteStep, onPlaceSyringeTool, onSetSyringeAmount, onStartItemDrag, onSelectItem, onPlaceItem }: MissionWorksheetProps) {
+  if (activity.presentation === 'medication-station') return <MedicationStation activity={activity} readings={readings} onStepAction={onStepAction} decision={decision} decisions={decisions} responses={responses} completedSteps={activitySteps} stepProgress={activityStepProgress} confirmed={confirmed} onSetResponse={onSetResponse} onChoose={onChoose} onAcknowledgeMissing={onAcknowledgeMissing} onStartStepDrag={onStartStepDrag} onStartSyringeToolDrag={onStartSyringeToolDrag} onCompleteStep={onCompleteStep} onPlaceSyringeTool={onPlaceSyringeTool} onSetSyringeAmount={onSetSyringeAmount}/>;
   if (activity.presentation === 'io-board') return <IOBalanceBoard activity={activity} decision={decision} decisions={decisions} placements={activityPlacements} selectedItemId={selectedItemId} responses={responses} confirmed={confirmed} onSetResponse={onSetResponse} onChoose={onChoose} onAcknowledgeMissing={onAcknowledgeMissing} onStartItemDrag={onStartItemDrag} onSelectItem={onSelectItem} onPlaceItem={onPlaceItem}/>;
   if (activity.presentation === 'ecg-console') return <ECGReviewConsole activity={activity} responses={responses} confirmed={confirmed} onSetResponse={onSetResponse}/>;
   return <section className={`activity-card activity-${activity.kind}`}>

@@ -22,7 +22,7 @@ try{
      const c=await page.context().newCDPSession(page);await c.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:source.x+source.width/2,y:source.y+source.height/2}]});await c.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:target.x+target.width/2,y:target.y+target.height/2}]});await c.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await c.detach();
     }
     assert.equal(await page.locator('.answer-slot.filled').count(),2);
-    const next=page.getByRole('button',{name:'ดำเนินภารกิจจากแถบด้านบน',exact:true});
+    const next=page.locator('.mission-panel .primary:visible').first();
     await next.click();await page.locator('.feedback.error').waitFor();
     for(const [slot,id] of [['problem','breathing-problem'],['support','respiratory-evidence']]){
      await page.locator(`[data-answer-slot="${slot}"]`).click();await page.locator(`[data-answer-option="${id}"]`).focus();await page.keyboard.press('Enter');

@@ -86,7 +86,10 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.equal(game.completeActivityStep('step_label_check'),false,'equipment steps must be completed in the configured order');
   assert.equal(game.confirmActivity(),false,'confirmation waits for all seven preparation steps');
   const prepSteps = verticalSlice.missions.find(mission=>mission.id==='MEDICATION')?.activity?.steps ?? [];
-  for (const step of prepSteps.slice(0,3)) assert.equal(game.completeActivityStep(step.id),true);
+  for (const step of prepSteps.slice(0,3)) {
+    if(step.interaction && step.interaction.kind!=='syringe-withdrawal') for(const object of step.interaction.objects) game.performActivityStepAction(step.id,object.id,object.targetId);
+    assert.equal(game.completeActivityStep(step.id),true);
+  }
   const syringeStep = prepSteps[3];
   assert.equal(game.completeActivityStep(syringeStep.id),false,'the syringe action cannot be skipped by clicking its checklist row');
   assert.equal(game.placeActivityStepTool(syringeStep.id,'wrong-target'),false,'syringe must contact the configured ampoule target');
@@ -97,12 +100,15 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   const syringeResume = new CaseEngine(verticalSlice); syringeResume.restore(syringeCheckpoint!);
   assert.equal(syringeResume.activityStepProgress[syringeStep.id]?.toolPlaced,true,'placed syringe state resumes in the station');
   const legacySyringeCheckpoint = parseCheckpoint(JSON.stringify({ ...game.checkpoint(), activityStepProgress: undefined }),verticalSlice);
-  assert.deepEqual(legacySyringeCheckpoint?.activitySteps,[],'an older medication checkpoint restarts the changed active activity safely');
+  assert.deepEqual(legacySyringeCheckpoint?.activitySteps,prepSteps.slice(0,3).map(step=>step.id),'older saves retain completed steps while restarting the current equipment action');
   assert.deepEqual(legacySyringeCheckpoint?.activityStepProgress,{});
   assert.equal(game.completeActivityStep(syringeStep.id),false,'an incorrect drawn volume can be rejected and retried');
   game.setActivityStepAmount(syringeStep.id,4);
   assert.equal(game.completeActivityStep(syringeStep.id),true,'the configured volume completes the syringe action');
-  for (const step of prepSteps.slice(4)) assert.equal(game.completeActivityStep(step.id),true);
+  for (const step of prepSteps.slice(4)) {
+    if(step.interaction && step.interaction.kind!=='syringe-withdrawal') for(const object of step.interaction.objects) game.performActivityStepAction(step.id,object.id,object.targetId);
+    assert.equal(game.completeActivityStep(step.id),true);
+  }
   assert.equal(game.confirmActivity(),false,'incorrect medication data can be retried after preparation');
   game.setResponse('dose','40');
   assert.equal(game.canContinue,true); assert.equal(game.confirmActivity(),true,'the configured medication demo data can be confirmed');

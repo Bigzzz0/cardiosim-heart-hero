@@ -1,0 +1,219 @@
+/* Shared materials and semantic states for every bedside surface. */
+.storybook-game {
+ --care-ink:#27495f;--care-muted:#506d7e;--care-paper:#fffdf5;--care-enamel:#f1f8fc;
+ --care-edge:#89aec2;--care-selected:#216c99;--care-selected-bg:#e0f0fb;
+ --care-success:#276349;--care-success-bg:#e7f3e9;--care-danger:#9d382c;--care-danger-bg:#fff0e9;
+ --care-shadow:0 5px 0 #63899e,0 12px 24px #22394b33;
+ --care-type:14px;--care-radius:14px;--care-space:8px;
+ color:var(--care-ink);
+ --sim-ink:var(--care-ink);--sim-muted:var(--care-muted);--sim-panel:var(--care-paper);--sim-card:var(--care-enamel);--sim-line:var(--care-edge);--sim-accent:var(--care-selected-bg);
+}
+.storybook-game button:focus-visible,.storybook-game summary:focus-visible,.storybook-game input:focus-visible,.storybook-game select:focus-visible {outline:3px solid var(--care-selected);outline-offset:3px;}
+.storybook-game .mission-panel.mode-result {position:absolute;z-index:25;top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(590px,calc(100% - 24px));max-height:calc(100dvh - 160px);padding:20px;border:2px solid var(--care-edge);border-radius:24px;background:var(--care-paper);box-shadow:var(--care-shadow);overflow:auto;color:var(--care-ink);}
+.storybook-game .mode-result>:not(.result-card) {display:none!important;}
+.storybook-game .result-card {padding:0;margin:0;border:0;background:none;text-align:center;color:var(--care-ink);}
+.storybook-game .result-badge {display:grid;place-items:center;width:58px;height:58px;margin:0 auto 12px;border:2px solid #9abda7;border-radius:50%;background:var(--care-success-bg);color:var(--care-success);box-shadow:0 3px 0 #bed2c3;}
+.storybook-game .result-success {display:block;font-size:24px;line-height:1.35;color:var(--care-ink);}
+.storybook-game .result-status {font-size:14px;color:var(--care-muted);margin:8px 0 16px;}
+.storybook-game .result-metrics {display:flex;justify-content:space-evenly;gap:14px;padding:16px;background:var(--care-enamel);border:1px solid #c1d5e0;border-radius:14px;color:var(--care-ink);}
+.storybook-game .result-metrics>div {display:grid;gap:6px;}
+.storybook-game .result-metrics span {font-size:14px;letter-spacing:0;color:var(--care-muted);}
+.storybook-game .result-metrics b {font-size:32px;font-variant-numeric:tabular-nums;color:var(--care-ink);}
+.storybook-game .result-metrics b small {font-size:14px;color:var(--care-muted);}
+.storybook-game .result-metrics.compact {margin:10px 0;padding:10px;}
+.storybook-game .result-metrics.compact b {font-size:20px;}
+.storybook-game .result-details {margin-top:12px;text-align:left;border-top:1px solid #c1d5e0;}
+.storybook-game .result-details summary {padding:14px 4px;min-height:44px;cursor:pointer;font-size:14px;font-weight:700;color:var(--care-ink);}
+.storybook-game .result-vitals {display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;background:var(--care-enamel);color:var(--care-ink);border-radius:12px;}
+.storybook-game .result-vitals span {display:flex;justify-content:space-between;gap:8px;font-size:14px;}
+.storybook-game .result-case-data {display:grid;gap:8px;padding:12px 0;background:none;color:var(--care-muted);font-size:14px;}
+.storybook-game .result-case-data>span {display:flex;align-items:center;gap:8px;}
+.storybook-game .result-findings article {padding:10px 0;border-top:1px solid #c1d5e0;}
+.storybook-game .result-findings b {font-size:14px;}
+.storybook-game .result-findings p {font-size:14px;line-height:1.7;color:var(--care-muted);margin:4px 0;}
+.storybook-game .result-clinical-status {display:block;margin:14px 0;color:var(--care-muted);font-size:12px;line-height:1.6;}
+.storybook-game .result-actions {display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.storybook-game .result-actions button {display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid var(--care-edge);border-radius:12px;background:var(--care-enamel);color:var(--care-ink);font-size:14px;}
+.storybook-game .result-actions .primary {background:var(--care-selected-bg);border-color:var(--care-selected);}
+@media(max-width:760px) {
+ .storybook-game .mission-panel.mode-result {max-height:calc(100dvh - 155px);top:calc(50% + 45px);padding:18px;}
+ .storybook-game .result-success {font-size:21px;}
+}
+
+/* Card inventory states describe placement, never correctness before Confirm. */
+.storybook-game .answer-slot-wrap {position:relative;min-width:0;}
+.storybook-game .answer-slot-wrap>.answer-slot {width:100%;height:100%;}
+.storybook-game .answer-slot-wrap:has(.answer-remove)>.answer-slot {padding-right:49px;}
+.storybook-game .answer-remove {position:absolute;right:4px;bottom:4px;width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:var(--care-muted);}
+.storybook-game .answer-remove:hover {background:#c8e2ee;}
+.storybook-game .surface-content .answer-card.assigned {border-color:var(--care-selected);background:var(--care-selected-bg);color:var(--care-ink);}
+.storybook-game .card-assigned-label {font-size:11px;font-style:normal;font-weight:800;color:var(--care-selected);}
+.storybook-game .answer-slot.filled:not(.locked) {animation:card-land .18s ease-out;}
+@keyframes card-land {from{transform:translateY(-5px);opacity:.7}to{transform:none;opacity:1}}
+.storybook-game .mode-field .action-brief {color:var(--care-ink);}
+.storybook-game .tool-tutorial-tip>small {display:none;}
+.storybook-game .tool-tutorial-tip>b {display:none;}
+.storybook-game .tool-tutorial-tip>span {font-size:14px;}
+@media(max-width:760px) {
+ .storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response) {top:clamp(265px,34dvh,310px)!important;bottom:8px!important;max-height:none!important;height:auto!important;}
+ .storybook-game .surface-content .answer-slot {min-height:72px;}
+ .storybook-game .surface-content .answer-card {min-height:44px;padding:5px 8px;}
+ .storybook-game .surface-content .answer-options {grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+ .storybook-game .surface-content .answer-card {min-height:70px;gap:5px;align-items:center;}
+ .storybook-game .surface-content .answer-card>svg {width:14px;}
+ .storybook-game .surface-content .answer-card .drag-grip {display:none;}
+ .storybook-game .surface-content .drag-help {display:none;}
+ .storybook-game .surface-hardware {min-height:36px;padding-bottom:4px;}
+ .storybook-game .surface-instruction small {display:none;}
+ .storybook-game .evidence-strip summary {min-height:32px;padding:6px 0;font-size:14px;}
+ .storybook-game .surface-content .matching-board {padding-top:5px;gap:5px;}
+ .storybook-game .surface-content .panel-title {font-size:12px;}
+ .storybook-game .surface-content .answer-slot b {font-size:13px;line-height:1.35;}
+ .storybook-game .answer-slot-wrap:has(.answer-remove)>.answer-slot {padding-right:30px;}
+ .storybook-game .answer-remove {right:0;bottom:0;background:#e9f5fbaa;}
+}
+@media(prefers-reduced-motion:reduce) {.storybook-game .answer-slot.filled:not(.locked) {animation:none;}}
+
+/* Equipment workbenches show the current object, with source documents on demand. */
+.storybook-game .medication-station-card {display:block;}
+.storybook-game .medication-order-card {padding:0;margin:6px 0;border:0;background:none;}
+.storybook-game .medication-order-card>summary {min-height:44px;padding:10px;color:var(--care-ink);font-size:14px;cursor:pointer;}
+.storybook-game .medication-order-card[open] {padding:8px;border:1px solid var(--care-edge);border-radius:12px;background:var(--care-paper);}
+.storybook-game .medication-step-list:not(.expanded) {display:none;}
+.storybook-game .medication-equipment-tray {padding:0;border:0;background:none;}
+.storybook-game .medication-overview {min-height:44px;font-size:14px;}
+.storybook-game .procedure-count {display:none;}
+.storybook-game .object-workbench {width:100%;padding:10px;border:1px solid #afc7d4;border-radius:16px;background:linear-gradient(135deg,#f9fcfd,#e1edf3);color:var(--care-ink);box-shadow:inset 0 2px 0 white;}
+.storybook-game .workbench-caption {display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;font-size:16px;}
+.storybook-game .workbench-caption>span {font-size:14px;white-space:nowrap;color:var(--care-muted);}
+.storybook-game .workbench-notice {font-size:14px;color:var(--care-muted);line-height:1.5;margin:6px 0;}
+.storybook-game .workbench-object-tray {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:start;}
+.storybook-game .workbench-object {position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;min-height:76px;padding:12px;border:1px solid #a6bfcd;border-radius:12px;background:var(--care-paper);box-shadow:0 3px 0 #b1c6d2;color:var(--care-ink);touch-action:none;text-align:left;}
+.storybook-game .workbench-object>img {width:74px;height:48px;object-fit:contain;pointer-events:none;}
+.storybook-game .workbench-object>small {font-size:12px;width:100%;color:var(--care-muted);text-align:center;}
+.storybook-game .workbench-object>b {font-size:14px;}
+.storybook-game .workbench-object.selected {outline:3px solid var(--care-selected);outline-offset:1px;}
+.storybook-game .workbench-object.reviewed {border-color:var(--care-selected);background:var(--care-selected-bg);}
+.storybook-game .object-detail {display:block;flex-basis:100%;font-size:14px;line-height:1.5;color:var(--care-ink);border-top:1px solid #b5cfde;padding-top:8px;}
+.storybook-game .object-check {color:var(--care-selected);}
+.storybook-game .workbench-prop-art {width:90px;height:48px;pointer-events:none;}
+.storybook-game .workbench-target-tray {display:grid;margin:12px 0;}
+.storybook-game .workbench-target {min-height:90px;padding:12px;border:2px dashed #8aaabd;border-radius:14px;background:#d9e7ef;color:var(--care-ink);}
+.storybook-game .workbench-target>b {display:block;font-size:14px;}
+.storybook-game .workbench-target>small {display:block;font-size:12px;line-height:1.5;color:var(--care-muted);}
+.storybook-game .workbench-target>span {display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:5px;}
+.storybook-game .workbench-target i {font-style:normal;font-size:14px;background:var(--care-paper);padding:6px 10px;border:1px solid #94b5c8;border-radius:8px;}
+.storybook-game .syringe-label-target>img {width:180px;height:65px;object-fit:contain;pointer-events:none;}
+.storybook-game .workbench-confirm {display:flex;justify-content:center;align-items:center;width:100%;min-height:44px;margin-top:12px;border:1px solid var(--care-selected);border-radius:12px;background:var(--care-selected-bg);color:var(--care-ink);font-size:14px;font-weight:700;box-shadow:0 3px 0 #86adc4;}
+.workbench-ghost {position:fixed;z-index:100;transform:translate(-50%,-70%);padding:12px;border:2px solid #4f91b5;border-radius:10px;background:#fffdf5;color:#27495f;font-size:14px;pointer-events:none;box-shadow:0 8px 20px #213d5055;}
+.storybook-game .syringe-minigame {padding:10px;border:1px solid #afc7d4;border-radius:14px;background:var(--care-enamel);}
+.storybook-game .syringe-game-instruction {padding:0;border:0;background:none;}
+.storybook-game .syringe-game-instruction small {font-size:14px;}
+.storybook-game .syringe-workbench {min-height:190px;overflow:visible;}
+.storybook-game .ampoule-drop-target {flex-basis:80px;width:80px;min-height:150px;border:0;background:none;}
+.storybook-game .ampoule-art {width:78px;height:130px;}
+.storybook-game .syringe-minigame.is-placed .ampoule-art {transform:translateX(32px);}
+.storybook-game .syringe-instrument {margin-left:-18px;}
+.storybook-game .syringe-minigame.is-placed .ampoule-drop-target small {visibility:hidden;}
+.storybook-game .syringe-direct-grip {border-radius:6px;background:#a8d6ed40;border:1px solid #5b92b2;}
+.storybook-game .syringe-confirm {min-height:44px;color:var(--care-ink);background:var(--care-selected-bg);border-color:var(--care-selected);font-size:14px;}
+@media(min-width:761px) {
+ .storybook-game .mode-medication-station .activity-surface-hardware,.storybook-game .mode-medication-station .activity-surface-instruction {display:none;}
+ .storybook-game .mode-medication-station .activity-surface-content {padding:8px;}
+ .storybook-game .mode-medication-station .activity-notice {font-size:12px;padding:3px 8px;line-height:1.4;}
+ .storybook-game .mode-medication-station .medication-order-card {margin:0;}
+ .storybook-game .mode-medication-station .medication-overview {width:auto;min-width:180px;float:right;margin-top:-44px;}
+ .storybook-game .mode-medication-station .medication-order-card>summary {width:calc(100% - 190px);}
+ .storybook-game .medication-order-card[open]+.medication-procedure .medication-overview {float:none;margin:0;}
+ .storybook-game .object-workbench:has(.workbench-target-tray) {display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;}
+ .storybook-game .object-workbench:has(.workbench-target-tray)>.workbench-caption,.storybook-game .object-workbench:has(.workbench-target-tray)>.workbench-notice,.storybook-game .object-workbench:has(.workbench-target-tray)>.workbench-confirm {grid-column:1/-1;margin:0;}
+ .storybook-game .workbench-target-tray {margin:0;}
+ .storybook-game .workbench-object {padding:8px;min-height:66px;}
+ .storybook-game .workbench-object>small {display:none;}
+}
+@media(max-width:760px) {
+ .storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console) {top:clamp(265px,34dvh,310px)!important;bottom:8px!important;max-height:none!important;height:auto!important;}
+ .storybook-game .activity-surface-hardware {display:none;}
+ .storybook-game .activity-surface-instruction {padding:6px 0;margin:0;background:none;border:0;}
+ .storybook-game .activity-surface-instruction b {font-size:14px;}
+ .storybook-game .activity-surface-content {padding:7px;}
+ .storybook-game .activity-notice {font-size:12px;padding:5px 7px;line-height:1.45;}
+ .storybook-game .object-workbench {padding:9px;}
+ .storybook-game .workbench-caption {font-size:14px;margin-bottom:6px;}
+ .storybook-game .workbench-object {padding:8px;min-height:62px;}
+ .storybook-game .workbench-object>small {display:none;}
+ .storybook-game .workbench-object>img {width:58px;height:36px;}
+ .storybook-game .object-detail {font-size:12px;line-height:1.45;}
+ .storybook-game .workbench-target {min-height:76px;padding:8px;}
+ .storybook-game .workbench-confirm {margin-top:8px;}
+ .storybook-game .syringe-workbench {min-height:155px;}
+ .storybook-game .syringe-game-instruction small {display:none;}
+ .storybook-game .syringe-readout {gap:5px;}
+ .storybook-game .syringe-adjust {gap:6px;}
+ .storybook-game .syringe-adjust span {font-size:12px;}
+ .storybook-game .medication-order-card>summary {min-height:36px;padding:7px;font-size:14px;}
+ .storybook-game .medication-overview {margin:0;}
+}
+
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console) {display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) auto auto auto;gap:7px;padding:10px;overflow:hidden;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.in-room-activity-surface {grid-row:1;grid-column:1/-1;min-height:0;overflow:auto;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.feedback {grid-row:2;grid-column:1/-1;margin:0;padding:7px 10px;background:var(--care-enamel);color:var(--care-ink);font-size:14px;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.feedback.error {background:var(--care-danger-bg);color:var(--care-danger);border-color:#cf978b;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.feedback.success {background:var(--care-success-bg);color:var(--care-success);}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.mission-actions {display:flex;grid-row:3;grid-column:1;gap:6px;margin:0;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.mission-actions button {min-height:44px;padding:7px 10px;border:1px solid var(--care-edge);border-radius:12px;background:var(--care-enamel);color:var(--care-ink);font-size:14px;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.full-primary {grid-row:3;grid-column:2;position:static;min-height:44px;margin:0;padding:8px 14px;background:var(--care-selected-bg);border-color:var(--care-selected);color:var(--care-ink);font-size:14px;line-height:1.4;}
+.storybook-game .mission-panel[data-preparing="true"]>.full-primary {display:none;}
+.storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.clinical-pending {grid-row:4;grid-column:1/-1;color:var(--care-muted);font-size:12px;margin:0;}
+.storybook-game .mode-medication-station .activity-surface-instruction {display:none;}
+.storybook-game .ecg-mobile-leaders {display:none;}
+.storybook-game .ecg-mobile-procedure.show-hints .ecg-mobile-leaders {display:block;}
+.storybook-game .ecg-target-anchor {position:absolute;z-index:2;transform:translate(-50%,-50%);border:2px solid;pointer-events:none;width:12px;height:12px;background:#d5e2ea;border-color:#587d96;box-shadow:0 0 0 2px #f5fafc80;}
+.storybook-game .ecg-mobile-target {position:absolute;width:44px;height:44px;min-width:44px;min-height:44px;display:grid;place-items:center;padding:0;transform:translate(-50%,-50%);border:2px solid;border-radius:50%;font-weight:800;background:var(--care-enamel);color:var(--care-ink);border-color:var(--care-edge);box-shadow:0 2px 0 #91aebe;font-size:14px;}
+.storybook-game .ecg-mobile-target.complete {background:var(--care-success-bg);color:var(--care-success);border-color:#6c9b80;}
+.storybook-game .ecg-mobile-lead small {display:block;font-size:10px;line-height:1.2;color:var(--care-muted);}
+.storybook-game .ecg-mobile-lead {display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.storybook-game .ecg-attached-lead:not(.validated) {border-color:var(--care-selected);background-color:var(--care-selected-bg);}
+.storybook-game .ecg-attached-lead {background-image:radial-gradient(circle at center,#f7fbff 0 38%,transparent 40%),url('/game/bedside/electrode.webp');font-size:14px;text-shadow:none;}
+.storybook-game .io-item-token.placed {border-color:var(--care-selected);background:var(--care-selected-bg);}
+.storybook-game .io-item-token.placed small {font-size:12px;color:var(--care-selected);}
+@media(max-width:760px) {
+ .storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.mission-actions button {font-size:12px;padding:7px 8px;}
+ .storybook-game .mission-panel:is(.mode-medication-station,.mode-io-board,.mode-ecg-console)>.full-primary {max-width:150px;padding:8px 10px;}
+ .storybook-game .ecg-mobile-procedure {top:clamp(295px,37dvh,340px);padding:10px;gap:7px;}
+ .storybook-game .ecg-mobile-map {height:min(28dvh,235px);width:min(100%,280px);min-height:200px;max-height:235px;}
+ .storybook-game .ecg-mobile-heading .eyebrow {display:none;}
+ .storybook-game .ecg-mobile-feedback {font-size:14px;line-height:1.4;padding:7px;}
+ .storybook-game .ecg-mobile-actions button {min-height:44px;}
+}
+
+/* Paper records, briefing and pause share the same reading and focus rules. */
+.storybook-game .chart-modal,.storybook-game .pause-card,.storybook-game .mode-briefing {background:var(--care-paper);color:var(--care-ink);border:2px solid var(--care-edge);box-shadow:var(--care-shadow);}
+.storybook-game .chart-header,.storybook-game .chart-modal>h2,.storybook-game .chart-entry>b,.storybook-game .chart-section>b,.storybook-game .unknown {color:var(--care-ink);}
+.storybook-game .chart-modal>p,.storybook-game .chart-entry>span,.storybook-game .chart-entry>small,.storybook-game .unknown span,.storybook-game .chart-source,.storybook-game .pause-card p {color:var(--care-muted);font-size:14px;line-height:1.6;}
+.storybook-game .chart-entry {padding:12px;border-color:#b9cfdb;background:var(--care-enamel);}
+.storybook-game .chart-entry>b,.storybook-game .chart-section>b {font-size:14px;}
+.storybook-game .chart-header button {min-width:44px;min-height:44px;}
+.storybook-game .pause-card .primary {background:var(--care-selected-bg);color:var(--care-ink);border-color:var(--care-selected);min-height:44px;font-size:14px;}
+.storybook-game .mode-briefing>p,.storybook-game .mode-briefing .scenario-card small {font-size:14px;line-height:1.6;color:var(--care-muted);}
+.storybook-game .mode-briefing>h2 {color:var(--care-ink);}
+.storybook-game .scenario-card {border-color:var(--care-edge);background:var(--care-enamel);}
+.storybook-game .scenario-card b,.storybook-game .stage-select>span {color:var(--care-ink);}
+.storybook-game .stage-option,.storybook-game .stage-change-link {min-height:44px;display:flex;align-items:center;font-size:14px;}
+.storybook-game .stage-option.selected {color:var(--care-selected);background:var(--care-selected-bg);border-color:var(--care-selected);}
+.storybook-game .primary:not(:disabled) {color:var(--care-ink);}
+.storybook-game .mode-medication-station .workbench-object:focus-visible {outline-color:var(--care-selected);}
+@media(max-width:760px) {
+ .storybook-game .workbench-prop-art {width:64px;height:36px;}
+ .storybook-game .chart-modal {max-height:calc(100dvh - 32px);padding:16px;}
+ .storybook-game .mode-briefing {top:130px;bottom:130px;}
+}
+
+.storybook-game .answer-ghost,.storybook-game .lead-ghost {background:var(--care-paper);color:var(--care-ink);border:2px solid var(--care-selected);box-shadow:0 8px 18px #1d3d5055;font-size:14px;}
+
+.storybook-game .ampoule-drop-target.contacted {background:var(--care-selected-bg);box-shadow:inset 0 0 0 2px #87b7d0;}
+.storybook-game .syringe-game-icon {background:var(--care-selected-bg);color:var(--care-selected);}
+.storybook-game .workbench-target i {display:flex;flex-direction:column;align-items:center;gap:3px;min-width:65px;}
+.storybook-game .workbench-target i>img,.storybook-game .workbench-target i>svg {width:64px;height:38px;object-fit:contain;}
+.storybook-game .workbench-target i>span {font-size:12px;}
+.storybook-game .chart-header button {background:var(--care-enamel);color:var(--care-ink);border-color:var(--care-edge);}

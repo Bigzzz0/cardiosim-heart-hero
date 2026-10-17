@@ -34,6 +34,12 @@ export function validateCase(config: GameCase) {
       require(Number.isFinite(step.interaction.accuracyWindow) && step.interaction.accuracyWindow >= 0, `Invalid syringe tolerance ${step.id}`);
       require(step.interaction.targetId.length > 0 && step.interaction.unit === 'mL', `Invalid syringe interaction ${step.id}`);
     }
+    for (const step of mission.activity?.steps ?? []) if (step.interaction && step.interaction.kind !== 'syringe-withdrawal') {
+      unique(step.interaction.objects.map(item=>item.id),`workbench objects ${step.id}`);
+      unique(step.interaction.targets.map(item=>item.id),`workbench targets ${step.id}`);
+      require(step.interaction.objects.length>0,`Missing workbench objects ${step.id}`);
+      for(const object of step.interaction.objects) if(object.targetId) require(step.interaction.targets.some(target=>target.id===object.targetId),`Unknown workbench target ${step.id}`);
+    }
     for (const value of Object.values(mission.onEnter?.vitals ?? {})) require(value === null || Number.isFinite(value) && value >= 0, 'Invalid target vital');
   }
   unique(config.missions.flatMap(m => (m.objectives ?? []).map(o => o.id)), 'objective');

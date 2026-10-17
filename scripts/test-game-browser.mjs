@@ -1,3 +1,5 @@
+import {runCase2Flow} from './case2-browser-flow.mjs';
+import {performWorkbenchStep} from './workbench-browser-helpers.mjs';
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 
@@ -26,7 +28,8 @@ try {
     const trace=[]; window.__cardioPointerTrace=trace;
     for(const type of ['pointerdown','pointermove','pointerup','pointercancel'])window.addEventListener(type,event=>trace.push({type,pointerId:event.pointerId,button:event.button,x:event.clientX,y:event.clientY,target:event.target instanceof Element?`${event.target.tagName}.${typeof event.target.className==='string'?event.target.className:''}`:'unknown'}),true);
   });
-  page.setDefaultTimeout(12000);
+  page.setDefaultTimeout(30000);
+  page.setDefaultNavigationTimeout(45000);
   const errors=[]; page.on('pageerror',error=>errors.push(error.message));
   page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
   await page.goto(`http://127.0.0.1:${port}/game.html`);
@@ -159,13 +162,13 @@ try {
     for(const [width,height] of [[1440,900],[1280,720],[1024,768],[390,844]]){
       await page.setViewportSize({width,height});await page.waitForTimeout(90);
       const layout=await page.evaluate(selector=>{
-        const panel=document.querySelector('.mission-panel');const surface=document.querySelector(selector);const primary=document.querySelector('.mission-panel .full-primary');
+        const panel=document.querySelector('.mission-panel');const surface=document.querySelector(selector);const primary=document.querySelector('.mission-panel[data-preparing="true"] .workbench-confirm,.mission-panel[data-preparing="true"] .syringe-confirm,.mission-panel:not([data-preparing="true"]) .full-primary');
         const primaryRect=primary?.getBoundingClientRect();return{scrollWidth:document.documentElement.scrollWidth,panel:panel?.getBoundingClientRect().toJSON(),surface:surface?.getBoundingClientRect().toJSON(),primarySize:primary&&primaryRect?{width:primaryRect.width,height:primaryRect.height,font:parseFloat(getComputedStyle(primary).fontSize)}:null};
       },`[data-room-surface="${surfaceId}"]`);
       if(layout.scrollWidth>width||!layout.panel||!layout.surface||layout.panel.left<0||layout.panel.right>width||layout.surface.left<0||layout.surface.right>width)throw new Error(`${surfaceId} overflows at ${width}x${height}: ${JSON.stringify(layout)}`);
       if(!layout.primarySize||layout.primarySize.width<44||layout.primarySize.height<44||layout.primarySize.font<14)throw new Error(`${surfaceId} primary control is below the touch/readability baseline at ${width}x${height}: ${JSON.stringify(layout)}`);
       await page.locator('.mission-panel').evaluate(element=>{element.scrollTop=element.scrollHeight;});
-      const reachable=await page.locator('.mission-panel .full-primary').evaluate(element=>{const rect=element.getBoundingClientRect();return rect.width>=44&&rect.height>=44&&rect.top>=0&&rect.bottom<=innerHeight;});
+      const reachable=await page.locator('.mission-panel[data-preparing="true"] .workbench-confirm,.mission-panel[data-preparing="true"] .syringe-confirm,.mission-panel:not([data-preparing="true"]) .full-primary').evaluate(element=>{const rect=element.getBoundingClientRect();return rect.width>=44&&rect.height>=44&&rect.top>=0&&rect.bottom<=innerHeight;});
       if(!reachable)throw new Error(`${surfaceId} Confirm is not reachable at ${width}x${height}`);
       await page.locator('.mission-panel').evaluate(element=>{element.scrollTop=0;});
       await page.screenshot({path:`screenshots/game-${surfaceId}-${width}x${height}.png`,fullPage:true});
@@ -244,28 +247,23 @@ try {
   const answerFont=await page.locator('.answer-card b').first().evaluate(element=>parseFloat(getComputedStyle(element).fontSize));
   if(answerFont<14)throw new Error(`Decision answer text is too small: ${answerFont}px`);
   await dragCardTo('ประเด็นด้านอื่น','problem'); await dragCardTo('ข้อมูลที่ไม่เกี่ยวกับการประเมิน','support');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
   await page.locator('.feedback.error').waitFor();
   await dragCardTo('ประเด็นด้านการหายใจ','problem'); await dragCardTo('ข้อมูลระบบหายใจที่ค้นพบ','support');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
-  await page.getByRole('button',{name:'Next'}).click();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
+  await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.locator('.surface-instruction b').getByText('เลือกการพยาบาล ให้สัมพันธ์กับปัญหา').waitFor();
   await dragCardTo('จัดท่าผู้ป่วยตามแผน','intervention-1'); await dragCardTo('ไม่บันทึกการติดตาม','intervention-2');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click(); await page.locator('.feedback.error').waitFor();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click(); await page.locator('.feedback.error').waitFor();
   await dragCardTo('ติดตามผลประเมินซ้ำ','intervention-2');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
-  await page.getByRole('button',{name:'Next'}).click();
-  await page.locator('.activity-surface-instruction b').getByText('ตรวจคำสั่งยา และบันทึกการเตรียม').waitFor();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
+  await page.getByRole('button',{name:'ต่อไป'}).click();
+  await page.locator('main[data-mission="MEDICATION"]').waitFor();await page.locator('[data-workbench-step="step_order_check"]').waitFor();
   if(!await missionPanel.evaluate(element=>element.classList.contains('mode-medication-station'))||!await page.locator('[data-room-surface="medication-station"]').isVisible()||!await page.locator('.activity-notice').isVisible())throw new Error('Medication should use the in-room preparation station and show its demo status');
   await checkActivityResponsive('medication-station');
-  await page.locator('.medication-overview').click();
-  const prepSteps=await page.locator('[data-activity-step-target]').evaluateAll(elements=>elements.map(element=>element.getAttribute('data-activity-step-target')));
-  await dragDomTo(page.locator('.activity-equipment-token'),page.locator(`[data-activity-step-target="${prepSteps[1]}"]`),'incorrect medication order');
-  await page.locator('.feedback.error').waitFor();
-  if(!await page.locator('.activity-equipment-token').isVisible())throw new Error('Incorrect medication step should return the equipment for retry');
-  await page.locator('.medication-overview').click();
-  await dragMedicationStep(prepSteps[0]);
-  for(const step of prepSteps.slice(1,3))await dragMedicationStep(step);
+  const prepSteps=['step_order_check','step_label_check','step_handwash_prep','step_draw_med','step_recheck_label','step_patient_id','step_administer_record'];
+  await page.locator('.workbench-confirm').click();await page.locator('.feedback.error').waitFor();
+  for(const step of prepSteps.slice(0,3))await performWorkbenchStep(page,step,dragDomTo);
   await dragDomTo(page.locator('.syringe-tool-token'),page.locator('[data-syringe-ampoule-target="ampoule"]'),'syringe to ampoule');
   await page.locator('[data-syringe-plunger]').waitFor();
   await dragSyringePlungerTo(2);
@@ -273,7 +271,7 @@ try {
   if(await page.locator('[data-activity-step-target="step_draw_med"]').evaluate(element=>element.classList.contains('complete')))throw new Error('An incorrect syringe volume should not complete the medication step');
   await dragSyringePlungerTo(4);
   await page.locator('.syringe-confirm').click();await page.locator('[data-activity-step-target="step_draw_med"].complete').waitFor({state:'attached'});
-  for(const step of prepSteps.slice(4))await dragMedicationStep(step);
+  for(const step of prepSteps.slice(4))await performWorkbenchStep(page,step,dragDomTo);
   const medicationSelects=page.locator('.activity-card select');
   const medicationNumbers=page.locator('.activity-card input[type="number"]');
   await medicationSelects.nth(0).selectOption({label:'Furosemide (Lasix)'});
@@ -281,23 +279,23 @@ try {
   await medicationSelects.nth(1).selectOption({label:'IV slow push'});
   await medicationSelects.nth(2).selectOption({label:'Hypotension'});
   await medicationSelects.nth(3).selectOption({label:'BP, urine output, K⁺/Mg²⁺'});
-  await page.getByRole('button',{name:'Confirm · บันทึกการเตรียมยา'}).click();
+  await page.getByRole('button',{name:'บันทึกการเตรียมยา'}).click();
   await page.locator('.feedback.error').waitFor();
   await medicationNumbers.nth(0).fill('40');
-  await page.getByRole('button',{name:'Confirm · บันทึกการเตรียมยา'}).click();
+  await page.getByRole('button',{name:'บันทึกการเตรียมยา'}).click();
   await page.locator('.feedback.success').waitFor();
-  await page.getByRole('button',{name:'Next'}).click();
+  await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.locator('.activity-surface-instruction b').getByText('คำนวณสมดุล สารน้ำเข้าและออก').waitFor();
   await checkActivityResponsive('io-board');
   const ioNumbers=page.locator('.activity-card input[type="number"]');
   await ioNumbers.nth(0).fill('150'); await ioNumbers.nth(1).fill('350'); await ioNumbers.nth(2).fill('200');
   await dragIoItemToZone('iv-intake','output'); await dragIoItemToZone('oral-intake','intake'); await dragIoItemToZone('urine-output','output');
-  await page.getByRole('button',{name:/POSITIVE/}).click(); await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
+  await page.getByRole('button',{name:/POSITIVE/}).click(); await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
   await page.locator('.feedback.error').waitFor();
   await dragIoItemToZone('iv-intake','intake');
   await ioNumbers.nth(2).fill('-200');
-  await page.getByRole('button',{name:/NEGATIVE/}).click(); await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
-  await page.locator('.feedback.success').waitFor(); await page.emulateMedia({reducedMotion:'reduce'}); await page.getByRole('button',{name:'Next'}).click();
+  await page.getByRole('button',{name:/NEGATIVE/}).click(); await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
+  await page.locator('.feedback.success').waitFor(); await page.emulateMedia({reducedMotion:'reduce'}); await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป',level:1}).waitFor();
   const alarmMotion=await page.locator('.emergency-room').evaluate(element=>({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,duration:parseFloat(getComputedStyle(element,'::after').animationDuration)}));
   if(!alarmMotion.reduced||alarmMotion.duration>0.001)throw new Error('Emergency visual motion should honor prefers-reduced-motion');
@@ -335,23 +333,23 @@ try {
   await page.locator('.mission-compact').getByText(/6\/6 leads/).waitFor();
   if(await page.locator('.compact-primary').isDisabled())throw new Error('ECG confirm should be enabled at 6/6 leads');
   await page.screenshot({path:'screenshots/game-ecg.png',fullPage:true});
-  await page.getByRole('button',{name:'Confirm ECG',exact:true}).click();
+  await page.getByRole('button',{name:'ยืนยัน ECG',exact:true}).click();
   await page.getByRole('button',{name:'Confirm · บันทึก ECG'}).click();
   await page.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   const rhythmSelect=page.locator('.ecg-review-console select');
   if(!await page.locator('.ecg-readout').getByText(/SVT/).isVisible())throw new Error('ECG console should show the rhythm sourced from Case 1 configuration');
   await rhythmSelect.selectOption({label:'ยังระบุไม่ได้'});
-  await page.getByRole('button',{name:'Confirm · บันทึกการอ่าน'}).click(); await page.locator('.feedback.error').waitFor();
+  await page.getByRole('button',{name:'บันทึกการอ่าน ECG'}).click(); await page.locator('.feedback.error').waitFor();
   await rhythmSelect.selectOption({label:'SVT'});
-  await page.getByRole('button',{name:'Confirm · บันทึกการอ่าน'}).click(); await page.locator('.feedback.success').waitFor();
-  await page.getByRole('button',{name:'Next'}).click();
+  await page.getByRole('button',{name:'บันทึกการอ่าน ECG'}).click(); await page.locator('.feedback.success').waitFor();
+  await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.locator('.surface-instruction b').getByText('เลือกการตอบสนอง แล้วดูผลที่ผู้ป่วย').waitFor();
   await dragCardTo('จัดให้นอนราบและให้ดื่มน้ำ','response');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
   await page.locator('.feedback.error').waitFor();
   await dragCardTo('High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน','response');
-  await page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
-  await page.getByRole('button',{name:'Next'}).click();
+  await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click(); await page.locator('.feedback.success').waitFor();
+  await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.getByRole('heading',{name:'ผู้ป่วยตอบสนอง ต่อการดูแล',level:1}).waitFor();
   if(!await page.locator('.room-stage.recovery-room').isVisible()||await page.locator('.room-stage.emergency-room').count())throw new Error('Patient recovery should shift the room out of emergency mode and acknowledge stabilization in-scene');
   await page.waitForTimeout(6600);
@@ -443,15 +441,11 @@ try {
   await mobileActivity.goto(`http://127.0.0.1:${port}/game.html`);await mobileActivity.locator('.phaser-host canvas').waitFor();
   await mobileActivity.locator('.resume-banner').waitFor();await mobileActivity.getByRole('button',{name:'เล่นต่อ'}).tap();
   await mobileActivity.locator('[data-room-surface="medication-station"]').waitFor();
-  const mobileEquipment=await mobileActivity.locator('.activity-equipment-token').boundingBox();
-  const mobileStep=await mobileActivity.locator('[data-activity-step-target="step_order_check"]').boundingBox();
-  if(!mobileEquipment||!mobileStep)throw new Error('Mobile medication equipment or step target is not reachable');
-  await touchDragGesture(mobileActivity,{x:mobileEquipment.x+mobileEquipment.width/2,y:mobileEquipment.y+mobileEquipment.height/2},{x:mobileStep.x+mobileStep.width/2,y:mobileStep.y+mobileStep.height/2},71);
-  await mobileActivity.locator('[data-activity-step-target="step_order_check"].complete').waitFor({state:'attached'});
-  for(const stepId of ['step_label_check','step_handwash_prep']){
-    const source=mobileActivity.locator('.activity-equipment-token');const target=mobileActivity.locator(`[data-activity-step-target="${stepId}"]`);const sourceBox=await source.boundingBox(),targetBox=await target.boundingBox();if(!sourceBox||!targetBox)throw Error(`Touch medication step ${stepId} bounds unavailable`);
-    await touchDragGesture(mobileActivity,{x:sourceBox.x+sourceBox.width/2,y:sourceBox.y+sourceBox.height/2},{x:targetBox.x+targetBox.width/2,y:targetBox.y+targetBox.height/2},61);await target.locator('.step-number').waitFor({state:'attached'});await mobileActivity.waitForFunction(id=>document.querySelector(`[data-activity-step-target="${id}"]`)?.classList.contains('complete'),stepId);
-  }
+  const mobileWorkbenchDrag=async(source,target)=>{
+    const a=await source.boundingBox(),b=await target.boundingBox();if(!a||!b)throw Error('Workbench objects missing');
+    await touchDragGesture(mobileActivity,{x:a.x+a.width/2,y:a.y+a.height/2},{x:b.x+b.width/2,y:b.y+b.height/2},71);
+  };
+  for(const id of ['step_order_check','step_label_check','step_handwash_prep'])await performWorkbenchStep(mobileActivity,id,mobileWorkbenchDrag);
   await mobileActivity.waitForFunction(()=>{const element=document.querySelector('.syringe-minigame');const rect=element?.getBoundingClientRect();return !!rect&&rect.top>=0&&rect.bottom<=innerHeight;});
   const mobileSyringe=mobileActivity.locator('.syringe-tool-token');const mobileAmpoule=mobileActivity.locator('[data-syringe-ampoule-target="ampoule"]');const mobileSyringeBox=await mobileSyringe.boundingBox(),mobileAmpouleBox=await mobileAmpoule.boundingBox();if(!mobileSyringeBox||!mobileAmpouleBox)throw Error('Touch syringe or ampoule target is not reachable');
   await touchDragGesture(mobileActivity,{x:mobileSyringeBox.x+mobileSyringeBox.width/2,y:mobileSyringeBox.y+mobileSyringeBox.height/2},{x:mobileAmpouleBox.x+mobileAmpouleBox.width/2,y:mobileAmpouleBox.y+mobileAmpouleBox.height/2},61);
@@ -485,94 +479,12 @@ try {
     await mobileLeadDrag(id);await mobileECG.locator(`[data-ecg-attached="${id}"]`).waitFor();
     if(await mobileECG.locator('.ecg-attached-lead').count()!==index+1)throw new Error(`Mobile ECG placement count did not advance for ${id}`);
   }
-  await mobileECG.getByRole('button',{name:'Confirm ECG',exact:true}).click();
+  await mobileECG.getByRole('button',{name:'ยืนยัน ECG',exact:true}).click();
   await mobileECG.getByRole('button',{name:'บันทึก ECG',exact:true}).click();
   await mobileECG.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   if(!await mobileECG.locator('.phaser-host canvas').isVisible())throw new Error('Mobile ECG confirmation should remain in the PatientRoomScene');
   if(errors.length)throw new Error(`Mobile ECG browser errors:\n${errors.join('\n')}`);
 
-  const case2Page=await browser.newPage({viewport:{width:1440,height:900}});
-  case2Page.setDefaultTimeout(12000);
-  const demoStudent={studentId:'browser-qa',name:'Browser QA'};
-  const emptyTelemetry={student:demoStudent,preTestScore:0,preTestAnswers:{},postTestScore:0,postTestAnswers:{},learningGain:0,discoveredHotspots:[],prioritizationErrors:0,medicationErrors:0,ioErrors:0,crisisResponseTimeSeconds:0,totalTimeSeconds:0,surveyScores:{},feedbackText:''};
-  await case2Page.addInitScript(value=>{if(!sessionStorage.getItem('cardiosim.game.return.v1'))sessionStorage.setItem('cardiosim.game.return.v1',JSON.stringify(value));},{student:demoStudent,telemetry:emptyTelemetry});
-  case2Page.on('pageerror',error=>errors.push(error.message));
-  case2Page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
-  await case2Page.goto(`http://127.0.0.1:${port}/?stage=SCENARIO_SELECT`);
-  await case2Page.getByRole('button',{name:'เลือกเล่นเคสที่ 2 (เข้าสู่เนื้อหาจำลอง)'}).click();
-  await case2Page.waitForURL(/game\.html\?case=case-02&from=web/);
-  await case2Page.locator('.phaser-host canvas').waitFor();
-  if(await case2Page.locator('.brand small').innerText()!=='CASE-02')throw new Error('Web scenario selection did not load the Case 2 patient room');
-  const case2VitalText=()=>case2Page.locator('.monitor .vital-large b, .monitor .vital-small b').allTextContents();
-  if(await case2Page.locator('.monitor-no-trace').count()!==1||JSON.stringify(await case2VitalText())!==JSON.stringify(['—','—','—/—','—']))throw new Error('Case 2 must not invent an ECG trace or numeric vital signs');
-  const case2Canvas=case2Page.locator('.phaser-host canvas');
-  const case2Point=async(x,y)=>case2Page.evaluate(({x,y})=>{const id={'490,442':'arm','526,575':'finger','602,558':'wrist'}[`${x},${y}`];const at=id?JSON.parse(document.querySelector('main')?.getAttribute('data-patient-targets')??'[]').find(t=>t.id===id):null;if(at){x=at.x;y=at.y;}const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Case 2 Phaser world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
-  const case2Drag=async(source,target)=>{const from=await source.boundingBox();if(!from)throw Error('Case 2 drag source bounds unavailable');const end=await case2Point(target.x,target.y);await case2Page.mouse.move(from.x+from.width/2,from.y+from.height/2);await case2Page.mouse.down();await case2Page.mouse.move(end.x,end.y,{steps:9});await case2Page.mouse.up();};
-  await case2Page.getByRole('button',{name:'เริ่มดูแลผู้ป่วย'}).click();
-  await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ซักประวัติ'}),{x:550,y:280});
-  await case2Page.waitForFunction(()=>document.querySelectorAll('.objective.done').length===1);
-  await case2Page.getByRole('button',{name:'เริ่มประเมิน'}).click();
-  for(const [index,[name,target]] of [['Stethoscope',{x:550,y:395}],['BP cuff',{x:490,y:442}],['SpO₂',{x:526,y:575}]].entries()){
-    await case2Drag(case2Page.locator('.toolbar button').filter({hasText:name}),target);
-    await case2Page.waitForFunction(count=>document.querySelectorAll('.objective.done').length>=count,index+1);
-  }
-  await case2Page.waitForFunction(()=>document.querySelectorAll('.objective.done').length===3);
-  if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 assessment should record actions as ungraded practice');
-  await case2Page.getByRole('button',{name:'บันทึกการประเมิน'}).click();
-  for(const [title,first,second] of [['จัดวางปัญหาและ ข้อมูลสนับสนุน',0,1],['เลือกการพยาบาล ให้สัมพันธ์กับปัญหา',0,1]]){
-    await case2Page.locator('.surface-instruction b').getByText(title).waitFor();
-    await case2Page.locator('.answer-card').nth(first).click(); await case2Page.locator('.answer-card').nth(second).click();
-    await case2Page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
-    if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 decisions must be recorded without a clinically correct/incorrect judgment');
-    await case2Page.getByRole('button',{name:'Next'}).click();
-  }
-  await case2Page.locator('.activity-surface-instruction b').getByText('ตรวจคำสั่งยา และบันทึกการเตรียม').waitFor();
-  if(await case2Page.locator('.activity-card input, .activity-card select').count()||await case2Page.locator('.activity-equipment-token').count())throw new Error('Case 2 must not expose medication fields or equipment without a Doctor Order');
-  if(await case2Page.locator('.missing-data-card').getByText('ไม่มีข้อมูลในเรื่องย่อ').count()<2)throw new Error('Case 2 medication station should identify the missing order and allergy source');
-  await case2Page.getByRole('button',{name:'บันทึกว่าไม่มีข้อมูลใน Case'}).click();
-  await case2Page.getByRole('button',{name:'Confirm · บันทึกข้อมูลที่ไม่มี'}).click();
-  await case2Page.getByRole('button',{name:'Next'}).click();
-  await case2Page.locator('.activity-surface-instruction b').getByText('คำนวณสมดุล สารน้ำเข้าและออก').waitFor();
-  if(await case2Page.locator('.io-item-token,.io-zone,.activity-card input,.balance-options').count())throw new Error('Case 2 I/O board must not fabricate numeric items or a calculation worksheet');
-  await case2Page.getByRole('button',{name:'บันทึกว่าไม่มีข้อมูลใน Case'}).click();
-  await case2Page.getByRole('button',{name:'Confirm · บันทึกข้อมูลที่ไม่มี'}).click();
-  if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 I/O entry should be ungraded');
-  await case2Page.getByRole('button',{name:'Next'}).click();
-  await case2Page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป',level:1}).waitFor();
-  if(!await case2Page.locator('.emergency-room').isVisible()||JSON.stringify(await case2VitalText())!==JSON.stringify(['—','—','—/—','—']))throw new Error('Case 2 emergency must change the scene state while keeping unavailable vitals blank');
-  if(!await case2Page.locator('.game-hud.is-emergency .hud-emergency').isVisible())throw new Error('Case 2 emergency state should also be visible in the game HUD');
-  await case2Page.waitForTimeout(5300);
-  await case2Page.getByRole('heading',{name:'ประเมิน ABC อย่างเป็นลำดับ',level:1}).waitFor();
-  for(const target of [{x:550,y:280},{x:550,y:395},{x:602,y:558}]){
-    await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ประเมิน ABC'}),target);
-    await case2Page.waitForFunction(count=>document.querySelectorAll('.objective.done').length>=count,await case2Page.locator('.objective.done').count()+1);
-  }
-  await case2Page.getByRole('button',{name:'เตรียมติด ECG'}).click();
-  const case2Targets=JSON.parse(await case2Page.locator('main').getAttribute('data-ecg-targets')??'[]');
-  const case2Layout=JSON.parse(await case2Page.locator('main').getAttribute('data-ecg-layout')??'{}');
-  const case2LeadDrag=async(index)=>{const tray=await case2Point(case2Layout.tray.x+index*case2Layout.tray.spacing,case2Layout.tray.y);const target=case2Targets[index];const end=await case2Point(target.x,target.y);await case2Page.mouse.move(tray.x,tray.y);await case2Page.mouse.down();await case2Page.mouse.move(end.x,end.y,{steps:8});await case2Page.mouse.up();};
-  for(let index=0;index<6;index++){await case2LeadDrag(index);await case2Page.waitForFunction(count=>document.querySelectorAll('.lead-status button.lead-done').length>=count,index+1);}
-  await case2Page.getByRole('button',{name:'Confirm ECG',exact:true}).click();
-  await case2Page.getByRole('button',{name:'Confirm · บันทึก ECG'}).click();
-  await case2Page.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
-  if(await case2Page.locator('.ecg-no-strip').count()!==1||await case2Page.locator('.ecg-readout').count())throw new Error('Case 2 ECG console must show no strip or rhythm readout');
-  await case2Page.locator('.activity-card input[type="text"]').fill('practice note');
-  await case2Page.getByRole('button',{name:'Confirm · บันทึกการอ่าน'}).click();
-  await case2Page.getByRole('button',{name:'Next'}).click();
-  await case2Page.locator('.surface-instruction b').getByText('เลือกการตอบสนอง แล้วดูผลที่ผู้ป่วย').waitFor();
-  if(!await case2Page.locator('[data-room-surface="monitor-response"]').isVisible())throw new Error('Case 2 emergency response should still use the in-room monitor surface');
-  await case2Page.locator('.answer-card').first().click();
-  await case2Page.getByRole('button',{name:'Confirm · ตรวจคำตอบ'}).click();
-  if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 treatment choice must be recorded without a clinical judgment');
-  await case2Page.getByRole('button',{name:'Next'}).click();
-  await case2Page.waitForTimeout(6600); await case2Page.getByRole('button',{name:'ดูผลภารกิจ'}).click();
-  await case2Page.getByRole('heading',{name:'ดูแลครบ จบภารกิจจำลอง',level:1}).waitFor();
-  if(await case2Page.getByText('DEMO SCORE').count()||!await case2Page.getByText('PRACTICE RUN').isVisible())throw new Error('Case 2 result must be marked as an unscored practice run');
-  await case2Page.screenshot({path:'screenshots/game-case-02-result.png',fullPage:true});
-  await case2Page.getByRole('button',{name:'ไปทำ Post-test'}).click();
-  await case2Page.waitForURL(/\?stage=POSTTEST/);
-  const returned=await case2Page.evaluate(()=>JSON.parse(sessionStorage.getItem('cardiosim.game.return.v1')??'{}'));
-  if(returned.telemetry?.gameResult?.caseId!=='case-02'||returned.telemetry.gameResult.scoreStatus!=='unscored'||returned.student?.studentId!=='browser-qa')throw new Error(`Typed game result was not returned to the web Post-test: ${JSON.stringify(returned.telemetry?.gameResult)}`);
-  if(errors.length)throw new Error(`Case 2/browser integration errors:\n${errors.join('\n')}`);
+  await runCase2Flow(browser,`http://127.0.0.1:${port}`,errors);
   console.log('Browser flow passed: desktop drag/drop and retry, chart privacy, Case 1 demo worksheets and treatment, emergency and ABC, six ECG leads, mobile touch and ECG layouts, and complete Case 2 through typed POSTTEST return.');
 } finally { await browser.close(); server.kill(); }

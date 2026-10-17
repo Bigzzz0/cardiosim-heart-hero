@@ -1,11 +1,8 @@
 import React from 'react';
-import { Activity, ArrowRight, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Siren, Volume2, VolumeX } from 'lucide-react';
+import { Activity, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Siren, Volume2, VolumeX } from 'lucide-react';
 import type { MissionDefinition } from '../types';
 
 type GameHudProps = {
-  nextEnabled: boolean;
-  nextLabel: string;
-  onNext: () => void;
   caseId: string;
   missions: readonly MissionDefinition[];
   missionIndex: number;
@@ -81,7 +78,6 @@ export function GameHud(props: GameHudProps) {
       </span>}
       <span className="hud-clock"><Clock3 size={14}/>{elapsedLabel}</span>
       <span className="mistake-chip" title="จำนวนครั้งที่ลองผิด"><ShieldAlert size={13}/>{mistakeCount}</span>
-      <button className="hud-next" disabled={!props.nextEnabled} onClick={props.onNext} aria-label="ดำเนินภารกิจจากแถบด้านบน" title={props.nextLabel}><ArrowRight aria-hidden="true"/></button>
     </div>
     <div className="hud-utilities">
       <button onClick={onToggleAudio} aria-label={audioEnabled ? 'ปิดเสียง' : 'เปิดเสียง'} title={audioEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}>

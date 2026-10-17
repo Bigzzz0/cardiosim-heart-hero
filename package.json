@@ -13,7 +13,11 @@
     "preview": "vite preview",
     "test:game:workbench": "tsx scripts/test-game-bedside.ts",
     "test:game:ecg": "tsx scripts/test-game-ecg.ts",
-    "test:game:layout": "tsx scripts/test-game-layout.ts"
+    "test:game:layout": "tsx scripts/test-game-layout.ts",
+    "test:game:objects": "tsx scripts/test-game-objects.mjs",
+    "test:game:polish": "tsx scripts/test-game-polish.ts",
+    "test:game:resume": "tsx scripts/test-game-resume.mjs",
+    "test:game:case2": "node scripts/test-game-case2.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

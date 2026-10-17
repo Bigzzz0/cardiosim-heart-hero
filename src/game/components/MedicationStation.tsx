@@ -1,3 +1,4 @@
+import { ObjectWorkbench } from './ObjectWorkbench';
 import React, {useState} from 'react';
 import {suppliedArt} from '../presentationAssets';
 import { Activity, BadgeCheck, ClipboardList, FileText, Hand, IdCard, Pill, ShieldCheck, Syringe } from 'lucide-react';
@@ -10,6 +11,7 @@ import { SyringeWithdrawalMinigame } from './SyringeWithdrawalMinigame';
 
 interface MedicationStationProps {
   activity: ActivityConfig;
+  readings?: import('../types').VitalSigns;
   decision?: Decision;
   decisions: readonly string[];
   responses: Readonly<Record<string, string>>;
@@ -21,6 +23,7 @@ interface MedicationStationProps {
   onAcknowledgeMissing: () => void;
   onStartStepDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
   onStartSyringeToolDrag: (id: string, event: React.PointerEvent<HTMLButtonElement>) => void;
+  onStepAction: (stepId:string,objectId:string,targetId?:string)=>void;
   onCompleteStep: (id: string) => void;
   onPlaceSyringeTool: (stepId: string, targetId: string) => void;
   onSetSyringeAmount: (stepId: string, amount: number) => void;
@@ -39,7 +42,7 @@ const stepIcons: Record<ActivityEquipmentIcon, LucideIcon> = {
   ecg: Activity,
 };
 
-export function MedicationStation({ activity, decision, decisions, responses, completedSteps, stepProgress, confirmed, onSetResponse, onChoose, onAcknowledgeMissing, onStartStepDrag, onStartSyringeToolDrag, onCompleteStep, onPlaceSyringeTool, onSetSyringeAmount }: MedicationStationProps) {
+export function MedicationStation({ activity, readings, onStepAction, decision, decisions, responses, completedSteps, stepProgress, confirmed, onSetResponse, onChoose, onAcknowledgeMissing, onStartStepDrag, onStartSyringeToolDrag, onCompleteStep, onPlaceSyringeTool, onSetSyringeAmount }: MedicationStationProps) {
   const [overview,setOverview]=useState(false);
   if (activity.dataStatus === 'missing' && activity.allowMissingDataAcknowledgement) return <MissingDataCard activity={activity} acknowledged={responses['missing-data-ack'] === 'recorded'} onAcknowledge={onAcknowledgeMissing}/>;
   const nextStep = activity.steps?.[completedSteps.length];
@@ -49,10 +52,10 @@ export function MedicationStation({ activity, decision, decisions, responses, co
   return <section className="activity-card medication-station-card">
     <div className="activity-head"><span>{activity.eyebrow}</span><b>{activity.title}</b></div>
     {activity.notice && <div className="activity-notice">{activity.notice}</div>}
-    <div className="medication-order-card">
+    <details className="medication-order-card"><summary>เปิด Doctor Order · ข้อมูลเดโม</summary>
       <div className="order-card-head"><FileText size={17}/><b>Doctor Order · ข้อมูลเดโม</b><span>VERIFY</span></div>
       {activity.rows?.map(row => <div className="activity-rows" key={row.label}><div><span>{row.label}</span><b>{row.value}</b></div></div>)}
-    </div>
+    </details>
     <div className={`medication-procedure ${nextStep?.interaction ? 'has-syringe-activity' : ''}`}>
       <div><button type="button" className="medication-overview" aria-expanded={overview} onClick={()=>setOverview(value=>!value)}>{overview?'ย่อรายการ':'ดูขั้นตอนทั้งหมด'} · {completedSteps.length}/{activity.steps?.length??0}</button>
       <div className={`medication-step-list ${overview?'expanded':''}`} aria-label="ลำดับเตรียมยา">
@@ -69,7 +72,7 @@ export function MedicationStation({ activity, decision, decisions, responses, co
       </div>
       </div><div className="medication-equipment-tray">
         <span className="equipment-tray-label">อุปกรณ์ถัดไป</span>
-        {nextStep?.interaction?.kind === 'syringe-withdrawal' ? <SyringeWithdrawalMinigame stepId={nextStep.id} equipmentLabel={nextStep.equipmentLabel} interaction={nextStep.interaction} progress={stepProgress[nextStep.id]} confirmed={confirmed} onStartDrag={onStartSyringeToolDrag} onPlaceTool={onPlaceSyringeTool} onSetAmount={onSetSyringeAmount} onComplete={onCompleteStep}/> : nextStep ? <button type="button" className="activity-equipment-token" onPointerDown={event => onStartStepDrag(nextStep.id,event)} onClick={() => onCompleteStep(nextStep.id)} disabled={confirmed} aria-label={`ลาก ${nextStep.equipmentLabel} ไปยังขั้นตอนที่กำลังทำ หรือแตะเพื่อใช้`}>
+        {nextStep?.interaction?.kind === 'syringe-withdrawal' ? <SyringeWithdrawalMinigame stepId={nextStep.id} equipmentLabel={nextStep.equipmentLabel} interaction={nextStep.interaction} progress={stepProgress[nextStep.id]} confirmed={confirmed} onStartDrag={onStartSyringeToolDrag} onPlaceTool={onPlaceSyringeTool} onSetAmount={onSetSyringeAmount} onComplete={onCompleteStep}/> : nextStep?.interaction ? <ObjectWorkbench key={nextStep.id} step={nextStep} interaction={nextStep.interaction} activity={activity} progress={stepProgress[nextStep.id]} readings={readings} onAction={onStepAction} onComplete={onCompleteStep}/> : nextStep ? <button type="button" className="activity-equipment-token" onPointerDown={event => onStartStepDrag(nextStep.id,event)} onClick={() => onCompleteStep(nextStep.id)} disabled={confirmed} aria-label={`ลาก ${nextStep.equipmentLabel} ไปยังขั้นตอนที่กำลังทำ หรือแตะเพื่อใช้`}>
           <span className="equipment-token-art">{equipmentSprite?<img src={equipmentSprite} alt="" draggable="false"/>:<NextEquipment size={28}/>}</span><b>{nextStep.equipmentLabel}</b><small>กดค้างลากไปขั้นปัจจุบัน · หรือแตะ</small>
         </button> : <div className="equipment-ready"><ShieldCheck size={23}/><b>ครบ 7 ขั้น</b><small>ทบทวนรายการก่อนยืนยัน</small></div>}
         <div className="procedure-count"><span>{completedSteps.length}</span> / {activity.steps?.length ?? 0} ขั้นเสร็จ</div>

@@ -13,7 +13,7 @@ import type { GameResult } from '../types/game';
 import { ECGMobileProcedure } from './components/ECGMobileProcedure';
 import { GameHud } from './components/GameHud';
 import { MissionPanel } from './components/MissionPanel';
-import type { MissionPresentation } from './components/MissionPanel';
+import { presentationFor, primaryActionFor } from './presentation';
 import { MedicalToolTray } from './components/MedicalToolTray';
 import { PatientHotspotLayer } from './components/PatientHotspotLayer';
 import { PatientMonitor } from './components/PatientMonitor';
@@ -24,6 +24,7 @@ import './gameplay.css';
 import './storybook.css';
 import './bedside.css';
 import './instrument-ui.css';
+import './care-ui.css';
 
 const activeCase = getGameCase(new URLSearchParams(location.search).get('case'));
 const launchedFromWeb = new URLSearchParams(location.search).get('from') === 'web';
@@ -33,17 +34,6 @@ const debug = new URLSearchParams(location.search).get('debug') === 'true';
 function fmtTime(ms: number) { const seconds = Math.floor(ms / 1000); return `${String(Math.floor(seconds / 60)).padStart(2,'0')}:${String(seconds % 60).padStart(2,'0')}`; }
 function fmtVital(value: number | null, unit = '') { return value === null ? '—' : `${Math.round(value)}${unit}`; }
 function fmtVitals(value: VitalSigns) { return `BP ${fmtVital(value.bpSystolic)}/${fmtVital(value.bpDiastolic)} · HR ${fmtVital(value.hr)} · RR ${fmtVital(value.rr)} · SpO₂ ${fmtVital(value.spo2, '%')}`; }
-function presentationFor(mission: typeof activeCase.missions[number]): MissionPresentation {
-  if (mission.kind === 'summary') return 'result';
-  if (mission.kind === 'intro') return 'briefing';
-  if (mission.kind === 'placement') return 'procedure';
-  if (mission.kind === 'interaction' || mission.kind === 'transition') return 'field';
-  if (mission.decision?.presentation === 'bedside-clipboard') return 'bedside-clipboard';
-  if (mission.decision?.presentation === 'monitor-response') return 'monitor-response';
-  if (mission.kind === 'decision' && mission.activity?.presentation) return mission.activity.presentation;
-  if (mission.kind === 'decision' && (!mission.activity || mission.activity.kind === 'matching')) return 'decision-board';
-  return 'worksheet';
-}
 function useGame() { useSyncExternalStore(app.subscribe, app.snapshot, app.snapshot); }
 
 function capturePointer(event: React.PointerEvent<HTMLElement>) {
@@ -213,7 +203,7 @@ function App() {
     dragDownHandler = onDown; dragMoveHandler = onMove; dragUpHandler = onUp;
     window.addEventListener('pointercancel', onCancel); window.addEventListener('blur', onCancel);
     const unsubscribe = app.bus.subscribe(event => {
-      if (['MISSION_CHANGED','ASSESSMENT_RECORDED','ECG_LEAD_PLACED','ECG_CONFIRMED','ECG_LEAD_REMOVED','DECISION_SELECTED','DECISION_CORRECT','WRONG_ACTION','HINT_REVEALED','ACTIVITY_STEP_TOOL_PLACED','ACTIVITY_STEP_COMPLETED','ACTIVITY_ITEM_PLACED','ACTIVITY_CONFIRMED','ACTIVITY_DRAFT_SAVED'].includes(event.type)) { saveCheckpoint(app.checkpoint()); setResumeAvailable(true); }
+      if (['MISSION_CHANGED','ASSESSMENT_RECORDED','ECG_LEAD_PLACED','ECG_CONFIRMED','ECG_LEAD_REMOVED','DECISION_SELECTED','DECISION_REMOVED','DECISION_CORRECT','WRONG_ACTION','HINT_REVEALED','ACTIVITY_OBJECT_CHANGED','ACTIVITY_STEP_TOOL_PLACED','ACTIVITY_STEP_COMPLETED','ACTIVITY_ITEM_PLACED','ACTIVITY_CONFIRMED','ACTIVITY_DRAFT_SAVED'].includes(event.type)) { saveCheckpoint(app.checkpoint()); setResumeAvailable(true); }
       if (event.type === 'MISSION_CHANGED') {
         if (interactionToastTimer !== undefined) window.clearTimeout(interactionToastTimer);
         setInteractionToast(null);
@@ -247,6 +237,7 @@ function App() {
       if (event.type === 'ACTIVITY_STEP_TOOL_PLACED') sound.cue('tool-contact');
       if (event.type === 'ACTIVITY_STEP_COMPLETED' || event.type === 'ACTIVITY_CONFIRMED' || event.type === 'ACTIVITY_DRAFT_SAVED') sound.cue('success');
       if (event.type === 'WRONG_ACTION') sound.cue('error');
+      if (event.type === 'DECISION_SELECTED' || event.type === 'ACTIVITY_OBJECT_CHANGED') sound.cue('tool-contact');
       if (event.type === 'ECG_LEAD_PLACED') sound.cue('tool-contact');
       if (event.type === 'ECG_CONFIRMED' || event.type === 'DECISION_CORRECT') sound.cue('success');
       if (event.type === 'MISSION_CHANGED' && event.detail === 'EMERGENCY_TRANSITION') {
@@ -254,7 +245,7 @@ function App() {
         if (navigator.vibrate) navigator.vibrate([160,100,160]);
       }
     });
-    const ticker = window.setInterval(() => saveCheckpoint(app.checkpoint()), 5000);
+    const ticker = window.setInterval(() => { if (app.mission.current.id !== 'CASE_INTRO') saveCheckpoint(app.checkpoint()); }, 5000);
     const onKeys = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { onCancel(); app.selectTool(null); setChartOpen(false); setPaused(false); }
       if (event.target instanceof HTMLInputElement) return;
@@ -268,13 +259,13 @@ function App() {
     window.addEventListener('keydown', onKeys);
     return () => { unsubscribe(); window.clearInterval(ticker); if (activityProgressSaveTimer.current !== null) window.clearTimeout(activityProgressSaveTimer.current); if (interactionToastTimer !== undefined) window.clearTimeout(interactionToastTimer); window.removeEventListener('keydown', onKeys); dragDownHandler = null; dragMoveHandler = null; dragUpHandler = null; window.removeEventListener('pointerdown', captureDragDown, true); window.removeEventListener('pointermove', captureDragMove, true); window.removeEventListener('pointerup', captureDragUp, true); window.removeEventListener('pointercancel', onCancel); window.removeEventListener('blur', onCancel); instance.destroy(true); sound.dispose(); };
   }, []);
-  useEffect(() => { app.paused = chartOpen || paused; }, [chartOpen, paused]);
+  useEffect(() => { app.paused = chartOpen || paused; app.refresh(); }, [chartOpen, paused]);
   useEffect(() => {
-    if (!chartOpen) return;
-    const dialog = document.querySelector<HTMLElement>('.chart-modal');
+    if (!chartOpen && !paused) return;
+    const dialog = document.querySelector<HTMLElement>(chartOpen ? '.chart-modal' : '.pause-card');
     if (!dialog) return;
     const restoreTarget = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const closeButton = dialog.querySelector<HTMLButtonElement>('.chart-header button');
+    const closeButton = dialog.querySelector<HTMLButtonElement>(chartOpen ? '.chart-header button' : '.primary');
     closeButton?.focus();
     const containFocus = (event: KeyboardEvent) => {
       if (event.key !== 'Tab') return;
@@ -290,7 +281,7 @@ function App() {
       dialog.removeEventListener('keydown', containFocus);
       if (restoreTarget?.isConnected) restoreTarget.focus();
     };
-  }, [chartOpen]);
+  }, [chartOpen, paused]);
 
   const mission = app.mission.current;
   const presentation = presentationFor(mission);
@@ -334,9 +325,8 @@ function App() {
     if (mission.kind === 'decision') { app.confirmDecision(); return; }
     app.next();
   };
-  const primaryLabel = mission.kind === 'decision'
-    ? app.mission.decisionConfirmed ? 'Next' : mission.activity?.allowMissingDataAcknowledgement ? 'Confirm · บันทึกข้อมูลที่ไม่มี' : mission.activity?.presentation === 'medication-station' ? 'Confirm · บันทึกการเตรียมยา' : mission.activity?.presentation === 'ecg-console' ? 'Confirm · บันทึกการอ่าน' : mission.activity?.kind === 'medication' || mission.activity?.kind === 'text-response' ? 'Confirm · ตรวจและบันทึก' : 'Confirm · ตรวจคำตอบ'
-    : mission.kind==='placement' ? app.ecg.confirmed ? (mission.button??'บันทึก ECG') : 'Confirm ECG' : mission.button ?? 'ต่อไป';
+  const primaryAction = primaryActionFor(mission, app.mission.decisionConfirmed, app.ecg.confirmed);
+  const primaryLabel = primaryAction.label;
   const startAnswerDrag = (id: string, event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0 || mission.kind !== 'decision' || app.mission.decisionConfirmed) return;
     event.preventDefault(); capturePointer(event); skipAnswerClick.current = false; answerDrag.current = { id, x: event.clientX, y: event.clientY, pointerId: event.pointerId };
@@ -422,12 +412,12 @@ function App() {
   };
 
   return <div className="app-shell storybook-game">
-    <GameHud nextEnabled={app.canContinue} nextLabel={`ดำเนินภารกิจ · ${primaryLabel}`} onNext={mainAction} caseId={activeCase.scenarios[0]?.id.toUpperCase() ?? activeCase.id.toUpperCase()} missions={activeCase.missions} missionIndex={app.mission.index} missionPhase={mission.phase} emergency={emergency} elapsedLabel={fmtTime(app.elapsed)} mistakeCount={app.score.data.mistakeCount} audioEnabled={audio} paused={paused} debug={debug} volume={volume} onToggleAudio={()=>void toggleAudio()} onVolumeChange={next=>{setVolume(next);sound.setVolume(next);}} onTogglePause={()=>setPaused(value=>!value)} onFullscreen={()=>void document.documentElement.requestFullscreen?.()}/>
+    <GameHud caseId={activeCase.scenarios[0]?.id.toUpperCase() ?? activeCase.id.toUpperCase()} missions={activeCase.missions} missionIndex={app.mission.index} missionPhase={mission.phase} emergency={emergency} elapsedLabel={fmtTime(app.elapsed)} mistakeCount={app.score.data.mistakeCount} audioEnabled={audio} paused={paused} debug={debug} volume={volume} onToggleAudio={()=>void toggleAudio()} onVolumeChange={next=>{setVolume(next);sound.setVolume(next);}} onTogglePause={()=>setPaused(value=>!value)} onFullscreen={()=>void document.documentElement.requestFullscreen?.()}/>
     <div className="case-bar"><div><span className="eyebrow">PATIENT CARE / {activeCase.scenarios[0]?.id.toUpperCase()}</span><h1>{activeCase.title}</h1></div><div className="case-progress"><span>CASE PROGRESS <b>{app.progress}%</b></span><div className="progress-track"><i style={{width:`${Math.max(4,app.progress)}%`}}/></div></div><span className="demo-tag">{activeCase.clinicalStatus}</span></div>
     {resumeAvailable&&mission.id==='CASE_INTRO'&&<div className="resume-banner"><span>พบ checkpoint · {readCheckpoint(activeCase)?.mission.replace(/_/g,' ')}</span><button onClick={resume}>เล่นต่อ</button><button className="start-fresh" onClick={restart}>เริ่มใหม่</button></div>}
-    <main className={`presentation-${presentation}`} data-mistakes={app.score.data.mistakeCount} data-attempts={app.score.data.attempts} data-ecg-placed={app.ecg.placed.size} data-ecg-confirmed={app.ecg.confirmed} data-patient-targets={JSON.stringify(activeCase.hotspots)} data-mission={mission.id} data-game-paused={app.paused} data-interaction-pending={Boolean(app.interaction.pending)} data-decision-confirmed={app.mission.decisionConfirmed} data-decision-count={app.mission.decisions.length} data-ecg-layout={mission.kind==='placement'?JSON.stringify(activeCase.ecg.layout):undefined} data-ecg-targets={mission.kind==='placement'?JSON.stringify(activeCase.ecg.targets):undefined}><section className={`simulation ${mission.kind==='placement'?'ecg-placement':''}`}><div className="room-topline"><span><span className="live-dot"/> PATIENT ROOM <b>01</b></span><span>OBSERVE · ASSESS · RESPOND</span></div><div className={`room-stage ${emergency?'emergency-room':''} ${app.patient.state.animation==='recovering'?'recovery-room':''} ${mission.kind==='placement'?'ecg-room':''}`}><div className="phaser-host" ref={host}/><PatientHotspotLayer visibleTargetIds={mission.objectives?.filter(o=>!app.mission.completed.has(o.id)).map(o=>o.target)??[]} validTargetIds={activeCase.hotspots.filter(target=>app.tools.selected&&app.previewAt(target).outcome==='valid').map(target=>target.id)} hotspots={activeCase.hotspots} active={mission.kind==='interaction'} dragging={app.tools.dragging} debug={debug} tutorialTargetId={onboardingActive ? onboardingTarget?.id : undefined} selectedTool={app.tools.selected ? app.tools.get(app.tools.selected) : undefined} onActivate={point=>app.useAt(point)}/>{interactionToast&&<div key={interactionToast.id} className={`interaction-toast ${interactionToast.success?'success':'error'}`} role="status" aria-live="polite">{interactionToast.success?<Check size={18}/>:<X size={18}/>}<span>{interactionToast.text}</span></div>}<PatientMonitor emergency={emergency} gradable={activeCase.gradable} trace={monitorTrace} vitals={app.vitals.current}/>{mission.kind==='intro'&&<div className="room-caption"><span className="caption-icon"><HeartPulse size={18}/></span><div><b>{app.patient.state.condition==='critical'?'ผู้ป่วยมีอาการทรุดลง':app.patient.state.condition==='stable'?'ผู้ป่วยตอบสนองต่อการดูแล':'ผู้ป่วยพร้อมรับการประเมิน'}</b><span>ดูข้อมูลภารกิจเพื่อเริ่มดูแล</span></div></div>}<span className="room-watermark">CARDIOSIM / ORIGINAL SIMULATION ART</span>{mission.kind==='transition'&&<div className="room-alert"><Siren size={26}/><span>ผู้ป่วยทรุดลง · กำลังเปลี่ยนเข้าสู่ภารกิจ</span></div>}{debug&&<div className="debug-panel"><b><Bug size={12}/> LIVE DEBUG</b><span>MISSION · {mission.id}</span><span>PATIENT · {app.patient.state.condition} / {app.patient.state.breathing}</span><span>TOOL · {app.tools.selected??'none'}</span><span>VITAL · HR {fmtVital(app.vitals.current.hr)} · SpO₂ {fmtVital(app.vitals.current.spo2, '%')}</span>{app.bus.logs.slice(0,4).map((event,index)=><small key={`${event.at}-${index}`}>{event.type} · {event.detail}</small>)}</div>}</div>
+    <main className={`presentation-${presentation}`} data-action-owner={primaryAction.owner} data-mistakes={app.score.data.mistakeCount} data-attempts={app.score.data.attempts} data-ecg-placed={app.ecg.placed.size} data-ecg-confirmed={app.ecg.confirmed} data-patient-targets={JSON.stringify(activeCase.hotspots)} data-mission={mission.id} data-game-paused={app.paused} data-interaction-pending={Boolean(app.interaction.pending)} data-decision-confirmed={app.mission.decisionConfirmed} data-decision-count={app.mission.decisions.length} data-ecg-layout={mission.kind==='placement'?JSON.stringify(activeCase.ecg.layout):undefined} data-ecg-targets={mission.kind==='placement'?JSON.stringify(activeCase.ecg.targets):undefined}><section className={`simulation ${mission.kind==='placement'?'ecg-placement':''}`}><div className="room-topline"><span><span className="live-dot"/> PATIENT ROOM <b>01</b></span><span>OBSERVE · ASSESS · RESPOND</span></div><div className={`room-stage ${emergency?'emergency-room':''} ${app.patient.state.animation==='recovering'?'recovery-room':''} ${mission.kind==='placement'?'ecg-room':''}`}><div className="phaser-host" ref={host}/><PatientHotspotLayer visibleTargetIds={mission.objectives?.filter(o=>!app.mission.completed.has(o.id)).map(o=>o.target)??[]} validTargetIds={activeCase.hotspots.filter(target=>app.tools.selected&&app.previewAt(target).outcome==='valid').map(target=>target.id)} hotspots={activeCase.hotspots} active={mission.kind==='interaction'} dragging={app.tools.dragging} debug={debug} tutorialTargetId={onboardingActive ? onboardingTarget?.id : undefined} selectedTool={app.tools.selected ? app.tools.get(app.tools.selected) : undefined} onActivate={point=>app.useAt(point)}/>{interactionToast&&<div key={interactionToast.id} className={`interaction-toast ${interactionToast.success?'success':'error'}`} role="status" aria-live="polite">{interactionToast.success?<Check size={18}/>:<X size={18}/>}<span>{interactionToast.text}</span></div>}<PatientMonitor emergency={emergency} gradable={activeCase.gradable} trace={monitorTrace} vitals={app.vitals.current}/>{mission.kind==='intro'&&<div className="room-caption"><span className="caption-icon"><HeartPulse size={18}/></span><div><b>{app.patient.state.condition==='critical'?'ผู้ป่วยมีอาการทรุดลง':app.patient.state.condition==='stable'?'ผู้ป่วยตอบสนองต่อการดูแล':'ผู้ป่วยพร้อมรับการประเมิน'}</b><span>ดูข้อมูลภารกิจเพื่อเริ่มดูแล</span></div></div>}<span className="room-watermark">CARDIOSIM / ORIGINAL SIMULATION ART</span>{mission.kind==='transition'&&<div className="room-alert"><Siren size={26}/><span>ผู้ป่วยทรุดลง · กำลังเปลี่ยนเข้าสู่ภารกิจ</span></div>}{debug&&<div className="debug-panel"><b><Bug size={12}/> LIVE DEBUG</b><span>MISSION · {mission.id}</span><span>PATIENT · {app.patient.state.condition} / {app.patient.state.breathing}</span><span>TOOL · {app.tools.selected??'none'}</span><span>VITAL · HR {fmtVital(app.vitals.current.hr)} · SpO₂ {fmtVital(app.vitals.current.spo2, '%')}</span>{app.bus.logs.slice(0,4).map((event,index)=><small key={`${event.at}-${index}`}>{event.type} · {event.detail}</small>)}</div>}</div>
     {(mission.kind==='interaction'||mission.kind==='intro')&&<MedicalToolTray onOpenChart={()=>setChartOpen(true)} onHint={()=>app.hint()} findingsCount={app.chart.length} tools={availableTools} selectedId={app.tools.selected} dragging={app.tools.dragging} interactive={mission.kind==='interaction'} tutorial={tutorial} onPointerDown={startDrag} onClick={(tool,event)=>{if(event.detail===0&&mission.kind==='interaction')app.selectTool(tool.id);}}/>}</section>
-    {mission.kind==='placement'&&<ECGMobileProcedure targets={activeCase.ecg.targets} image={activeCase.ecg.layout.image} imageSrc={activeCase.assets.ecgChest} placements={app.ecg.placements} validated={app.ecg.validated} confirmed={app.ecg.confirmed} onRemove={id=>app.removeLead(id)} placed={app.ecg.placed} selected={app.ecg.selected} feedback={app.feedback} canContinue={app.canContinue} onDragStart={startLeadDrag} onSelect={clickLead} onTarget={clickLeadTarget} onHint={()=>app.hint()} onChart={()=>setChartOpen(true)} onConfirm={mainAction}/>}
+    {mission.kind==='placement'&&<ECGMobileProcedure hintsVisible={app.hints.visible} targets={activeCase.ecg.targets} image={activeCase.ecg.layout.image} imageSrc={activeCase.assets.ecgChest} placements={app.ecg.placements} validated={app.ecg.validated} confirmed={app.ecg.confirmed} onRemove={id=>app.removeLead(id)} placed={app.ecg.placed} selected={app.ecg.selected} feedback={app.feedback} canContinue={app.canContinue} onDragStart={startLeadDrag} onSelect={clickLead} onTarget={clickLeadTarget} onHint={()=>app.hint()} onChart={()=>setChartOpen(true)} onConfirm={mainAction}/>}
     <MissionPanel
       engine={app}
       presentation={presentation}
@@ -457,6 +447,7 @@ function App() {
       selectedActivityItemId={selectedActivityItemId}
       onAcknowledgeMissing={acknowledgeMissingActivity}
       onStartActivityStepDrag={startActivityStepDrag}
+      onStepAction={(stepId,objectId,targetId)=>app.performActivityStepAction(stepId,objectId,targetId)}
       onCompleteActivityStep={completeActivityStep}
       onPlaceSyringeTool={placeSyringeTool}
       onStartSyringeToolDrag={startSyringeToolDrag}
@@ -464,7 +455,7 @@ function App() {
       onStartActivityItemDrag={startActivityItemDrag}
       onSelectActivityItem={selectActivityItem}
       onPlaceActivityItem={placeActivityItem}
-    />{paused&&!chartOpen&&<div className="pause-overlay"><section className="pause-card"><Pause size={28}/><span className="eyebrow">SIMULATION PAUSED</span><h2>พักภารกิจชั่วคราว</h2><p>ผู้ป่วยและเวลาในภารกิจหยุดไว้แล้ว</p><button className="primary" onClick={()=>setPaused(false)}><Play size={16}/> กลับไปเล่น</button></section></div>}</main>
+    />{paused&&!chartOpen&&<div className="pause-overlay"><section className="pause-card" role="dialog" aria-modal="true" aria-labelledby="pause-title" tabIndex={-1}><Pause size={28}/><span className="eyebrow">SIMULATION PAUSED</span><h2 id="pause-title">พักภารกิจชั่วคราว</h2><p>ผู้ป่วยและเวลาในภารกิจหยุดไว้แล้ว</p><button className="primary" onClick={()=>setPaused(false)}><Play size={16}/> กลับไปเล่น</button></section></div>}</main>
     <footer><span><span className="live-dot"/> ห้องจำลองพร้อมใช้งาน</span><span>PHASER 3 <i/> MOUSE & TOUCH <i/> {debug?'DEBUG ENABLED':'DEMO BUILD 0.1'}</span></footer>
     {leadGhost&&<div className="lead-ghost" style={{left:leadGhost.x,top:leadGhost.y}}>{leadGhost.label}</div>}{answerGhost&&<div className="answer-ghost" style={{left:answerGhost.x,top:answerGhost.y}}>{answerGhost.label}</div>}{stationGhost&&<div className="answer-ghost station-ghost" style={{left:stationGhost.x,top:stationGhost.y}}>{stationGhost.label}</div>}
     {chartOpen&&<div className="modal-backdrop" role="presentation" onPointerDown={event=>{if(event.target===event.currentTarget)setChartOpen(false);}}><section className="chart-modal" role="dialog" aria-modal="true" aria-labelledby="chart-title"><div className="chart-header"><span><ClipboardList size={19}/> PATIENT CHART</span><button onClick={()=>setChartOpen(false)} aria-label="ปิด Chart"><X size={18}/></button></div><h2 id="chart-title">ข้อมูลที่ค้นพบ</h2><p>ข้อมูลที่ยังไม่ได้ตรวจจะแสดงเป็น ???</p>{(['History','Vital Signs','Respiratory Assessment','Perfusion Assessment','Care Plan','Medication','Intake / Output','ECG'] as ChartSection[]).map(section=><div className="chart-section" key={section}><b>{section.toUpperCase()}</b>{app.chart.filter(entry=>entry.section===section).length===0?<div className="unknown">??? <span>ยังไม่ได้ตรวจ</span></div>:app.chart.filter(entry=>entry.section===section).map(entry=><div className="chart-entry" key={entry.id}><b>{entry.title}</b><span>{entry.captureVitals&&entry.vitals?fmtVitals(entry.vitals):entry.text}</span><small>พบระหว่าง {entry.mission.replace(/_/g,' ')}</small></div>)}</div>)}<div className="chart-source">แหล่งข้อมูล: {activeCase.sources.join(' · ')} · ค่าทั้งหมดเป็นตัวอย่างสำหรับสาธิต</div></section></div>}

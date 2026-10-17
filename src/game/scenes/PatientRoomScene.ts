@@ -186,6 +186,12 @@ export class PatientRoomScene extends Phaser.Scene {
       const safeBottom = height - trayReserve - 14;
       if (Number.isFinite(lowestTarget) && projectedBottom > safeBottom) centerY += (projectedBottom - safeBottom) / appliedZoom;
     }
+    if (portrait && (kind === 'decision' || kind === 'placement') && frame.contextFocus) {
+      const focus = frame.contextFocus;
+      const safeBottom = (kind === 'placement' ? Math.min(340, Math.max(295, height * .37)) : Math.min(310, Math.max(265, height * .34))) - 12;
+      const projectedBottom = (focus.point.y + focus.radius - centerY) * appliedZoom + height / 2;
+      centerY += (projectedBottom - safeBottom) / appliedZoom;
+    }
     this.cameras.main.setViewport(0, 0, width, height).setZoom(appliedZoom).centerOn(centerX, centerY);
     this.cameraFrameSize = `${width}x${height}`;
     this.cameraViewport = { width, height };
@@ -309,7 +315,8 @@ export class PatientRoomScene extends Phaser.Scene {
       const tray = this.engine.config.ecg.layout.tray;
       const disc = this.add.image(0,0,'ecg-leads').setDisplaySize(42,42);
       const label = this.add.text(0, 0, target.label, {fontFamily:'sans-serif',fontSize:'14px',fontStyle:'bold',color:'#274c67',stroke:'#ffffff',strokeThickness:3}).setOrigin(.5);
-      const lead = this.add.container(placed ? target.x : tray.x + index * tray.spacing, placed ? target.y : tray.y, [disc, label]);
+      const core = this.add.circle(0,0,12,0xf7fbff);
+      const lead = this.add.container(placed ? target.x : tray.x + index * tray.spacing, placed ? target.y : tray.y, [disc, core, label]);
       lead.setName(target.id).setSize(44,44);
       if (!this.engine.ecg.validated.has(target.id)) {
         lead.setInteractive({ useHandCursor: true }); this.input.setDraggable(lead);
@@ -494,8 +501,8 @@ export class PatientRoomScene extends Phaser.Scene {
     }
     if (kind === 'placement' && window.innerWidth > 760) for (const target of this.engine.ecg.targets) {
       const emphasized = this.engine.hints.visible || this.debug || this.engine.ecg.validated.has(target.id);
-      graphics.lineStyle(emphasized ? 2 : 1, emphasized ? 0x347b62 : 0x648a78, emphasized ? .9 : .55).strokeCircle(target.x,target.y,target.snapRadius);
-      graphics.lineStyle(1,emphasized ? 0x347b62 : 0x648a78,emphasized ? .8 : .45).lineBetween(target.x-6,target.y,target.x+6,target.y).lineBetween(target.x,target.y-6,target.x,target.y+6);
+      graphics.lineStyle(emphasized ? 2 : 1, this.engine.ecg.validated.has(target.id) ? 0x347b62 : 0x63849a, emphasized ? .9 : .55).strokeCircle(target.x,target.y,target.snapRadius);
+      graphics.lineStyle(1,this.engine.ecg.validated.has(target.id) ? 0x347b62 : 0x63849a,emphasized ? .8 : .45).lineBetween(target.x-6,target.y,target.x+6,target.y).lineBetween(target.x,target.y-6,target.x,target.y+6);
       this.leads.get(target.id)?.setScale(this.engine.ecg.selected === target.id ? 1.15 : 1);
     }
     this.game.canvas.style.cursor = this.engine.tools.dragging ? 'grabbing' : 'default';

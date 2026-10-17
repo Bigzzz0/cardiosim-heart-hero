@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Check, Droplets, Minus, Plus, Syringe } from 'lucide-react';
-import type { ActivityStepInteraction, ActivityStepProgress } from '../types';
+import type { SyringeInteraction, ActivityStepProgress } from '../types';
 
 interface SyringeWithdrawalMinigameProps {
   stepId: string;
   equipmentLabel: string;
-  interaction: ActivityStepInteraction;
+  interaction: SyringeInteraction;
   progress?: ActivityStepProgress;
   confirmed: boolean;
   onStartDrag: (stepId: string, event: React.PointerEvent<HTMLButtonElement>) => void;

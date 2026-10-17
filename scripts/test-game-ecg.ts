@@ -30,7 +30,7 @@ try{
    }
   };
   await drop('V1','V2');await drop('V2','V1');for(const t of verticalSlice.ecg.targets.slice(2))await drop(t.id,t.id);
-  const next=page.getByRole('button',{name:'ดำเนินภารกิจจากแถบด้านบน',exact:true});await next.waitFor();assert(await next.isEnabled(),'all six tentative leads allow Confirm');
+  const next=page.locator(width<760?'.ecg-mobile-actions .primary':'.mission-panel .primary:visible').first();await next.waitFor();assert(await next.isEnabled(),'all six tentative leads allow Confirm');
   await page.screenshot({path:`screenshots/bedside-ecg-tentative-${width}x${height}.png`});
   await next.click();await page.locator(width<760?'.ecg-mobile-feedback.error':'.mission-panel .feedback.error').waitFor();
   await page.waitForTimeout(300);await drop('V1','V1');await drop('V2','V2');await next.click();
