@@ -42,6 +42,28 @@ export const ASSETS = {
   },
 
   /**
+   * Clinical Handover & Bedside Information (from 03_รับข้อมูลผู้ป่วย)
+   */
+  handover: {
+    sceneOverview: '/assets/clinical-handover/handover-scene-full.webp',
+    clipboardWithPen: '/assets/clinical-handover/patient-clipboard-pen.webp',
+    monitorWithArm: '/assets/clinical-handover/patient-monitor-arm.webp',
+    ehrRecordFolder: '/assets/clinical-handover/ehr-record-folder.webp',
+    examMagnifier: '/assets/clinical-handover/hotspot-exam-magnifier.webp',
+    crisisAlertScene: '/assets/clinical-handover/crisis-alert-scene.webp',
+    bannerGold: '/assets/clinical-handover/ui-pill-banner-gold.webp',
+    progressBarGold: '/assets/clinical-handover/ui-progressbar-gold.webp',
+  },
+
+  /**
+   * ECG / EKG Minigame assets (from 04_EKG)
+   */
+  ecg: {
+    minigameBoard: '/assets/ecg/ecg-minigame-board.webp',
+    leadCables6: '/assets/ecg/ecg-leads-6cables.webp',
+  },
+
+  /**
    * UI illustrations, branding, and interactive button states
    */
   ui: {
@@ -55,6 +77,9 @@ export const ASSETS = {
     caseButtonIdle: '/assets/ui/case-button-idle.webp',
     caseButtonHover: '/assets/ui/case-button-hover.webp',
     caseButtonPressed: '/assets/ui/case-button-pressed.webp',
+    caseNextArrowIdle: '/assets/ui/case-next-arrow-idle.webp',
+    caseNextArrowHover: '/assets/ui/case-next-arrow-hover.webp',
+    caseNextArrowPressed: '/assets/ui/case-next-arrow-pressed.webp',
   },
 
   /**
@@ -82,4 +107,3 @@ export const ASSETS = {
 } as const;
 
 export type AssetRegistry = typeof ASSETS;
-
