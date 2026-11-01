@@ -195,3 +195,44 @@ CardioSim_ArtSource/
 - ไม่มีข้อความ ตัวเลข vital, ขนาดยา, lead label, คำตอบ, rhythm หรือ landmark เฉลยฝังในภาพ
 - ภาพที่สื่อข้อมูลทางคลินิกมีช่อง `clinical review` ใน manifest พร้อมผู้ตรวจ/วันที่/สถานะ; ECG และท่าทางตรวจต้องไม่ใช้จริงก่อน sign-off
 - ทีมพัฒนานำ source ไป export และตรวจจริงที่ 1440×900, 1280×720, 1024×768 และ 390×844; การไม่บัง UI/ลากถึงเป็น acceptance ฝั่ง integration ไม่ใช่เงื่อนไขให้ artist เดาพิกัดเอง
+
+
+---
+
+## บันทึกสถานะการแปลงไฟล์ Raw AI/PSD เข้าระบบ (Update 2 พ.ย. 2026)
+
+ทีมพัฒนาได้ทำการสกัดไฟล์เวกเตอร์และเลเยอร์ต้นฉบับจากโฟลเดอร์ `art/medical-illustration/raw/` ด้วย Python Vector Native Alpha Rendering เข้าระบบสำเร็จแล้วดังนี้:
+
+### 1. ไฟล์ที่สกัดสำเร็จแบบ Native Alpha 100% (คมชัดระดับ Retina ไม่ติดพื้นหลัง)
+- **ฉากและตัวละคร (`03_รับข้อมูลผู้ป่วย_แก้.ai`):**
+  - ตัวละครคนไข้ (`patient-character.webp` 2397×1806)
+  - พยาบาล (`nurse-character.webp` 474×1175)
+  - จอ Bedside Monitor (`bedside-monitor.webp`)
+  - แฟ้มเวชระเบียน / Order Sheet (`order-sheet.webp`)
+  - กล่องข้อความคนไข้ (`patient-dialog.webp`)
+  - แถบเมนูด้านล่าง Action Toolbar (`action-toolbar.webp`)
+  - ไอคอนแว่นขยายตรวจร่างกาย (`exam-magnifier.webp`)
+  - แถบความคืบหน้า / หลอดเลือด (`progress-track.webp`, `progress-fill.webp`)
+- **หน้าปกและปุ่มเมนู (`01_ปกเกม_แก้.ai`):**
+  - ภาพหน้าปกหลัก (`cover.webp` 1383×778)
+  - ปุ่มเริ่มเกม CTA (`btn-start.webp`)
+  - ปุ่มคำสั่ง 3 ระดับ (`btn-action-1.webp` ถึง `3.webp`)
+- **ระบบเลือกเคส (`02_Case_แก้.ai`):**
+  - ฉากหลังห้องเลือกเคส (`case-selection-bg.webp` 2880×1620)
+  - การ์ดเลือกเคสที่ 1 ถึง 6 (`case-card-1.webp` ถึง `6.webp`)
+  - เหรียญ/Badge เคสที่ 1 ถึง 6 (`case-badge-1.webp` ถึง `6.webp`)
+- **มินิเกม EKG (`04_EKG_แก้.ai`):**
+  - แผงบอร์ดรวม EKG (`ecg-minigame-board.webp`)
+  - สายวัด Lead ทั้ง 6 เส้นพร้อมจุกดูด (`ecg-leads-6cables.webp`)
+  - หุ่นทรวงอกและโครงกระดูกซี่โครง (`torso-ribcage.webp` 1486×1261)
+  - เลเยอร์จุดต่อสาย Chest Leads Overlay (`chest-leads-overlay.webp`)
+  - ถาดใส่อุปกรณ์ (`equipment-tray.webp`)
+
+### 2. สิ่งที่ขอให้ทีมเวชนิทัศน์ช่วยส่งเพิ่ม (Export Selection จาก Illustrator)
+ในมินิเกม EKG เลเยอร์ `อุปกรณ์` มีของวางชิดกันบนถาดเดียว เพื่อให้การลากวาง (Drag-and-Drop) คมชัดระดับพิกเซลเวกเตอร์แท้ 100% โดยไม่มีการแหว่ง ขอรบกวนเปิดไฟล์ `04_EKG_แก้.ai` แล้วคลิกขวาที่ออบเจกต์ต่อไปนี้ เลือก **`Export Selection...`** เป็น PNG โปร่งใส (Transparent Background):
+1. **คีมหนีบขั้วแขนขา (Limb Clamps):** สีแดง, สีเหลือง, สีเขียว, สีดำ (แยกตัวละ 1 ไฟล์)
+2. **กระปุกสำลี (Cotton Jar):** 1 ไฟล์
+3. **ขวดแอลกอฮอล์ (Alcohol Bottle):** 1 ไฟล์
+4. **ขวดเจลนำไฟฟ้า (Electrode Gel):** 1 ไฟล์
+5. **กล่องปฐมพยาบาล/อุปกรณ์ (First Aid Box):** 1 ไฟล์
+*(ใช้เวลาคลิกขวา Export รวมกันไม่เกิน 2 นาที จะได้ขอบเวกเตอร์แท้ที่สมบูรณ์แบบที่สุดครับ)*
