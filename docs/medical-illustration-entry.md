@@ -67,3 +67,6 @@ replacing them, inspect layer registration and remap their interaction coordinat
 The supplied older-looking patient should be mapped to an appropriate case after
 confirming its intended identity; this change does not alter clinical case data.
 No standalone `05` knowledge-template source file was present in the supplied ZIP.
+
+The subsequent Case 2 patient-layer integration is documented in
+[`supplied-patient-integration.md`](supplied-patient-integration.md).

@@ -1,0 +1,61 @@
+[
+  {
+    "source": "Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "layer": "Layer 6",
+    "crop": [
+      765,
+      354,
+      3162,
+      2160
+    ],
+    "size": [
+      1600,
+      1206
+    ],
+    "file": "patient-case-02-bed.webp"
+  },
+  {
+    "source": "Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "layer": "Layer 23",
+    "crop": [
+      765,
+      354,
+      3162,
+      2160
+    ],
+    "size": [
+      1600,
+      1206
+    ],
+    "file": "patient-case-02-pillow.webp"
+  },
+  {
+    "source": "Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "layer": "Layer 10",
+    "crop": [
+      765,
+      354,
+      3162,
+      2160
+    ],
+    "size": [
+      1600,
+      1206
+    ],
+    "file": "patient-case-02.webp"
+  },
+  {
+    "source": "03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "artboard": 1,
+    "embeddedImage": "Im1",
+    "size": [
+      1920,
+      1080
+    ],
+    "file": "patient-room.webp"
+  }
+]

@@ -39,6 +39,10 @@ export class PatientRoomScene extends Phaser.Scene {
     this.load.image('room', assets.room);
     this.load.image('patient', assets.patient);
     this.load.image('patient-critical', assets.patientCritical);
+    if (assets.patientSupport) {
+      this.load.image('patient-bed', assets.patientSupport.bed);
+      this.load.image('patient-pillow', assets.patientSupport.pillow);
+    }
     this.load.image('ecg-leads', assets.ecgLeads);
     this.load.image('ecg-chest', assets.ecgChest);
     for (const tool of this.engine.config.tools) {
@@ -54,6 +58,11 @@ export class PatientRoomScene extends Phaser.Scene {
     const layout = this.engine.config.presentation!;
     this.add.image(layout.background.x, layout.background.y, 'room').setDisplaySize(layout.background.width, layout.background.height);
     const body = layout.patient;
+    // Support layers share the patient's registration but remain still while breathing.
+    if (assets.patientSupport) {
+      this.add.image(body.x, body.y, 'patient-bed').setDisplaySize(body.width, body.height);
+      this.add.image(body.x, body.y, 'patient-pillow').setDisplaySize(body.width, body.height);
+    }
     this.patient = this.add.image(body.x, body.y, 'patient').setDisplaySize(body.width, body.height);
     this.patientBaseScale = { x: this.patient.scaleX, y: this.patient.scaleY };
     this.criticalPatient = this.add.image(body.x, body.y, 'patient-critical').setDisplaySize(body.width, body.height).setAlpha(0);

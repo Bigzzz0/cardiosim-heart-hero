@@ -97,7 +97,7 @@ export interface GameCase {
   clinicalStatus: string;
   gradable: boolean;
   sources: string[];
-  assets: { room: string; patient: string; patientCritical: string; ecgLeads: string; ecgChest: string };
+  assets: { room: string; patient: string; patientCritical: string; ecgLeads: string; ecgChest: string; patientSupport?: { bed: string; pillow: string } };
   presentation: RoomPresentation;
   initialVitals: VitalSigns;
   initialPatient: PatientState;
