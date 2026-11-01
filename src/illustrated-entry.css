@@ -1,0 +1,70 @@
+.illustrated-entry, .illustrated-scenarios { color: #173d5c; padding: clamp(12px, 3vw, 36px); background: #edfcff; }
+.illustrated-entry { display: grid; align-items: center; min-height: calc(100svh - 140px); }
+.illustrated-cover { position: relative; width: 100%; max-width: 1440px; margin: auto; border-radius: 28px; overflow: hidden; box-shadow: 0 16px 48px #2b639d1c; }
+.illustrated-cover-art { display: block; width: 100%; height: auto; }
+.illustrated-cover-scene { position: relative; }
+.illustrated-cover-start { position: absolute; left: 11.1%; top: 56.7%; width: 36.1%; }
+.illustrated-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; border: 0; background: transparent center / 100% 100% no-repeat; color: #153e65; font: inherit; font-weight: 700; padding: 14px 42px 20px 20px; cursor: pointer; }
+.illustrated-button--start { aspect-ratio: 3.81; padding: 0; background-image: url('/game/medical-illustration/start-idle.webp'); }
+.illustrated-button--start:hover { background-image: url('/game/medical-illustration/start-hover.webp'); }
+.illustrated-button--start:active { background-image: url('/game/medical-illustration/start-pressed.webp'); }
+/* The cover already includes its idle button. Keep one visible copy and put
+   the real HTML hit area over it, including a 48px target on small screens. */
+.illustrated-cover-start .illustrated-button { background-image: none; border-radius: 999px; }
+.illustrated-cover-start .illustrated-button:hover { backdrop-filter: saturate(1.2); }
+.illustrated-cover-start .illustrated-button:active { backdrop-filter: brightness(.9); }
+.illustrated-button--case { min-height: 76px; background-image: url('/game/medical-illustration/case-button-idle.webp'); }
+.illustrated-button--case:hover { background-image: url('/game/medical-illustration/case-button-hover.webp'); }
+.illustrated-button--case:active { background-image: url('/game/medical-illustration/case-button-pressed.webp'); }
+.illustrated-button--case > span { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.illustrated-button:focus-visible, .illustrated-back:focus-visible { outline: 3px solid #164e82; outline-offset: 4px; border-radius: 20px; }
+.illustrated-cover-caption { background: #ffffffed; padding: 16px; margin: 0; text-align: center; font-size: clamp(12px, 1.5vw, 16px); }
+.illustrated-login { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; width: 100%; max-width: 1280px; min-height: 690px; margin: auto; overflow: hidden; border-radius: 28px; background: #dcefff; box-shadow: 0 16px 48px #2b639d1c; }
+.illustrated-login-art { background: url('/game/medical-illustration/login.webp') left center / auto 100% no-repeat; }
+.illustrated-back { position: absolute; top: 18px; left: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 15px; border: 1px solid #bfd9ee; border-radius: 99px; background: #ffffffed; font-size: 14px; color: #173d5c; z-index: 1; }
+.illustrated-login-form { display: flex; flex-direction: column; justify-content: center; padding: 52px 38px 38px; background: #ffffffed; }
+.illustrated-eyebrow { color: #b22570; font-size: 13px; font-weight: 600; }
+.illustrated-login-form h1 { font-size: clamp(26px, 3vw, 36px); font-weight: 800; margin: 6px 0; }
+.illustrated-login-form > p { color: #506880; margin: 0 0 24px; font-size: 14px; }
+.illustrated-login-form label { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+.illustrated-login-form input { width: 100%; min-height: 48px; background: #f3faff; border: 1px solid #accce6; border-radius: 12px; padding: 12px; margin-bottom: 18px; color: #173d5c; font-size: 16px; }
+.illustrated-login-form input:focus { outline: 3px solid #60b9e7; outline-offset: 2px; }
+.illustrated-login-form small { margin-top: 14px; text-align: center; font-size: 12px; color: #506880; }
+.illustrated-scenarios { padding-bottom: 40px; }
+.illustrated-case-board { position: relative; max-width: 1360px; margin: auto; padding: 18% 12% 24px; background: url('/game/medical-illustration/case-board.webp') center / 100% 100% no-repeat; border-radius: 28px; }
+.illustrated-case-board > h1 { position: absolute; top: 12%; left: 29%; width: 36%; text-align: center; font-size: clamp(20px, 2.5vw, 34px); font-weight: 800; }
+.illustrated-case-brand { position: absolute; top: 3%; right: 1.5%; width: 12%; height: 16%; object-fit: contain; padding: 6px; background: white; border-radius: 24px; }
+.illustrated-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15%; }
+.illustrated-case-card { display: flex; flex-direction: column; align-items: flex-start; padding: 28px 4px 8px; min-width: 0; }
+.illustrated-case-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; color: #346888; font-size: 12px; font-weight: 700; }
+.illustrated-case-icon { align-self: center; margin: 18px 0 10px; color: #d8458b; }
+.illustrated-case-card h2 { font-size: clamp(18px, 1.7vw, 24px); font-weight: 800; line-height: 1.5; margin-bottom: 10px; }
+.illustrated-case-card p { font-size: 14px; line-height: 1.8; margin: 0 0 16px; }
+.illustrated-case-card .illustrated-case-patient { color: #346888; font-size: 12px; }
+.illustrated-case-card .illustrated-case-skills { display: flex; gap: 6px; font-size: 12px; color: #346888; }
+.illustrated-case-skills svg { flex-shrink: 0; }
+.illustrated-case-card small { font-size: 12px; color: #506880; margin-top: auto; margin-bottom: 12px; }
+.illustrated-case-card .illustrated-button { font-size: 14px; padding-left: 10px; padding-right: 30px; }
+@media (min-width: 1440px) { .illustrated-case-board { padding-top: 245px; } }
+@media (max-width: 900px) {
+  .illustrated-login { grid-template-columns: 1fr; min-height: 0; max-width: 580px; }
+  .illustrated-login-art { min-height: 240px; background-size: cover; background-position: left bottom; }
+  .illustrated-login-form { padding: 30px 24px; }
+  .illustrated-case-board { background: none; padding: 8px; }
+  .illustrated-case-board > h1 { position: static; width: auto; margin: 14px 0 24px; font-size: 28px; }
+  .illustrated-case-brand { display: none; }
+  .illustrated-case-grid { gap: 20px; }
+  .illustrated-case-card { padding: 24px 20px; border: 10px solid #c9f3fc; border-radius: 90px 90px 24px 24px; background: white; box-shadow: 0 6px 0 #b4d8e8; }
+  .illustrated-case-meta { margin-top: 16px; }
+}
+@media (max-width: 600px) {
+  .illustrated-entry, .illustrated-scenarios { padding: 12px; }
+  .illustrated-cover { overflow: visible; background: white; border-radius: 18px; }
+  .illustrated-cover-art { border-radius: 18px 18px 0 0; }
+  .illustrated-cover-start { top: calc(56.7% - 8px); }
+  .illustrated-button--start { background-size: 100% auto; }
+  .illustrated-cover-caption { border-radius: 0 0 18px 18px; padding: 18px 12px 24px; }
+  .illustrated-login-art { min-height: 210px; }
+  .illustrated-login-form { padding: 26px 20px; }
+  .illustrated-case-grid { grid-template-columns: 1fr; }
+}

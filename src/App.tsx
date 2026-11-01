@@ -38,6 +38,9 @@ export const App: React.FC = () => {
 
   const [currentStage, setCurrentStage] = useState<GameStage>(getInitialStage);
 
+  // Each new screen starts at its heading, including after a long quiz on mobile.
+  useEffect(() => { window.scrollTo(0, 0); }, [currentStage]);
+
   // Student Profile
   const [student, setStudent] = useState<StudentProfile>(() => {
     const gameReturn = readGameReturn();

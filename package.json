@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "test:entry": "node scripts/test-illustrated-entry.mjs",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
     "test:game:ui": "node scripts/test-game-storybook.mjs",

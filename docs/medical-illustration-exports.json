@@ -1,0 +1,102 @@
+[
+  {
+    "source": "01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "artboard": 1,
+    "file": "cover.webp",
+    "size": [
+      1920,
+      1081
+    ]
+  },
+  {
+    "source": "01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "artboard": 2,
+    "file": "start-idle.webp",
+    "size": [
+      541,
+      142
+    ]
+  },
+  {
+    "source": "01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "artboard": 3,
+    "file": "start-hover.webp",
+    "size": [
+      541,
+      142
+    ]
+  },
+  {
+    "source": "01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "artboard": 4,
+    "file": "start-pressed.webp",
+    "size": [
+      541,
+      142
+    ]
+  },
+  {
+    "source": "01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "artboard": 5,
+    "file": "logo.webp",
+    "size": [
+      640,
+      285
+    ]
+  },
+  {
+    "source": "01_Login_แก้.ai",
+    "sourceSha256": "89abe7320093d0bae347a96e26f2b91bb7cb9316730ea1bfff3e5527fd92d45e",
+    "artboard": 1,
+    "file": "login.webp",
+    "size": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "source": "02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "artboard": 1,
+    "file": "case-board.webp",
+    "size": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "source": "02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "artboard": 5,
+    "file": "case-button-idle.webp",
+    "size": [
+      616,
+      157
+    ]
+  },
+  {
+    "source": "02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "artboard": 6,
+    "file": "case-button-hover.webp",
+    "size": [
+      616,
+      157
+    ]
+  },
+  {
+    "source": "02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "artboard": 7,
+    "file": "case-button-pressed.webp",
+    "size": [
+      616,
+      157
+    ]
+  }
+]
