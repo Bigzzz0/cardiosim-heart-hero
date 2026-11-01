@@ -61,6 +61,22 @@ export const ASSETS = {
   ecg: {
     minigameBoard: '/assets/ecg/ecg-minigame-board.webp',
     leadCables6: '/assets/ecg/ecg-leads-6cables.webp',
+    /** Individual Limb Clamps (คีมหนีบขั้วแขนขาแยกแต่ละสีสำหรับลากวาง) */
+    clamps: {
+      purple: '/assets/ecg/items/clamp-purple.webp',
+      orange: '/assets/ecg/items/clamp-orange.webp',
+      blue: '/assets/ecg/items/clamp-blue.webp',
+      green: '/assets/ecg/items/clamp-green.webp',
+      yellow: '/assets/ecg/items/clamp-yellow.webp',
+      red: '/assets/ecg/items/clamp-red.webp',
+    },
+    /** Individual equipment items on the prep tray */
+    tray: {
+      cottonJar: '/assets/ecg/items/cotton-jar.webp',
+      alcoholCleanser: '/assets/ecg/items/alcohol-cleanser.webp',
+      electrodeGel: '/assets/ecg/items/electrode-gel.webp',
+      firstAidBox: '/assets/ecg/items/first-aid-box.webp',
+    },
   },
 
   /**
