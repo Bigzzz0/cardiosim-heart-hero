@@ -5,22 +5,22 @@
 .illustrated-cover-scene { position: relative; }
 .illustrated-cover-start { position: absolute; left: 11.1%; top: 56.7%; width: 36.1%; }
 .illustrated-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; border: 0; background: transparent center / 100% 100% no-repeat; color: #153e65; font: inherit; font-weight: 700; padding: 14px 42px 20px 20px; cursor: pointer; }
-.illustrated-button--start { aspect-ratio: 3.81; padding: 0; background-image: url('/game/medical-illustration/start-idle.webp'); }
-.illustrated-button--start:hover { background-image: url('/game/medical-illustration/start-hover.webp'); }
-.illustrated-button--start:active { background-image: url('/game/medical-illustration/start-pressed.webp'); }
+.illustrated-button--start { aspect-ratio: 3.81; padding: 0; background-image: url('/assets/ui/start-idle.webp'); }
+.illustrated-button--start:hover { background-image: url('/assets/ui/start-hover.webp'); }
+.illustrated-button--start:active { background-image: url('/assets/ui/start-pressed.webp'); }
 /* The cover already includes its idle button. Keep one visible copy and put
    the real HTML hit area over it, including a 48px target on small screens. */
 .illustrated-cover-start .illustrated-button { background-image: none; border-radius: 999px; }
 .illustrated-cover-start .illustrated-button:hover { backdrop-filter: saturate(1.2); }
 .illustrated-cover-start .illustrated-button:active { backdrop-filter: brightness(.9); }
-.illustrated-button--case { min-height: 76px; background-image: url('/game/medical-illustration/case-button-idle.webp'); }
-.illustrated-button--case:hover { background-image: url('/game/medical-illustration/case-button-hover.webp'); }
-.illustrated-button--case:active { background-image: url('/game/medical-illustration/case-button-pressed.webp'); }
+.illustrated-button--case { min-height: 76px; background-image: url('/assets/ui/case-button-idle.webp'); }
+.illustrated-button--case:hover { background-image: url('/assets/ui/case-button-hover.webp'); }
+.illustrated-button--case:active { background-image: url('/assets/ui/case-button-pressed.webp'); }
 .illustrated-button--case > span { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .illustrated-button:focus-visible, .illustrated-back:focus-visible { outline: 3px solid #164e82; outline-offset: 4px; border-radius: 20px; }
 .illustrated-cover-caption { background: #ffffffed; padding: 16px; margin: 0; text-align: center; font-size: clamp(12px, 1.5vw, 16px); }
 .illustrated-login { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; width: 100%; max-width: 1280px; min-height: 690px; margin: auto; overflow: hidden; border-radius: 28px; background: #dcefff; box-shadow: 0 16px 48px #2b639d1c; }
-.illustrated-login-art { background: url('/game/medical-illustration/login.webp') left center / auto 100% no-repeat; }
+.illustrated-login-art { background: url('/assets/ui/login.webp') left center / auto 100% no-repeat; }
 .illustrated-back { position: absolute; top: 18px; left: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 15px; border: 1px solid #bfd9ee; border-radius: 99px; background: #ffffffed; font-size: 14px; color: #173d5c; z-index: 1; }
 .illustrated-login-form { display: flex; flex-direction: column; justify-content: center; padding: 52px 38px 38px; background: #ffffffed; }
 .illustrated-eyebrow { color: #b22570; font-size: 13px; font-weight: 600; }
@@ -31,7 +31,7 @@
 .illustrated-login-form input:focus { outline: 3px solid #60b9e7; outline-offset: 2px; }
 .illustrated-login-form small { margin-top: 14px; text-align: center; font-size: 12px; color: #506880; }
 .illustrated-scenarios { padding-bottom: 40px; }
-.illustrated-case-board { position: relative; max-width: 1360px; margin: auto; padding: 18% 12% 24px; background: url('/game/medical-illustration/case-board.webp') center / 100% 100% no-repeat; border-radius: 28px; }
+.illustrated-case-board { position: relative; max-width: 1360px; margin: auto; padding: 18% 12% 24px; background: url('/assets/ui/case-board.webp') center / 100% 100% no-repeat; border-radius: 28px; }
 .illustrated-case-board > h1 { position: absolute; top: 12%; left: 29%; width: 36%; text-align: center; font-size: clamp(20px, 2.5vw, 34px); font-weight: 800; }
 .illustrated-case-brand { position: absolute; top: 3%; right: 1.5%; width: 12%; height: 16%; object-fit: contain; padding: 6px; background: white; border-radius: 24px; }
 .illustrated-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15%; }

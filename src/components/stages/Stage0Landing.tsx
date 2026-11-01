@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { StudentProfile } from '../../types/game';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { IllustratedButton } from '../ui/IllustratedButton';
+import { ASSETS } from '../../constants/assets';
 import '../../illustrated-entry.css';
 
 interface Stage0LandingProps { onStartGame: (profile: StudentProfile) => void; }
@@ -31,7 +32,7 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
         <div className="illustrated-cover">
           <h1 className="sr-only">CardioSim: Heart Hero Simulation</h1>
           <div className="illustrated-cover-scene">
-            <img className="illustrated-cover-art" src="/game/medical-illustration/cover.webp" alt="CardioSim เกมจำลองการพยาบาลผู้ป่วยโรคหัวใจ" fetchPriority="high" />
+            <img className="illustrated-cover-art" src={ASSETS.ui.cover} alt="CardioSim เกมจำลองการพยาบาลผู้ป่วยโรคหัวใจ" fetchPriority="high" />
             <div className="illustrated-cover-start" ref={start}>
               <IllustratedButton artwork="start" onClick={openLogin}>เริ่มเกม START</IllustratedButton>
             </div>

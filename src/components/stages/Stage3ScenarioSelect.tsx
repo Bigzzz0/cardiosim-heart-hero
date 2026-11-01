@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, ClipboardList, HeartPulse } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { IllustratedButton } from '../ui/IllustratedButton';
+import { ASSETS } from '../../constants/assets';
 import '../../illustrated-entry.css';
 
 interface Stage3ScenarioSelectProps { onSelectScenario: (scenarioId: string) => void; }
@@ -12,7 +13,7 @@ const scenarios = [
 export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSelectScenario }) => (
   <section className="illustrated-scenarios" aria-labelledby="scenario-heading">
     <div className="illustrated-case-board">
-      <img className="illustrated-case-brand" src="/game/medical-illustration/logo.webp" alt="CardioSim" />
+      <img className="illustrated-case-brand" src={ASSETS.ui.logo} alt="CardioSim" />
       <h1 id="scenario-heading">เลือกเคสผู้ป่วย</h1>
       <div className="illustrated-case-grid">
         {scenarios.map(scenario => (

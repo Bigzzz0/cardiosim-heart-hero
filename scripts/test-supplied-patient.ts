@@ -47,7 +47,7 @@ try {
     const page = await context.newPage();
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    page.on('response', response => { if (response.url().includes('/game/') && response.status() >= 400) errors.push(`${response.status()}: ${response.url()}`); });
+    page.on('response', response => { if ((response.url().includes('/assets/') || response.url().includes('/game/')) && response.status() >= 400) errors.push(`${response.status()}: ${response.url()}`); });
     const game = new CaseEngine(case02);
     game.mission.jumpTo('ASSESSMENT');
     await page.addInitScript(checkpoint => {

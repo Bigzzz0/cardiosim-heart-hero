@@ -174,7 +174,7 @@
 .storybook-game .ecg-mobile-lead small {display:block;font-size:10px;line-height:1.2;color:var(--care-muted);}
 .storybook-game .ecg-mobile-lead {display:flex;flex-direction:column;justify-content:center;gap:2px;}
 .storybook-game .ecg-attached-lead:not(.validated) {border-color:var(--care-selected);background-color:var(--care-selected-bg);}
-.storybook-game .ecg-attached-lead {background-image:radial-gradient(circle at center,#f7fbff 0 38%,transparent 40%),url('/game/bedside/electrode.webp');font-size:14px;text-shadow:none;}
+.storybook-game .ecg-attached-lead {background-image:radial-gradient(circle at center,#f7fbff 0 38%,transparent 40%),url('/assets/bedside/electrode.webp');font-size:14px;text-shadow:none;}
 .storybook-game .io-item-token.placed {border-color:var(--care-selected);background:var(--care-selected-bg);}
 .storybook-game .io-item-token.placed small {font-size:12px;color:var(--care-selected);}
 @media(max-width:760px) {

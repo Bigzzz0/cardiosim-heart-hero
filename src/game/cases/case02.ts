@@ -1,6 +1,7 @@
 import type { GameCase } from '../types';
 import { verticalSlice } from './verticalSlice';
 import { registerSuppliedPatientHotspots, suppliedPatientPresentation } from '../suppliedPatientPresentation';
+import { ASSETS } from '../../constants/assets';
 
 const case02 = structuredClone(verticalSlice) satisfies GameCase;
 case02.id = 'case-02-acute-decompensated-heart-failure';
@@ -9,10 +10,10 @@ case02.title = 'ภาวะหัวใจล้มเหลวกำเริ�
 case02.clinicalStatus = 'CASE 02 · STORY-SUMMARY DEMO · ไม่มีค่า vital หรือ answer key';
 case02.gradable = false;
 case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2'];
-case02.assets.room = '/game/medical-illustration/patient-room.webp';
-case02.assets.patient = '/game/medical-illustration/patient-case-02.webp';
+case02.assets.room = ASSETS.environments.patientRoom;
+case02.assets.patient = ASSETS.patients.patientCase02;
 case02.assets.patientCritical = case02.assets.patient;
-case02.assets.patientSupport = { bed: '/game/medical-illustration/patient-case-02-bed.webp', pillow: '/game/medical-illustration/patient-case-02-pillow.webp' };
+case02.assets.patientSupport = { bed: ASSETS.patients.patientCase02Bed, pillow: ASSETS.patients.patientCase02Pillow };
 case02.presentation = suppliedPatientPresentation;
 case02.hotspots = registerSuppliedPatientHotspots(case02.hotspots);
 case02.initialVitals = { hr: null, bpSystolic: null, bpDiastolic: null, rr: null, spo2: null };

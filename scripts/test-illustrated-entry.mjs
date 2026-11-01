@@ -23,7 +23,7 @@ try {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => {
-      if (response.url().includes('/game/medical-illustration/') && response.status() >= 400) errors.push(`Missing art: ${response.url()}`);
+      if ((response.url().includes('/assets/ui/') || response.url().includes('/game/medical-illustration/')) && response.status() >= 400) errors.push(`Missing art: ${response.url()}`);
     });
     const capture = async name => {
       await page.evaluate(async () => { await document.fonts.ready; });
