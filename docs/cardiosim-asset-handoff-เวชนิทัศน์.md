@@ -227,12 +227,8 @@ CardioSim_ArtSource/
   - หุ่นทรวงอกและโครงกระดูกซี่โครง (`torso-ribcage.webp` 1486×1261)
   - เลเยอร์จุดต่อสาย Chest Leads Overlay (`chest-leads-overlay.webp`)
   - ถาดใส่อุปกรณ์ (`equipment-tray.webp`)
+  - คีมหนีบแยก 6 สีครบชุด (`clamp-purple`, `clamp-orange`, `clamp-blue`, `clamp-green`, `clamp-yellow`, `clamp-red`)
+  - อุปกรณ์บนถาดเตรียม (`cotton-jar`, `alcohol-cleanser`, `first-aid-box`, `electrode-gel`) ดึงด้วย Connected Exterior Flood-fill สำลีขาวทึบไม่เป็นรูโบ๋ และคีมไม่ติดสีข้างเคียง
 
-### 2. สิ่งที่ขอให้ทีมเวชนิทัศน์ช่วยส่งเพิ่ม (Export Selection จาก Illustrator)
-ในมินิเกม EKG เลเยอร์ `อุปกรณ์` มีของวางชิดกันบนถาดเดียว เพื่อให้การลากวาง (Drag-and-Drop) คมชัดระดับพิกเซลเวกเตอร์แท้ 100% โดยไม่มีการแหว่ง ขอรบกวนเปิดไฟล์ `04_EKG_แก้.ai` แล้วคลิกขวาที่ออบเจกต์ต่อไปนี้ เลือก **`Export Selection...`** เป็น PNG โปร่งใส (Transparent Background):
-1. **คีมหนีบขั้วแขนขา (Limb Clamps):** สีแดง, สีเหลือง, สีเขียว, สีดำ (แยกตัวละ 1 ไฟล์)
-2. **กระปุกสำลี (Cotton Jar):** 1 ไฟล์
-3. **ขวดแอลกอฮอล์ (Alcohol Bottle):** 1 ไฟล์
-4. **ขวดเจลนำไฟฟ้า (Electrode Gel):** 1 ไฟล์
-5. **กล่องปฐมพยาบาล/อุปกรณ์ (First Aid Box):** 1 ไฟล์
-*(ใช้เวลาคลิกขวา Export รวมกันไม่เกิน 2 นาที จะได้ขอบเวกเตอร์แท้ที่สมบูรณ์แบบที่สุดครับ)*
+### 2. สถานะความพร้อมสำหรับทีม
+Asset ทุกชิ้นทั้ง UI, ฉาก, ตัวละคร, มินิเกม EKG, คีมทุกสี และอุปกรณ์บนถาดถูกสกัดและลงทะเบียนใน `src/constants/assets.ts` พร้อมใช้งานใน Phaser/React ทันที 100% ไม่จำเป็นต้องรบกวนทีมเวชนิทัศน์ export เพิ่มเติมแล้วครับ!
