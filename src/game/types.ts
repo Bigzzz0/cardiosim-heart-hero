@@ -84,7 +84,7 @@ export interface MissionDefinition {
   dataStatus?: ClinicalDataStatus;
   gradable?: boolean;
 }
-export interface ECGTarget extends Point { id: string; label: string; snapRadius: number; hint: string; mobileLabel: Point }
+export interface ECGTarget extends Point { id: string; label: string; snapRadius: number; hint: string; mobileLabel: Point; art?: { electrode: string; cable: string; color: string } }
 export interface ECGBoardLayout {
   board: { x: number; y: number; width: number; height: number };
   image: { x: number; y: number; width: number; height: number };

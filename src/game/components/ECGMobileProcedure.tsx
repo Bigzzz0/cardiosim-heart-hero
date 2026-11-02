@@ -27,7 +27,7 @@ export function ECGMobileProcedure(props: ECGMobileProcedureProps) {
   const { targets, image, imageSrc, placed, placements, validated, confirmed, onRemove, selected, feedback, canContinue, hintsVisible, onDragStart, onSelect, onTarget, onHint, onChart, onConfirm } = props;
   return <div className={`ecg-mobile-procedure ${hintsVisible ? 'show-hints' : ''}`} aria-label="ECG lead placement mini-game">
     <div className="ecg-mobile-heading"><div><span className="eyebrow">PROCEDURE · ECG</span><b>เชื่อมต่อ Leads <span>{placed.size}/6</span></b></div><small>ผังตำแหน่ง ECG · DEMO — ไม่ใช่ภาพผู้ป่วย</small></div>
-    <div className="ecg-mobile-map">
+    <div className="ecg-mobile-map" style={{ aspectRatio: `${image.width} / ${image.height}` }}>
       <img src={imageSrc} alt="ผังแสดงตำแหน่ง ECG V1 ถึง V6 สำหรับสาธิต" draggable="false"/>
       <svg className="ecg-mobile-leaders" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
         {targets.map(target=>{
@@ -36,7 +36,10 @@ export function ECGMobileProcedure(props: ECGMobileProcedureProps) {
           return <line key={target.id} x1={x} y1={y} x2={target.mobileLabel.x*1000} y2={target.mobileLabel.y*1000} className={placed.has(target.id)?'complete':''}/>;
         })}
       </svg>
-      {Object.entries(placements).map(([id,targetId])=>{const at=targets.find(t=>t.id===targetId);if(!at)return null;return <button key={id} type="button" className={`ecg-attached-lead ${validated.has(id)?'validated':''}`} data-ecg-attached={id} style={{left:`${(at.x-image.x)/image.width*100}%`,top:`${(at.y-image.y)/image.height*100}%`}} onPointerDown={event=>onDragStart(id,event)} onClick={()=>onSelect(id)} disabled={validated.has(id)} aria-label={`ย้าย ${id} ที่วางแล้ว`}>{id}</button>;})}
+      <svg className="ecg-connection-wires" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+        {Object.entries(placements).map(([id,targetId])=>{const at=targets.find(t=>t.id===targetId);const lead=targets.find(t=>t.id===id);if(!at)return null;const x=(at.x-image.x)/image.width*1000,y=(at.y-image.y)/image.height*1000,end=(targets.findIndex(t=>t.id===id)+.5)/targets.length*1000;return <path key={id} d={`M${x} ${y+18} C${x+45} ${y+150},${end} 860,${end} 1000`} stroke={lead?.art?.color??'#587d96'}/>;})}
+      </svg>
+      {Object.entries(placements).map(([id,targetId])=>{const at=targets.find(t=>t.id===targetId);const lead=targets.find(t=>t.id===id);if(!at)return null;return <button key={id} type="button" className={`ecg-attached-lead ${validated.has(id)?'validated':''}`} data-ecg-attached={id} style={{left:`${(at.x-image.x)/image.width*100}%`,top:`${(at.y-image.y)/image.height*100}%`}} onPointerDown={event=>onDragStart(id,event)} onClick={()=>onSelect(id)} disabled={validated.has(id)} aria-label={`ย้าย ${id} ที่วางแล้ว`}>{lead?.art&&<img src={lead.art.electrode} alt="" draggable="false"/>}<b style={{top:targets.findIndex(t=>t.id===id)%2?'100%':'-14px'}}>{id}</b></button>;})}
       <div className="ecg-mobile-targets">{targets.map((target,index)=>{
         const complete=validated.has(target.id);
         const left=((target.x-image.x)/image.width)*100;
@@ -47,7 +50,7 @@ export function ECGMobileProcedure(props: ECGMobileProcedureProps) {
         </React.Fragment>;
       })}</div>
     </div>
-    <div className="ecg-mobile-tray" aria-label="ถาด ECG leads">{targets.map(target=><button key={target.id} type="button" className={`ecg-mobile-lead ${selected===target.id?'selected':''} ${placed.has(target.id)?'placed':''}`} onPointerDown={event=>onDragStart(target.id,event)} onClick={()=>onSelect(target.id)} disabled={validated.has(target.id)} aria-pressed={selected===target.id} aria-label={`กดค้างแล้วลาก ${target.id} ไปยังตำแหน่งบนผัง`}>{validated.has(target.id)?<Check size={17}/>:target.id}<small>{validated.has(target.id)?'ผ่านแล้ว':placed.has(target.id)?'วางแล้ว':'หยิบ'}</small></button>)}</div>
+    <div className="ecg-mobile-tray" aria-label="ถาด ECG leads">{targets.map(target=><button key={target.id} type="button" className={`ecg-mobile-lead ${selected===target.id?'selected':''} ${placed.has(target.id)?'placed':''}`} onPointerDown={event=>onDragStart(target.id,event)} onClick={()=>onSelect(target.id)} disabled={validated.has(target.id)} aria-pressed={selected===target.id} aria-label={`กดค้างแล้วลาก ${target.id} ไปยังตำแหน่งบนผัง`}>{target.art&&<img src={target.art.electrode} alt="" draggable="false"/>}<span>{validated.has(target.id)&&<Check size={12}/>} {target.id}</span><small>{validated.has(target.id)?'ผ่านแล้ว':placed.has(target.id)?'วางแล้ว':'หยิบ'}</small></button>)}</div>
     {selected&&placed.has(selected)&&!validated.has(selected)&&<button className="ecg-return-lead" type="button" onClick={()=>onRemove(selected)}>คืน {selected} เข้าถาด</button>}
     <div className={`ecg-mobile-feedback ${feedback.kind}`} role="status" aria-live="polite">{feedback.text}</div>
     <div className="ecg-mobile-actions"><button onClick={onHint}><Lightbulb size={17}/> Hint</button><button onClick={onChart}><ClipboardList size={17}/> Chart</button><button className="primary" onClick={onConfirm} disabled={!canContinue}>{confirmed?'บันทึก ECG':'ยืนยัน ECG'} <ChevronRight size={17}/></button></div>

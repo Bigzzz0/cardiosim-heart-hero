@@ -25,6 +25,7 @@ import './storybook.css';
 import './bedside.css';
 import './instrument-ui.css';
 import './care-ui.css';
+import './ecg-art.css';
 
 const activeCase = getGameCase(new URLSearchParams(location.search).get('case'));
 const launchedFromWeb = new URLSearchParams(location.search).get('from') === 'web';
@@ -58,7 +59,7 @@ function App() {
   const [volume, setVolume] = useState(.22);
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [answerGhost, setAnswerGhost] = useState<{ label: string; x: number; y: number } | null>(null);
-  const [leadGhost, setLeadGhost] = useState<{ label: string; x: number; y: number } | null>(null);
+  const [leadGhost, setLeadGhost] = useState<{ label: string; x: number; y: number; art?: string } | null>(null);
   const [stationGhost, setStationGhost] = useState<{ label: string; x: number; y: number } | null>(null);
   const [selectedActivityItemId, setSelectedActivityItemId] = useState<string | null>(null);
   const [missionPanelPreference, setMissionPanelPreference] = useState<{ missionId: string; open: boolean } | null>(null);
@@ -86,7 +87,7 @@ function App() {
       if (heldLead && heldLead.pointerId === event.pointerId) {
         if (Math.hypot(event.clientX - heldLead.x, event.clientY - heldLead.y) > 8) {
           const lead = activeCase.ecg.targets.find(item => item.id === heldLead.id);
-          if (lead) { setLeadGhost({ label: lead.label, x: event.clientX, y: event.clientY }); document.body.classList.add('dragging'); }
+          if (lead) { setLeadGhost({ label: lead.label, x: event.clientX, y: event.clientY, art: lead.art?.electrode }); document.body.classList.add('dragging'); }
         }
         return;
       }
@@ -457,7 +458,7 @@ function App() {
       onPlaceActivityItem={placeActivityItem}
     />{paused&&!chartOpen&&<div className="pause-overlay"><section className="pause-card" role="dialog" aria-modal="true" aria-labelledby="pause-title" tabIndex={-1}><Pause size={28}/><span className="eyebrow">SIMULATION PAUSED</span><h2 id="pause-title">พักภารกิจชั่วคราว</h2><p>ผู้ป่วยและเวลาในภารกิจหยุดไว้แล้ว</p><button className="primary" onClick={()=>setPaused(false)}><Play size={16}/> กลับไปเล่น</button></section></div>}</main>
     <footer><span><span className="live-dot"/> ห้องจำลองพร้อมใช้งาน</span><span>PHASER 3 <i/> MOUSE & TOUCH <i/> {debug?'DEBUG ENABLED':'DEMO BUILD 0.1'}</span></footer>
-    {leadGhost&&<div className="lead-ghost" style={{left:leadGhost.x,top:leadGhost.y}}>{leadGhost.label}</div>}{answerGhost&&<div className="answer-ghost" style={{left:answerGhost.x,top:answerGhost.y}}>{answerGhost.label}</div>}{stationGhost&&<div className="answer-ghost station-ghost" style={{left:stationGhost.x,top:stationGhost.y}}>{stationGhost.label}</div>}
+    {leadGhost&&<div className="lead-ghost" style={{left:leadGhost.x,top:leadGhost.y}}>{leadGhost.art&&<img src={leadGhost.art} alt=""/>}{leadGhost.label}</div>}{answerGhost&&<div className="answer-ghost" style={{left:answerGhost.x,top:answerGhost.y}}>{answerGhost.label}</div>}{stationGhost&&<div className="answer-ghost station-ghost" style={{left:stationGhost.x,top:stationGhost.y}}>{stationGhost.label}</div>}
     {chartOpen&&<div className="modal-backdrop" role="presentation" onPointerDown={event=>{if(event.target===event.currentTarget)setChartOpen(false);}}><section className="chart-modal" role="dialog" aria-modal="true" aria-labelledby="chart-title"><div className="chart-header"><span><ClipboardList size={19}/> PATIENT CHART</span><button onClick={()=>setChartOpen(false)} aria-label="ปิด Chart"><X size={18}/></button></div><h2 id="chart-title">ข้อมูลที่ค้นพบ</h2><p>ข้อมูลที่ยังไม่ได้ตรวจจะแสดงเป็น ???</p>{(['History','Vital Signs','Respiratory Assessment','Perfusion Assessment','Care Plan','Medication','Intake / Output','ECG'] as ChartSection[]).map(section=><div className="chart-section" key={section}><b>{section.toUpperCase()}</b>{app.chart.filter(entry=>entry.section===section).length===0?<div className="unknown">??? <span>ยังไม่ได้ตรวจ</span></div>:app.chart.filter(entry=>entry.section===section).map(entry=><div className="chart-entry" key={entry.id}><b>{entry.title}</b><span>{entry.captureVitals&&entry.vitals?fmtVitals(entry.vitals):entry.text}</span><small>พบระหว่าง {entry.mission.replace(/_/g,' ')}</small></div>)}</div>)}<div className="chart-source">แหล่งข้อมูล: {activeCase.sources.join(' · ')} · ค่าทั้งหมดเป็นตัวอย่างสำหรับสาธิต</div></section></div>}
   </div>;
 }

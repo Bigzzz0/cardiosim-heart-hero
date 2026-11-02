@@ -1,0 +1,74 @@
+{
+  "source": "04_EKG_แก้.ai",
+  "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+  "sourceRender": [
+    2560,
+    1440
+  ],
+  "crop": [
+    985,
+    267,
+    2368,
+    1440
+  ],
+  "size": [
+    1383,
+    1173
+  ],
+  "leads": [
+    {
+      "id": "V1",
+      "x": 0.44070860448300797,
+      "y": 0.4812446717817562,
+      "color": "#ed3028",
+      "sourceMarker": "Im63",
+      "electrode": "/assets/ecg/play/electrode-v1.webp",
+      "cable": "/assets/ecg/play/cable-v1.webp"
+    },
+    {
+      "id": "V2",
+      "x": 0.5582067968185105,
+      "y": 0.4816709292412617,
+      "color": "#e7b720",
+      "sourceMarker": "Im61",
+      "electrode": "/assets/ecg/play/electrode-v2.webp",
+      "cable": "/assets/ecg/play/cable-v2.webp"
+    },
+    {
+      "id": "V3",
+      "x": 0.5943600867678959,
+      "y": 0.545609548167093,
+      "color": "#47a633",
+      "sourceMarker": "Im59",
+      "electrode": "/assets/ecg/play/electrode-v3.webp",
+      "cable": "/assets/ecg/play/cable-v3.webp"
+    },
+    {
+      "id": "V4",
+      "x": 0.6417208966015907,
+      "y": 0.5907928388746803,
+      "color": "#209ab5",
+      "sourceMarker": "Im57",
+      "electrode": "/assets/ecg/play/electrode-v4.webp",
+      "cable": "/assets/ecg/play/cable-v4.webp"
+    },
+    {
+      "id": "V5",
+      "x": 0.6988430947216197,
+      "y": 0.5763000852514919,
+      "color": "#e58b39",
+      "sourceMarker": "Im55",
+      "electrode": "/assets/ecg/play/electrode-v5.webp",
+      "cable": "/assets/ecg/play/cable-v5.webp"
+    },
+    {
+      "id": "V6",
+      "x": 0.7440347071583514,
+      "y": 0.5345268542199488,
+      "color": "#8d45c1",
+      "sourceMarker": "Im53",
+      "electrode": "/assets/ecg/play/electrode-v6.webp",
+      "cable": "/assets/ecg/play/cable-v6.webp"
+    }
+  ]
+}

@@ -66,3 +66,6 @@ Case 2 remains an ungraded practice case with no invented vital values, lung
 findings, ECG strip, treatment answers, or drug orders. ECG artwork, supplied
 monitor housing, equipment icons, document templates and new critical patient
 poses remain subsequent artwork tasks.
+
+The following chest-lead artwork integration is documented in
+[`supplied-ecg-integration.md`](supplied-ecg-integration.md).

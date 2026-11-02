@@ -219,8 +219,8 @@ def run():
             'public/assets/ecg/items/clamp-red.webp': (649, 745, 738, 877),
             'public/assets/ecg/items/cotton-jar.webp': (248, 139, 415, 340),
             'public/assets/ecg/items/alcohol-cleanser.webp': (561, 139, 637, 335),
-            'public/assets/ecg/items/first-aid-box.webp': (189, 442, 428, 620),
-            'public/assets/ecg/items/electrode-gel.webp': (490, 443, 708, 627),
+            'public/assets/ecg/items/electrode-gel.webp': (189, 442, 428, 620),
+            'public/assets/ecg/items/first-aid-box.webp': (490, 443, 708, 627),
         }
 
         os.makedirs('public/assets/ecg/items', exist_ok=True)

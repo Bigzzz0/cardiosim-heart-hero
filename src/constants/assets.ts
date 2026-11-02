@@ -5,6 +5,8 @@
  * Keep paths aligned with public/assets/ directory structure.
  */
 
+import suppliedECGArt from '../game/suppliedECGArt.json';
+
 export const ASSETS = {
   /**
    * Bedside clinical instruments and interactive objects
@@ -67,6 +69,8 @@ export const ASSETS = {
    * ECG / EKG Minigame assets (from 04_EKG)
    */
   ecg: {
+    playTorso: '/assets/ecg/play/torso-with-ribs.webp',
+    chestLeads: suppliedECGArt.leads,
     minigameBoard: '/assets/ecg/ecg-minigame-board.webp',
     leadCables6: '/assets/ecg/ecg-leads-6cables.webp',
     torsoRibcage: '/assets/ecg/torso-ribcage.webp',

@@ -3,6 +3,7 @@ import {clientToWorld,worldToClient,ROOM_UI_OCCLUDERS} from '../presentationCoor
 import type { AudioSystem } from '../systems/AudioSystem';
 import type { CaseEngine } from '../core/CaseEngine';
 import type { InteractionEventData, PatientState, Point } from '../types';
+import { ecgPreparationArt } from '../suppliedECGLayout';
 
 export class PatientRoomScene extends Phaser.Scene {
   private patient?: Phaser.GameObjects.Image;
@@ -28,6 +29,7 @@ export class PatientRoomScene extends Phaser.Scene {
   private ecgBoard?: Phaser.GameObjects.Container;
   private leadLayer?: Phaser.GameObjects.Container;
   private leads = new Map<string, Phaser.GameObjects.Container>();
+  private leadWires?: Phaser.GameObjects.Graphics;
   private activeInteraction: InteractionEventData | null = null;
   private unsubscribeBus?: () => void;
   private reduceMotion = false;
@@ -45,6 +47,8 @@ export class PatientRoomScene extends Phaser.Scene {
     }
     this.load.image('ecg-leads', assets.ecgLeads);
     this.load.image('ecg-chest', assets.ecgChest);
+    for (const target of this.engine.config.ecg.targets) if (target.art) this.load.image(`ecg-electrode-${target.id}`, target.art.electrode);
+    for (const item of ecgPreparationArt) this.load.image(`ecg-prep-${item.id}`, item.sprite);
     for (const tool of this.engine.config.tools) {
       if (tool.sprite) this.load.image(`tool-${tool.id}`, tool.sprite);
       if (tool.visual?.contactSprite) this.load.image(`tool-contact-${tool.id}`, tool.visual.contactSprite);
@@ -306,6 +310,11 @@ export class PatientRoomScene extends Phaser.Scene {
       objects.push(this.add.circle(x, y, 3, 0x9bb8a7, .9).setStrokeStyle(1, 0xd8ebdc, .55));
     }
     objects.push(this.add.image(imageLayout.x + imageLayout.width / 2, imageLayout.y + imageLayout.height / 2, 'ecg-chest').setDisplaySize(imageLayout.width, imageLayout.height));
+    ecgPreparationArt.forEach((item, index) => {
+      const x = boardLayout.x + 55, y = boardLayout.y + 86 + index * 64;
+      objects.push(this.add.image(x, y, `ecg-prep-${item.id}`).setDisplaySize(42, 42));
+      objects.push(this.add.text(x, y + 25, item.label, { fontFamily: 'sans-serif', fontSize: '10px', color: '#36566d' }).setOrigin(.5, 0));
+    });
     const leadRail = this.add.graphics();
     leadRail.fillStyle(0xdcecf5, .96).fillRoundedRect(boardLayout.x + 100, boardLayout.y + boardLayout.height - 55, boardLayout.width - 120, 40, 10);
     leadRail.lineStyle(1, 0x9bb4a4, .95).strokeRoundedRect(boardLayout.x + 100, boardLayout.y + boardLayout.height - 55, boardLayout.width - 120, 40, 10);
@@ -319,14 +328,14 @@ export class PatientRoomScene extends Phaser.Scene {
     objects.push(this.add.image(boardLayout.x + 66, boardLayout.y + boardLayout.height - 27, 'ecg-leads').setDisplaySize(50, 46));
     this.ecgBoard = this.add.container(0, 0, objects).setDepth(4);
     this.leadLayer = this.add.container(0, 0).setDepth(12);
+    this.leadWires = this.add.graphics().setDepth(5);
     this.engine.ecg.targets.forEach((target, index) => {
       const placed = this.engine.ecg.placed.has(target.id);
       const tray = this.engine.config.ecg.layout.tray;
-      const disc = this.add.image(0,0,'ecg-leads').setDisplaySize(42,42);
-      const label = this.add.text(0, 0, target.label, {fontFamily:'sans-serif',fontSize:'14px',fontStyle:'bold',color:'#274c67',stroke:'#ffffff',strokeThickness:3}).setOrigin(.5);
-      const core = this.add.circle(0,0,12,0xf7fbff);
-      const lead = this.add.container(placed ? target.x : tray.x + index * tray.spacing, placed ? target.y : tray.y, [disc, core, label]);
-      lead.setName(target.id).setSize(44,44);
+      const disc = this.add.image(0, 0, target.art ? `ecg-electrode-${target.id}` : 'ecg-leads').setDisplaySize(24, 27);
+      const label = this.add.text(0, index % 2 ? 20 : -21, target.label, {fontFamily:'sans-serif',fontSize:'11px',fontStyle:'bold',color:'#274c67',stroke:'#ffffff',strokeThickness:3}).setOrigin(.5);
+      const lead = this.add.container(placed ? target.x : tray.x + index * tray.spacing, placed ? target.y : tray.y, [disc, label]);
+      lead.setName(target.id).setSize(26, 28);
       if (!this.engine.ecg.validated.has(target.id)) {
         lead.setInteractive({ useHandCursor: true }); this.input.setDraggable(lead);
         lead.on('pointerdown', () => { if (!this.engine.paused) { this.engine.ecg.selected = target.id; this.engine.refresh(); } });
@@ -351,6 +360,8 @@ export class PatientRoomScene extends Phaser.Scene {
   private clearECGBoard() {
     this.ecgBoard?.destroy(true);
     this.leadLayer?.destroy(true);
+    this.leadWires?.destroy();
+    this.leadWires = undefined;
     this.ecgBoard = undefined;
     this.leadLayer = undefined;
     this.leads.clear();
@@ -514,6 +525,16 @@ export class PatientRoomScene extends Phaser.Scene {
       graphics.lineStyle(1,this.engine.ecg.validated.has(target.id) ? 0x347b62 : 0x63849a,emphasized ? .8 : .45).lineBetween(target.x-6,target.y,target.x+6,target.y).lineBetween(target.x,target.y-6,target.x,target.y+6);
       this.leads.get(target.id)?.setScale(this.engine.ecg.selected === target.id ? 1.15 : 1);
     }
+    this.leadWires?.clear();
+    if (kind === 'placement' && this.leadWires) this.engine.ecg.targets.forEach((lead, index) => {
+      if (!this.engine.ecg.placed.has(lead.id)) return;
+      const object = this.leads.get(lead.id);
+      if (!object) return;
+      const tray = this.engine.config.ecg.layout.tray;
+      const path = new Phaser.Curves.CubicBezier(new Phaser.Math.Vector2(object.x, object.y + 8), new Phaser.Math.Vector2(object.x + 10, object.y + 85), new Phaser.Math.Vector2(tray.x + index * tray.spacing, tray.y - 45), new Phaser.Math.Vector2(tray.x + index * tray.spacing, tray.y - 4));
+      this.leadWires!.lineStyle(2, Phaser.Display.Color.HexStringToColor(lead.art?.color ?? '#587d96').color, .85);
+      path.draw(this.leadWires!, 30);
+    });
     this.game.canvas.style.cursor = this.engine.tools.dragging ? 'grabbing' : 'default';
   }
 }

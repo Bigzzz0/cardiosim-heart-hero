@@ -3,6 +3,7 @@ import { CASE_1_DETAILS } from '../../data/case1Data';
 import { medicationInteractions } from './medicationWorkbench';
 import { MEDICATION_PREPARATION_STEPS } from '../../data/medicationStepsData';
 import { ASSETS } from '../../constants/assets';
+import { suppliedECGLayout, suppliedECGTargets } from '../suppliedECGLayout';
 
 const spec = 'Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)';
 const storyboard = '6 Panel Storyboard.pdf pp.3-7';
@@ -21,7 +22,7 @@ export const verticalSlice: GameCase = {
   clinicalStatus: 'CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง',
   gradable: true,
   sources: [storyboard, spec],
-  assets: { room: ASSETS.environments.bedsideRoom, patient: ASSETS.patients.patient01, patientCritical: ASSETS.patients.patient01, ecgLeads: ASSETS.bedside.electrode, ecgChest: ASSETS.bedside.ecgBody },
+  assets: { room: ASSETS.environments.bedsideRoom, patient: ASSETS.patients.patient01, patientCritical: ASSETS.patients.patient01, ecgLeads: ASSETS.ecg.chestLeads[0].electrode, ecgChest: ASSETS.ecg.playTorso },
   presentation: { background: { x:550,y:410,width:1500,height:1000 }, patient: { x:550,y:515,width:360,height:630 }, camera: { center:{x:550,y:390}, procedureCenter:{x:575,y:360}, transitionCenter:{x:550,y:400}, contextFocus:{point:{x:550,y:280},radius:53} } },
   initialVitals: { hr: 112, bpSystolic: 168, bpDiastolic: 98, rr: 24, spo2: 95 },
   initialPatient: { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' },
@@ -65,16 +66,9 @@ export const verticalSlice: GameCase = {
     { id: 'emergency-treatment', section: 'Care Plan', title: 'Emergency treatment · demo response', text: 'ใช้แสดงผล patient-response เท่านั้น; ไม่มี treatment sequence หรือ protocol ที่ผ่านการรับรอง', source: storyboard },
   ],
   ecg: {
-    finding: 'ecg', label: 'CHEST LEAD PLACEMENT · ผังฝึกจาก storyboard รอตรวจตำแหน่งโดยผู้เชี่ยวชาญ',
-    layout: { board: { x: 310, y: 105, width: 530, height: 420 }, image: { x: 423, y: 150, width: 294, height: 300 }, tray: { x: 432, y: 490, spacing: 57 } },
-    targets: [
-      { id: 'V1', label: 'V1', x: 535, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.18 } },
-      { id: 'V2', label: 'V2', x: 572, y: 271, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.18 } },
-      { id: 'V3', label: 'V3', x: 602, y: 300, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.5 } },
-      { id: 'V4', label: 'V4', x: 630, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.5 } },
-      { id: 'V5', label: 'V5', x: 667, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.1, y: 0.82 } },
-      { id: 'V6', label: 'V6', x: 702, y: 329, snapRadius: 19, hint: 'ตำแหน่งตามตัวอย่างใน Storyboard · รอตรวจรับรอง', mobileLabel: { x: 0.9, y: 0.82 } },
-    ],
+    finding: 'ecg', label: 'CHEST LEAD PLACEMENT · ผังจากเวชนิทัศน์ รอตรวจตำแหน่งโดยผู้เชี่ยวชาญ',
+    layout: suppliedECGLayout,
+    targets: suppliedECGTargets,
   },
   missions: [
     { id: 'CASE_INTRO', kind: 'intro', phase: 'เริ่มต้นการดูแล', title: 'รับช่วงต่อ\nการดูแลผู้ป่วย', description: 'ฝึกสังเกต ประเมิน และตอบสนองต่ออาการที่เปลี่ยนไป ในห้องผู้ป่วยเดียวกัน', hint: 'ใช้เมาส์หรือนิ้วเลือกเครื่องมือ แล้วแตะบริเวณผู้ป่วย ลองใหม่ได้เสมอ', button: 'เริ่มดูแลผู้ป่วย' },
