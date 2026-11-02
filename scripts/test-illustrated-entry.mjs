@@ -27,6 +27,7 @@ try {
     });
     const capture = async name => {
       await page.evaluate(async () => { await document.fonts.ready; });
+      await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({ path: `screenshots/illustrated-entry/${viewport.width}-${name}.png`, fullPage: true });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${name}: horizontal overflow`);
     };
@@ -58,6 +59,26 @@ try {
       if (question < 9) await page.getByRole('button', { name: 'ข้อถัดไป' }).click();
     }
     await page.getByRole('button', { name: 'ส่งแบบทดสอบ & ไปต่อ' }).click();
+    await page.getByRole('heading', { name: 'ใบความรู้ก่อนเริ่มสถานการณ์' }).waitFor();
+    assert.equal(await page.locator('video').count(), 0, 'No video should be simulated without media');
+    assert.equal(await page.locator('#knowledge-review-progress').getAttribute('value'), '0');
+    for (let topic = 1; topic <= 6; topic++) {
+      const topicButton = page.locator(`[data-knowledge-topic="${topic}"]`);
+      await topicButton.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await topicButton.getAttribute('aria-pressed'), 'true');
+      const title = await page.locator('#knowledge-sheet-title').textContent();
+      assert(title && (await topicButton.textContent()).includes(title), 'Sheet must match selected topic');
+      await page.getByRole('button', { name: 'บันทึกว่าอ่านหัวข้อนี้แล้ว', exact: true }).click();
+      assert.equal(await page.locator('#knowledge-review-progress').getAttribute('value'), String(topic));
+      await capture(`knowledge-${topic}`);
+    }
+    await page.locator('[data-knowledge-topic="1"]').click();
+    await page.getByRole('button', { name: 'ทบทวนหัวข้อนี้แล้ว · กดเพื่อยกเลิก', exact: true }).click();
+    assert.equal(await page.locator('#knowledge-review-progress').getAttribute('value'), '5', 'Undo must affect only the selected topic');
+    await page.getByRole('button', { name: 'บันทึกว่าอ่านหัวข้อนี้แล้ว', exact: true }).click();
+    assert.equal(await page.locator('#knowledge-review-progress').getAttribute('value'), '6');
+    assert(await page.getByText('ทบทวนครบทุกหัวข้อแล้ว พร้อมเข้าสู่สถานการณ์', { exact: true }).isVisible());
     await page.getByRole('button', { name: 'เข้าสู่การเลือกสถานการณ์ (เลือกเคส)' }).click();
     await page.getByRole('heading', { name: 'เลือกเคสผู้ป่วย', exact: true }).waitFor();
     await capture('cases');

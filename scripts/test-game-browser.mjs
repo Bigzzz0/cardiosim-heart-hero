@@ -5,7 +5,7 @@ import { spawn } from 'node:child_process';
 
 const port = 4179;
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'], { stdio:'ignore' });
-const browser = await chromium.launch({headless:true});
+const browser = await chromium.launch({headless:true,...(process.env.CARDIOSIM_BROWSER_CHANNEL?{channel:process.env.CARDIOSIM_BROWSER_CHANNEL}:{})});
 const touchDragGesture = async (page, from, to, id=41) => {
   const cdp=await page.context().newCDPSession(page);
   try {
