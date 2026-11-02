@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process';
 import { chromium, type Page } from 'playwright';
 import { CaseEngine } from '../src/game/core/CaseEngine';
 import { case02 } from '../src/game/cases/case02';
+import { verticalSlice } from '../src/game/cases/verticalSlice';
 
 const port = 4189;
 const base = `http://127.0.0.1:${port}`;
@@ -43,6 +44,7 @@ try {
   browser = await chromium.launch({ headless: true, ...(process.env.CARDIOSIM_BROWSER_CHANNEL ? { channel: process.env.CARDIOSIM_BROWSER_CHANNEL } : {}) });
   await mkdir('screenshots/supplied-patient', { recursive: true });
   for (const [width, height] of [[1440, 900], [1024, 768], [390, 844]]) {
+    if (process.env.CARDIOSIM_PATIENT_VIEWPORT && Number(process.env.CARDIOSIM_PATIENT_VIEWPORT) !== width) continue;
     const context = await browser.newContext({ viewport: { width, height }, hasTouch: width < 760, reducedMotion: 'reduce' });
     const page = await context.newPage();
     const errors: string[] = [];
@@ -89,6 +91,38 @@ try {
           await page.waitForFunction(count => document.querySelectorAll('.objective.done').length === count, index + 1);
         }
         assert.equal(await page.locator('main').getAttribute('data-mistakes'), '0');
+      }
+      assert.deepEqual(errors, []);
+      // The supplied housing must not clip any reading at either screen size.
+      for (const config of [case02, verticalSlice]) {
+        const monitorCase = new CaseEngine(config);
+        monitorCase.mission.jumpTo('ASSESSMENT');
+        await page.evaluate(checkpoint => localStorage.setItem(`cardiosim.phaser.checkpoint.${checkpoint.caseId}.v2`, JSON.stringify(checkpoint)), monitorCase.checkpoint());
+        await page.goto(`${base}/game.html?case=${config.scenarios.find(scenario => scenario.enabled)!.id}`);
+        await page.getByRole('button', { name: 'เล่นต่อ', exact: true }).click();
+        await page.locator('.monitor-housing').waitFor();
+        assert(await page.locator('.monitor-housing').evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0));
+        const readings = await page.locator('.monitor .vital-large b, .monitor .vital-small b').allTextContents();
+        if (config.gradable) {
+          assert(readings.every(value => /\d/.test(value)), 'Demo vitals must remain live HTML');
+          assert.equal(await page.locator('.monitor-trace canvas').count(), 1);
+        } else assert.deepEqual(readings, ['—', '—', '—/—', '—']);
+        assert(await page.locator('.monitor-screen').evaluate(screen => {
+          const frame = screen.getBoundingClientRect();
+          return [...screen.querySelectorAll('.vital-large b,.vital-small b')].every(reading => {
+            const box = reading.getBoundingClientRect();
+            return box.left >= frame.left && box.right <= frame.right + 1 && box.top >= frame.top && box.bottom <= frame.bottom + 1;
+          });
+        }), 'Monitor readings clipped by artwork');
+        assert(await page.locator('.monitor-screen').evaluate(screen => {
+          const lower = screen.querySelector('.vital-small')!.getBoundingClientRect();
+          return [...screen.querySelectorAll('.vital-large b')].every(reading => reading.getBoundingClientRect().bottom <= lower.top + 1);
+        }), 'HR/SpO2 overlap blood pressure readings');
+        if (width > 760) assert(await page.locator('.monitor-screen').evaluate(screen => {
+          const footer = screen.querySelector('.monitor-footer')!.getBoundingClientRect();
+          return [...screen.querySelectorAll('.vital-small b')].every(reading => reading.getBoundingClientRect().bottom <= footer.top + 1);
+        }), 'Monitor footer overlaps readings');
+        await page.screenshot({ path: `screenshots/supplied-patient/${width}-${config.id}-monitor.png` });
       }
       assert.deepEqual(errors, []);
       console.log(`PASS ${width}px: illustrated patient, history/assessment/ABC, ${width < 760 ? 'real touch' : 'mouse'} drag, unobstructed targets, blank vitals and checkpoint resume`);

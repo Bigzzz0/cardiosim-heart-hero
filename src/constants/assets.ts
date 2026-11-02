@@ -49,6 +49,8 @@ export const ASSETS = {
    * Clinical Handover & Bedside Information (from 03_รับข้อมูลผู้ป่วย)
    */
   handover: {
+    playStethoscope: '/assets/clinical-handover/play/stethoscope.webp',
+    playToolbar: '/assets/clinical-handover/play/equipment-tray.webp',
     sceneOverview: '/assets/clinical-handover/handover-scene-full.webp',
     examMagnifier: '/assets/clinical-handover/exam-magnifier.webp',
     progressTrack: '/assets/clinical-handover/progress-track.webp',

@@ -26,6 +26,7 @@ import './bedside.css';
 import './instrument-ui.css';
 import './care-ui.css';
 import './ecg-art.css';
+import './supplied-bedside.css';
 
 const activeCase = getGameCase(new URLSearchParams(location.search).get('case'));
 const launchedFromWeb = new URLSearchParams(location.search).get('from') === 'web';

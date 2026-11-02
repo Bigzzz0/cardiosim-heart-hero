@@ -1,0 +1,40 @@
+/* Screen coordinates registered to the 777 × 801 supplied monitor illustration. */
+.storybook-game .monitor {width:clamp(230px,20vw,280px);aspect-ratio:777/801;padding:0;pointer-events:none;}
+.storybook-game .monitor-housing {object-fit:contain;}
+.storybook-game .monitor-screen {position:absolute;left:20.3%;top:8%;width:71.2%;height:46.4%;padding:5px;display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;border-radius:0;background:#0a1e27;}
+.storybook-game .monitor-title {grid-column:1/-1;font-size:7px;line-height:12px;min-height:12px;}
+.storybook-game .monitor-title svg {width:10px;height:10px;}
+.storybook-game .monitor-title>span {font-size:7px;padding:0 2px;}
+.storybook-game .wave-label {display:none;}
+.storybook-game .monitor-trace,.storybook-game .monitor-no-trace {grid-column:1/-1;min-height:0;height:28px;}
+.storybook-game .monitor-trace canvas {height:28px!important;}
+.storybook-game .monitor-no-trace {font-size:8px;line-height:12px;padding:1px;}
+.storybook-game .vital-large {display:flex;align-items:center;justify-content:space-between;padding:0;gap:3px;border:0;}
+.storybook-game .vital-large b {font-size:20px;letter-spacing:0;line-height:23px;}
+.storybook-game .vital-large span,.storybook-game .vital-small span {font-size:9px;}
+.storybook-game .vital-large small,.storybook-game .vital-small small {display:inline;font-size:7px;}
+.storybook-game .vital-small {grid-column:1/-1;padding:0;gap:4px;}
+.storybook-game .vital-small b {font-size:13px;line-height:16px;}
+.storybook-game .monitor-footer {grid-column:1/-1;font-size:7px;line-height:10px;padding:0;border:0;margin:0;}
+.storybook-game .monitor-screen {grid-template-rows:12px 24px 22px 24px 8px;align-content:start;}
+.storybook-game .monitor-trace,.storybook-game .monitor-trace canvas {height:24px!important;}
+.storybook-game .vital-small>div {display:flex;flex-direction:column;gap:0;line-height:11px;}
+.storybook-game .vital-small b,.storybook-game .vital-large b {margin:0;}
+.storybook-game .vital-small b {line-height:13px;}
+.storybook-game .vital-small span {line-height:10px;}
+.storybook-game .monitor-footer {line-height:8px;}
+.storybook-game .supplied-toolbar {border:0;background:var(--supplied-tray) center/100% 100% no-repeat;box-shadow:0 6px 16px #20384d30;}
+.storybook-game .tray-utility .tool-art {max-width:29px;max-height:34px;object-fit:contain;}
+@media(max-width:760px) {
+ .storybook-game .monitor {width:136px;}
+ .storybook-game .monitor-screen {padding:3px;gap:0 3px;}
+ .storybook-game .monitor-screen {grid-template-rows:15px 18px 22px;}
+ .storybook-game .monitor-title {display:none;}
+ .storybook-game .monitor-trace,.storybook-game .monitor-trace canvas {height:15px!important;}
+ .storybook-game .monitor-no-trace {height:15px;font-size:6px;line-height:7px;}
+ .storybook-game .vital-large b {font-size:13px;line-height:16px;}
+ .storybook-game .vital-large span,.storybook-game .vital-small span {font-size:7px;}
+ .storybook-game .vital-large small,.storybook-game .vital-small small {display:none;}
+ .storybook-game .vital-small b {font-size:9px;line-height:11px;}
+ .storybook-game .monitor-footer {display:none;}
+}
