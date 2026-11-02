@@ -1,3 +1,4 @@
+import { DocumentArt } from '../../components/ui/DocumentArt';
 import React from 'react';
 import { ClipboardCheck, Monitor } from 'lucide-react';
 import type { ChartEntry, DecisionPresentation } from '../types';
@@ -20,7 +21,7 @@ export function InRoomDecisionSurface({ presentation, missionTitle, instruction,
   const Icon = presentation === 'bedside-clipboard' ? ClipboardCheck : Monitor;
   return <section className={`in-room-decision-surface surface-${presentation}`} data-room-surface={presentation}>
     <header className="surface-hardware">
-      <span className="surface-icon"><Icon size={24}/></span>
+      <span className="surface-icon">{presentation === 'bedside-clipboard' ? <DocumentArt/> : <Icon size={24}/>}</span>
       <div className="surface-instruction"><small>{detail.title}</small><b>{missionTitle.replace('\n', ' ')}</b></div>
       <details className="surface-guide"><summary aria-label="วิธีเล่นกิจกรรม">วิธีเล่น</summary><p>{instruction}</p></details>
     </header>

@@ -6,6 +6,7 @@
   "scripts": {
     "test:entry": "node scripts/test-illustrated-entry.mjs",
     "test:game:patient": "tsx scripts/test-supplied-patient.ts",
+    "test:game:care": "tsx scripts/test-supplied-care.ts",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
     "test:game:ui": "node scripts/test-game-storybook.mjs",

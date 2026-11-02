@@ -1,3 +1,4 @@
+import { DocumentArt } from '../../components/ui/DocumentArt';
 import { ObjectWorkbench } from './ObjectWorkbench';
 import React, {useState} from 'react';
 import {suppliedArt} from '../presentationAssets';
@@ -52,9 +53,11 @@ export function MedicationStation({ activity, readings, onStepAction, decision, 
   return <section className="activity-card medication-station-card">
     <div className="activity-head"><span>{activity.eyebrow}</span><b>{activity.title}</b></div>
     {activity.notice && <div className="activity-notice">{activity.notice}</div>}
-    <details className="medication-order-card"><summary>เปิด Doctor Order · ข้อมูลเดโม</summary>
+    <details className="medication-order-card supplied-order-document"><summary><DocumentArt kind="order"/><span>เปิด Doctor Order · ข้อมูลเดโม</span></summary>
+      <div className="order-document-body">
       <div className="order-card-head"><FileText size={17}/><b>Doctor Order · ข้อมูลเดโม</b><span>VERIFY</span></div>
       {activity.rows?.map(row => <div className="activity-rows" key={row.label}><div><span>{row.label}</span><b>{row.value}</b></div></div>)}
+      </div>
     </details>
     <div className={`medication-procedure ${nextStep?.interaction ? 'has-syringe-activity' : ''}`}>
       <div><button type="button" className="medication-overview" aria-expanded={overview} onClick={()=>setOverview(value=>!value)}>{overview?'ย่อรายการ':'ดูขั้นตอนทั้งหมด'} · {completedSteps.length}/{activity.steps?.length??0}</button>

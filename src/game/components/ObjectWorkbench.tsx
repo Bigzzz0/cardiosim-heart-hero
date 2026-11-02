@@ -1,3 +1,4 @@
+import { DocumentArt } from '../../components/ui/DocumentArt';
 import { ASSETS } from '../../constants/assets';
 import { WorkbenchObjectArt } from './WorkbenchObjectArt';
 import React, { useRef, useState } from 'react';
@@ -16,6 +17,7 @@ interface Props {
 
 function ObjectGraphic({object}:{object:WorkbenchObject}) {
  const Icon=object.icon==='syringe'?Syringe:object.icon==='patient-id'?IdCard:object.icon==='monitor'?Monitor:object.icon==='aseptic'?Hand:object.icon==='ampoule'?Pill:ClipboardList;
+ if(object.icon==='order'&&!object.visual)return <DocumentArt kind="order"/>;
  if(object.visual)return <WorkbenchObjectArt visual={object.visual}/>;
  if(object.icon==='ampoule')return <img src={ASSETS.bedside.ampoule} alt="" draggable="false"/>;
  if(object.icon==='syringe')return <img src={ASSETS.bedside.syringeBody} alt="" draggable="false"/>;

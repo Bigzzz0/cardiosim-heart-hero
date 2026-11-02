@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { DocumentArt } from '../ui/DocumentArt';
 import { PRETEST_QUESTIONS } from '../../data/preTestData';
-import { CheckCircle2, ChevronRight, ChevronLeft, HelpCircle, Send, FileQuestion, UserCheck } from 'lucide-react';
+import { CheckCircle2, ChevronRight, ChevronLeft, HelpCircle, Send, UserCheck } from 'lucide-react';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { SpotlightCard } from '../ui/SpotlightCard';
 import { ShinyButton } from '../ui/ShinyButton';
@@ -50,7 +51,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 py-8">
+    <div className="supplied-quiz max-w-4xl mx-auto p-4 py-8">
       {/* Top Banner with SpotlightCard */}
       <SpotlightCard
         className="p-6 mb-6 shadow-md border-pink-100/80"
@@ -58,8 +59,8 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-400 text-white flex items-center justify-center shadow-md shadow-rose-200 shrink-0">
-              <FileQuestion className="w-7 h-7" />
+            <div className="shrink-0">
+              <DocumentArt/>
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -115,7 +116,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
 
       {/* Main Question Card */}
       <SpotlightCard
-        className="p-6 sm:p-8 shadow-xl border-pink-100/90"
+        className="quiz-paper p-6 sm:p-8 shadow-xl border-pink-100/90"
         spotlightColor="rgba(244, 63, 94, 0.08)"
       >
         <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
@@ -136,6 +137,7 @@ export const Stage1PreTest: React.FC<Stage1PreTestProps> = ({ onComplete }) => {
             return (
               <button
                 key={opt.key}
+                aria-pressed={isSelected}
                 onClick={() => handleSelectOption(opt.key)}
                 className={`w-full text-left p-4 sm:p-4.5 rounded-2xl border transition-all flex items-start gap-3.5 group active:scale-[0.99] ${
                   isSelected

@@ -1,5 +1,6 @@
+import { EmergencyArt } from './EmergencyArt';
 import React from 'react';
-import { Activity, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Siren, Volume2, VolumeX } from 'lucide-react';
+import { Activity, Bug, Clock3, Expand, Pause, Play, ShieldAlert, Volume2, VolumeX } from 'lucide-react';
 import type { MissionDefinition } from '../types';
 
 type GameHudProps = {
@@ -74,7 +75,7 @@ export function GameHud(props: GameHudProps) {
 
     <div className="header-actions">
       {emergency && <span className="hud-emergency" role="status" aria-label="Emergency · ภาวะฉุกเฉิน" title="ภารกิจฉุกเฉิน">
-        <Siren size={15}/><b>EMERGENCY</b>
+        <EmergencyArt/><b>EMERGENCY</b>
       </span>}
       <span className="hud-clock"><Clock3 size={14}/>{elapsedLabel}</span>
       <span className="mistake-chip" title="จำนวนครั้งที่ลองผิด"><ShieldAlert size={13}/>{mistakeCount}</span>
