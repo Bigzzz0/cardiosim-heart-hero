@@ -1,0 +1,2708 @@
+{
+  "reviewDate": "2026-11-03",
+  "baseCommit": "43dcf1a109c393371048e55f552740ac26340c52",
+  "status": "pending-expert-review",
+  "sourceFiles": [
+    {
+      "file": "src/data/case1Data.ts",
+      "sha256": "17119179fa6f333a08bc47e1de07b077223ac868bc5bfaf3c8d416d0bef8a2f5"
+    },
+    {
+      "file": "src/data/ehrCase1Data.ts",
+      "sha256": "2568920ad01cfaa25ff0a6fa36cda890d91b637ffa77c9cb2c7fe5b432f5ffb9"
+    },
+    {
+      "file": "src/data/medicationStepsData.ts",
+      "sha256": "666b328baad6b4673e687c4817c5095f8c44a28f53f6e602017316612985c071"
+    },
+    {
+      "file": "src/data/preTestData.ts",
+      "sha256": "2f0036813a12b3b0511561d01226cd6d6ed9228809aea243b2a455b9e0705d2e"
+    },
+    {
+      "file": "src/data/postTestData.ts",
+      "sha256": "ce1ece1d728352e82d77711bdc783723389946785ea44752d0de813828cffb98"
+    },
+    {
+      "file": "src/data/learningVideosData.ts",
+      "sha256": "b3336868003c8b3d0c2ed0541f65f1fdc493c626a3934e5891669b4d50726d26"
+    },
+    {
+      "file": "src/game/cases/verticalSlice.ts",
+      "sha256": "149b51c031b2e4659bf22e59d12e182e7bb64f82ffe3a1ff1c347c1b4099e1c6"
+    },
+    {
+      "file": "src/game/cases/case02.ts",
+      "sha256": "9d58c942f44b1ebdc7b06576076ba7f16ce2b3f34d1b9c335c89dbe42360fd09"
+    },
+    {
+      "file": "src/game/cases/medicationWorkbench.ts",
+      "sha256": "edab472d4099d54f818a63b3984a0c2f05d1a6564f353f40cdc4b503b3fb4ef2"
+    },
+    {
+      "file": "src/game/core/CaseEngine.ts",
+      "sha256": "d19c7d4b62752c4666bd0bed1db8e42780408c1748babf2c7100e6fefcc0c8e9"
+    },
+    {
+      "file": "src/components/stages/Stage11IORecord.tsx",
+      "sha256": "a3e58276ea719a26236a34e37cd02df89d0ac9c516be24414b98daa787c0aa7b"
+    },
+    {
+      "file": "src/components/stages/Stage12CrisisEvent.tsx",
+      "sha256": "6967414dda2035ba67470d0edceea916342cfc0769b880bcef089a7d44198975"
+    },
+    {
+      "file": "src/game/suppliedECGArt.json",
+      "sha256": "3e1d28790a8278b08cb18e650bd6ae1533bc265502a22515f596ee66b3b08b15"
+    },
+    {
+      "file": "src/game/suppliedECGLayout.ts",
+      "sha256": "b9555f41223c6da6ef1e610d3d50827a91fb96a70d1451080267b788dafb2438"
+    },
+    {
+      "file": "src/data/nursingDiagnosesData.ts",
+      "sha256": "dcc4a19493a05dfd6d3574e899266294009eb11197986918431ae0bb7c32e42c"
+    },
+    {
+      "file": "src/components/stages/Stage1PreTest.tsx",
+      "sha256": "352c6b7a0c5a0fc435fdf43960e37a2970d81c06352d7f981ec2da97e3a13a87"
+    },
+    {
+      "file": "src/components/stages/Stage14PostTest.tsx",
+      "sha256": "43caef5981a7fe5dffd106036739166e1b04dcccada8b83ade5352a3fe6b49aa"
+    }
+  ],
+  "originalCase1": {
+    "id": 1,
+    "title": "เคสที่ 1: ภาวะหัวใจล้มเหลวจากความดันโลหิตสูงวิกฤต",
+    "subtitle": "Hypertensive Crisis with Acute Heart Failure & Respiratory Distress",
+    "patient": {
+      "name": "นางสมศรี ใจมั่น",
+      "age": 39,
+      "gender": "หญิง",
+      "underlying": "เบาหวาน (DM), ความดันโลหิตสูง (HT), ไขมันในเลือดสูง (Dyslipidemia)",
+      "chiefComplaint": "หอบเหนื่อย แน่นหน้าอก หายใจเร็วผิดปกติ และใจสั่น เริ่มมีอาการรุนแรงขึ้น 6 ชั่วโมงก่อนมาโรงพยาบาล",
+      "presentIllness": "มีปัญหาหายใจลำบาก ความดันโลหิตสูงรุนแรง ระดับน้ำตาลในเลือดสูง และหัวใจเต้นเร็วผิดปกติ แพทย์ประเมินเบื้องต้นสงสัยภาวะ Acute Heart Failure ได้รับการใส่ท่อช่วยหายใจ/ให้ออกซิเจน และยาขับปัสสาวะ พร้อมส่งต่อมายังศูนย์หัวใจวิกฤต",
+      "admissionVitals": {
+        "bp": "168/98 mmHg",
+        "hr": 112,
+        "rr": 24,
+        "bt": "37.2 °C",
+        "spo2": "95% (ขณะได้รับ O2 Cannula 3 L/min)",
+        "general": "รู้สึกตัวดี พูดคุยรู้เรื่อง เหนื่อยเล็กน้อยขณะพัก หนุนหมอนสูง 2 ใบ"
+      }
+    },
+    "doctorOrders": [
+      "O2 nasal cannula 3 L/min keep SpO2 >= 95%",
+      "Furosemide 40 mg IV stat then assess response",
+      "DTX q 4 hr (ติดตามระดับน้ำตาลปลายนิ้ว)",
+      "Record Intake / Output (I/O) ทุก 1 ชั่วโมง",
+      "EKG 12 leads stat",
+      "Send blood for: CBC, BUN, Creatinine, Electrolyte, Troponin-I",
+      "จำกัดน้ำ 1,000 mL/day",
+      "Low sodium diet (จำกัดเกลือ)"
+    ],
+    "labResults": {
+      "dtx": "286 mg/dL (สูง)",
+      "wbc": "12,800 cell/mm³ (สูงเล็กน้อย)",
+      "creatinine": "1.0 mg/dL",
+      "egfr": "78 mL/min/1.73 m²",
+      "k": "3.8 mmol/L (เกณฑ์ปกติช่วงต่ำ)",
+      "troponinI": "Negative (ยังไม่พบรอยโรคกล้ามเนื้อหัวใจตายเฉียบพลัน)",
+      "cxr": "Cardiomegaly with mild pulmonary vascular congestion"
+    },
+    "crisisEvent": {
+      "triggerText": "ผู้ป่วยมีอาการทรุดลงเฉียบพลัน! มีเสียงเตือนดังจากเครื่อง Monitor ผู้ป่วยนั่งพิงหัวเตียง หายใจหอบเหนื่อยรุนแรง กระสับกระส่าย เหงื่อออกท่วมตัว ไอมีเสมหะฟองสีชมพู (Pink frothy sputum)",
+      "vitals": {
+        "bp": "220/130 mmHg (วิกฤต)",
+        "hr": 148,
+        "rr": 36,
+        "spo2": "82% (ภาวะพร่องออกซิเจนรุนแรง)"
+      },
+      "ekgRhythm": "Supraventricular Tachycardia (SVT) อัตราเต้น 148 bpm"
+    }
+  },
+  "ehrCase1": {
+    "patientId": "HN-67092144",
+    "patientName": "นางสมศรี ใจมั่น",
+    "age": 39,
+    "gender": "หญิง",
+    "bedNumber": "CCU-Bed 03",
+    "diagnosis": "Acute Decompensated Heart Failure from Hypertensive Crisis",
+    "allergies": "NKDA (No Known Drug Allergies)",
+    "attendingPhysician": "นพ.วิชัย เกียรติวานิช (อายุรแพทย์โรคหัวใจ)",
+    "admissionDate": "03 ก.ย. 2569 เวลา 08:30 น.",
+    "doctorOrders": [
+      {
+        "id": "ord_1",
+        "orderText": "O2 nasal cannula 3 L/min keep SpO2 >= 95%",
+        "type": "stat",
+        "orderedTime": "08:45 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "in_progress"
+      },
+      {
+        "id": "ord_2",
+        "orderText": "Furosemide (Lasix) 40 mg IV slow push stat over 2 minutes",
+        "type": "stat",
+        "orderedTime": "08:45 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "pending"
+      },
+      {
+        "id": "ord_3",
+        "orderText": "Record Intake/Output (I/O) ทุก 1 ชั่วโมง รายงานแพทย์ถ้า Urine < 30 mL/hr",
+        "type": "routine",
+        "orderedTime": "08:50 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "in_progress"
+      },
+      {
+        "id": "ord_4",
+        "orderText": "Monitor EKG Lead II & NIBP ทุก 15 นาที",
+        "type": "stat",
+        "orderedTime": "08:50 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "in_progress"
+      },
+      {
+        "id": "ord_5",
+        "orderText": "DTX q 4 hr (Keep DTX 140 - 180 mg/dL)",
+        "type": "routine",
+        "orderedTime": "08:50 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "pending"
+      },
+      {
+        "id": "ord_6",
+        "orderText": "จำกัดน้ำดื่ม 1,000 mL/วัน, อาหาร Low Sodium Diet (เกลือ < 2 กรัม/วัน)",
+        "type": "routine",
+        "orderedTime": "08:55 น.",
+        "signedBy": "นพ.วิชัย เกียรติวานิช",
+        "status": "pending"
+      }
+    ],
+    "labResults": [
+      {
+        "testName": "DTX (Dextrostix)",
+        "value": "286",
+        "unit": "mg/dL",
+        "referenceRange": "70 - 140",
+        "isAbnormal": true,
+        "clinicalSignificance": "ภาวะน้ำตาลในเลือดสูงจากเบาหวานร่วมกับความเครียดจากวิกฤตความดัน"
+      },
+      {
+        "testName": "NT-proBNP",
+        "value": "2,450",
+        "unit": "pg/mL",
+        "referenceRange": "< 125",
+        "isAbnormal": true,
+        "clinicalSignificance": "ค่าสูงมาก บ่งชี้ภาวะกล้ามเนื้อหัวใจห้องล่างซ้ายยืดขยายตัวจากน้ำคั่ง (Ventricular Stretch)"
+      },
+      {
+        "testName": "Troponin-I",
+        "value": "< 0.01",
+        "unit": "ng/mL",
+        "referenceRange": "< 0.04",
+        "isAbnormal": false,
+        "clinicalSignificance": "ผลลบ ไม่พบรอยโรคกล้ามเนื้อหัวใจตายเฉียบพลัน (Non-STEMI/STEMI ruled out)"
+      },
+      {
+        "testName": "Serum Potassium (K+)",
+        "value": "3.8",
+        "unit": "mEq/L",
+        "referenceRange": "3.5 - 5.0",
+        "isAbnormal": false,
+        "clinicalSignificance": "อยู่ในเกณฑ์ปกติช่วงต่ำ ต้องเฝ้าระวังอย่างใกล้ชิดเมื่อให้ยาขับปัสสาวะ Furosemide"
+      },
+      {
+        "testName": "Serum Sodium (Na+)",
+        "value": "136",
+        "unit": "mEq/L",
+        "referenceRange": "135 - 145",
+        "isAbnormal": false,
+        "clinicalSignificance": "เกณฑ์ปกติ"
+      },
+      {
+        "testName": "Serum Creatinine",
+        "value": "1.0",
+        "unit": "mg/dL",
+        "referenceRange": "0.6 - 1.2",
+        "isAbnormal": false,
+        "clinicalSignificance": "การทำงานของไตยังปกติ (eGFR 78 mL/min/1.73m²)"
+      },
+      {
+        "testName": "WBC Count",
+        "value": "12,800",
+        "unit": "cells/mm³",
+        "referenceRange": "4,500 - 10,000",
+        "isAbnormal": true,
+        "clinicalSignificance": "สูงขึ้นเล็กน้อยจากความเครียดทางสรีรวิทยา (Leukocytosis from physiological stress)"
+      }
+    ],
+    "imagingReport": {
+      "modality": "Portable Chest X-Ray (AP View)",
+      "findings": "พบ Cardiomegaly (Cardiothoracic ratio 0.62) ร่วมกับ Prominence of upper lobe pulmonary vessels, Blunting of both costophrenic angles เล็กน้อย, Kerley B-lines บริเวณชายปอดทั้งสองข้าง",
+      "impression": "Acute Pulmonary Venous Congestion with Cardiomegaly (ภาวะน้ำคั่งในหลอดเลือดปอดและหัวใจโต)"
+    },
+    "marList": [
+      {
+        "drugName": "Furosemide (Lasix)",
+        "dosage": "40 mg",
+        "route": "IV push (slowly 2 min)",
+        "schedule": "Stat",
+        "lastAdministered": "กำลังเตรียมยา",
+        "nurseSignature": "พว. ณภัทร (RN)"
+      },
+      {
+        "drugName": "Oxygen",
+        "dosage": "3 L/min",
+        "route": "Nasal Cannula",
+        "schedule": "Continuous",
+        "lastAdministered": "08:45 น.",
+        "nurseSignature": "พว. ณภัทร (RN)"
+      }
+    ]
+  },
+  "medicationChoices": [
+    {
+      "id": "furosemide",
+      "name": "Furosemide (Lasix) 40 mg IV stat",
+      "indication": "ยาขับปัสสาวะกลุ่ม Loop Diuretic ลด Preload และลดน้ำคั่งในปอดอย่างรวดเร็ว",
+      "isCorrect": true,
+      "sideEffectsToWatch": [
+        "ความดันโลหิตต่ำเฉียบพลัน (Hypotension)",
+        "ระดับโพแทสเซียมในเลือดต่ำ (Hypokalemia)",
+        "ระดับแมกนีเซียมในเลือดต่ำ (Hypomagnesemia)",
+        "ปริมาณปัสสาวะออกอย่างรวดเร็ว (Diuresis)"
+      ]
+    },
+    {
+      "id": "dopamine",
+      "name": "Dopamine 1:1 IV drip 10 mcg/kg/min",
+      "indication": "ยากระตุ้นการบีบตัวของหัวใจและเพิ่มความดัน",
+      "isCorrect": false,
+      "reason": "ผู้ป่วยมีความดันโลหิตสูงมากอยู่แล้ว (168/98 mmHg) การให้ Inotropes/Vasopressors จะทำให้ความดันและ Afterload พุ่งสูงขึ้นจนเกิดอันตราย"
+    },
+    {
+      "id": "morphine",
+      "name": "Morphine 10 mg IV push stat",
+      "indication": "ยาลดอาการปวดและคลายกังวล",
+      "isCorrect": false,
+      "reason": "แม้ในอดีตเคยใช้บรรเทาหอบเหนื่อย แต่ปัจจุบันจำกัดการใช้เฉพาะกรณีจำเป็นเนื่องจากกดการหายใจและเพิ่มอัตราการเสียชีวิตในผู้ป่วย Acute HF"
+    }
+  ],
+  "medicationSteps": [
+    {
+      "id": "step_order_check",
+      "stepNumber": 1,
+      "text": "1. ตรวจสอบคำสั่งการรักษาของแพทย์ (Doctor's Order Sheet) ความถูกต้องของตัวยา ขนาด และประวัติการแพ้ยาของผู้ป่วย",
+      "category": "check"
+    },
+    {
+      "id": "step_label_check",
+      "stepNumber": 2,
+      "text": "2. ตรวจสอบฉลากยา Furosemide แอมพูล ชื่อยา ขนาดยา ความบริสุทธิ์ และวันหมดอายุ (Check 1)",
+      "category": "check"
+    },
+    {
+      "id": "step_handwash_prep",
+      "stepNumber": 3,
+      "text": "3. ล้างมือ 6 ขั้นตอนตามหลัก Aseptic Technique และเตรียมอุปกรณ์ปราศจากเชื้อ (Syringe, Needle, Alcohol Pad)",
+      "category": "prep"
+    },
+    {
+      "id": "step_draw_med",
+      "stepNumber": 4,
+      "text": "4. เช็ดคอแอมพูลด้วยแอลกอฮอล์ 70% หักหลอดยา และดูดยาตามขนาดที่สั่ง 40 mg (4 mL) พร้อมไล่ฟองอากาศอย่างระมัดระวัง",
+      "category": "prep"
+    },
+    {
+      "id": "step_recheck_label",
+      "stepNumber": 5,
+      "text": "5. ตรวจสอบยาซ้ำกับใบนำส่งยา (Check 2) ติดฉลากระบุชื่อผู้ป่วย ชื่อยา ขนาดยาบนกระบอกฉีดยาอย่างชัดเจน",
+      "category": "check"
+    },
+    {
+      "id": "step_patient_id",
+      "stepNumber": 6,
+      "text": "6. ไปที่เตียงผู้ป่วย ชี้บ่งตัวผู้ป่วยด้วย 2 ตัวระบุ (ชื่อ-นามสกุล และวันเดือนปีเกิด/HN) พร้อมอธิบายวัตถุประสงค์ของการให้ยา",
+      "category": "administer"
+    },
+    {
+      "id": "step_administer_record",
+      "stepNumber": 7,
+      "text": "7. ตรวจสอบสัญญาณชีพก่อนให้ยา ฉีดเข้าหลอดเลือดดำช้าๆ (Slow IV push นาน 1-2 นาที) และลงบันทึกในใบ MAR ทันที (Check 3)",
+      "category": "monitor"
+    }
+  ],
+  "cases": [
+    {
+      "id": "cardiosim-vertical-slice",
+      "title": "การประเมินและดูแลผู้ป่วย",
+      "gradable": true,
+      "clinicalStatus": "CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง",
+      "initialVitals": {
+        "hr": 112,
+        "bpSystolic": 168,
+        "bpDiastolic": 98,
+        "rr": 24,
+        "spo2": 95
+      },
+      "monitorTraces": {
+        "unstable": {
+          "rhythm": "SINUS_TACHY",
+          "heartRate": 112
+        },
+        "critical": {
+          "rhythm": "SVT",
+          "heartRate": 148
+        },
+        "stable": {
+          "rhythm": "NORMAL",
+          "heartRate": 96
+        }
+      },
+      "findings": [
+        {
+          "id": "history",
+          "section": "History",
+          "title": "อาการที่ผู้ป่วยบอก",
+          "text": "“หายใจไม่ออกค่ะ…” — ข้อความตัวอย่างจากสเปก ยังไม่มี CC / PI / PH ที่รับรอง",
+          "source": "Pasted specification §20"
+        },
+        {
+          "id": "lungs",
+          "section": "Respiratory Assessment",
+          "title": "Auscultation",
+          "text": "Fine crackles, bilateral lower lobes — ผลตัวอย่างจากสเปก เสียงประกอบสังเคราะห์ไม่ใช่เสียงปอดสำหรับฝึกวินิจฉัย",
+          "source": "Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)"
+        },
+        {
+          "id": "bp",
+          "section": "Vital Signs",
+          "title": "วัดความดันโลหิต",
+          "text": "บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ",
+          "source": "Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)",
+          "captureVitals": true
+        },
+        {
+          "id": "oxygen",
+          "section": "Vital Signs",
+          "title": "วัด SpO₂",
+          "text": "บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ",
+          "source": "Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)",
+          "captureVitals": true
+        },
+        {
+          "id": "airway",
+          "section": "Respiratory Assessment",
+          "title": "A · Airway",
+          "text": "ประเมินทางเดินหายใจแล้ว — รายละเอียดผลตรวจรอผู้เชี่ยวชาญกำหนด",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "breathing",
+          "section": "Respiratory Assessment",
+          "title": "B · Breathing",
+          "text": "ประเมินการหายใจแล้ว — breathing state: severe จากตัวอย่างสเปก",
+          "source": "Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)"
+        },
+        {
+          "id": "circulation",
+          "section": "Perfusion Assessment",
+          "title": "C · Circulation",
+          "text": "ประเมินการไหลเวียนแล้ว — รายละเอียดผลตรวจรอผู้เชี่ยวชาญกำหนด",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "diagnosis",
+          "section": "Care Plan",
+          "title": "Nursing Diagnosis · demo",
+          "text": "ตัวเลือกและเฉลยเป็นชุดทดสอบ interaction จากข้อมูลตัวอย่าง ยังไม่ใช่คำวินิจฉัยที่ผ่านการรับรอง",
+          "source": "Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)"
+        },
+        {
+          "id": "nursing-care",
+          "section": "Care Plan",
+          "title": "Nursing Care · demo",
+          "text": "บันทึกการเลือกการพยาบาลตัวอย่างเพื่อทดสอบ flow; clinical key รอผู้เชี่ยวชาญตรวจ",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "medication",
+          "section": "Medication",
+          "title": "Medication worksheet · draft",
+          "text": "Storyboard ไม่ระบุ Doctor Order, ชื่อยา, ขนาดยา, ผลข้างเคียง หรือการติดตาม; แบบฟอร์มนี้ยังไม่ใช่คำสั่งรักษา",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "io",
+          "section": "Intake / Output",
+          "title": "Fluid-balance decision · example",
+          "text": "Storyboard ระบุเฉลยตัวอย่าง NEGATIVE แต่ไม่แสดงตัวเลข intake/output จึงยังใช้คำนวณสมดุลจริงไม่ได้",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "ecg",
+          "section": "ECG",
+          "title": "Chest leads V1–V6",
+          "text": "ติดครบทั้ง 6 ตำแหน่งในผังจำลอง คลื่นบน Monitor เป็นภาพประกอบ ยังไม่มีคลื่นและเฉลย ECG ที่รับรอง",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "ecg-read",
+          "section": "ECG",
+          "title": "ECG interpretation · draft",
+          "text": "คำตอบที่ผู้เล่นพิมพ์ถูกบันทึกไว้ แต่ไม่ได้ตัดสินถูก/ผิด เพราะ Storyboard ไม่มี rhythm strip หรือ answer key",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        },
+        {
+          "id": "emergency-treatment",
+          "section": "Care Plan",
+          "title": "Emergency treatment · demo response",
+          "text": "ใช้แสดงผล patient-response เท่านั้น; ไม่มี treatment sequence หรือ protocol ที่ผ่านการรับรอง",
+          "source": "6 Panel Storyboard.pdf pp.3-7"
+        }
+      ],
+      "missions": [
+        {
+          "id": "CASE_INTRO",
+          "kind": "intro",
+          "phase": "เริ่มต้นการดูแล",
+          "title": "รับช่วงต่อ\nการดูแลผู้ป่วย",
+          "description": "ฝึกสังเกต ประเมิน และตอบสนองต่ออาการที่เปลี่ยนไป ในห้องผู้ป่วยเดียวกัน",
+          "hint": "ใช้เมาส์หรือนิ้วเลือกเครื่องมือ แล้วแตะบริเวณผู้ป่วย ลองใหม่ได้เสมอ",
+          "button": "เริ่มดูแลผู้ป่วย"
+        },
+        {
+          "id": "PATIENT_INFORMATION",
+          "kind": "interaction",
+          "phase": "01 · PATIENT INFORMATION",
+          "title": "ฟังผู้ป่วย\nก่อนเริ่มประเมิน",
+          "description": "เลือกซักประวัติ แล้วแตะบริเวณศีรษะเพื่อรับข้อมูล ข้อมูลที่ค้นพบจะบันทึกลง Patient chart",
+          "hint": "เลือก “ซักประวัติ” แล้วแตะศีรษะผู้ป่วย",
+          "button": "เริ่มประเมิน",
+          "objectives": [
+            {
+              "id": "history",
+              "label": "รับข้อมูลจากผู้ป่วย",
+              "tool": "interview",
+              "target": "head",
+              "finding": "history",
+              "feedback": "“หายใจไม่ออกค่ะ…” · บันทึกประวัติแล้ว"
+            }
+          ]
+        },
+        {
+          "id": "ASSESSMENT",
+          "kind": "interaction",
+          "phase": "02 · PATIENT ASSESSMENT",
+          "title": "ค้นหาข้อมูล\nจากการตรวจ",
+          "description": "ตรวจการหายใจ ความดัน และออกซิเจนด้วยเครื่องมือใน Toolbar เลือกแล้วแตะ หรือลากไปยังผู้ป่วย",
+          "hint": "Stethoscope → ทรวงอก · BP cuff → ต้นแขน · SpO₂ → ปลายนิ้ว",
+          "button": "บันทึกการประเมิน",
+          "objectives": [
+            {
+              "id": "lungs",
+              "label": "Respiratory assessment",
+              "tool": "stethoscope",
+              "target": "chest",
+              "finding": "lungs",
+              "feedback": "พบ fine crackles · บันทึกผลฟังปอดแล้ว",
+              "sound": "auscultation"
+            },
+            {
+              "id": "bp",
+              "label": "Blood pressure",
+              "tool": "bp",
+              "target": "arm",
+              "finding": "bp",
+              "feedback": "บันทึกความดันและสัญญาณชีพแล้ว"
+            },
+            {
+              "id": "oxygen",
+              "label": "Oxygen saturation",
+              "tool": "spo2",
+              "target": "finger",
+              "finding": "oxygen",
+              "feedback": "บันทึก SpO₂ แล้ว"
+            }
+          ]
+        },
+        {
+          "id": "DIAGNOSIS",
+          "kind": "decision",
+          "phase": "03 · NURSING DIAGNOSIS",
+          "title": "จัดวางปัญหาและ\nข้อมูลสนับสนุน",
+          "description": "ลากตัวเลือกจากคลังคำตอบลงช่อง Nursing Problem และ Supporting Data แล้วกด Confirm",
+          "hint": "ตัวเลือกและเฉลยเป็น demo key จากข้อมูลตัวอย่าง ยังรอผู้เชี่ยวชาญรับรอง",
+          "chartFinding": "diagnosis",
+          "decision": {
+            "options": [
+              {
+                "id": "breathing-problem",
+                "label": "ประเด็นด้านการหายใจ · ตัวอย่าง",
+                "detail": "candidate answer · ต้องให้ผู้เชี่ยวชาญรับรอง",
+                "icon": "assessment"
+              },
+              {
+                "id": "other-problem",
+                "label": "ประเด็นด้านอื่น · ตัวอย่าง",
+                "detail": "ตัวเลือกสำหรับทดสอบการลองใหม่",
+                "icon": "assessment"
+              },
+              {
+                "id": "respiratory-evidence",
+                "label": "ข้อมูลระบบหายใจที่ค้นพบ",
+                "detail": "เชื่อมโยงกับผลประเมินใน Chart",
+                "icon": "monitor"
+              },
+              {
+                "id": "unrelated-evidence",
+                "label": "ข้อมูลที่ไม่เกี่ยวกับการประเมิน",
+                "detail": "ตัวเลือกสำหรับทดสอบ feedback",
+                "icon": "care"
+              }
+            ],
+            "expected": [
+              "breathing-problem",
+              "respiratory-evidence"
+            ],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "bedside-clipboard",
+            "slots": [
+              {
+                "id": "problem",
+                "label": "Nursing Problem",
+                "expected": "breathing-problem"
+              },
+              {
+                "id": "support",
+                "label": "Supporting Data",
+                "expected": "respiratory-evidence"
+              }
+            ],
+            "explanation": "✕ ลองจับคู่ประเด็นกับข้อมูลที่ค้นพบใหม่ · demo key ยังไม่ผ่านการรับรอง",
+            "success": "✓ จับคู่ครบ · บันทึกเป็นผล demo ที่รอ clinical review"
+          }
+        },
+        {
+          "id": "NURSING_INTERVENTION",
+          "kind": "decision",
+          "phase": "04 · NURSING CARE",
+          "title": "เลือกการพยาบาล\nให้สัมพันธ์กับปัญหา",
+          "description": "ใช้ nursing diagnosis จากขั้นก่อน แล้วลากการพยาบาลไปใส่ในช่องคำตอบ กด Confirm เพื่อตรวจ",
+          "hint": "ตัวเลือกเป็น demo interaction เท่านั้น · แผนการพยาบาลรอผู้เชี่ยวชาญกำหนด",
+          "chartFinding": "nursing-care",
+          "decision": {
+            "options": [
+              {
+                "id": "position-care",
+                "label": "จัดท่าผู้ป่วยตามแผน",
+                "detail": "เครื่องมือปรับเตียงตามที่ storyboard ระบุ",
+                "icon": "position"
+              },
+              {
+                "id": "monitor-care",
+                "label": "ติดตามผลประเมินซ้ำ",
+                "detail": "ใช้ข้อมูล vital signs ที่ตรวจพบ",
+                "icon": "monitor"
+              },
+              {
+                "id": "skip-monitoring",
+                "label": "ไม่บันทึกการติดตาม",
+                "detail": "ตัวเลือกสำหรับลองผิดและดูคำอธิบาย",
+                "icon": "care"
+              }
+            ],
+            "expected": [
+              "position-care",
+              "monitor-care"
+            ],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "bedside-clipboard",
+            "slots": [
+              {
+                "id": "intervention-1",
+                "label": "การพยาบาล · 1",
+                "expected": "position-care"
+              },
+              {
+                "id": "intervention-2",
+                "label": "การพยาบาล · 2",
+                "expected": "monitor-care"
+              }
+            ],
+            "explanation": "✕ เลือกการพยาบาลให้สัมพันธ์กับข้อมูลผู้ป่วยอีกครั้ง · key นี้เป็น demo เท่านั้น",
+            "success": "✓ บันทึกการพยาบาลตัวอย่างแล้ว · ยังไม่ใช่แผนทางคลินิก"
+          }
+        },
+        {
+          "id": "MEDICATION",
+          "kind": "decision",
+          "phase": "05 · MEDICATION",
+          "title": "ตรวจคำสั่งยา\nและบันทึกการเตรียม",
+          "description": "อ่าน Doctor Order ใน Case แล้วกรอกยา ขนาด วิธีให้ และสิ่งที่ต้องเฝ้าระวัง ก่อน Confirm",
+          "hint": "ตรวจ order ที่แสดง แล้วเทียบกับข้อมูลยาในแบบฝึก",
+          "chartFinding": "medication",
+          "gradable": true,
+          "activity": {
+            "kind": "medication",
+            "presentation": "medication-station",
+            "gradable": true,
+            "source": "ehrCase1Data.ts + medicationStepsData.ts",
+            "eyebrow": "MEDICATION PREP STATION · CASE 01 DEMO",
+            "title": "สถานีเตรียมยา",
+            "steps": [
+              {
+                "id": "step_order_check",
+                "label": "ตรวจ Doctor Order",
+                "detail": "ตรวจสอบคำสั่งการรักษาของแพทย์ (Doctor's Order Sheet) ความถูกต้องของตัวยา ขนาด และประวัติการแพ้ยาของผู้ป่วย",
+                "equipmentLabel": "แฟ้มคำสั่งยา",
+                "icon": "order",
+                "interaction": {
+                  "kind": "inspect",
+                  "targets": [],
+                  "objects": [
+                    {
+                      "id": "order",
+                      "label": "เปิด Doctor Order",
+                      "icon": "order",
+                      "rowLabel": "Doctor Order"
+                    },
+                    {
+                      "id": "allergy",
+                      "label": "ตรวจประวัติแพ้ยา",
+                      "icon": "patient-id",
+                      "rowLabel": "แพ้ยา"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "step_label_check",
+                "label": "ตรวจฉลากแอมพูล",
+                "detail": "ตรวจสอบฉลากยา Furosemide แอมพูล ชื่อยา ขนาดยา ความบริสุทธิ์ และวันหมดอายุ (Check 1)",
+                "equipmentLabel": "แอมพูล / ฉลาก",
+                "icon": "ampoule",
+                "interaction": {
+                  "kind": "inspect",
+                  "targets": [
+                    {
+                      "id": "label-reader",
+                      "label": "แท่นตรวจฉลาก"
+                    }
+                  ],
+                  "objects": [
+                    {
+                      "id": "ampoule",
+                      "label": "แอมพูล / ฉลากยา",
+                      "icon": "ampoule",
+                      "rowLabel": "Doctor Order",
+                      "targetId": "label-reader"
+                    },
+                    {
+                      "id": "missing-label",
+                      "label": "รับทราบข้อมูลฉลากที่ขาด",
+                      "icon": "order",
+                      "detail": "ไม่มีภาพฉลาก ความเข้มข้น หรือวันหมดอายุที่รับรอง · ไม่ตรวจความถูกต้องของข้อมูลเหล่านี้",
+                      "acknowledgement": true
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "step_handwash_prep",
+                "label": "เตรียมอุปกรณ์ปลอดเชื้อ",
+                "detail": "ล้างมือ 6 ขั้นตอนตามหลัก Aseptic Technique และเตรียมอุปกรณ์ปราศจากเชื้อ (Syringe, Needle, Alcohol Pad)",
+                "equipmentLabel": "อุปกรณ์เตรียมยา",
+                "icon": "aseptic",
+                "interaction": {
+                  "kind": "collect",
+                  "targets": [
+                    {
+                      "id": "sterile-tray",
+                      "label": "ถาดเตรียมอุปกรณ์"
+                    }
+                  ],
+                  "objects": [
+                    {
+                      "id": "syringe",
+                      "label": "Syringe",
+                      "icon": "syringe",
+                      "targetId": "sterile-tray"
+                    },
+                    {
+                      "id": "needle",
+                      "label": "Needle",
+                      "icon": "syringe",
+                      "visual": "needle",
+                      "targetId": "sterile-tray"
+                    },
+                    {
+                      "id": "pad",
+                      "label": "Alcohol Pad",
+                      "icon": "aseptic",
+                      "visual": "pad",
+                      "targetId": "sterile-tray"
+                    },
+                    {
+                      "id": "aseptic-review",
+                      "label": "ทบทวนขั้นปลอดเชื้อ",
+                      "icon": "aseptic",
+                      "detail": "รับทราบการล้างมือและเตรียมอุปกรณ์ตามข้อความต้นทาง · กิจกรรมนี้ไม่ประเมินเทคนิคปลอดเชื้อ",
+                      "acknowledgement": true
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "step_draw_med",
+                "label": "ดูดยาตาม Order ด้วย Syringe",
+                "detail": "เช็ดคอแอมพูลด้วยแอลกอฮอล์ 70% หักหลอดยา และดูดยาตามขนาดที่สั่ง 40 mg (4 mL) พร้อมไล่ฟองอากาศอย่างระมัดระวัง",
+                "equipmentLabel": "Syringe",
+                "icon": "syringe",
+                "interaction": {
+                  "kind": "syringe-withdrawal",
+                  "targetId": "ampoule",
+                  "targetAmount": 4,
+                  "scaleMax": 5,
+                  "accuracyWindow": 0.1,
+                  "unit": "mL"
+                }
+              },
+              {
+                "id": "step_recheck_label",
+                "label": "ตรวจซ้ำและติดฉลาก",
+                "detail": "ตรวจสอบยาซ้ำกับใบนำส่งยา (Check 2) ติดฉลากระบุชื่อผู้ป่วย ชื่อยา ขนาดยาบนกระบอกฉีดยาอย่างชัดเจน",
+                "equipmentLabel": "ป้ายตรวจซ้ำ",
+                "icon": "double-check",
+                "interaction": {
+                  "kind": "label",
+                  "targets": [
+                    {
+                      "id": "syringe-label",
+                      "label": "พื้นที่ฉลากบนกระบอก"
+                    }
+                  ],
+                  "objects": [
+                    {
+                      "id": "recheck",
+                      "label": "เปิด Order เพื่อตรวจซ้ำ",
+                      "icon": "double-check",
+                      "rowLabel": "Doctor Order"
+                    },
+                    {
+                      "id": "label",
+                      "label": "ฉลากจาก Order เดิม",
+                      "icon": "order",
+                      "visual": "label",
+                      "rowLabel": "Doctor Order",
+                      "targetId": "syringe-label"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "step_patient_id",
+                "label": "ยืนยันตัวผู้ป่วย",
+                "detail": "ไปที่เตียงผู้ป่วย ชี้บ่งตัวผู้ป่วยด้วย 2 ตัวระบุ (ชื่อ-นามสกุล และวันเดือนปีเกิด/HN) พร้อมอธิบายวัตถุประสงค์ของการให้ยา",
+                "equipmentLabel": "สายรัดข้อมือ",
+                "icon": "patient-id",
+                "interaction": {
+                  "kind": "identity",
+                  "targets": [],
+                  "objects": [
+                    {
+                      "id": "wristband",
+                      "label": "เปิดสายรัดข้อมือ",
+                      "icon": "patient-id",
+                      "visual": "wristband",
+                      "detail": "ไม่มีชื่อ–นามสกุล HN หรือวันเกิดที่ใช้เทียบกับสายรัดในข้อมูลเกม · ไม่สร้างตัวระบุเพิ่ม"
+                    },
+                    {
+                      "id": "patient-file",
+                      "label": "เปิดแฟ้มเพื่อเทียบตัวระบุ",
+                      "icon": "order",
+                      "detail": "บันทึกการตรวจข้อมูลที่มี · ยังไม่ยืนยันตัวผู้ป่วยด้วยตัวระบุทางคลินิก",
+                      "acknowledgement": true
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "step_administer_record",
+                "label": "ตรวจ Monitor และบันทึก MAR",
+                "detail": "ตรวจสอบสัญญาณชีพก่อนให้ยา ฉีดเข้าหลอดเลือดดำช้าๆ (Slow IV push นาน 1-2 นาที) และลงบันทึกในใบ MAR ทันที (Check 3)",
+                "equipmentLabel": "Monitor / MAR",
+                "icon": "monitor",
+                "interaction": {
+                  "kind": "record",
+                  "targets": [],
+                  "notice": "บันทึกการฝึกตรวจ Monitor และ MAR · ไม่จำลองแทงเข็มหรืออัตราการให้ยา",
+                  "objects": [
+                    {
+                      "id": "monitor",
+                      "label": "เปิด Monitor",
+                      "icon": "monitor"
+                    },
+                    {
+                      "id": "mar",
+                      "label": "ลงบันทึก MAR ตาม Order",
+                      "icon": "order",
+                      "rowLabel": "Doctor Order"
+                    }
+                  ]
+                }
+              }
+            ],
+            "notice": "ข้อมูลยาเป็นเนื้อหาเดโมจากเว็บเดิม รอผู้เชี่ยวชาญตรวจรับรอง",
+            "rows": [
+              {
+                "label": "Doctor Order",
+                "value": "Furosemide 40 mg IV slow push stat over 2 minutes"
+              },
+              {
+                "label": "แพ้ยา",
+                "value": "NKDA · ตาม EHR draft"
+              }
+            ],
+            "fields": [
+              {
+                "id": "drug",
+                "label": "ยา",
+                "placeholder": "เลือกยา",
+                "type": "select",
+                "options": [
+                  "Furosemide (Lasix)",
+                  "Dopamine",
+                  "Morphine"
+                ]
+              },
+              {
+                "id": "dose",
+                "label": "ขนาดยาตาม order · mg",
+                "placeholder": "40",
+                "type": "number"
+              },
+              {
+                "id": "route",
+                "label": "วิธีให้ยา",
+                "placeholder": "เลือกวิธีให้",
+                "type": "select",
+                "options": [
+                  "IV slow push",
+                  "IV drip",
+                  "รับประทาน"
+                ]
+              },
+              {
+                "id": "side-effect",
+                "label": "ผลข้างเคียงตัวอย่างที่ต้องเฝ้าระวัง",
+                "placeholder": "เลือกผลข้างเคียง",
+                "type": "select",
+                "options": [
+                  "Hypotension",
+                  "Hypokalemia",
+                  "Hypomagnesemia",
+                  "Increased urine output"
+                ]
+              },
+              {
+                "id": "monitoring",
+                "label": "การติดตามตามข้อมูลเคส",
+                "placeholder": "เลือกการติดตาม",
+                "type": "select",
+                "options": [
+                  "BP, urine output, K⁺/Mg²⁺",
+                  "ติดตามเฉพาะอุณหภูมิ",
+                  "ไม่ต้องติดตาม"
+                ]
+              }
+            ],
+            "expectedResponses": {
+              "drug": "Furosemide (Lasix)",
+              "dose": "40",
+              "route": "IV slow push",
+              "side-effect": "Hypotension",
+              "monitoring": "BP, urine output, K⁺/Mg²⁺"
+            },
+            "success": "ตรงกับ Doctor Order ในข้อมูลเดโม · ตรวจและบันทึกแบบฝึกแล้ว",
+            "explanation": "เทียบคำตอบกับ Doctor Order และข้อมูลการเฝ้าระวังใน Case แล้วลองอีกครั้ง"
+          }
+        },
+        {
+          "id": "IO_BALANCE",
+          "kind": "decision",
+          "phase": "06 · INTAKE / OUTPUT",
+          "title": "คำนวณสมดุล\nสารน้ำเข้าและออก",
+          "description": "รวมสารน้ำเข้าและออกในเวรตัวอย่าง กรอกผลคำนวณ เลือกแนวโน้ม แล้ว Confirm",
+          "hint": "Intake: IV 100 mL + oral 50 mL · Output: urine 350 mL",
+          "chartFinding": "io",
+          "gradable": true,
+          "activity": {
+            "kind": "fluid-balance",
+            "presentation": "io-board",
+            "gradable": true,
+            "source": "Stage11IORecord.tsx",
+            "eyebrow": "BEDSIDE I/O BOARD · CASE 01 DEMO",
+            "title": "บันทึกสารน้ำข้างเตียง",
+            "items": [
+              {
+                "visual": "iv",
+                "id": "iv-intake",
+                "label": "IV · 100 mL",
+                "zoneId": "intake"
+              },
+              {
+                "visual": "drink",
+                "id": "oral-intake",
+                "label": "Oral · 50 mL",
+                "zoneId": "intake"
+              },
+              {
+                "visual": "urine",
+                "id": "urine-output",
+                "label": "Urine · 350 mL",
+                "zoneId": "output"
+              }
+            ],
+            "zones": [
+              {
+                "id": "intake",
+                "label": "INTAKE · สารน้ำเข้า"
+              },
+              {
+                "id": "output",
+                "label": "OUTPUT · สารน้ำออก"
+              }
+            ],
+            "notice": "ตัวเลขนี้เป็นแบบฝึกเดโมจากเว็บเดิม ไม่ใช่คำแนะนำการรักษา",
+            "rows": [
+              {
+                "label": "IV intake",
+                "value": "100 mL"
+              },
+              {
+                "label": "Oral intake",
+                "value": "50 mL"
+              },
+              {
+                "label": "Urine output",
+                "value": "350 mL"
+              }
+            ],
+            "fields": [
+              {
+                "id": "intake-total",
+                "label": "สารน้ำเข้ารวม · mL",
+                "placeholder": "150",
+                "type": "number"
+              },
+              {
+                "id": "output-total",
+                "label": "สารน้ำออกรวม · mL",
+                "placeholder": "350",
+                "type": "number"
+              },
+              {
+                "id": "balance-total",
+                "label": "สมดุลสุทธิ · mL",
+                "placeholder": "-200",
+                "type": "number"
+              }
+            ],
+            "expectedResponses": {
+              "intake-total": "150",
+              "output-total": "350",
+              "balance-total": "-200"
+            },
+            "success": "คำนวณตรงกับข้อมูล I/O เดโม · บันทึกผลแล้ว",
+            "explanation": "รวม IV 100 mL กับ oral 50 mL แล้วหัก urine output 350 mL · ตรวจตัวเลขอีกครั้ง"
+          },
+          "decision": {
+            "options": [
+              {
+                "id": "positive",
+                "label": "POSITIVE",
+                "detail": "สารน้ำเข้ามากกว่าสารน้ำออก",
+                "icon": "assessment"
+              },
+              {
+                "id": "negative",
+                "label": "NEGATIVE · −200 mL",
+                "detail": "สารน้ำออกมากกว่าสารน้ำเข้า",
+                "icon": "assessment"
+              }
+            ],
+            "expected": [
+              "negative"
+            ],
+            "ordered": false,
+            "explanation": "ตัวเลขหรือผลรวมยังไม่ตรงกับข้อมูล I/O เดโม · ตรวจคำตอบแล้วลองใหม่",
+            "success": "ผลคำนวณตรงกับข้อมูล I/O เดโม"
+          }
+        },
+        {
+          "id": "EMERGENCY_TRANSITION",
+          "kind": "transition",
+          "phase": "EMERGENCY",
+          "title": "อาการผู้ป่วย\nกำลังเปลี่ยนไป",
+          "description": "สังเกตการหายใจและ Monitor เตรียมประเมิน ABC ในห้องผู้ป่วยเดิม",
+          "hint": "ดู BP, HR, RR และ SpO₂ ที่กำลังเปลี่ยนแปลง · ระบบเข้าสู่ ABC อัตโนมัติ",
+          "autoAfter": 5000,
+          "onEnter": {
+            "emergency": true,
+            "alarm": true,
+            "duration": 5000,
+            "vitals": {
+              "bpSystolic": 220,
+              "bpDiastolic": 130,
+              "hr": 148,
+              "rr": 36,
+              "spo2": 82
+            },
+            "patient": {
+              "condition": "critical",
+              "breathing": "severe",
+              "animation": "critical"
+            }
+          }
+        },
+        {
+          "id": "ABC_ASSESSMENT",
+          "kind": "interaction",
+          "ordered": true,
+          "phase": "07 · EMERGENCY / ABC",
+          "title": "ประเมิน ABC\nอย่างเป็นลำดับ",
+          "description": "ใช้เครื่องมือ “ประเมิน ABC” ตรวจผู้ป่วยตามลำดับ A → B → C ไม่ต้องเปลี่ยนออกจากห้อง",
+          "hint": "A → ศีรษะ · B → ทรวงอก · C → ข้อมือ เลือกเครื่องมือประเมิน ABC",
+          "button": "เตรียมติด ECG",
+          "objectives": [
+            {
+              "id": "a",
+              "label": "A · Airway",
+              "tool": "hand",
+              "target": "head",
+              "finding": "airway",
+              "feedback": "A ประเมินทางเดินหายใจแล้ว"
+            },
+            {
+              "id": "b",
+              "label": "B · Breathing",
+              "tool": "hand",
+              "target": "chest",
+              "finding": "breathing",
+              "feedback": "B ประเมินการหายใจแล้ว"
+            },
+            {
+              "id": "c",
+              "label": "C · Circulation",
+              "tool": "hand",
+              "target": "wrist",
+              "finding": "circulation",
+              "feedback": "C ประเมินการไหลเวียนแล้ว"
+            }
+          ]
+        },
+        {
+          "id": "ECG_PLACEMENT",
+          "kind": "placement",
+          "phase": "08 · ECG / CHEST LEADS",
+          "title": "เชื่อมต่อ\nสัญญาณหัวใจ",
+          "description": "ลาก V1–V6 จากถาดไปวางบนผังทรวงอกให้ครบ หรือเลือก lead แล้วแตะตำแหน่ง กด Confirm เมื่อติดครบ",
+          "hint": "ขวาของผู้ป่วยอยู่ซ้ายของภาพ ใช้ปุ่ม Hint เพื่อแสดงชื่อและตำแหน่งของแต่ละ lead",
+          "button": "Confirm · บันทึก ECG"
+        },
+        {
+          "id": "ECG_INTERPRETATION",
+          "kind": "decision",
+          "phase": "09 · ECG REVIEW",
+          "title": "อ่านผล ECG\nและบันทึกคำตอบ",
+          "description": "อ่านจังหวะที่ระบุใน Case 1 demo แล้วกรอกคำตอบก่อน Confirm",
+          "hint": "คำตอบและคลื่นนี้มาจากข้อมูล Case 1 เดิมและรอผู้เชี่ยวชาญตรวจรับรอง",
+          "chartFinding": "ecg-read",
+          "gradable": true,
+          "activity": {
+            "kind": "text-response",
+            "presentation": "ecg-console",
+            "gradable": true,
+            "source": "case1Data.ts · rhythm SVT 148 bpm",
+            "eyebrow": "ECG REVIEW CONSOLE · CASE 01 DEMO",
+            "title": "ทบทวนจังหวะจาก Monitor",
+            "notice": "คลื่นเป็นภาพประกอบเดโม · คำตอบตรวจเทียบกับ Case 1 draft เท่านั้น",
+            "rows": [
+              {
+                "label": "Crisis event · ECG rhythm",
+                "value": "Supraventricular Tachycardia (SVT) อัตราเต้น 148 bpm"
+              }
+            ],
+            "fields": [
+              {
+                "id": "rhythm-answer",
+                "label": "จังหวะที่บันทึกใน Case",
+                "placeholder": "เลือกคำตอบจากข้อมูลเดโม",
+                "type": "select",
+                "options": [
+                  "SVT",
+                  "ยังระบุไม่ได้"
+                ]
+              }
+            ],
+            "expectedResponses": {
+              "rhythm-answer": "SVT"
+            },
+            "success": "อ่านตรงกับคำตอบใน Case 1 demo · บันทึกลง Chart แล้ว",
+            "explanation": "ลองตรวจ rhythm ที่ระบุใน Case 1 demo อีกครั้ง"
+          }
+        },
+        {
+          "id": "EMERGENCY_TREATMENT",
+          "kind": "decision",
+          "phase": "10 · EMERGENCY TREATMENT",
+          "title": "เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย",
+          "description": "เลือกการตอบสนองจากข้อมูล Case 1 demo แล้วกด Confirm เพื่อดูผลจำลอง",
+          "hint": "แผนนี้มาจาก Stage12CrisisEvent.tsx และยังรอผู้เชี่ยวชาญตรวจรับรอง",
+          "button": "Confirm · ตรวจคำตอบ",
+          "chartFinding": "emergency-treatment",
+          "gradable": true,
+          "decision": {
+            "options": [
+              {
+                "id": "priority-response",
+                "label": "High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน",
+                "detail": "ตัวเลือกจากเนื้อหา Case 1 เดิม · รอผู้เชี่ยวชาญตรวจรับรอง",
+                "icon": "device"
+              },
+              {
+                "id": "supine-water",
+                "label": "จัดให้นอนราบและให้ดื่มน้ำ",
+                "detail": "ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม",
+                "icon": "care"
+              },
+              {
+                "id": "wait-and-observe",
+                "label": "รอดูอาการ 30 นาที",
+                "detail": "ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม",
+                "icon": "monitor"
+              }
+            ],
+            "expected": [
+              "priority-response"
+            ],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "monitor-response",
+            "slots": [
+              {
+                "id": "response",
+                "label": "แผนตอบสนอง",
+                "expected": "priority-response"
+              }
+            ],
+            "explanation": "คำตอบยังไม่ตรงกับ emergency demo ในข้อมูล Case 1 · เลือกใหม่แล้ว Confirm",
+            "success": "ตรงกับ emergency response ใน Case 1 demo · สังเกตผู้ป่วยและ Monitor"
+          }
+        },
+        {
+          "id": "PATIENT_STABILIZED",
+          "kind": "transition",
+          "phase": "11 · PATIENT RESPONSE",
+          "title": "ผู้ป่วยตอบสนอง\nต่อการดูแล",
+          "description": "Vitals ค่อย ๆ เปลี่ยนไปตาม recovery values ที่ระบุใน Stage12 Case 1 demo",
+          "hint": "สังเกตการหายใจ สีหน้าและเสียงเตือน · ตัวเลขยังเป็นเนื้อหาเดโม",
+          "minDuration": 6500,
+          "button": "ดูผลภารกิจ",
+          "onEnter": {
+            "alarm": false,
+            "duration": 6000,
+            "vitals": {
+              "bpSystolic": 145,
+              "bpDiastolic": 88,
+              "hr": 96,
+              "rr": 22,
+              "spo2": 94
+            },
+            "patient": {
+              "condition": "stable",
+              "breathing": "normal",
+              "animation": "recovering"
+            }
+          }
+        },
+        {
+          "id": "CASE_SUMMARY",
+          "kind": "summary",
+          "phase": "12 · MISSION RESULT",
+          "title": "ดูแลครบ\nจบภารกิจจำลอง",
+          "description": "ผลนี้สรุปเส้นทางในห้องผู้ป่วยเดียว ตั้งแต่ Normal Stage ไป Emergency Stage · คะแนนยังไม่ใช่สมรรถนะทางคลินิก",
+          "hint": "ทบทวน Chart หรือเริ่มใหม่ได้"
+        }
+      ]
+    },
+    {
+      "id": "case-02-acute-decompensated-heart-failure",
+      "title": "ภาวะหัวใจล้มเหลวกำเริบและน้ำคั่งในปอด",
+      "gradable": false,
+      "clinicalStatus": "CASE 02 · STORY-SUMMARY DEMO · ไม่มีค่า vital หรือ answer key",
+      "initialVitals": {
+        "hr": null,
+        "bpSystolic": null,
+        "bpDiastolic": null,
+        "rr": null,
+        "spo2": null
+      },
+      "findings": [
+        {
+          "id": "history",
+          "section": "History",
+          "title": "อาการที่ผู้ป่วยบอก",
+          "text": "เรื่องย่อระบุ: เหนื่อยเมื่อเดินระยะสั้น นอนราบไม่ได้และหนุนหมอน 3 ใบ น้ำหนักเพิ่ม 3 กก. ใน 1 สัปดาห์ · ไม่มีประวัติส่วนอื่นในข้อมูล Case 2",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "lungs",
+          "section": "Respiratory Assessment",
+          "title": "Auscultation",
+          "text": "บันทึกว่าทำการประเมินทรวงอกแล้ว · เรื่องย่อไม่มีผลฟังปอด จึงไม่แสดงเสียงหรือผลวินิจฉัย",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "bp",
+          "section": "Vital Signs",
+          "title": "วัดความดันโลหิต",
+          "text": "ไม่มีค่าความดันในเรื่องย่อ Case 2",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+          "captureVitals": true
+        },
+        {
+          "id": "oxygen",
+          "section": "Vital Signs",
+          "title": "วัด SpO₂",
+          "text": "ไม่มีค่า SpO₂ ในเรื่องย่อ Case 2",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+          "captureVitals": true
+        },
+        {
+          "id": "airway",
+          "section": "Respiratory Assessment",
+          "title": "A · Airway",
+          "text": "บันทึกการประเมิน A · เรื่องย่อไม่มีผลตรวจทางเดินหายใจ",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "breathing",
+          "section": "Respiratory Assessment",
+          "title": "B · Breathing",
+          "text": "บันทึกการประเมิน B · เรื่องย่อระบุเหนื่อยเมื่อออกแรงและนอนราบไม่ได้ โดยไม่มีค่า RR หรือ SpO₂",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "circulation",
+          "section": "Perfusion Assessment",
+          "title": "C · Circulation",
+          "text": "บันทึกการประเมิน C · ไม่มีผลตรวจการไหลเวียนหรือตัวเลข vital ในเรื่องย่อ",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "diagnosis",
+          "section": "Care Plan",
+          "title": "Nursing Diagnosis · demo",
+          "text": "มีการบันทึกคำตอบเพื่อฝึก · Case 2 ไม่มี answer key ทางคลินิก",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "nursing-care",
+          "section": "Care Plan",
+          "title": "Nursing Care · demo",
+          "text": "มีการบันทึกตัวเลือกเพื่อฝึก · Case 2 ไม่มีเฉลย nursing care ทางคลินิก",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "medication",
+          "section": "Medication",
+          "title": "Medication worksheet · draft",
+          "text": "ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ Case 2 · แบบฟอร์มนี้ไม่ได้ตรวจขนาดยาหรือแนะนำการใช้ยา",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "io",
+          "section": "Intake / Output",
+          "title": "Fluid-balance decision · example",
+          "text": "ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · ไม่คำนวณหรือเฉลยสมดุลสารน้ำ",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "ecg",
+          "section": "ECG",
+          "title": "Chest leads V1–V6",
+          "text": "ติด lead ครบในผังเพื่อฝึกการลาก · เรื่องย่อไม่มีคลื่น ECG หรือผลอ่าน",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "ecg-read",
+          "section": "ECG",
+          "title": "ECG interpretation · draft",
+          "text": "บันทึกข้อความที่ผู้เล่นกรอก · Case 2 ไม่มี rhythm strip หรือ answer key",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        },
+        {
+          "id": "emergency-treatment",
+          "section": "Care Plan",
+          "title": "Emergency treatment · demo response",
+          "text": "บันทึกการตอบสนองใน simulation · ไม่มี protocol หรือผลการรักษาที่ผ่านการรับรองในเรื่องย่อ Case 2",
+          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+        }
+      ],
+      "missions": [
+        {
+          "id": "CASE_INTRO",
+          "kind": "intro",
+          "phase": "เริ่มต้นการดูแล",
+          "title": "รับช่วงต่อ\nดูแลผู้ป่วย",
+          "description": "หญิงอายุ 65 ปี มีประวัติหัวใจล้มเหลวเรื้อรัง ความดันโลหิตสูง และเบาหวาน · เริ่มจากฟังข้อมูลที่มีในเรื่องย่อ",
+          "hint": "ข้อมูล Case 2 เป็นเรื่องย่อสำหรับเล่นเดโม; vital และเฉลยที่ไม่มีต้นทางจะไม่ถูกเติม",
+          "button": "เริ่มดูแลผู้ป่วย"
+        },
+        {
+          "id": "PATIENT_INFORMATION",
+          "kind": "interaction",
+          "phase": "01 · PATIENT INFORMATION",
+          "title": "ฟังผู้ป่วย\nและค้นข้อมูลตั้งต้น",
+          "description": "ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดเรื่องย่อใน Chart",
+          "hint": "Case 2 ระบุเหนื่อยเมื่อเดินไม่กี่ก้าว นอนราบไม่ได้ และหนุนหมอน 3 ใบ",
+          "button": "เริ่มประเมิน",
+          "objectives": [
+            {
+              "id": "history",
+              "label": "รับข้อมูลจากผู้ป่วย",
+              "tool": "interview",
+              "target": "head",
+              "finding": "history",
+              "feedback": "“หายใจไม่ออกค่ะ…” · บันทึกประวัติแล้ว"
+            }
+          ]
+        },
+        {
+          "id": "ASSESSMENT",
+          "kind": "interaction",
+          "phase": "02 · PATIENT ASSESSMENT",
+          "title": "ประเมินผู้ป่วย\nจากข้อมูลที่มี",
+          "description": "ใช้เครื่องมือกับผู้ป่วยเพื่อบันทึกว่าทำการประเมินแล้ว · เรื่องย่อไม่มีค่าความดัน SpO₂ หรือผลฟังปอด",
+          "hint": "ผลที่ไม่ปรากฏใน Case 2 จะถูกบันทึกเป็น “ไม่มีข้อมูล”",
+          "button": "บันทึกการประเมิน",
+          "objectives": [
+            {
+              "id": "lungs",
+              "label": "Respiratory assessment",
+              "tool": "stethoscope",
+              "target": "chest",
+              "finding": "lungs",
+              "feedback": "บันทึกการตรวจทรวงอกแล้ว · ไม่มีผลฟังปอดใน Case 2"
+            },
+            {
+              "id": "bp",
+              "label": "Blood pressure",
+              "tool": "bp",
+              "target": "arm",
+              "finding": "bp",
+              "feedback": "บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้"
+            },
+            {
+              "id": "oxygen",
+              "label": "Oxygen saturation",
+              "tool": "spo2",
+              "target": "finger",
+              "finding": "oxygen",
+              "feedback": "บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้"
+            }
+          ],
+          "dataStatus": "missing",
+          "gradable": false
+        },
+        {
+          "id": "DIAGNOSIS",
+          "kind": "decision",
+          "phase": "03 · NURSING DIAGNOSIS",
+          "title": "จัดวางปัญหาและ\nข้อมูลสนับสนุน",
+          "description": "วางตัวเลือกทั่วไปลงในแฟ้มฝึก · เรื่องย่อ Case 2 ไม่มีเฉลยการวินิจฉัยหรือแผนการพยาบาล",
+          "hint": "ตัวเลือกนี้ใช้ฝึกการลากและยืนยันเท่านั้น · ไม่มีการตัดสินทางคลินิก",
+          "chartFinding": "diagnosis",
+          "decision": {
+            "options": [
+              {
+                "id": "breathing-problem",
+                "label": "ตัวเลือกฝึก 1",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "assessment"
+              },
+              {
+                "id": "other-problem",
+                "label": "ตัวเลือกฝึก 2",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "assessment"
+              },
+              {
+                "id": "respiratory-evidence",
+                "label": "ตัวเลือกฝึก 3",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "monitor"
+              },
+              {
+                "id": "unrelated-evidence",
+                "label": "ตัวเลือกฝึก 4",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "care"
+              }
+            ],
+            "expected": [],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "bedside-clipboard",
+            "slots": [
+              {
+                "id": "problem",
+                "label": "ช่องฝึก 1",
+                "expected": ""
+              },
+              {
+                "id": "support",
+                "label": "ช่องฝึก 2",
+                "expected": ""
+              }
+            ],
+            "explanation": "Case 2 ไม่มี answer key · ใช้ฝึกการจัดวางและยืนยันเท่านั้น",
+            "success": "บันทึกคำตอบเพื่อฝึกแล้ว · ไม่มีการตัดสินถูกหรือผิดทางคลินิก"
+          },
+          "dataStatus": "missing",
+          "gradable": false
+        },
+        {
+          "id": "NURSING_INTERVENTION",
+          "kind": "decision",
+          "phase": "04 · NURSING CARE",
+          "title": "เลือกการพยาบาล\nให้สัมพันธ์กับปัญหา",
+          "description": "วางตัวเลือกทั่วไปลงในแฟ้มฝึก · เรื่องย่อ Case 2 ไม่มีเฉลยการวินิจฉัยหรือแผนการพยาบาล",
+          "hint": "ตัวเลือกนี้ใช้ฝึกการลากและยืนยันเท่านั้น · ไม่มีการตัดสินทางคลินิก",
+          "chartFinding": "nursing-care",
+          "decision": {
+            "options": [
+              {
+                "id": "position-care",
+                "label": "ตัวเลือกฝึก 1",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "position"
+              },
+              {
+                "id": "monitor-care",
+                "label": "ตัวเลือกฝึก 2",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "monitor"
+              },
+              {
+                "id": "skip-monitoring",
+                "label": "ตัวเลือกฝึก 3",
+                "detail": "การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2",
+                "icon": "care"
+              }
+            ],
+            "expected": [],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "bedside-clipboard",
+            "slots": [
+              {
+                "id": "intervention-1",
+                "label": "ช่องฝึก 1",
+                "expected": ""
+              },
+              {
+                "id": "intervention-2",
+                "label": "ช่องฝึก 2",
+                "expected": ""
+              }
+            ],
+            "explanation": "Case 2 ไม่มี answer key · ใช้ฝึกการจัดวางและยืนยันเท่านั้น",
+            "success": "บันทึกคำตอบเพื่อฝึกแล้ว · ไม่มีการตัดสินถูกหรือผิดทางคลินิก"
+          },
+          "dataStatus": "missing",
+          "gradable": false
+        },
+        {
+          "id": "MEDICATION",
+          "kind": "decision",
+          "phase": "05 · MEDICATION",
+          "title": "ตรวจคำสั่งยา\nและบันทึกการเตรียม",
+          "description": "กรอกแบบฝึกการบันทึกตามช่อง · เรื่องย่อ Case 2 ไม่มี Doctor Order หรือข้อมูลยา",
+          "hint": "ไม่มี Doctor Order ในเรื่องย่อ Case 2 · การกรอกจะไม่ถูกตรวจหรือแนะนำการใช้ยา",
+          "chartFinding": "medication",
+          "gradable": false,
+          "activity": {
+            "kind": "medication",
+            "presentation": "medication-station",
+            "gradable": false,
+            "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+            "eyebrow": "MEDICATION PREP STATION · CASE 01 DEMO",
+            "title": "สถานีเตรียมยา",
+            "steps": [],
+            "notice": "ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ · ช่องด้านล่างเป็นแบบฝึกเปล่า ไม่มีคำแนะนำการใช้ยา",
+            "rows": [
+              {
+                "label": "Doctor Order",
+                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+              },
+              {
+                "label": "ประวัติแพ้ยา",
+                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+              }
+            ],
+            "fields": [],
+            "success": "ตรงกับ Doctor Order ในข้อมูลเดโม · ตรวจและบันทึกแบบฝึกแล้ว",
+            "explanation": "เทียบคำตอบกับ Doctor Order และข้อมูลการเฝ้าระวังใน Case แล้วลองอีกครั้ง",
+            "dataStatus": "missing",
+            "allowMissingDataAcknowledgement": true
+          },
+          "dataStatus": "missing"
+        },
+        {
+          "id": "IO_BALANCE",
+          "kind": "decision",
+          "phase": "06 · INTAKE / OUTPUT",
+          "title": "คำนวณสมดุล\nสารน้ำเข้าและออก",
+          "description": "บันทึกลงแบบฝึกโดยใช้ข้อมูลที่มี · เรื่องย่อ Case 2 ไม่มีตัวเลข intake หรือ output",
+          "hint": "ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · การเลือกจะไม่ถูกตรวจทางคลินิก",
+          "chartFinding": "io",
+          "gradable": false,
+          "activity": {
+            "kind": "fluid-balance",
+            "presentation": "io-board",
+            "gradable": false,
+            "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+            "eyebrow": "BEDSIDE I/O BOARD · CASE 01 DEMO",
+            "title": "บันทึกสารน้ำข้างเตียง",
+            "items": [],
+            "zones": [],
+            "notice": "ไม่มีตัวเลข intake หรือ output ในเรื่องย่อ · แบบฝึกนี้ไม่คำนวณหรือเฉลยสมดุลสารน้ำ",
+            "rows": [
+              {
+                "label": "INTAKE",
+                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+              },
+              {
+                "label": "OUTPUT",
+                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+              }
+            ],
+            "fields": [],
+            "success": "คำนวณตรงกับข้อมูล I/O เดโม · บันทึกผลแล้ว",
+            "explanation": "รวม IV 100 mL กับ oral 50 mL แล้วหัก urine output 350 mL · ตรวจตัวเลขอีกครั้ง",
+            "dataStatus": "missing",
+            "allowMissingDataAcknowledgement": true
+          },
+          "decision": {
+            "options": [
+              {
+                "id": "positive",
+                "label": "ตัวเลือกฝึก 1",
+                "detail": "ไม่มีตัวเลขในเรื่องย่อ · ไม่ระบุแนวโน้ม I/O",
+                "icon": "assessment"
+              },
+              {
+                "id": "negative",
+                "label": "ตัวเลือกฝึก 2",
+                "detail": "ไม่มีตัวเลขในเรื่องย่อ · ไม่ระบุแนวโน้ม I/O",
+                "icon": "assessment"
+              }
+            ],
+            "expected": [],
+            "ordered": false,
+            "explanation": "บันทึกการเลือกเพื่อฝึกแล้ว · ไม่มีตัวเลขหรือเฉลย I/O ใน Case 2",
+            "success": "บันทึกการเลือกแล้ว · ไม่มีการตัดสินผลสมดุลสารน้ำ"
+          },
+          "dataStatus": "missing"
+        },
+        {
+          "id": "EMERGENCY_TRANSITION",
+          "kind": "transition",
+          "phase": "EMERGENCY",
+          "title": "อาการผู้ป่วย\nกำลังเปลี่ยนไป",
+          "description": "เข้าสู่ช่วงฉุกเฉินของ simulation · เรื่องย่อไม่มีตัวเลข vital ให้แสดง",
+          "hint": "สังเกตสถานะผู้ป่วยและเสียงเตือน โดย Monitor จะแสดง “ไม่มีข้อมูล”",
+          "autoAfter": 5000,
+          "onEnter": {
+            "emergency": true,
+            "alarm": true,
+            "duration": 5000,
+            "vitals": {},
+            "patient": {
+              "condition": "critical",
+              "breathing": "severe",
+              "animation": "critical"
+            }
+          }
+        },
+        {
+          "id": "ABC_ASSESSMENT",
+          "kind": "interaction",
+          "ordered": true,
+          "phase": "07 · EMERGENCY / ABC",
+          "title": "ประเมิน ABC\nอย่างเป็นลำดับ",
+          "description": "ใช้เครื่องมือ “ประเมิน ABC” ตรวจผู้ป่วยตามลำดับ A → B → C ไม่ต้องเปลี่ยนออกจากห้อง",
+          "hint": "A → ศีรษะ · B → ทรวงอก · C → ข้อมือ เลือกเครื่องมือประเมิน ABC",
+          "button": "เตรียมติด ECG",
+          "objectives": [
+            {
+              "id": "a",
+              "label": "A · Airway",
+              "tool": "hand",
+              "target": "head",
+              "finding": "airway",
+              "feedback": "A ประเมินทางเดินหายใจแล้ว"
+            },
+            {
+              "id": "b",
+              "label": "B · Breathing",
+              "tool": "hand",
+              "target": "chest",
+              "finding": "breathing",
+              "feedback": "B ประเมินการหายใจแล้ว"
+            },
+            {
+              "id": "c",
+              "label": "C · Circulation",
+              "tool": "hand",
+              "target": "wrist",
+              "finding": "circulation",
+              "feedback": "C ประเมินการไหลเวียนแล้ว"
+            }
+          ]
+        },
+        {
+          "id": "ECG_PLACEMENT",
+          "kind": "placement",
+          "phase": "08 · ECG / CHEST LEADS",
+          "title": "เชื่อมต่อ\nสัญญาณหัวใจ",
+          "description": "ลาก V1–V6 จากถาดไปวางบนผังทรวงอกให้ครบ หรือเลือก lead แล้วแตะตำแหน่ง กด Confirm เมื่อติดครบ",
+          "hint": "ขวาของผู้ป่วยอยู่ซ้ายของภาพ ใช้ปุ่ม Hint เพื่อแสดงชื่อและตำแหน่งของแต่ละ lead",
+          "button": "Confirm · บันทึก ECG"
+        },
+        {
+          "id": "ECG_INTERPRETATION",
+          "kind": "decision",
+          "phase": "09 · ECG REVIEW",
+          "title": "อ่านผล ECG\nและบันทึกคำตอบ",
+          "description": "บันทึกข้อความเพื่อฝึก · เรื่องย่อ Case 2 ไม่มีคลื่น ECG หรือผลอ่าน",
+          "hint": "ไม่มี rhythm strip หรือ answer key · ข้อความที่กรอกจะไม่ถูกตรวจทางคลินิก",
+          "chartFinding": "ecg-read",
+          "gradable": false,
+          "activity": {
+            "kind": "text-response",
+            "presentation": "ecg-console",
+            "gradable": false,
+            "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+            "eyebrow": "ECG NOTES · CASE 02 PRACTICE",
+            "title": "บันทึกข้อความฝึก",
+            "notice": "เรื่องย่อ Case 2 ไม่มี ECG rhythm strip หรือ answer key · ข้อความจะถูกบันทึกเพื่อฝึกเท่านั้น",
+            "rows": [
+              {
+                "label": "Crisis event · ECG rhythm",
+                "value": "Supraventricular Tachycardia (SVT) อัตราเต้น 148 bpm"
+              }
+            ],
+            "fields": [
+              {
+                "id": "rhythm-answer",
+                "label": "ข้อความฝึก",
+                "placeholder": "บันทึกข้อความ · ไม่มีข้อมูลคลื่น ECG",
+                "type": "text"
+              }
+            ],
+            "success": "อ่านตรงกับคำตอบใน Case 1 demo · บันทึกลง Chart แล้ว",
+            "explanation": "ลองตรวจ rhythm ที่ระบุใน Case 1 demo อีกครั้ง",
+            "dataStatus": "missing"
+          },
+          "dataStatus": "missing"
+        },
+        {
+          "id": "EMERGENCY_TREATMENT",
+          "kind": "decision",
+          "phase": "10 · EMERGENCY TREATMENT",
+          "title": "เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย",
+          "description": "เลือกการตอบสนองทั่วไปเพื่อดู transition ของ simulation · ไม่มี treatment sequence ในเรื่องย่อ Case 2",
+          "hint": "ตัวเลือกเป็นกลไกสำหรับจบช่วงฝึก ไม่ใช่แนวทางรักษา",
+          "button": "Confirm · ตรวจคำตอบ",
+          "chartFinding": "emergency-treatment",
+          "gradable": false,
+          "decision": {
+            "options": [
+              {
+                "id": "priority-response",
+                "label": "การตอบสนองฝึก 1",
+                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
+                "icon": "device"
+              },
+              {
+                "id": "supine-water",
+                "label": "การตอบสนองฝึก 2",
+                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
+                "icon": "care"
+              },
+              {
+                "id": "wait-and-observe",
+                "label": "การตอบสนองฝึก 3",
+                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
+                "icon": "monitor"
+              }
+            ],
+            "expected": [],
+            "ordered": false,
+            "answerMode": "drag-slot",
+            "presentation": "monitor-response",
+            "slots": [
+              {
+                "id": "response",
+                "label": "ช่องฝึก 1",
+                "expected": ""
+              }
+            ],
+            "explanation": "Case 2 ไม่มี treatment sequence · เลือกเพื่อฝึกและยืนยันเท่านั้น",
+            "success": "บันทึกการตอบสนองเพื่อฝึกแล้ว · simulation จะเข้าสู่ช่วงสรุป"
+          },
+          "dataStatus": "missing"
+        },
+        {
+          "id": "PATIENT_STABILIZED",
+          "kind": "transition",
+          "phase": "11 · PATIENT RESPONSE",
+          "title": "ผู้ป่วยตอบสนอง\nต่อการดูแล",
+          "description": "เล่นภาพตอบสนองของ simulation เพื่อจบภารกิจ · ไม่มีการอ้างผลการรักษาหรือตัวเลข vital",
+          "hint": "สังเกตการหายใจ สีหน้าและเสียงเตือน · ตัวเลขยังเป็นเนื้อหาเดโม",
+          "minDuration": 6500,
+          "button": "ดูผลภารกิจ",
+          "onEnter": {
+            "alarm": false,
+            "duration": 0,
+            "patient": {
+              "condition": "stable",
+              "breathing": "normal",
+              "animation": "recovering"
+            }
+          }
+        },
+        {
+          "id": "CASE_SUMMARY",
+          "kind": "summary",
+          "phase": "12 · MISSION RESULT",
+          "title": "ดูแลครบ\nจบภารกิจจำลอง",
+          "description": "จบ Case 2 demo · สรุปเฉพาะข้อมูลจากเรื่องย่อและการกระทำที่ผู้เล่นทำ โดยไม่มีคะแนนความสามารถทางคลินิก",
+          "hint": "ทบทวน Chart หรือเริ่มใหม่ได้"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "reviewId": "PRE-01",
+      "stage": "PRETEST",
+      "id": 1,
+      "question": "1. ผู้ป่วยชายไทยอายุ 80 ปี ตรวจร่างกาย หายใจหอบเหนื่อย RR 36 ครั้ง/นาที SpO2 82% ไอมีเสมหะชมพูเป็นฟอง และฟังปอดพบเสียง Crackles ทั้งสองข้าง พยาบาลควรให้การพยาบาลข้อใดก่อน",
+      "options": [
+        {
+          "key": "ก",
+          "text": "จัดท่า High Fowler's และให้ออกซิเจนความเข้มข้นสูง"
+        },
+        {
+          "key": "ข",
+          "text": "ส่งผู้ป่วยตรวจ Chest X-ray"
+        },
+        {
+          "key": "ค",
+          "text": "ให้ผู้ป่วยรับประทานอาหาร"
+        },
+        {
+          "key": "ง",
+          "text": "เจาะเลือดส่งตรวจ BNP"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "ผู้ป่วยมีภาวะพร่องออกซิเจนและน้ำท่วมปอดเฉียบพลัน การจัดท่า High Fowler's ช่วยให้ปอดขยายตัว ลดการไหลกลับของเลือดดำสู่หัวใจ (Preload) และการให้ออกซิเจนความเข้มข้นสูงช่วยเพิ่มการแลกเปลี่ยนก๊าซ จึงเป็นการพยาบาลที่ต้องดำเนินการก่อนอันดับแรกตามหลัก ABC",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-02",
+      "stage": "PRETEST",
+      "id": 2,
+      "question": "2. ผู้ป่วยภาวะหัวใจล้มเหลวร่วมกับมีภาวะน้ำท่วมปอด หลังได้รับขับปัสสาวะ (Loop Diuretics) ผู้ป่วยมีปริมาณปัสสาวะเพียง 50 mL ใน 2 ชั่วโมง และยังมีอาการหอบเหนื่อย พยาบาลควรดำเนินการอย่างไร",
+      "options": [
+        {
+          "key": "ก",
+          "text": "บันทึกปริมาณสารน้ำเข้า-ออก ประเมินอาการต่อเนื่อง และรายงานแพทย์"
+        },
+        {
+          "key": "ข",
+          "text": "งดยาขับปัสสาวะทันที"
+        },
+        {
+          "key": "ค",
+          "text": "ให้ผู้ป่วยดื่มน้ำเพิ่ม"
+        },
+        {
+          "key": "ง",
+          "text": "ถอดสายสวนปัสสาวะ"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "ปริมาณปัสสาวะที่น้อยกว่าเกณฑ์ปกติ (< 0.5-1 mL/kg/hr) และอาการหอบเหนื่อยที่ไม่ดีขึ้น แสดงว่าผู้ป่วยยังไม่ตอบสนองต่อการรักษาเพียงพอ พยาบาลต้องติดตาม Intake/Output และสัญญาณชีพอย่างต่อเนื่องพร้อมรายงานแพทย์เพื่อพิจารณาปรับแผนการรักษา",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-03",
+      "stage": "PRETEST",
+      "id": 3,
+      "question": "3. ผู้ป่วย Congestive Heart Failure ที่เกิด Acute Pulmonary Edema ตรวจร่างกายพบหายใจหอบเหนื่อย RR 36 ครั้ง/นาที SpO2 82% และฟังปอดพบเสียง Crackles ทั้งสองข้าง หากพยาบาลต้องรายงานแพทย์เพื่อรายงานสถานการณ์ของผู้ป่วย ข้อใดเป็นการให้ข้อมูลในส่วน Assessment (A) ตามหลัก ISBAR",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ผู้ป่วยมีประวัติเป็นโรคความดันโลหิตสูงเรื้อรังมา 15 ปี"
+        },
+        {
+          "key": "ข",
+          "text": "ผู้ป่วยมีอาการหอบเหนื่อยเฉียบพลัน RR 36 ครั้ง/นาที SpO2 82% ฟังปอดพบ Crackles ทั้งสองข้าง"
+        },
+        {
+          "key": "ค",
+          "text": "ยาที่ผู้ป่วยได้รับตอนนี้คือ Lasix 250 mg IV stat"
+        },
+        {
+          "key": "ง",
+          "text": "ผู้ป่วยหญิงอายุ 65 ปี มาด้วยอาการเหนื่อยมากขึ้น ไอตอนกลางคืน นอนราบไม่ได้"
+        }
+      ],
+      "correctAnswer": "ข",
+      "explanation": "ในหลัก ISBAR ส่วน Assessment (A) คือการรายงานผลการประเมินของพยาบาล เช่น อาการสำคัญ สัญญาณชีพ และผลการตรวจร่างกาย เพื่อสะท้อนสภาพปัจจุบันของผู้ป่วย ช่วยให้แพทย์ตัดสินใจสั่งการรักษาได้อย่างเหมาะสม",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-04",
+      "stage": "PRETEST",
+      "id": 4,
+      "question": "4. พยาบาลได้รับมอบหมายให้ดูแลผู้ป่วย Congestive Heart Failure ที่เกิด Acute Pulmonary Edema การจัดลำดับการพยาบาลข้อใดเหมาะสมที่สุด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ประเมิน Airway, Breathing และ Circulation (ABC) → แก้ไขภาวะพร่องออกซิเจน → ให้การรักษาตามแผน → ประเมินผลการตอบสนอง"
+        },
+        {
+          "key": "ข",
+          "text": "ให้ยา → บันทึกเวชระเบียน → ประเมินผู้ป่วย"
+        },
+        {
+          "key": "ค",
+          "text": "ส่งตรวจ Chest X-ray → เจาะเลือด → ให้ออกซิเจน"
+        },
+        {
+          "key": "ง",
+          "text": "แจ้งญาติ → รอแพทย์ → ประเมินผู้ป่วย"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "การดูแลผู้ป่วยวิกฤต Acute Pulmonary Edema ต้องให้ความสำคัญสูงสุดกับการประเมินและช่วยชีวิตตามหลัก ABC ก่อนเพื่อแก้ไขภาวะคุกคามชีวิต จากนั้นจึงให้ออกซิเจนและการรักษาตามแผนพร้อมติดตามประเมินผลอย่างต่อเนื่อง",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-05",
+      "stage": "PRETEST",
+      "id": 5,
+      "question": "5. ผู้ป่วย Acute Heart Failure ได้รับ Furosemide 40 mg IV หลังให้ยา พยาบาลควรประเมินข้อใดสำคัญที่สุด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ระดับน้ำตาลในเลือด"
+        },
+        {
+          "key": "ข",
+          "text": "ปริมาณปัสสาวะ ความดันโลหิต และระดับโพแทสเซียมในเลือด"
+        },
+        {
+          "key": "ค",
+          "text": "ระดับฮีโมโกลบิน"
+        },
+        {
+          "key": "ง",
+          "text": "อุณหภูมิร่างกาย"
+        }
+      ],
+      "correctAnswer": "ข",
+      "explanation": "Furosemide เป็นยาขับปัสสาวะชนิด Loop Diuretic ออกฤทธิ์เร็ว ผลข้างเคียงสำคัญคืออาจทำให้เกิด Hypotension, Hypokalemia (โพแทสเซียมต่ำ) และ Dehydration จึงต้องติดตาม Urine Output, BP และ Serum K+ อย่างใกล้ชิด",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-06",
+      "stage": "PRETEST",
+      "id": 6,
+      "question": "6. ข้อใดเป็นอาการและอาการแสดงที่บ่งชี้ว่าผู้ป่วย Congestive Heart Failure มีอาการแย่ลง",
+      "options": [
+        {
+          "key": "ก",
+          "text": "น้ำหนักเพิ่มขึ้น 2 กิโลกรัมใน 2 วัน ร่วมกับนอนราบไม่ได้และหอบเหนื่อยมากขึ้น"
+        },
+        {
+          "key": "ข",
+          "text": "ปัสสาวะเพิ่มขึ้นหลังได้รับ Furosemide"
+        },
+        {
+          "key": "ค",
+          "text": "SpO2 เพิ่มขึ้นจาก 92% เป็น 98%"
+        },
+        {
+          "key": "ง",
+          "text": "อาการบวมลดลงหลังได้รับยา"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "น้ำหนักตัวที่เพิ่มขึ้นอย่างรวดเร็ว (> 1-2 kg ใน 2-3 วัน) ร่วมกับมีอาการ Orthopnea (นอนราบไม่ได้) และ Dyspnea มากขึ้น เป็นสัญญาณเตือนสำคัญของภาวะน้ำคั่ง (Fluid Retention) และภาวะหัวใจล้มเหลวกำเริบ",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-07",
+      "stage": "PRETEST",
+      "id": 7,
+      "question": "7. ข้อใดเป็นกลไกสำคัญที่ทำให้ผู้ป่วย Congestive Heart Failure มีอาการ Orthopnea",
+      "options": [
+        {
+          "key": "ก",
+          "text": "Cardiac output ลดลง ทำให้เลือดไปเลี้ยงสมองลดลง"
+        },
+        {
+          "key": "ข",
+          "text": "เมื่อผู้ป่วยนอนราบ เลือดดำไหลกลับสู่หัวใจ (Venous return) เพิ่มขึ้น ทำให้ความดันในหลอดเลือดปอดสูงขึ้นและเกิด Pulmonary congestion"
+        },
+        {
+          "key": "ค",
+          "text": "ระบบประสาทซิมพาเทติกถูกกระตุ้น ทำให้อัตราการเต้นของหัวใจเพิ่มขึ้น"
+        },
+        {
+          "key": "ง",
+          "text": "การกระตุ้นระบบ RAAS ทำให้หลอดเลือดแดงหดตัวและทำให้ความดันโลหิตสูงขึ้น"
+        }
+      ],
+      "correctAnswer": "ข",
+      "explanation": "เมื่อนอนราบ แรงโน้มถ่วงลดลง เลือดดำจากส่วนล่างของร่างกายจะไหลกลับสู่หัวใจมากขึ้น (Venous return) แต่หัวใจที่ล้มเหลวไม่สามารถบีบตัวสูบฉีดได้ทัน ทำให้ความดันในหลอดเลือดฝอยปอดสูงขึ้น เกิดการคั่งของน้ำในปอดและมีอาการหอบเหนื่อยเมื่อนอนราบ",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-08",
+      "stage": "PRETEST",
+      "id": 8,
+      "question": "8. ผู้ป่วย Congestive Heart Failure มีผลตรวจทางห้องปฏิบัติการดังนี้: K+ = 2.8 mmol/L, Mg2+ = 1.3 mg/dL ผู้ป่วยรายนี้มีความเสี่ยงต่อภาวะแทรกซ้อนข้อใดมากที่สุด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "Hyperglycemia"
+        },
+        {
+          "key": "ข",
+          "text": "Cardiac Arrhythmia (Ventricular Arrhythmias)"
+        },
+        {
+          "key": "ค",
+          "text": "Gastrointestinal bleeding"
+        },
+        {
+          "key": "ง",
+          "text": "Pulmonary embolism"
+        }
+      ],
+      "correctAnswer": "ข",
+      "explanation": "ภาวะ Hypokalemia (K+ < 3.5) และ Hypomagnesemia (Mg2+ < 1.7) ทำให้การนำไฟฟ้าและการฟื้นตัวของกล้ามเนื้อหัวใจผิดปกติ เพิ่มความเสี่ยงสูงมากต่อการเกิด Ventricular Tachycardia (VT), VF หรือ Torsades de Pointes",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-09",
+      "stage": "PRETEST",
+      "id": 9,
+      "question": "9. จากหลักการติด 12 Lead EKG ในทรวงอก (Precordial leads) ข้อใดถูกต้องที่สุด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ติด V1-V6 ถูกต้อง เพราะ V4 อยู่ที่ 4th ICS ชิด sternum ข้างซ้าย"
+        },
+        {
+          "key": "ข",
+          "text": "ติด V1-V6 ไม่ถูกต้อง เพราะ V1-V2 ให้ติดที่ 2nd ICS"
+        },
+        {
+          "key": "ค",
+          "text": "ติด V1-V6 ไม่ถูกต้อง เพราะ V5 ควรติดที่ midaxillary line"
+        },
+        {
+          "key": "ง",
+          "text": "ติด V1-V6 ถูกต้อง เพราะ V3 อยู่กึ่งกลางระหว่าง V2-V4 และ V4 อยู่ที่ช่องซี่โครงที่ 5 บริเวณ Midclavicular line"
+        }
+      ],
+      "correctAnswer": "ง",
+      "explanation": "ตำแหน่ง Chest Lead ที่ถูกต้อง: V1 ที่ 4th ICS ขอบขวา sternum, V2 ที่ 4th ICS ขอบซ้าย sternum, V3 อยู่กึ่งกลางระหว่าง V2 และ V4, V4 ที่ 5th ICS แนว Midclavicular line, V5 ที่ 5th ICS แนว Anterior axillary line, และ V6 ที่ 5th ICS แนว Midaxillary line",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "PRE-10",
+      "stage": "PRETEST",
+      "id": 10,
+      "question": "10. ผู้ป่วยชายอายุ 68 ปี ได้รับการวินิจฉัย Acute Heart Failure มีอาการหอบเหนื่อย นอนราบไม่ได้ หลังได้ Furosemide 40 mg IV ผล K+ = 2.8, Mg2+ = 1.3 ขณะติดตามคลื่นไฟฟ้าหัวใจพบกราฟ QRS complex กว้าง (>0.12 วินาที) สม่ำเสมอ อัตราเต้น > 140 ครั้ง/นาที จงแปลผลคลื่นไฟฟ้าหัวใจที่พบ",
+      "options": [
+        {
+          "key": "ก",
+          "text": "Sinus Tachycardia"
+        },
+        {
+          "key": "ข",
+          "text": "Atrial Fibrillation"
+        },
+        {
+          "key": "ค",
+          "text": "Ventricular Tachycardia (VT)"
+        },
+        {
+          "key": "ง",
+          "text": "Sinus Bradycardia"
+        }
+      ],
+      "correctAnswer": "ค",
+      "explanation": "Ventricular Tachycardia (VT) มีลักษณะเด่นคือ QRS complex กว้าง (> 0.12 วินาที) อัตราการเต้นมากกว่า 100-140 ครั้ง/นาที จังหวะสม่ำเสมอ ในผู้ป่วยหัวใจล้มเหลวร่วมกับเกลือแร่ต่ำมีความเสี่ยงสูงต่อการเกิด VT ซึ่งอาจนำไปสู่ Cardiac Arrest ได้หากรักษาไม่ทันท่วงที",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-01",
+      "stage": "POSTTEST",
+      "id": 1,
+      "question": "1. เมื่อพบผู้ป่วยโรคหัวใจล้มเหลวเฉียบพลันมีอาการหอบเหนื่อยรุนแรง SpO2 ตกเหลือ 82% ไอเสมหะเป็นฟองสีชมพู สิ่งแรกที่พยาบาลต้องปฏิบัติทันทีตามหลัก ABC คือข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "จัดท่านั่ง High Fowler's 90 องศา และให้ออกซิเจนความเข้มข้นสูงทันที"
+        },
+        {
+          "key": "ข",
+          "text": "เจาะเลือดส่งตรวจ Electrolyte และ Troponin-I"
+        },
+        {
+          "key": "ค",
+          "text": "โทรแจ้งแพทย์เวรมาทำการตรวจรักษา"
+        },
+        {
+          "key": "ง",
+          "text": "เข็นเตียงไปห้องตรวจรังสีเพื่อทำ Chest X-ray"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "การจัดท่า High Fowler's 90 องศาช่วยลด venous return ลดภาระหัวใจ และช่วยให้กระบังลมหย่อนตัว ปอดขยายรับออกซิเจนได้ดีขึ้น ร่วมกับการให้ออกซิเจนเข้มข้นสูง เป็นการช่วยเหลือภาวะคุกคามชีวิตทันที",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-02",
+      "stage": "POSTTEST",
+      "id": 2,
+      "question": "2. ภายหลังการบริหารยา Furosemide (Lasix) 40 mg IV ข้อใดคือการเฝ้าระวังผลข้างเคียงทางการพยาบาลที่สำคัญที่สุด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ติดตามปริมาณปัสสาวะ (Urine output), ความดันโลหิตตก (Hypotension) และภาวะโพแทสเซียมต่ำ (Hypokalemia)"
+        },
+        {
+          "key": "ข",
+          "text": "ติดตามระดับน้ำตาลปลายนิ้วทุก 30 นาที"
+        },
+        {
+          "key": "ค",
+          "text": "วัดอุณหภูมิร่างกายเฝ้าระวังไข้"
+        },
+        {
+          "key": "ง",
+          "text": "ตรวจประเมินอาการปวดแผลผ่าตัด"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "Furosemide ขับน้ำและเกลือแร่ (Na+, K+) ออกทางไตอย่างรวดเร็ว จึงเสี่ยงต่อความดันโลหิตต่ำและหัวใจเต้นผิดจังหวะจากระดับโพแทสเซียมต่ำอย่างยิ่ง",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-03",
+      "stage": "POSTTEST",
+      "id": 3,
+      "question": "3. ในการรายงานแพทย์ด้วยเทคนิค ISBAR เมื่อผู้ป่วยหัวใจล้มเหลวมีอาการทรุดลง ข้อใดคือตัวอย่างของ \"A - Assessment\" ที่ถูกต้อง",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ผู้ป่วยหญิง 39 ปี เตียง 4 มีประวัติ HT และ DM มา 5 ปี"
+        },
+        {
+          "key": "ข",
+          "text": "ขณะนี้ผู้ป่วยมีอาการหอบเหนื่อยมาก RR 36/min, SpO2 82%, ฟังปอดพบ Coarse crackles ทั้งสองข้าง คาดว่ามีน้ำท่วมปอดกำเริบ"
+        },
+        {
+          "key": "ค",
+          "text": "ขออนุญาตขอคำสั่งการรักษาให้ Furosemide 40 mg IV stat เพิ่มเติมค่ะ"
+        },
+        {
+          "key": "ง",
+          "text": "สวัสดีค่ะคุณหมอ ดิฉันพยาบาลประจำหอผู้ป่วยวิกฤตค่ะ"
+        }
+      ],
+      "correctAnswer": "ข",
+      "explanation": "Assessment (A) คือการประเมินสถานการณ์ทางคลินิก ณ ปัจจุบัน สัญญาณชีพ และการตรวจร่างกายที่แสดงถึงปัญหาของผู้ป่วย",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-04",
+      "stage": "POSTTEST",
+      "id": 4,
+      "question": "4. ข้อวินิจฉัยทางการพยาบาลในผู้ป่วย Acute Decompensated Heart Failure ข้อใดควรได้รับการแก้ไขเป็นลำดับความสำคัญสูงสุด (Priority 1)",
+      "options": [
+        {
+          "key": "ก",
+          "text": "การแลกเปลี่ยนก๊าซบกพร่องเนื่องจากมีภาวะคั่งของสารน้ำในถุงลมปอด (Impaired Gas Exchange)"
+        },
+        {
+          "key": "ข",
+          "text": "ความไม่ทนต่อกิจกรรมเนื่องจากออกซิเจนไปเลี้ยงกล้ามเนื้อไม่เพียงพอ"
+        },
+        {
+          "key": "ค",
+          "text": "ความวิตกกังวลเนื่องจากความเจ็บป่วยเฉียบพลัน"
+        },
+        {
+          "key": "ง",
+          "text": "เสี่ยงต่อภาวะโภชนาการไม่เพียงพอเนื่องจากเบื่ออาหาร"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "ตามหลัก ABC ปัญหาการแลกเปลี่ยนก๊าซบกพร่องส่งผลให้เกิด Hypoxemia รุนแรง คุกคามต่อชีวิต จึงต้องได้รับการแก้ไขเป็นอันดับแรกสุด",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-05",
+      "stage": "POSTTEST",
+      "id": 5,
+      "question": "5. ในการบันทึกชาร์ต Intake / Output (I/O) หากผู้ป่วยได้รับน้ำเกลือ IV 100 mL, ดื่มน้ำ 50 mL และมีปัสสาวะออก 350 mL การแปลผลสมดุลสารน้ำ (Fluid Balance) คือข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "สารน้ำสมดุลเป็นลบ (Negative Balance) -200 mL ตอบสนองต่อยาขับปัสสาวะได้ดี"
+        },
+        {
+          "key": "ข",
+          "text": "สารน้ำสมดุลเป็นบวก (Positive Balance) +200 mL"
+        },
+        {
+          "key": "ค",
+          "text": "สารน้ำสมดุลเป็นลบ (Negative Balance) -150 mL"
+        },
+        {
+          "key": "ง",
+          "text": "สารน้ำสมดุลเท่ากัน 0 mL"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "Intake รวม = 100 + 50 = 150 mL; Output รวม = 350 mL; Fluid Balance = 150 - 350 = -200 mL ซึ่งในผู้ป่วยน้ำท่วมปอด การได้ Negative Balance แสดงว่ายาขับปัสสาวะได้ผล ช่วยลดภาระน้ำคั่ง",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-06",
+      "stage": "POSTTEST",
+      "id": 6,
+      "question": "6. อาการ Orthopnea (นอนราบไม่ได้ ต้องหนุนหมอนสูง 3 ใบหรือนั่งหลับ) เกิดจากพยาธิสรีรวิทยาข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "เมื่อนอนราบ เลือดดำจากส่วนล่างของร่างกายไหลกลับเข้าสู่หัวใจมากขึ้น ทำให้แรงดันในหลอดเลือดฝอยปอดสูงขึ้นจนน้ำซึมเข้าถุงลม"
+        },
+        {
+          "key": "ข",
+          "text": "กล้ามเนื้อกระบังลมเป็นอัมพาตชั่วคราวเมื่อนอนหลับ"
+        },
+        {
+          "key": "ค",
+          "text": "หลอดลมตีบแคบเฉียบพลันจากการแพ้อากาศ"
+        },
+        {
+          "key": "ง",
+          "text": "กระเพาะอาหารกดทับหลอดเลือดแดงใหญ่"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "Orthopnea เกิดจากการเพิ่มขึ้นของ Venous return สู่หัวใจห้องขวาและปอดเมื่อนอนราบ ในขณะที่หัวใจห้องซ้ายทำงานล้มเหลว สูบฉีดไม่ทัน เกิด Pulmonary venous congestion",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-07",
+      "stage": "POSTTEST",
+      "id": 7,
+      "question": "7. หากตรวจพบผลเลือด K+ 2.8 mmol/L และ Mg2+ 1.3 mg/dL สิ่งที่พยาบาลต้องเตรียมพร้อมมากที่สุดคือข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ติด Monitor คลื่นหัวใจต่อเนื่องและเตรียมเครื่อง Defibrillator / Crash Cart เพื่อรับมือภาวะ Ventricular Arrhythmias"
+        },
+        {
+          "key": "ข",
+          "text": "เจาะตรวจน้ำตาล DTX ทันที"
+        },
+        {
+          "key": "ค",
+          "text": "เตรียมอาหารเสริมโพแทสเซียมให้ผู้ป่วยรับประทานทันที"
+        },
+        {
+          "key": "ง",
+          "text": "ฉีดอินซูลินเข้าหลอดเลือดดำ"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "Hypokalemia ร่วมกับ Hypomagnesemia เพิ่มความเสี่ยงสูงสุดต่อการเกิดคลื่นหัวใจเต้นผิดจังหวะชนิดรุนแรง (VT/VF) พยาบาลต้องเฝ้าระวังผ่าน EKG Monitor และเตรียมอุปกรณ์ช่วยชีวิต",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-08",
+      "stage": "POSTTEST",
+      "id": 8,
+      "question": "8. การติดตำแหน่ง Precordial Lead V3 และ V4 ที่ถูกต้องคือข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "V3 กึ่งกลางระหว่าง V2 และ V4, V4 อยู่ที่ช่องซี่โครงที่ 5 แนว Midclavicular line"
+        },
+        {
+          "key": "ข",
+          "text": "V3 และ V4 อยู่ที่ช่องซี่โครงที่ 2 ด้านซ้าย"
+        },
+        {
+          "key": "ค",
+          "text": "V4 อยู่ที่ช่องซี่โครงที่ 4 และ V3 ติดที่แนวรักแร้"
+        },
+        {
+          "key": "ง",
+          "text": "V3 ติดชิดกระดูกสันอกด้านขวา"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "V4 ติดที่ 5th Intercostal space ตัดกับแนว Midclavicular line ด้านซ้าย และ V3 วางกึ่งกลางระหว่างจุด V2 และ V4",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-09",
+      "stage": "POSTTEST",
+      "id": 9,
+      "question": "9. หากหน้าจอ Monitor แสดงคลื่น QRS complex กว้าง (> 0.12 วินาที) รูปร่างแปลกประหลาด อัตราการเต้น 160 ครั้ง/นาที สม่ำเสมอ คือคลื่นชนิดใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "Ventricular Tachycardia (VT)"
+        },
+        {
+          "key": "ข",
+          "text": "Normal Sinus Rhythm"
+        },
+        {
+          "key": "ค",
+          "text": "Sinus Bradycardia"
+        },
+        {
+          "key": "ง",
+          "text": "Atrial Flutter"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "ลักษณะเด่นของ VT คือ Wide QRS complex, Rapid regular rate เกิดจากจุดกำเนิดกระแสไฟฟ้าในหัวใจห้องล่าง",
+      "reviewStatus": "pending"
+    },
+    {
+      "reviewId": "POST-10",
+      "stage": "POSTTEST",
+      "id": 10,
+      "question": "10. หลัก 6 Rights ในการบริหารยาที่พยาบาลต้องปฏิบัติเพื่อความปลอดภัยของผู้ป่วยประกอบด้วยข้อใด",
+      "options": [
+        {
+          "key": "ก",
+          "text": "ถูกผู้ป่วย, ถูกยา, ถูกขนาดยา, ถูกวิถีทาง, ถูกเวลา, และถูกการบันทึก"
+        },
+        {
+          "key": "ข",
+          "text": "ถูกผู้ป่วย, ถูกราคา, ถูกโรงพยาบาล, ถูกแพทย์, ถูกพยาบาล, ถูกเตียง"
+        },
+        {
+          "key": "ค",
+          "text": "ถูกยา, ถูกโรค, ถูกแผนก, ถูกวัน, ถูกเวลา, ถูกสิทธิ์"
+        },
+        {
+          "key": "ง",
+          "text": "ถูกผู้ป่วย, ถูกยา, ถูกขวด, ถูกกล่อง, ถูกบริษัท, ถูกราคา"
+        }
+      ],
+      "correctAnswer": "ก",
+      "explanation": "6 Rights of Medication Administration ได้แก่ Right Patient, Right Drug, Right Dose, Right Route, Right Time, และ Right Documentation",
+      "reviewStatus": "pending"
+    }
+  ],
+  "knowledgeTopics": [
+    {
+      "id": 1,
+      "title": "1. พยาธิสรีรวิทยาของภาวะหัวใจล้มเหลวเฉียบพลัน (Pathophysiology of Acute Heart Failure)",
+      "duration": "2:45 นาที",
+      "description": "เรียนรู้กลไกการเกิดน้ำท่วมปอด (Pulmonary Edema), การคั่งของน้ำในหลอดเลือดดำ, และการลดลงของ Cardiac Output",
+      "topics": [
+        "Preload & Afterload",
+        "Pulmonary Capillary Wedge Pressure",
+        "Orthopnea Mechanism"
+      ],
+      "iconKey": "heart",
+      "watched": false,
+      "reviewStatus": "pending"
+    },
+    {
+      "id": 2,
+      "title": "2. การประเมินสัญญาณเตือนวิกฤตและการตรวจร่างกาย (Clinical Assessment & Physical Exam)",
+      "duration": "3:10 นาที",
+      "description": "เทคนิคการฟังเสียงปอด Crepitation, การประเมิน Pitting Edema, การวัด Jugular Venous Pulse (JVP) และการสังเกตเสมหะฟองสีชมพู",
+      "topics": [
+        "Auscultation of Crackles",
+        "S3 Gallop Sound",
+        "Edema Staging 1+ to 4+"
+      ],
+      "iconKey": "stethoscope",
+      "watched": false,
+      "reviewStatus": "pending"
+    },
+    {
+      "id": 3,
+      "title": "3. การแปลผลคลื่นไฟฟ้าหัวใจและภาพรังสีทรวงอก (EKG & CXR Interpretation)",
+      "duration": "2:55 นาที",
+      "description": "การอ่านคลื่นไฟฟ้าหัวใจ Sinus Tachycardia, SVT, VT และการดูภาวะน้ำคั่งในปอด (Bat-wing appearance / Cardiomegaly)",
+      "topics": [
+        "12-Lead EKG Precordial Placement",
+        "Tachyarrhythmia Recognition",
+        "CXR Vascular Congestion"
+      ],
+      "iconKey": "activity",
+      "watched": false,
+      "reviewStatus": "pending"
+    },
+    {
+      "id": 4,
+      "title": "4. การพยาบาลตามลำดับความสำคัญตามหลัก ABC (Nursing Priority & ABC Principle)",
+      "duration": "2:30 นาที",
+      "description": "ลำดับการพยาบาลเมื่อผู้ป่วยวิกฤต: จัดท่า High Fowler's 90 องศา, การเลือกใช้อุปกรณ์ออกซิเจน และการเปิดทางเดินหายใจ",
+      "topics": [
+        "Airway & Breathing Support",
+        "High Fowler's Hemodynamics",
+        "Oxygen Cannula vs Non-rebreather"
+      ],
+      "iconKey": "bed",
+      "watched": false,
+      "reviewStatus": "pending"
+    },
+    {
+      "id": 5,
+      "title": "5. การบริหารยาขับปัสสาวะและการเฝ้าระวังผลข้างเคียง (Loop Diuretics Administration)",
+      "duration": "3:05 นาที",
+      "description": "การบริหารยา Furosemide (Lasix) 40 mg IV, หลัก 6 Rights, การเฝ้าระวังความดันโลหิตตก, และการติดตามระดับเกลือแร่ K+, Mg2+",
+      "topics": [
+        "6 Rights of Medication",
+        "Furosemide IV Push Rate",
+        "Hypokalemia & Arrhythmia Risk"
+      ],
+      "iconKey": "pill",
+      "watched": false,
+      "reviewStatus": "pending"
+    },
+    {
+      "id": 6,
+      "title": "6. การบันทึกสารน้ำเข้า-ออกและการรายงานแพทย์ ISBAR (I/O Record & ISBAR Handover)",
+      "duration": "2:40 นาที",
+      "description": "การคำนวณ Fluid Balance อย่างแม่นยำ, การประเมินปัสสาวะ และโครงสร้างการรายงานแพทย์ ISBAR เมื่อผู้ป่วยมีอาการทรุดลง",
+      "topics": [
+        "Intake & Output Charting",
+        "Positive vs Negative Balance",
+        "ISBAR Emergency Reporting"
+      ],
+      "iconKey": "clipboard",
+      "watched": false,
+      "reviewStatus": "pending"
+    }
+  ],
+  "findings": [
+    {
+      "id": "CLIN-01",
+      "title": "ยืนยันความเข้มข้นก่อนใช้เฉลย 4 mL",
+      "status": "pending",
+      "question": "Doctor Order ระบุ 40 mg และขั้นเตรียมเดิมเขียน 4 mL แต่ไม่มีฉลากผลิตภัณฑ์ของเคสแนบให้ตรวจ โปรดให้เภสัชกรยืนยันชื่อผลิตภัณฑ์ ความเข้มข้น ปริมาณ และวิธีให้ รวมทั้งตัดสินว่าจะอนุญาตให้ให้คะแนนการคำนวณ mL หรือคงเป็นแบบฝึกเชิงกลก่อน สูตร 40 ÷ 10 = 4 ใช้ได้เฉพาะเมื่อยืนยันว่าเป็น 10 mg/mL; ฉลากอ้างอิงของต่างประเทศไม่ใช่หลักฐานว่าของเคสเป็นผลิตภัณฑ์เดียวกัน",
+      "reviewerRole": "เภสัชกรและผู้รับผิดชอบเคส",
+      "locations": [
+        {
+          "file": "src/game/cases/medicationWorkbench.ts",
+          "anchor": "targetAmount:4",
+          "line": 20
+        },
+        {
+          "file": "src/data/medicationStepsData.ts",
+          "anchor": "40 mg (4 mL)",
+          "line": 54
+        }
+      ],
+      "referenceIds": [
+        "REF-DRUG"
+      ]
+    },
+    {
+      "id": "CLIN-02",
+      "title": "ช่องผลข้างเคียงรับเพียง Hypotension",
+      "status": "pending",
+      "question": "ข้อมูลยาเดิมและตัวเลือกมี Hypotension, Hypokalemia และ Hypomagnesemia แต่ expectedResponses รับเพียง Hypotension ผู้ตรวจต้องกำหนดว่าจะรับหลายคำตอบ เปลี่ยนเป็นเลือกหลายข้อ หรือทำโจทย์ให้เจาะจง พร้อมแยกผลรักษา Increased urine output ออกจากผลไม่พึงประสงค์ ไม่ควรรับรองการให้คะแนนช่องนี้ก่อนตัดสิน",
+      "reviewerRole": "เภสัชกรและอาจารย์พยาบาล",
+      "locations": [
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "'side-effect': 'Hypotension'",
+          "line": 115
+        },
+        {
+          "file": "src/data/medicationStepsData.ts",
+          "anchor": "sideEffectsToWatch",
+          "line": 9
+        }
+      ],
+      "referenceIds": [
+        "REF-DRUG"
+      ]
+    },
+    {
+      "id": "CLIN-03",
+      "title": "ประวัติทางเดินหายใจยังระบุสถานะไม่ชัด",
+      "status": "pending",
+      "question": "Present illness เขียนว่าใส่ท่อช่วยหายใจ/ให้ออกซิเจน แต่ข้อมูลรับไว้ระบุ nasal cannula และพูดคุยได้ ต้องกำหนดว่าเคยใส่ท่อและถอดแล้ว หรือไม่เคยใส่ พร้อมเวลาและสภาพผู้ป่วยในแต่ละช่วง เพื่อไม่ให้ผู้เล่นเข้าใจเป็นสถานะเดียวกัน",
+      "reviewerRole": "แพทย์หรืออาจารย์พยาบาลเจ้าของเคส",
+      "locations": [
+        {
+          "file": "src/data/case1Data.ts",
+          "anchor": "presentIllness:",
+          "line": 13
+        },
+        {
+          "file": "src/data/case1Data.ts",
+          "anchor": "admissionVitals:",
+          "line": 14
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-04",
+      "title": "เกณฑ์ออกซิเจนและอุปกรณ์ต้องสัมพันธ์กับช่วงของเคส",
+      "status": "pending",
+      "question": "โปรดยืนยันคำสั่ง O2 เดิม เป้าหมาย SpO2 และแผนเมื่ออาการแย่ลง แยกค่าขณะได้รับ O2 ออกจากค่าหายใจอากาศปกติ และระบุเงื่อนไขเรียกทีม/การช่วยหายใจเพิ่มเติม ห้ามอนุมานว่าค่า 95% ขณะได้รับ O2 บอกค่าก่อนรักษาหรือความจำเป็นของ O2 ได้",
+      "reviewerRole": "แพทย์และอาจารย์พยาบาล",
+      "locations": [
+        {
+          "file": "src/data/case1Data.ts",
+          "anchor": "O2 nasal cannula 3 L/min",
+          "line": 24
+        },
+        {
+          "file": "src/components/stages/Stage12CrisisEvent.tsx",
+          "anchor": "Non-rebreather",
+          "line": 35
+        }
+      ],
+      "referenceIds": [
+        "REF-HF",
+        "REF-HF-UPDATE"
+      ]
+    },
+    {
+      "id": "CLIN-05",
+      "title": "SVT/VT และข้อสอบจังหวะหัวใจต้องมีหลักฐานที่เพียงพอ",
+      "status": "pending",
+      "question": "Case 1 ใช้ป้าย SVT และคลื่นสร้างจากโค้ด ส่วนข้อสอบบางข้อสรุป VT จากคำบรรยาย QRS/อัตรา/จังหวะ ผู้เชี่ยวชาญต้องยืนยัน tracing ที่อนุญาตใช้ ลักษณะจำแนกจังหวะและ differential รวมถึงความกำกวมของโจทย์ ไม่วินิจฉัยจาก HR 148 เพียงค่าเดียวหรือถือว่าคลื่นสังเคราะห์เป็น ECG จริง",
+      "reviewerRole": "ผู้เชี่ยวชาญ ECG/แพทย์และอาจารย์ผู้สร้างข้อสอบ",
+      "locations": [
+        {
+          "file": "src/data/case1Data.ts",
+          "anchor": "ekgRhythm:",
+          "line": 50
+        },
+        {
+          "file": "src/data/preTestData.ts",
+          "anchor": "10. ผู้ป่วยชายอายุ 68 ปี",
+          "line": 114
+        },
+        {
+          "file": "src/data/postTestData.ts",
+          "anchor": "9. หากหน้าจอ Monitor",
+          "line": 103
+        }
+      ],
+      "referenceIds": [
+        "REF-ACLS"
+      ]
+    },
+    {
+      "id": "CLIN-06",
+      "title": "แยกการตอบสนองเริ่มต้นของพยาบาลจากแผนฉุกเฉินครบวงจร",
+      "status": "pending",
+      "question": "เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี",
+      "reviewerRole": "แพทย์/ผู้สอนกู้ชีพและอาจารย์พยาบาล",
+      "locations": [
+        {
+          "file": "src/components/stages/Stage12CrisisEvent.tsx",
+          "anchor": "ตามมาตรฐาน ACLS",
+          "line": 37
+        },
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "EMERGENCY_TREATMENT",
+          "line": 155
+        },
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "PATIENT_STABILIZED",
+          "line": 164
+        }
+      ],
+      "referenceIds": [
+        "REF-ACLS",
+        "REF-HF"
+      ]
+    },
+    {
+      "id": "CLIN-07",
+      "title": "ค่าและเวลาฟื้นตัวเป็น simulation",
+      "status": "pending",
+      "question": "เกมกำหนด vital signs หลังดูแลและเปลี่ยนภายในเวลาสั้นสำหรับ animation โปรดรับรองตัวเลข/ลำดับเวลาในสถานการณ์และข้อความที่บอกว่าเป็น simulation ไม่ใช้เป็นการทำนายผลการรักษา หรือให้คะแนนว่ารักษาสำเร็จจากตัวเลขที่เกมเปลี่ยนให้เอง",
+      "reviewerRole": "เจ้าของเคสและผู้เชี่ยวชาญการจำลองสถานการณ์",
+      "locations": [
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "duration: 6000",
+          "line": 164
+        },
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "bpSystolic: 145",
+          "line": 164
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-08",
+      "title": "I/O คำนวณตรงกัน แต่การตีความต้องแยกออกมา",
+      "status": "pending",
+      "question": "เลขในเกมและหน้าเดิมตรงกัน: (100+50)-350 = -200 mL ตรวจคณิตศาสตร์ได้ แต่การสรุปว่าตอบสนองต่อยาได้ดีจาก balance ติดลบเพียงอย่างเดียวต้องให้ผู้ตรวจพิจารณาเวลา น้ำหนัก สัญญาณชีพ และข้อมูลร่วมอื่น ไม่ถือว่าการคำนวณถูกเป็นการรับรองการตีความทางคลินิก",
+      "reviewerRole": "อาจารย์พยาบาลเจ้าของเคส",
+      "locations": [
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "'balance-total': '-200'",
+          "line": 130
+        },
+        {
+          "file": "src/components/stages/Stage11IORecord.tsx",
+          "anchor": "const correctBalance = -200",
+          "line": 22
+        },
+        {
+          "file": "src/data/postTestData.ts",
+          "anchor": "5. ในการบันทึกชาร์ต",
+          "line": 55
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-09",
+      "title": "คำวินิจฉัย/แผนการพยาบาลยังเป็น demo keys",
+      "status": "pending",
+      "question": "การ์ด diagnosis และ intervention เป็นข้อความกว้างและ key สำหรับทดสอบ interaction ยังไม่มี rubric ที่ผู้เชี่ยวชาญลงนาม โปรดให้ข้อความจริง หลักฐานสนับสนุน คำตอบที่ยอมรับได้/เทียบเท่า และน้ำหนักคะแนน ก่อนใช้คะแนนเป็นผลการเรียนรู้ทางคลินิก",
+      "reviewerRole": "อาจารย์พยาบาลและผู้เชี่ยวชาญการวัดผล",
+      "locations": [
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "candidate answer",
+          "line": 86
+        },
+        {
+          "file": "src/game/cases/verticalSlice.ts",
+          "anchor": "key นี้เป็น demo เท่านั้น",
+          "line": 101
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-10",
+      "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน",
+      "status": "pending",
+      "question": "Case 2 มีเพียงเรื่องย่อ ค่าสัญญาณชีพ Order, ECG strip และ answer key ยังไม่มี ยังคงเล่นฝึกและไม่ให้คะแนนทางคลินิก ผู้รับผิดชอบต้องส่งเคสที่รับรองแล้ว ห้ามนำค่าจาก Case 1 ไปเติมเพื่อทำให้ดูสมบูรณ์",
+      "reviewerRole": "เจ้าของเคส Case 2",
+      "locations": [
+        {
+          "file": "src/game/cases/case02.ts",
+          "anchor": "case02.initialVitals",
+          "line": 19
+        },
+        {
+          "file": "src/game/cases/case02.ts",
+          "anchor": "case02.gradable = false",
+          "line": 11
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-11",
+      "title": "ตำแหน่ง ECG ต้องรับรองภาพและ landmark ทั้งชุด",
+      "status": "pending",
+      "question": "เกมอิงจุดจากภาพเวชนิทัศน์และข้อสอบมีคำบรรยายตำแหน่ง lead โปรดตรวจจุด V1–V6 รวมทั้งระดับแนวนอน V4–V6 และถ้อยคำโจทย์ให้ตรงกับภาพอ้างอิงที่ผู้สอนรับรอง การ export ตรงไฟล์ภาพไม่ได้ยืนยันความถูกต้องทางกายวิภาคโดยอัตโนมัติ",
+      "reviewerRole": "ผู้เชี่ยวชาญ ECG และทีมเวชนิทัศน์",
+      "locations": [
+        {
+          "file": "src/game/suppliedECGArt.json",
+          "anchor": "sourceMarker",
+          "line": 24
+        },
+        {
+          "file": "src/data/preTestData.ts",
+          "anchor": "ตำแหน่ง Chest Lead ที่ถูกต้อง",
+          "line": 110
+        },
+        {
+          "file": "src/data/postTestData.ts",
+          "anchor": "8. การติดตำแหน่ง Precordial Lead",
+          "line": 91
+        }
+      ],
+      "referenceIds": []
+    },
+    {
+      "id": "CLIN-12",
+      "title": "รับรองข้อสอบก่อน/หลังเรียนครบ 20 ข้อ",
+      "status": "pending",
+      "question": "ตรวจทุกโจทย์ ตัวเลือก key และคำอธิบายเป็นรายข้อ รวมความกำกวม การใช้คำว่าอันดับแรก/สำคัญที่สุด เกณฑ์อ้างอิง และความสมดุลของตำแหน่งคำตอบ ก่อนใช้ pre/post scores หรือ learning gain เป็นผลวิจัย Snapshot เก็บ key เดิมเพื่อให้ตรวจย้อนกลับ ไม่ใช่การรับรองเฉลย",
+      "reviewerRole": "ผู้เชี่ยวชาญเนื้อหาและผู้เชี่ยวชาญการวัดผล",
+      "locations": [
+        {
+          "file": "src/data/preTestData.ts",
+          "anchor": "PRETEST_QUESTIONS",
+          "line": 3
+        },
+        {
+          "file": "src/data/postTestData.ts",
+          "anchor": "POSTTEST_QUESTIONS",
+          "line": 4
+        }
+      ],
+      "referenceIds": []
+    }
+  ]
+}

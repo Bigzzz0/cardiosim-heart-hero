@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "clinical:review:export": "tsx scripts/export-clinical-review.ts",
+    "clinical:review:check": "node scripts/check-clinical-review.mjs",
     "test:entry": "node scripts/test-illustrated-entry.mjs",
     "test:game:patient": "tsx scripts/test-supplied-patient.ts",
     "test:game:care": "tsx scripts/test-supplied-care.ts",
