@@ -1,0 +1,19 @@
+{
+  "provider": "Sites",
+  "project_id": "appgprj_6aea013040588191ba0f9e97d5834224",
+  "url": "https://cardiosim-heart-hero-trial-0032640.navyball41.chatgpt.site",
+  "audience": "public",
+  "status": "succeeded",
+  "app_source": {
+    "repository": "https://github.com/Bigzzz0/cardiosim-heart-hero",
+    "branch": "codex/cardiosim-game-module",
+    "commit": "003264020c406a1a97258c7075689a49a1656709"
+  },
+  "publication_source_commit": "3802426ba7103f7ba5f0683b1b2c180a4afc7d85",
+  "version_id": "appgprj_6aea013040588191ba0f9e97d5834224~appgver_e9a0bb0f757081919bd8184859c7d1c8",
+  "version_number": 1,
+  "deployment_id": "appgdep_6aea0d7046088191818909b45f4f7a21",
+  "updated_at": "2026-11-03T16:36:19.767827+00:00",
+  "clinical_approval": "pending",
+  "publication_checkout": "../sites/cardiosim-trial-0032640"
+}
