@@ -261,7 +261,9 @@ export class CaseEngine {
     const step = activity?.steps?.[this.activitySteps.length];
     if (this.paused || this.mission.current.kind !== 'decision' || this.mission.decisionConfirmed || step?.id !== stepId || step.interaction?.kind !== 'syringe-withdrawal' || !this.activityStepProgress[stepId]?.toolPlaced || !Number.isFinite(amount)) return;
     const safeAmount = Math.round(Math.min(step.interaction.scaleMax, Math.max(0, amount)) * 10) / 10;
+    if (safeAmount === this.activityStepProgress[stepId].amount) return;
     this.activityStepProgress = { ...this.activityStepProgress, [stepId]: { toolPlaced: true, amount: safeAmount } };
+    this.feedback = { kind: 'info', text: 'ปรับปริมาณแล้ว · กดยืนยันปริมาณยาเพื่อตรวจอีกครั้ง' };
     this.refresh();
   }
   placeActivityItem(itemId: string, zoneId: string) {

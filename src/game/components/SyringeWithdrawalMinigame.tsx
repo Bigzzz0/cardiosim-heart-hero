@@ -25,8 +25,8 @@ export function SyringeWithdrawalMinigame({ stepId, equipmentLabel, interaction,
   const beginPull = (event:React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0 || confirmed) return;
     event.preventDefault(); event.stopPropagation();
-    const width = event.currentTarget.closest('.syringe-instrument')?.getBoundingClientRect().width ?? 1;
-    pull.current = {id:event.pointerId,x:event.clientX,amount,width:width*.26};
+    const width = event.currentTarget.closest('[data-syringe-track]')?.getBoundingClientRect().width ?? 1;
+    pull.current = {id:event.pointerId,x:event.clientX,amount,width};
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const movePull = (event:React.PointerEvent<HTMLButtonElement>) => {
@@ -62,9 +62,11 @@ export function SyringeWithdrawalMinigame({ stepId, equipmentLabel, interaction,
         <img className="supplied-syringe-token" src={ASSETS.handover.syringe} alt="" draggable={false}/><b>{equipmentLabel}</b><small>กดค้างแล้วลาก</small>
       </button> : <div className="syringe-instrument" aria-label="กระบอกฉีดยาสำหรับดึงยา">
         <img className="syringe-body-art" src={ASSETS.handover.syringe} alt="" draggable="false"/>
-        <div className="syringe-liquid-volume" style={{width:`${ratio*26}%`}} aria-hidden="true"/>
+        <div className="syringe-volume-track" data-syringe-track="true">
+        <div className="syringe-liquid-volume" style={{width:`${ratio*100}%`}} aria-hidden="true"/>
         <div className="syringe-scale" aria-hidden="true">{ticks.map(tick=><span key={tick} style={{left:`${tick/interaction.scaleMax*100}%`}}>{Number.isInteger(tick)?tick:''}</span>)}</div>
-        <button type="button" role="slider" className="syringe-direct-grip" data-syringe-plunger="true" aria-label="ปรับปริมาณยาใน syringe" aria-valuemin={0} aria-valuemax={interaction.scaleMax} aria-valuenow={amount} aria-valuetext={`${amount.toFixed(1)} ${interaction.unit}`} style={{left:`${32+ratio*26}%`}} onPointerDown={beginPull} onPointerMove={movePull} onPointerUp={event=>endPull(event)} onPointerCancel={event=>endPull(event,true)} onLostPointerCapture={()=>{pull.current=null;}} onKeyDown={event=>{const delta=event.key==='ArrowRight'||event.key==='ArrowUp' ? .1 : event.key==='ArrowLeft'||event.key==='ArrowDown'?-.1:0;if(delta){event.preventDefault();adjust(amount+delta);}else if(event.key==='Home'||event.key==='End'){event.preventDefault();adjust(event.key==='Home'?0:interaction.scaleMax);}}} disabled={confirmed}><span className="grip-dots" aria-hidden="true">⠿</span></button>
+        <button type="button" role="slider" className="syringe-direct-grip" data-syringe-plunger="true" aria-label="ปรับปริมาณยาใน syringe" aria-valuemin={0} aria-valuemax={interaction.scaleMax} aria-valuenow={amount} aria-valuetext={`${amount.toFixed(1)} ${interaction.unit}`} style={{left:`${ratio*100}%`}} onPointerDown={beginPull} onPointerMove={movePull} onPointerUp={event=>endPull(event)} onPointerCancel={event=>endPull(event,true)} onLostPointerCapture={()=>{pull.current=null;}} onKeyDown={event=>{const delta=event.key==='ArrowRight'||event.key==='ArrowUp' ? .1 : event.key==='ArrowLeft'||event.key==='ArrowDown'?-.1:0;if(delta){event.preventDefault();adjust(amount+delta);}else if(event.key==='Home'||event.key==='End'){event.preventDefault();adjust(event.key==='Home'?0:interaction.scaleMax);}}} disabled={confirmed}><span className="grip-dots" aria-hidden="true">⠿</span></button>
+        </div>
       </div>}
     </div>
     {placed && <div className="syringe-readout" aria-live="polite">

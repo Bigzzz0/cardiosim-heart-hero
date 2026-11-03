@@ -150,8 +150,8 @@ try {
     await page.waitForFunction(id=>document.querySelector(`[data-activity-step-target="${id}"]`)?.classList.contains('complete'),stepId,{timeout:2500});
   };
   const dragSyringePlungerTo=async(amount)=>{
-    const plunger=page.locator('[data-syringe-plunger]');await plunger.scrollIntoViewIfNeeded();const box=await plunger.boundingBox();const instrument=await page.locator('.syringe-instrument').boundingBox();const maximum=Number(await plunger.getAttribute('aria-valuemax'));if(!box||!instrument||!maximum)throw Error('Syringe geometry missing');
-    const value=Number(await plunger.getAttribute('aria-valuenow'));const start={x:box.x+box.width/2,y:box.y+box.height/2};const end={x:start.x+(amount-value)/maximum*instrument.width*.26,y:start.y};
+    const plunger=page.locator('[data-syringe-plunger]');await plunger.scrollIntoViewIfNeeded();const box=await plunger.boundingBox();const instrument=await page.locator('[data-syringe-track]').boundingBox();const maximum=Number(await plunger.getAttribute('aria-valuemax'));if(!box||!instrument||!maximum)throw Error('Syringe geometry missing');
+    const value=Number(await plunger.getAttribute('aria-valuenow'));const start={x:box.x+box.width/2,y:box.y+box.height/2};const end={x:start.x+(amount-value)/maximum*instrument.width,y:start.y};
     await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:10});await page.mouse.up();
   };
   const dragIoItemToZone=async(itemId,zoneId)=>{
@@ -451,7 +451,7 @@ try {
   await touchDragGesture(mobileActivity,{x:mobileSyringeBox.x+mobileSyringeBox.width/2,y:mobileSyringeBox.y+mobileSyringeBox.height/2},{x:mobileAmpouleBox.x+mobileAmpouleBox.width/2,y:mobileAmpouleBox.y+mobileAmpouleBox.height/2},61);
   await mobileActivity.locator('[data-syringe-plunger]').waitFor();
   const mobilePlunger=await mobileActivity.locator('[data-syringe-plunger]').boundingBox();if(!mobilePlunger)throw Error('Touch syringe plunger bounds unavailable');
-  await touchDragGesture(mobileActivity,{x:mobilePlunger.x+mobilePlunger.width/2,y:mobilePlunger.y+mobilePlunger.height/2},{x:mobilePlunger.x+mobilePlunger.width/2+(await mobileActivity.locator('.syringe-instrument').boundingBox()).width*.26*4/Number(await mobileActivity.locator('[data-syringe-plunger]').getAttribute('aria-valuemax')),y:mobilePlunger.y+mobilePlunger.height/2},61);
+  await touchDragGesture(mobileActivity,{x:mobilePlunger.x+mobilePlunger.width/2,y:mobilePlunger.y+mobilePlunger.height/2},{x:mobilePlunger.x+mobilePlunger.width/2+(await mobileActivity.locator('[data-syringe-track]').boundingBox()).width*4/Number(await mobileActivity.locator('[data-syringe-plunger]').getAttribute('aria-valuemax')),y:mobilePlunger.y+mobilePlunger.height/2},61);
   if(Number(await mobileActivity.locator('[data-syringe-plunger]').getAttribute('aria-valuenow'))<3.5)throw Error('Touch drag should visibly pull the syringe plunger');
   if(await mobileActivity.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw new Error('Mobile medication station has horizontal overflow');
   await mobileActivity.screenshot({path:'screenshots/game-medication-touch-390x844.png',fullPage:true});

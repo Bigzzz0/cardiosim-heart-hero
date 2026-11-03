@@ -6,7 +6,7 @@ import {verticalSlice} from '../src/game/cases/verticalSlice';
 
 const port=4181;
 const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'],{stdio:'ignore'});
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.CARDIOSIM_BROWSER_CHANNEL?{channel:process.env.CARDIOSIM_BROWSER_CHANNEL}:{})});
 async function drag(page:Page,from:{x:number;y:number},to:{x:number;y:number},touch:boolean){
  if(touch){const c=await page.context().newCDPSession(page);await c.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,...from}]});for(let i=1;i<=10;i++)await c.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:from.x+(to.x-from.x)*i/10,y:from.y+(to.y-from.y)*i/10}]});await c.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await c.detach();}
  else {await page.mouse.move(from.x,from.y);await page.mouse.down();await page.mouse.move(to.x,to.y,{steps:10});await page.mouse.up();}
@@ -25,9 +25,15 @@ try{
   const grip=page.locator('[data-syringe-plunger]');await grip.waitFor();await grip.scrollIntoViewIfNeeded();
   assert.equal(await page.locator('input[type=range].syringe-plunger').count(),0);
   assert.equal(await page.locator('.syringe-target-mark,.on-target').count(),0,'no pre-confirm answer feedback');
-  const bounds=(await grip.boundingBox())!;const body=(await page.locator('.syringe-instrument').boundingBox())!;
+  const bounds=(await grip.boundingBox())!;const body=(await page.locator('[data-syringe-track]').boundingBox())!;
+  assert(body.width>=100,'Volume adjustment needs a usable drag distance on mobile');
+  assert(await page.locator('.syringe-scale').evaluate(scale=>{
+    const labels=[...scale.querySelectorAll('span')].filter(label=>label.textContent?.trim()).map(label=>label.getBoundingClientRect());
+    const thumb=document.querySelector('[data-syringe-plunger]')!.getBoundingClientRect();
+    return labels.every((label,index)=>label.top>=thumb.bottom&&(!index||label.left>labels[index-1].right));
+  }),'Scale numbers must clear the drag handle and each other');
   const max=Number(await grip.getAttribute('aria-valuemax'));
-  await drag(page,{x:bounds.x+bounds.width/2,y:bounds.y+bounds.height/2},{x:bounds.x+bounds.width/2+body.width*.26*2/max,y:bounds.y+bounds.height/2},width<760);
+  await drag(page,{x:bounds.x+bounds.width/2,y:bounds.y+bounds.height/2},{x:bounds.x+bounds.width/2+body.width*2/max,y:bounds.y+bounds.height/2},width<760);
   assert(Math.abs(Number(await grip.getAttribute('aria-valuenow'))-2)<.2,'direct mouse/touch plunger movement');
   if(width<760){
    const now=(await grip.boundingBox())!;const original=Number(await grip.getAttribute('aria-valuenow'));const c=await page.context().newCDPSession(page);
@@ -39,6 +45,8 @@ try{
   await page.locator('.syringe-confirm').click();await page.locator('.feedback.error').waitFor();
   await grip.focus();await page.keyboard.press('Home');for(let i=0;i<40;i++)await page.keyboard.press('ArrowRight');
   assert.equal(Number(await grip.getAttribute('aria-valuenow')),4,'keyboard adjusts same engine state');
+  assert.equal(await page.locator('.feedback.error').count(),0,'Stale rejection must clear after adjusting the amount');
+  assert.equal(await page.locator('[data-activity-step-target="step_draw_med"].complete').count(),0,'Draft edits must not complete the step before Confirm');
   await page.screenshot({path:`screenshots/bedside-syringe-${width}x${height}.png`});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no horizontal scrolling');
   await page.locator('.syringe-confirm').click();await page.locator('[data-activity-step-target="step_draw_med"].complete').waitFor({state:'attached'});

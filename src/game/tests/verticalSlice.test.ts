@@ -103,7 +103,11 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.deepEqual(legacySyringeCheckpoint?.activitySteps,prepSteps.slice(0,3).map(step=>step.id),'older saves retain completed steps while restarting the current equipment action');
   assert.deepEqual(legacySyringeCheckpoint?.activityStepProgress,{});
   assert.equal(game.completeActivityStep(syringeStep.id),false,'an incorrect drawn volume can be rejected and retried');
+  const attemptsBeforeCorrection = game.score.data.attempts;
   game.setActivityStepAmount(syringeStep.id,4);
+  assert.equal(game.feedback.kind, 'info', 'Changing a rejected amount clears stale error feedback without grading the draft');
+  assert.equal(game.score.data.attempts, attemptsBeforeCorrection, 'Editing the draft is not another attempt');
+  assert(!game.activitySteps.includes(syringeStep.id), 'Correct draft amount still requires Confirm');
   assert.equal(game.completeActivityStep(syringeStep.id),true,'the configured volume completes the syringe action');
   for (const step of prepSteps.slice(4)) {
     if(step.interaction && step.interaction.kind!=='syringe-withdrawal') for(const object of step.interaction.objects) game.performActivityStepAction(step.id,object.id,object.targetId);
