@@ -12,8 +12,8 @@ import { caseRegistry } from '../src/game/cases';
 const directory = 'docs/clinical-review';
 mkdirSync(directory, { recursive: true });
 const inputs = ['src/data/case1Data.ts', 'src/data/ehrCase1Data.ts', 'src/data/medicationStepsData.ts', 'src/data/preTestData.ts', 'src/data/postTestData.ts', 'src/data/learningVideosData.ts', 'src/game/cases/verticalSlice.ts', 'src/game/cases/case02.ts', 'src/game/cases/medicationWorkbench.ts', 'src/game/core/CaseEngine.ts', 'src/components/stages/Stage11IORecord.tsx', 'src/components/stages/Stage12CrisisEvent.tsx'];
-inputs.push('src/game/suppliedECGArt.json', 'src/game/suppliedECGLayout.ts', 'src/data/nursingDiagnosesData.ts', 'src/components/stages/Stage1PreTest.tsx', 'src/components/stages/Stage14PostTest.tsx');
-const sourceFiles = inputs.map(file => ({ file, sha256: createHash('sha256').update(readFileSync(file)).digest('hex') }));
+inputs.push('src/game/types.ts', 'src/game/core/validateCase.ts', 'src/game/components/ActivityFields.tsx', 'src/game/suppliedECGArt.json', 'src/game/suppliedECGLayout.ts', 'src/data/nursingDiagnosesData.ts', 'src/components/stages/Stage1PreTest.tsx', 'src/components/stages/Stage14PostTest.tsx');
+const sourceFiles = inputs.map(file => ({ file, sha256: createHash('sha256').update(readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex') }));
 const questions = [
   ...PRETEST_QUESTIONS.map(question => ({ reviewId: `PRE-${String(question.id).padStart(2, '0')}`, stage: 'PRETEST', ...question, reviewStatus: 'pending' })),
   ...POSTTEST_QUESTIONS.map(question => ({ reviewId: `POST-${String(question.id).padStart(2, '0')}`, stage: 'POSTTEST', ...question, reviewStatus: 'pending' })),
@@ -27,7 +27,7 @@ const locatedFindings = findings.map(finding => ({ ...finding, locations: findin
 }) }));
 const snapshot = {
   reviewDate: '2026-11-03', baseCommit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
-  status: 'pending-expert-review', sourceFiles,
+  status: 'pending-expert-review', sourceHashNormalization: 'utf8-lf', sourceFiles,
   originalCase1: CASE_1_DETAILS, ehrCase1: CASE_1_EHR,
   medicationChoices: MEDICATION_CHOICES, medicationSteps: MEDICATION_PREPARATION_STEPS,
   cases: caseRegistry.map(config => ({ id: config.id, title: config.title, gradable: config.gradable, clinicalStatus: config.clinicalStatus, initialVitals: config.initialVitals, monitorTraces: config.monitorTraces, findings: config.findings, missions: config.missions })),

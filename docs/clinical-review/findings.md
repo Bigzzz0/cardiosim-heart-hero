@@ -15,11 +15,11 @@ Doctor Order ระบุ 40 mg และขั้นเตรียมเดิ
 
 ## CLIN-02 · ช่องผลข้างเคียงรับเพียง Hypotension
 
-ข้อมูลยาเดิมและตัวเลือกมี Hypotension, Hypokalemia และ Hypomagnesemia แต่ expectedResponses รับเพียง Hypotension ผู้ตรวจต้องกำหนดว่าจะรับหลายคำตอบ เปลี่ยนเป็นเลือกหลายข้อ หรือทำโจทย์ให้เจาะจง พร้อมแยกผลรักษา Increased urine output ออกจากผลไม่พึงประสงค์ ไม่ควรรับรองการให้คะแนนช่องนี้ก่อนตัดสิน
+เดิม expectedResponses รับเพียง Hypotension ขณะที่ตัวเลือกและข้อมูลยามีหลายข้อ ปรับส่วนซอฟต์แวร์เป็น record-only แล้ว: ต้องเลือกคำตอบเพื่อบันทึก แต่ไม่ตัดสินถูกผิดในช่องนี้ และไม่ถือว่าตัวเลือกทุกข้อได้รับการรับรอง ผู้เชี่ยวชาญยังต้องกำหนดคำตอบที่ยอมรับได้/รูปแบบเลือกหลายข้อ รวมทั้งแยกผลรักษาจากผลไม่พึงประสงค์ ก่อนเปิดการให้คะแนนช่องนี้
 
 **ผู้ตรวจ:** เภสัชกรและอาจารย์พยาบาล · **สถานะ:** pending
 
-- [src/game/cases/verticalSlice.ts:115](../../src/game/cases/verticalSlice.ts#L115)
+- [src/game/cases/verticalSlice.ts:112](../../src/game/cases/verticalSlice.ts#L112)
 - [src/data/medicationStepsData.ts:9](../../src/data/medicationStepsData.ts#L9)
 
 **อ้างอิง:** REF-DRUG — ดู references.md

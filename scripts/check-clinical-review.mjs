@@ -4,13 +4,14 @@ import { readFileSync } from 'node:fs';
 
 const snapshot = JSON.parse(readFileSync('docs/clinical-review/content-snapshot.json', 'utf8'));
 assert.equal(snapshot.status, 'pending-expert-review');
+assert.equal(snapshot.sourceHashNormalization, 'utf8-lf');
 assert.equal(snapshot.questions.length, 20);
 assert.equal(snapshot.cases.length, 2);
 assert.equal(snapshot.findings.length, 12);
 assert.equal(snapshot.knowledgeTopics.length, 6);
 assert(snapshot.knowledgeTopics.every(topic => topic.reviewStatus === 'pending'));
 for (const { file, sha256 } of snapshot.sourceFiles) {
-  assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), sha256, `Clinical review snapshot is stale: ${file}`);
+  assert.equal(createHash('sha256').update(readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex'), sha256, `Clinical review snapshot is stale: ${file}`);
 }
 for (const question of snapshot.questions) {
   assert.equal(question.reviewStatus, 'pending');

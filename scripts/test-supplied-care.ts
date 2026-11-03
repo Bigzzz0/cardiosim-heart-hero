@@ -32,9 +32,10 @@ try {
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${name}: horizontal overflow`);
       await page.screenshot({ path: `screenshots/supplied-care/${width}-${name}.png`, fullPage: true });
     };
-    const launch = async (config: GameCase, mission: MissionState) => {
+    const launch = async (config: GameCase, mission: MissionState, prepared = false) => {
       const engine = new CaseEngine(config);
       engine.mission.jumpTo(mission);
+      if (prepared) engine.activitySteps = engine.mission.current.activity!.steps!.map(step => step.id);
       await page.goto(base);
       await page.evaluate(checkpoint => localStorage.setItem(`cardiosim.phaser.checkpoint.${checkpoint.caseId}.v2`, JSON.stringify(checkpoint)), engine.checkpoint());
       await page.goto(`${base}/game.html?case=${config.scenarios.find(scenario => scenario.enabled)!.id}`);
@@ -67,6 +68,20 @@ try {
       await capture('order');
       await page.locator('[data-workbench-object="order"]').click();
       await page.locator('[data-workbench-object="order"].reviewed').waitFor();
+      await launch(verticalSlice, 'MEDICATION', true);
+      await page.locator('.field-review-note').waitFor();
+      const medicationSelects = page.locator('.activity-card select');
+      await medicationSelects.nth(0).selectOption({ label: 'Furosemide (Lasix)' });
+      await page.locator('.activity-card input[type="number"]').fill('40');
+      await medicationSelects.nth(1).selectOption({ label: 'IV slow push' });
+      await medicationSelects.nth(3).selectOption({ label: 'BP, urine output, K⁺/Mg²⁺' });
+      assert(await page.getByRole('button', { name: 'บันทึกการเตรียมยา', exact: true }).isDisabled(), 'Record-only response still requires an explicit selection');
+      await medicationSelects.nth(2).selectOption({ label: 'Hypokalemia' });
+      await capture('pending-side-effect');
+      await page.getByRole('button', { name: 'บันทึกการเตรียมยา', exact: true }).click();
+      assert.equal(await page.locator('main').getAttribute('data-decision-confirmed'), 'true');
+      assert.equal(await page.locator('main').getAttribute('data-mistakes'), '0', 'Pending field must not reject a listed practice response');
+      assert.match(await page.locator('.feedback.success').innerText(), /ยังไม่ตัดสินถูกผิด/);
       await launch(case02, 'MEDICATION');
       assert.equal(await page.locator('.supplied-order-document,input,select').count(), 0, 'Case 2 invented medication fields');
       await page.getByRole('button', { name: 'บันทึกว่าไม่มีข้อมูลใน Case' }).click();

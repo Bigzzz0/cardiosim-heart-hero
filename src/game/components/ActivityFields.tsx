@@ -11,6 +11,7 @@ interface ActivityFieldsProps {
 export function ActivityFields({ activity, responses, confirmed, onSetResponse }: ActivityFieldsProps) {
   return <div className="activity-fields-grid">{activity.fields?.map(field => <label className="activity-field" key={field.id}>
     <span>{field.label}</span>
+    {field.assessmentMode === 'record-only' && <small className="field-review-note">บันทึกการฝึก · รอผู้เชี่ยวชาญยืนยันเฉลย ช่องนี้ยังไม่ตัดสินถูกผิด</small>}
     {field.type === 'select'
       ? <select value={responses[field.id] ?? ''} onChange={event => onSetResponse(field.id, event.target.value)} disabled={confirmed}>
           <option value="">{field.placeholder}</option>

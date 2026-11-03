@@ -1,59 +1,72 @@
 {
   "reviewDate": "2026-11-03",
-  "baseCommit": "43dcf1a109c393371048e55f552740ac26340c52",
+  "baseCommit": "b97a0a677a9478bae9e56b7cfcf35414856e6897",
   "status": "pending-expert-review",
+  "sourceHashNormalization": "utf8-lf",
   "sourceFiles": [
     {
       "file": "src/data/case1Data.ts",
-      "sha256": "17119179fa6f333a08bc47e1de07b077223ac868bc5bfaf3c8d416d0bef8a2f5"
+      "sha256": "4a09f7da9ce357de95103c279b5d67139d88f91dd2e91202946723a252d6cdd1"
     },
     {
       "file": "src/data/ehrCase1Data.ts",
-      "sha256": "2568920ad01cfaa25ff0a6fa36cda890d91b637ffa77c9cb2c7fe5b432f5ffb9"
+      "sha256": "a705aaf63deb22f8007a84e8a235adc65b6a88741161680d0bea16edd1c6c07c"
     },
     {
       "file": "src/data/medicationStepsData.ts",
-      "sha256": "666b328baad6b4673e687c4817c5095f8c44a28f53f6e602017316612985c071"
+      "sha256": "00851e0319f0fde5962d41b5ab9099d1367bdd91364d10ea68a982c670b01d22"
     },
     {
       "file": "src/data/preTestData.ts",
-      "sha256": "2f0036813a12b3b0511561d01226cd6d6ed9228809aea243b2a455b9e0705d2e"
+      "sha256": "39b0beda453914f0f561df49c438c87df0bcc6d791fc0ef148d0604dd9a53654"
     },
     {
       "file": "src/data/postTestData.ts",
-      "sha256": "ce1ece1d728352e82d77711bdc783723389946785ea44752d0de813828cffb98"
+      "sha256": "1c67f7625d9ac7492467e9cd51a9b564c0e4276691c52080e8e6b16f787152ff"
     },
     {
       "file": "src/data/learningVideosData.ts",
-      "sha256": "b3336868003c8b3d0c2ed0541f65f1fdc493c626a3934e5891669b4d50726d26"
+      "sha256": "9d7fc2f2caa36f14ee0dbb994de7d2c3f0d70ae4b571a16744cd4c2656d97415"
     },
     {
       "file": "src/game/cases/verticalSlice.ts",
-      "sha256": "149b51c031b2e4659bf22e59d12e182e7bb64f82ffe3a1ff1c347c1b4099e1c6"
+      "sha256": "6693c015962b62fbca8e5c8bfdead1424817467fdcb6bb2add8e684109baedac"
     },
     {
       "file": "src/game/cases/case02.ts",
-      "sha256": "9d58c942f44b1ebdc7b06576076ba7f16ce2b3f34d1b9c335c89dbe42360fd09"
+      "sha256": "bfba86226eac1b5aaf9da906324ddb055ae0db19c9cb3a4ada4a33e2dcb5d4c5"
     },
     {
       "file": "src/game/cases/medicationWorkbench.ts",
-      "sha256": "edab472d4099d54f818a63b3984a0c2f05d1a6564f353f40cdc4b503b3fb4ef2"
+      "sha256": "0b873f1321b43d2fd13b5fb38f9d62013952eb7558c15ef55b05f497a58849b4"
     },
     {
       "file": "src/game/core/CaseEngine.ts",
-      "sha256": "d19c7d4b62752c4666bd0bed1db8e42780408c1748babf2c7100e6fefcc0c8e9"
+      "sha256": "e93c86b05a777b4fc7608e1204edfc81185822da420090685d01ff7ee38fbac3"
     },
     {
       "file": "src/components/stages/Stage11IORecord.tsx",
-      "sha256": "a3e58276ea719a26236a34e37cd02df89d0ac9c516be24414b98daa787c0aa7b"
+      "sha256": "80ac43e70826d131b587ce1cff36145e1bd25ea7cf7c40a276e3610d84770539"
     },
     {
       "file": "src/components/stages/Stage12CrisisEvent.tsx",
-      "sha256": "6967414dda2035ba67470d0edceea916342cfc0769b880bcef089a7d44198975"
+      "sha256": "a047a4280376972215dc142467a64e2bf0be8599cfe89e60db7d6a57059c7eb5"
+    },
+    {
+      "file": "src/game/types.ts",
+      "sha256": "4d0f48da859a12a5b56d532f81f9c4ac941de2b991fd649633d05a3b430a80cc"
+    },
+    {
+      "file": "src/game/core/validateCase.ts",
+      "sha256": "00c245ff1caa471b4545b18f852736704ad14515115fc7b558f0d0c1cc4a118a"
+    },
+    {
+      "file": "src/game/components/ActivityFields.tsx",
+      "sha256": "c9ef1c6a351ea7d0e20e269158b0f8436516abc5630aacc7f18066fc0537a9da"
     },
     {
       "file": "src/game/suppliedECGArt.json",
-      "sha256": "3e1d28790a8278b08cb18e650bd6ae1533bc265502a22515f596ee66b3b08b15"
+      "sha256": "78039a3675ce87391c752e537e9a1b2f6b9b895778fe2f6ce1c163a4c4f99c6a"
     },
     {
       "file": "src/game/suppliedECGLayout.ts",
@@ -61,15 +74,15 @@
     },
     {
       "file": "src/data/nursingDiagnosesData.ts",
-      "sha256": "dcc4a19493a05dfd6d3574e899266294009eb11197986918431ae0bb7c32e42c"
+      "sha256": "f227cfc7b2312539c890d6f7c405eb59e53d45b5339d1067ab606e8da4989725"
     },
     {
       "file": "src/components/stages/Stage1PreTest.tsx",
-      "sha256": "352c6b7a0c5a0fc435fdf43960e37a2970d81c06352d7f981ec2da97e3a13a87"
+      "sha256": "c406a071d194c262606bf22c13f9888f98040404e14e8fcf55f9b7e1d08032f4"
     },
     {
       "file": "src/components/stages/Stage14PostTest.tsx",
-      "sha256": "43caef5981a7fe5dffd106036739166e1b04dcccada8b83ade5352a3fe6b49aa"
+      "sha256": "a4ac7f99bd425abafd2e5f4b90174ffc8cfe5bb120f71f47842e9e3128f3908a"
     }
   ],
   "originalCase1": {
@@ -902,14 +915,15 @@
               {
                 "id": "side-effect",
                 "label": "ผลข้างเคียงตัวอย่างที่ต้องเฝ้าระวัง",
-                "placeholder": "เลือกผลข้างเคียง",
+                "placeholder": "เลือกคำตอบเพื่อบันทึกการฝึก",
                 "type": "select",
                 "options": [
                   "Hypotension",
                   "Hypokalemia",
                   "Hypomagnesemia",
                   "Increased urine output"
-                ]
+                ],
+                "assessmentMode": "record-only"
               },
               {
                 "id": "monitoring",
@@ -927,11 +941,10 @@
               "drug": "Furosemide (Lasix)",
               "dose": "40",
               "route": "IV slow push",
-              "side-effect": "Hypotension",
               "monitoring": "BP, urine output, K⁺/Mg²⁺"
             },
-            "success": "ตรงกับ Doctor Order ในข้อมูลเดโม · ตรวจและบันทึกแบบฝึกแล้ว",
-            "explanation": "เทียบคำตอบกับ Doctor Order และข้อมูลการเฝ้าระวังใน Case แล้วลองอีกครั้ง"
+            "success": "บันทึกแบบฝึกแล้ว · ช่องผลข้างเคียงเก็บคำตอบเพื่อทบทวนโดยยังไม่ตัดสินถูกผิด",
+            "explanation": "ตรวจช่องยา ขนาด วิธีให้ และการติดตามกับข้อมูลเดโมอีกครั้ง"
           }
         },
         {
@@ -1560,8 +1573,8 @@
               }
             ],
             "fields": [],
-            "success": "ตรงกับ Doctor Order ในข้อมูลเดโม · ตรวจและบันทึกแบบฝึกแล้ว",
-            "explanation": "เทียบคำตอบกับ Doctor Order และข้อมูลการเฝ้าระวังใน Case แล้วลองอีกครั้ง",
+            "success": "บันทึกแบบฝึกแล้ว · ช่องผลข้างเคียงเก็บคำตอบเพื่อทบทวนโดยยังไม่ตัดสินถูกผิด",
+            "explanation": "ตรวจช่องยา ขนาด วิธีให้ และการติดตามกับข้อมูลเดโมอีกครั้ง",
             "dataStatus": "missing",
             "allowMissingDataAcknowledgement": true
           },
@@ -2458,13 +2471,13 @@
       "id": "CLIN-02",
       "title": "ช่องผลข้างเคียงรับเพียง Hypotension",
       "status": "pending",
-      "question": "ข้อมูลยาเดิมและตัวเลือกมี Hypotension, Hypokalemia และ Hypomagnesemia แต่ expectedResponses รับเพียง Hypotension ผู้ตรวจต้องกำหนดว่าจะรับหลายคำตอบ เปลี่ยนเป็นเลือกหลายข้อ หรือทำโจทย์ให้เจาะจง พร้อมแยกผลรักษา Increased urine output ออกจากผลไม่พึงประสงค์ ไม่ควรรับรองการให้คะแนนช่องนี้ก่อนตัดสิน",
+      "question": "เดิม expectedResponses รับเพียง Hypotension ขณะที่ตัวเลือกและข้อมูลยามีหลายข้อ ปรับส่วนซอฟต์แวร์เป็น record-only แล้ว: ต้องเลือกคำตอบเพื่อบันทึก แต่ไม่ตัดสินถูกผิดในช่องนี้ และไม่ถือว่าตัวเลือกทุกข้อได้รับการรับรอง ผู้เชี่ยวชาญยังต้องกำหนดคำตอบที่ยอมรับได้/รูปแบบเลือกหลายข้อ รวมทั้งแยกผลรักษาจากผลไม่พึงประสงค์ ก่อนเปิดการให้คะแนนช่องนี้",
       "reviewerRole": "เภสัชกรและอาจารย์พยาบาล",
       "locations": [
         {
           "file": "src/game/cases/verticalSlice.ts",
-          "anchor": "'side-effect': 'Hypotension'",
-          "line": 115
+          "anchor": "assessmentMode: 'record-only'",
+          "line": 112
         },
         {
           "file": "src/data/medicationStepsData.ts",

@@ -1,74 +1,246 @@
 [
   {
-    "id": "CLIN-01", "title": "ยืนยันความเข้มข้นก่อนใช้เฉลย 4 mL", "status": "pending",
+    "id": "CLIN-01",
+    "title": "ยืนยันความเข้มข้นก่อนใช้เฉลย 4 mL",
+    "status": "pending",
     "question": "Doctor Order ระบุ 40 mg และขั้นเตรียมเดิมเขียน 4 mL แต่ไม่มีฉลากผลิตภัณฑ์ของเคสแนบให้ตรวจ โปรดให้เภสัชกรยืนยันชื่อผลิตภัณฑ์ ความเข้มข้น ปริมาณ และวิธีให้ รวมทั้งตัดสินว่าจะอนุญาตให้ให้คะแนนการคำนวณ mL หรือคงเป็นแบบฝึกเชิงกลก่อน สูตร 40 ÷ 10 = 4 ใช้ได้เฉพาะเมื่อยืนยันว่าเป็น 10 mg/mL; ฉลากอ้างอิงของต่างประเทศไม่ใช่หลักฐานว่าของเคสเป็นผลิตภัณฑ์เดียวกัน",
     "reviewerRole": "เภสัชกรและผู้รับผิดชอบเคส",
-    "locations": [{"file":"src/game/cases/medicationWorkbench.ts","anchor":"targetAmount:4"},{"file":"src/data/medicationStepsData.ts","anchor":"40 mg (4 mL)"}], "referenceIds": ["REF-DRUG"]
+    "locations": [
+      {
+        "file": "src/game/cases/medicationWorkbench.ts",
+        "anchor": "targetAmount:4"
+      },
+      {
+        "file": "src/data/medicationStepsData.ts",
+        "anchor": "40 mg (4 mL)"
+      }
+    ],
+    "referenceIds": [
+      "REF-DRUG"
+    ]
   },
   {
-    "id": "CLIN-02", "title": "ช่องผลข้างเคียงรับเพียง Hypotension", "status": "pending",
-    "question": "ข้อมูลยาเดิมและตัวเลือกมี Hypotension, Hypokalemia และ Hypomagnesemia แต่ expectedResponses รับเพียง Hypotension ผู้ตรวจต้องกำหนดว่าจะรับหลายคำตอบ เปลี่ยนเป็นเลือกหลายข้อ หรือทำโจทย์ให้เจาะจง พร้อมแยกผลรักษา Increased urine output ออกจากผลไม่พึงประสงค์ ไม่ควรรับรองการให้คะแนนช่องนี้ก่อนตัดสิน",
+    "id": "CLIN-02",
+    "title": "ช่องผลข้างเคียงรับเพียง Hypotension",
+    "status": "pending",
+    "question": "เดิม expectedResponses รับเพียง Hypotension ขณะที่ตัวเลือกและข้อมูลยามีหลายข้อ ปรับส่วนซอฟต์แวร์เป็น record-only แล้ว: ต้องเลือกคำตอบเพื่อบันทึก แต่ไม่ตัดสินถูกผิดในช่องนี้ และไม่ถือว่าตัวเลือกทุกข้อได้รับการรับรอง ผู้เชี่ยวชาญยังต้องกำหนดคำตอบที่ยอมรับได้/รูปแบบเลือกหลายข้อ รวมทั้งแยกผลรักษาจากผลไม่พึงประสงค์ ก่อนเปิดการให้คะแนนช่องนี้",
     "reviewerRole": "เภสัชกรและอาจารย์พยาบาล",
-    "locations": [{"file":"src/game/cases/verticalSlice.ts","anchor":"'side-effect': 'Hypotension'"},{"file":"src/data/medicationStepsData.ts","anchor":"sideEffectsToWatch"}], "referenceIds": ["REF-DRUG"]
+    "locations": [
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "assessmentMode: 'record-only'"
+      },
+      {
+        "file": "src/data/medicationStepsData.ts",
+        "anchor": "sideEffectsToWatch"
+      }
+    ],
+    "referenceIds": [
+      "REF-DRUG"
+    ]
   },
   {
-    "id": "CLIN-03", "title": "ประวัติทางเดินหายใจยังระบุสถานะไม่ชัด", "status": "pending",
+    "id": "CLIN-03",
+    "title": "ประวัติทางเดินหายใจยังระบุสถานะไม่ชัด",
+    "status": "pending",
     "question": "Present illness เขียนว่าใส่ท่อช่วยหายใจ/ให้ออกซิเจน แต่ข้อมูลรับไว้ระบุ nasal cannula และพูดคุยได้ ต้องกำหนดว่าเคยใส่ท่อและถอดแล้ว หรือไม่เคยใส่ พร้อมเวลาและสภาพผู้ป่วยในแต่ละช่วง เพื่อไม่ให้ผู้เล่นเข้าใจเป็นสถานะเดียวกัน",
     "reviewerRole": "แพทย์หรืออาจารย์พยาบาลเจ้าของเคส",
-    "locations": [{"file":"src/data/case1Data.ts","anchor":"presentIllness:"},{"file":"src/data/case1Data.ts","anchor":"admissionVitals:"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/data/case1Data.ts",
+        "anchor": "presentIllness:"
+      },
+      {
+        "file": "src/data/case1Data.ts",
+        "anchor": "admissionVitals:"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-04", "title": "เกณฑ์ออกซิเจนและอุปกรณ์ต้องสัมพันธ์กับช่วงของเคส", "status": "pending",
+    "id": "CLIN-04",
+    "title": "เกณฑ์ออกซิเจนและอุปกรณ์ต้องสัมพันธ์กับช่วงของเคส",
+    "status": "pending",
     "question": "โปรดยืนยันคำสั่ง O2 เดิม เป้าหมาย SpO2 และแผนเมื่ออาการแย่ลง แยกค่าขณะได้รับ O2 ออกจากค่าหายใจอากาศปกติ และระบุเงื่อนไขเรียกทีม/การช่วยหายใจเพิ่มเติม ห้ามอนุมานว่าค่า 95% ขณะได้รับ O2 บอกค่าก่อนรักษาหรือความจำเป็นของ O2 ได้",
     "reviewerRole": "แพทย์และอาจารย์พยาบาล",
-    "locations": [{"file":"src/data/case1Data.ts","anchor":"O2 nasal cannula 3 L/min"},{"file":"src/components/stages/Stage12CrisisEvent.tsx","anchor":"Non-rebreather"}], "referenceIds": ["REF-HF", "REF-HF-UPDATE"]
+    "locations": [
+      {
+        "file": "src/data/case1Data.ts",
+        "anchor": "O2 nasal cannula 3 L/min"
+      },
+      {
+        "file": "src/components/stages/Stage12CrisisEvent.tsx",
+        "anchor": "Non-rebreather"
+      }
+    ],
+    "referenceIds": [
+      "REF-HF",
+      "REF-HF-UPDATE"
+    ]
   },
   {
-    "id": "CLIN-05", "title": "SVT/VT และข้อสอบจังหวะหัวใจต้องมีหลักฐานที่เพียงพอ", "status": "pending",
+    "id": "CLIN-05",
+    "title": "SVT/VT และข้อสอบจังหวะหัวใจต้องมีหลักฐานที่เพียงพอ",
+    "status": "pending",
     "question": "Case 1 ใช้ป้าย SVT และคลื่นสร้างจากโค้ด ส่วนข้อสอบบางข้อสรุป VT จากคำบรรยาย QRS/อัตรา/จังหวะ ผู้เชี่ยวชาญต้องยืนยัน tracing ที่อนุญาตใช้ ลักษณะจำแนกจังหวะและ differential รวมถึงความกำกวมของโจทย์ ไม่วินิจฉัยจาก HR 148 เพียงค่าเดียวหรือถือว่าคลื่นสังเคราะห์เป็น ECG จริง",
     "reviewerRole": "ผู้เชี่ยวชาญ ECG/แพทย์และอาจารย์ผู้สร้างข้อสอบ",
-    "locations": [{"file":"src/data/case1Data.ts","anchor":"ekgRhythm:"},{"file":"src/data/preTestData.ts","anchor":"10. ผู้ป่วยชายอายุ 68 ปี"},{"file":"src/data/postTestData.ts","anchor":"9. หากหน้าจอ Monitor"}], "referenceIds": ["REF-ACLS"]
+    "locations": [
+      {
+        "file": "src/data/case1Data.ts",
+        "anchor": "ekgRhythm:"
+      },
+      {
+        "file": "src/data/preTestData.ts",
+        "anchor": "10. ผู้ป่วยชายอายุ 68 ปี"
+      },
+      {
+        "file": "src/data/postTestData.ts",
+        "anchor": "9. หากหน้าจอ Monitor"
+      }
+    ],
+    "referenceIds": [
+      "REF-ACLS"
+    ]
   },
   {
-    "id": "CLIN-06", "title": "แยกการตอบสนองเริ่มต้นของพยาบาลจากแผนฉุกเฉินครบวงจร", "status": "pending",
+    "id": "CLIN-06",
+    "title": "แยกการตอบสนองเริ่มต้นของพยาบาลจากแผนฉุกเฉินครบวงจร",
+    "status": "pending",
     "question": "เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี",
     "reviewerRole": "แพทย์/ผู้สอนกู้ชีพและอาจารย์พยาบาล",
-    "locations": [{"file":"src/components/stages/Stage12CrisisEvent.tsx","anchor":"ตามมาตรฐาน ACLS"},{"file":"src/game/cases/verticalSlice.ts","anchor":"EMERGENCY_TREATMENT"},{"file":"src/game/cases/verticalSlice.ts","anchor":"PATIENT_STABILIZED"}], "referenceIds": ["REF-ACLS", "REF-HF"]
+    "locations": [
+      {
+        "file": "src/components/stages/Stage12CrisisEvent.tsx",
+        "anchor": "ตามมาตรฐาน ACLS"
+      },
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "EMERGENCY_TREATMENT"
+      },
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "PATIENT_STABILIZED"
+      }
+    ],
+    "referenceIds": [
+      "REF-ACLS",
+      "REF-HF"
+    ]
   },
   {
-    "id": "CLIN-07", "title": "ค่าและเวลาฟื้นตัวเป็น simulation", "status": "pending",
+    "id": "CLIN-07",
+    "title": "ค่าและเวลาฟื้นตัวเป็น simulation",
+    "status": "pending",
     "question": "เกมกำหนด vital signs หลังดูแลและเปลี่ยนภายในเวลาสั้นสำหรับ animation โปรดรับรองตัวเลข/ลำดับเวลาในสถานการณ์และข้อความที่บอกว่าเป็น simulation ไม่ใช้เป็นการทำนายผลการรักษา หรือให้คะแนนว่ารักษาสำเร็จจากตัวเลขที่เกมเปลี่ยนให้เอง",
     "reviewerRole": "เจ้าของเคสและผู้เชี่ยวชาญการจำลองสถานการณ์",
-    "locations": [{"file":"src/game/cases/verticalSlice.ts","anchor":"duration: 6000"},{"file":"src/game/cases/verticalSlice.ts","anchor":"bpSystolic: 145"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "duration: 6000"
+      },
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "bpSystolic: 145"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-08", "title": "I/O คำนวณตรงกัน แต่การตีความต้องแยกออกมา", "status": "pending",
+    "id": "CLIN-08",
+    "title": "I/O คำนวณตรงกัน แต่การตีความต้องแยกออกมา",
+    "status": "pending",
     "question": "เลขในเกมและหน้าเดิมตรงกัน: (100+50)-350 = -200 mL ตรวจคณิตศาสตร์ได้ แต่การสรุปว่าตอบสนองต่อยาได้ดีจาก balance ติดลบเพียงอย่างเดียวต้องให้ผู้ตรวจพิจารณาเวลา น้ำหนัก สัญญาณชีพ และข้อมูลร่วมอื่น ไม่ถือว่าการคำนวณถูกเป็นการรับรองการตีความทางคลินิก",
     "reviewerRole": "อาจารย์พยาบาลเจ้าของเคส",
-    "locations": [{"file":"src/game/cases/verticalSlice.ts","anchor":"'balance-total': '-200'"},{"file":"src/components/stages/Stage11IORecord.tsx","anchor":"const correctBalance = -200"},{"file":"src/data/postTestData.ts","anchor":"5. ในการบันทึกชาร์ต"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "'balance-total': '-200'"
+      },
+      {
+        "file": "src/components/stages/Stage11IORecord.tsx",
+        "anchor": "const correctBalance = -200"
+      },
+      {
+        "file": "src/data/postTestData.ts",
+        "anchor": "5. ในการบันทึกชาร์ต"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-09", "title": "คำวินิจฉัย/แผนการพยาบาลยังเป็น demo keys", "status": "pending",
+    "id": "CLIN-09",
+    "title": "คำวินิจฉัย/แผนการพยาบาลยังเป็น demo keys",
+    "status": "pending",
     "question": "การ์ด diagnosis และ intervention เป็นข้อความกว้างและ key สำหรับทดสอบ interaction ยังไม่มี rubric ที่ผู้เชี่ยวชาญลงนาม โปรดให้ข้อความจริง หลักฐานสนับสนุน คำตอบที่ยอมรับได้/เทียบเท่า และน้ำหนักคะแนน ก่อนใช้คะแนนเป็นผลการเรียนรู้ทางคลินิก",
     "reviewerRole": "อาจารย์พยาบาลและผู้เชี่ยวชาญการวัดผล",
-    "locations": [{"file":"src/game/cases/verticalSlice.ts","anchor":"candidate answer"},{"file":"src/game/cases/verticalSlice.ts","anchor":"key นี้เป็น demo เท่านั้น"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "candidate answer"
+      },
+      {
+        "file": "src/game/cases/verticalSlice.ts",
+        "anchor": "key นี้เป็น demo เท่านั้น"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-10", "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน", "status": "pending",
+    "id": "CLIN-10",
+    "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน",
+    "status": "pending",
     "question": "Case 2 มีเพียงเรื่องย่อ ค่าสัญญาณชีพ Order, ECG strip และ answer key ยังไม่มี ยังคงเล่นฝึกและไม่ให้คะแนนทางคลินิก ผู้รับผิดชอบต้องส่งเคสที่รับรองแล้ว ห้ามนำค่าจาก Case 1 ไปเติมเพื่อทำให้ดูสมบูรณ์",
     "reviewerRole": "เจ้าของเคส Case 2",
-    "locations": [{"file":"src/game/cases/case02.ts","anchor":"case02.initialVitals"},{"file":"src/game/cases/case02.ts","anchor":"case02.gradable = false"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/game/cases/case02.ts",
+        "anchor": "case02.initialVitals"
+      },
+      {
+        "file": "src/game/cases/case02.ts",
+        "anchor": "case02.gradable = false"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-11", "title": "ตำแหน่ง ECG ต้องรับรองภาพและ landmark ทั้งชุด", "status": "pending",
+    "id": "CLIN-11",
+    "title": "ตำแหน่ง ECG ต้องรับรองภาพและ landmark ทั้งชุด",
+    "status": "pending",
     "question": "เกมอิงจุดจากภาพเวชนิทัศน์และข้อสอบมีคำบรรยายตำแหน่ง lead โปรดตรวจจุด V1–V6 รวมทั้งระดับแนวนอน V4–V6 และถ้อยคำโจทย์ให้ตรงกับภาพอ้างอิงที่ผู้สอนรับรอง การ export ตรงไฟล์ภาพไม่ได้ยืนยันความถูกต้องทางกายวิภาคโดยอัตโนมัติ",
     "reviewerRole": "ผู้เชี่ยวชาญ ECG และทีมเวชนิทัศน์",
-    "locations": [{"file":"src/game/suppliedECGArt.json","anchor":"sourceMarker"},{"file":"src/data/preTestData.ts","anchor":"ตำแหน่ง Chest Lead ที่ถูกต้อง"},{"file":"src/data/postTestData.ts","anchor":"8. การติดตำแหน่ง Precordial Lead"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/game/suppliedECGArt.json",
+        "anchor": "sourceMarker"
+      },
+      {
+        "file": "src/data/preTestData.ts",
+        "anchor": "ตำแหน่ง Chest Lead ที่ถูกต้อง"
+      },
+      {
+        "file": "src/data/postTestData.ts",
+        "anchor": "8. การติดตำแหน่ง Precordial Lead"
+      }
+    ],
+    "referenceIds": []
   },
   {
-    "id": "CLIN-12", "title": "รับรองข้อสอบก่อน/หลังเรียนครบ 20 ข้อ", "status": "pending",
+    "id": "CLIN-12",
+    "title": "รับรองข้อสอบก่อน/หลังเรียนครบ 20 ข้อ",
+    "status": "pending",
     "question": "ตรวจทุกโจทย์ ตัวเลือก key และคำอธิบายเป็นรายข้อ รวมความกำกวม การใช้คำว่าอันดับแรก/สำคัญที่สุด เกณฑ์อ้างอิง และความสมดุลของตำแหน่งคำตอบ ก่อนใช้ pre/post scores หรือ learning gain เป็นผลวิจัย Snapshot เก็บ key เดิมเพื่อให้ตรวจย้อนกลับ ไม่ใช่การรับรองเฉลย",
     "reviewerRole": "ผู้เชี่ยวชาญเนื้อหาและผู้เชี่ยวชาญการวัดผล",
-    "locations": [{"file":"src/data/preTestData.ts","anchor":"PRETEST_QUESTIONS"},{"file":"src/data/postTestData.ts","anchor":"POSTTEST_QUESTIONS"}], "referenceIds": []
+    "locations": [
+      {
+        "file": "src/data/preTestData.ts",
+        "anchor": "PRETEST_QUESTIONS"
+      },
+      {
+        "file": "src/data/postTestData.ts",
+        "anchor": "POSTTEST_QUESTIONS"
+      }
+    ],
+    "referenceIds": []
   }
 ]

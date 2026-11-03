@@ -27,6 +27,7 @@ export function validateCase(config: GameCase) {
     if (mission.activity?.fields) {
       unique(mission.activity.fields.map(field => field.id), `activity field in ${mission.id}`);
       for (const field of mission.activity.fields) if (field.type === 'select') require(!!field.options?.length, `Missing field options ${field.id}`);
+      for (const field of mission.activity.fields) if (field.assessmentMode === 'record-only') require(!(field.id in (mission.activity.expectedResponses ?? {})), `Record-only field has an answer key: ${field.id}`);
     }
     for (const step of mission.activity?.steps ?? []) if (step.interaction?.kind === 'syringe-withdrawal') {
       require(Number.isFinite(step.interaction.targetAmount) && step.interaction.targetAmount > 0, `Invalid syringe target ${step.id}`);

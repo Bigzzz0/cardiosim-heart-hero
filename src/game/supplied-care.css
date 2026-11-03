@@ -2,6 +2,7 @@
 .storybook-game .surface-icon .document-art {width:32px;height:38px;}
 .storybook-game .surface-bedside-clipboard {border-top:7px solid #82a8d6;background:#fffef8;}
 .storybook-game .missing-data-title .document-art {width:34px;height:42px;}
+.storybook-game .field-review-note {display:block;color:#526e7e;font-size:12px;line-height:1.6;padding:6px 8px;border:1px solid #b6cddc;border-radius:8px;background:#edf5fb;}
 .storybook-game .supplied-order-document[open] {padding:0;}
 .storybook-game .supplied-order-document .activity-rows {margin:8px 0;}
 .supplied-emergency-art {position:relative;display:inline-block;width:44px;height:32px;overflow:hidden;border-radius:8px;flex-shrink:0;pointer-events:none;background:#e48d90;}

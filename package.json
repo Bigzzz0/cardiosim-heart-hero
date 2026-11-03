@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "trial:package": "npm run clinical:review:check && npm run test:game && npm run build && node scripts/package-trial.mjs",
     "clinical:review:export": "tsx scripts/export-clinical-review.ts",
     "clinical:review:check": "node scripts/check-clinical-review.mjs",
     "test:entry": "node scripts/test-illustrated-entry.mjs",

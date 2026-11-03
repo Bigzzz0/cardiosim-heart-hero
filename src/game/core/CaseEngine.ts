@@ -284,7 +284,10 @@ export class CaseEngine {
     return true;
   }
   private activityReady(activity: ActivityConfig) {
-    const fieldsReady = (activity.fields ?? []).every(field => (this.responses[field.id] ?? '').trim().length > 0);
+    const fieldsReady = (activity.fields ?? []).every(field => {
+      const value = (this.responses[field.id] ?? '').trim();
+      return value.length > 0 && (field.type !== 'select' || field.options?.includes(value));
+    });
     const stepsReady = (activity.steps ?? []).every((step,index) => this.activitySteps[index] === step.id);
     const itemsReady = (activity.items ?? []).every(item => this.activityPlacements[item.id] !== undefined);
     const missingDataReady = !activity.allowMissingDataAcknowledgement || this.responses['missing-data-ack'] === 'recorded';

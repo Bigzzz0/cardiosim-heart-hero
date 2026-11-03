@@ -62,7 +62,7 @@ export interface ActivityConfig {
   explanation?: string;
   notice?: string;
   rows?: { label: string; value: string }[];
-  fields?: { id: string; label: string; placeholder: string; type: 'text' | 'number' | 'select'; options?: string[] }[];
+  fields?: { id: string; label: string; placeholder: string; type: 'text' | 'number' | 'select'; options?: string[]; assessmentMode?: 'record-only' }[];
   responseKey?: string;
 }
 export interface MissionDefinition {

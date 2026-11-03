@@ -277,7 +277,8 @@ try {
   await medicationSelects.nth(0).selectOption({label:'Furosemide (Lasix)'});
   await medicationNumbers.nth(0).fill('10');
   await medicationSelects.nth(1).selectOption({label:'IV slow push'});
-  await medicationSelects.nth(2).selectOption({label:'Hypotension'});
+  await page.locator('.field-review-note').getByText(/ยังไม่ตัดสินถูกผิด/).waitFor();
+  await medicationSelects.nth(2).selectOption({label:'Hypokalemia'});
   await medicationSelects.nth(3).selectOption({label:'BP, urine output, K⁺/Mg²⁺'});
   await page.getByRole('button',{name:'บันทึกการเตรียมยา'}).click();
   await page.locator('.feedback.error').waitFor();
