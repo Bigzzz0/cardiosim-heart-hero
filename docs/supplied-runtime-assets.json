@@ -1,0 +1,709 @@
+[
+  {
+    "file": "/assets/clinical-handover/action-toolbar.webp",
+    "sha256": "3414716fc92f8873ed09520edaef00545669b55b28ffff8b646c5d1c1772dee9",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/bedside-monitor.webp",
+    "sha256": "252a23e995350cd60edcdcd789c8bf8da2831cda210e80b0a8d23810970a22ad",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/crisis-alert-scene.webp",
+    "sha256": "1b3a9b6811b4327073f131d6a14bc57dd4d3c16d162a96d780aff766e9f87f71",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/ehr-record-folder.webp",
+    "sha256": "522c75f5e23912a5928c86e40f450f6073c151756fe070df94da24179a1b3ffc",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/exam-magnifier.webp",
+    "sha256": "bce67ee4753bb4cb50645cbe3255c61f32e67fb95ba2a86902941191aea9f1d8",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/handover-scene-full.webp",
+    "sha256": "40d1307f1d406739eb412d898f9f86453fe40c55c105b1803111d711878754dd",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/hotspot-exam-magnifier.webp",
+    "sha256": "ba1c95dad1babb637b04084b6ef6127df85ee663e372e496353023f320b67846",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/order-sheet.webp",
+    "sha256": "811d2b611ec404408a21a395ebba0a1ed68c245b092ed03b18ad6d0651de89ba",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/patient-clipboard-pen.webp",
+    "sha256": "2d28fcc19c2e74f95a36b3112e42a1a8aa36f080146bee248042e19d56cba91e",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/patient-dialog.webp",
+    "sha256": "a50ca9db6c6ecc03948fb40eeb2fe2b4de750c344588f4772815ed4b93ef084e",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/patient-monitor-arm.webp",
+    "sha256": "2193e4ffb2762f425961fb272301e8fc4d5af48baf390d35496384a6e2afb7fd",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/play/equipment-tray.webp",
+    "sha256": "4f9631417d26cd953f9b17e96b3d67e38d12e6111bdf3dd5d9ba6f283983682f",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/play/stethoscope.webp",
+    "sha256": "1fbbbda0d8bb169e9afacbf3d5e6218872c80a7d482d8d80d40bf917f297c448",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/play/syringe.webp",
+    "sha256": "36416bf3c986c6d68ca941cb4f6a2f5f7757c74d313216c5a1bfb9009cf65c0e",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/progress-fill.webp",
+    "sha256": "d2a2f1409a137b91a8e2789b277fcb633b078e2cf6d266e45300684ffee68491",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/progress-track.webp",
+    "sha256": "07452aa2f33dc18e8933c0483891e9ccc5b61014fb78104f5a179a30bbf741f8",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/ui-pill-banner-gold.webp",
+    "sha256": "027748e69f68ddfd8969e822cb7582b76e89ba7d4efbac2076d258dc24cf4989",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/clinical-handover/ui-progressbar-gold.webp",
+    "sha256": "433cd84c80d1787d9c3c917f51dba800f42762aff72c31c5ce005689dec02763",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/chest-leads-overlay.webp",
+    "sha256": "309ae5722075ffa9cf43c992f6f544f0db6b87da1d2faa187c51793f0891d086",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/ecg-leads-6cables.webp",
+    "sha256": "91f4ec2ac5c0ef1afebc782fd182c8f02919a50449e36f812c325102a72ff982",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/ecg-minigame-board.webp",
+    "sha256": "3a35ebf9fa6350a5b70c1c86a6ea16111adc31d2bf03660ba464ad963110e12f",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/equipment-tray.webp",
+    "sha256": "2fbfe949357284c619dc49a94f20f4400432190e5c9ec9a71dad4883aeaafce9",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/alcohol-cleanser.webp",
+    "sha256": "4e1fbe9d934274ce8a50a422dcee3725f8ff7fcfd9622550bc5855e3d80effe2",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-blue.webp",
+    "sha256": "38a1a2ced0f3a98882bf2adbda3db07acce7cfa58ba1e844ec5bf3f3a2f7c67c",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-green.webp",
+    "sha256": "ed87a89a0f047daef5eee241a4a430372f2a51a07ff12410feb15f058cbd5b17",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-orange.webp",
+    "sha256": "bf67397bc76473b9638de7c85cb398dc1ec18df61faa81864b459fd6f95b7c91",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-purple.webp",
+    "sha256": "059c906e24eb671470323ee46a76a9a3b17cfcafd9be5f8aaadf7bc852f05a1c",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-red.webp",
+    "sha256": "358962405c2e8df75ef3ff5ddcfb70e575eaf20d42d34dbdb040a119e853d3c4",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/clamp-yellow.webp",
+    "sha256": "e8e60619911e098c415537eb0f2eab69974cca7849438e3383f01419985ce2ef",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/cotton-jar.webp",
+    "sha256": "7fcdb8c65dfd5f0f14c19a73530ac76624324714e8e9ed9bc6f391a34ee92d96",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/electrode-gel.webp",
+    "sha256": "e0dbb81511a8393f7483024b10d071de2802a14860337b6841ee989936b2594c",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/items/first-aid-box.webp",
+    "sha256": "38c343a14685c2dcb8c2c7f51c0f009b20d42ae3cc38a9faf4e00693dfb74bed",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v1.webp",
+    "sha256": "b4d8f51db1dfc095d19f40c72471b5f7e8cbadda019cfe2e9f0ae324e0ba8c33",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v2.webp",
+    "sha256": "00d6823bfacf387422ccb987161310e8f5f0285bef616fd66f4b2c8104fbb371",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v3.webp",
+    "sha256": "a6d77a93f5028181975840fc3c53460b3401138f878bf73ee2a0d81e7c0a0137",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v4.webp",
+    "sha256": "67a00ef3b1fe00edb15a6474082a2666c6ff5b73150077bb5d6328cb0cfc57c0",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v5.webp",
+    "sha256": "a7f1915fe6f3b34633610d887329fef9a25bc923f26707708dddb1431fb8d7ad",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/cable-v6.webp",
+    "sha256": "1a8d6538ee94443790f2a32329a5e85e5db626117cbaa12bfdd688c38d306d5f",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v1.webp",
+    "sha256": "22aa7a777c4f66c81a84ecf252b0adca6897ea1753b505e1b40061bba7b00485",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v2.webp",
+    "sha256": "61807c03d63b006767cfebb431871c513eee8eb84c145308dfe735cbec8e1be1",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v3.webp",
+    "sha256": "f709466c1dbfe1d4b7edcf7323008d9a9bc598fb5002d0b29e9fbee7eacb783f",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v4.webp",
+    "sha256": "73f8709eda33525b331a44102a24fc2814ab6c5da3f06b4dca768b763402fde8",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v5.webp",
+    "sha256": "af3b2bb9d8ec80eb3fcb9eed8f4f00bbc571c6e0954eaccc9932b0ff08d51169",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/electrode-v6.webp",
+    "sha256": "c118a51598207b532ca9fa854ffc0351701f7b33404b5c1859a295124253db4c",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/play/torso-with-ribs.webp",
+    "sha256": "b039c88cbe92e470a1f828b138213f84d3be5f0c659a577138fbaccd2da0c92c",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ecg/torso-ribcage.webp",
+    "sha256": "f2ed82120aec4caf042b2f0ef9dc11b0556ba1a74e24b8209d284f8e4081b359",
+    "source": "art/medical-illustration/raw/04_EKG_แก้.ai",
+    "sourceSha256": "9976f78f8a88505a69e589aab8d928a94a7a587e3b309916a6ac68ea54714455",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/environments/case-selection-bg.webp",
+    "sha256": "19ddfe77aeb4b9a1cc2a245f500d9714c5d7baaeebeb468065caaae7fd25c8c3",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/environments/patient-room.webp",
+    "sha256": "10ab68e529be66b13abecae51ad030018ee4fbb80cd1a8a79837601788d544a5",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/patients/patient-case-02-bed.webp",
+    "sha256": "973e8827373be396bd8b287e7736c354e2f0e132c9ce4c8eda7b5a1d0eb55646",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/patients/patient-case-02-pillow.webp",
+    "sha256": "2c9412750e597222f64932d40efc114b4f45dc19740c10651da9e8b562bded80",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/patients/patient-case-02.webp",
+    "sha256": "34228eae5b8483098d11a2dc44d2848e89be35a8f510299fe431bee5d04941a3",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/patients/patient-character.webp",
+    "sha256": "f05a0cb0c9d5079860ada22993f27ae9875003fc4947f014d47436563f5edc1a",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/props/nurse-character.webp",
+    "sha256": "bb2d8312a7a96591e6ca922bb8a951b2f77c4b5775f4b73b18f93c88d9fbf06a",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/btn-action-1.webp",
+    "sha256": "7aa8d94d75f8399cad86aa0bacbcc530406aebab99b2ed25c0f43c7f303f0e6b",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/btn-action-2.webp",
+    "sha256": "eb98da9a6a373bb294dd43673ba2b8547f5a721e7cedcafcb323aef8ea17c92a",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/btn-action-3.webp",
+    "sha256": "ed131fc919f92f7c541c7f782196ab3f45849e33d2a46543053f356742c74555",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/btn-start.webp",
+    "sha256": "ab05bf9c84872ed3e28da4dd8960f101f548984a44e1b9e9477642425fb60bd3",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-board.webp",
+    "sha256": "05310a0ec499ca7217858ffd2a2e1a36458168800e2f8876593dde46b6d5b9f0",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-button-hover.webp",
+    "sha256": "61907696a7fbf832a96d449b4a2489a6ff7846cecbd804485b4a1878cd468fff",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-button-idle.webp",
+    "sha256": "f8a050450bfd8ebf2954eaf29d4871f7b1cc6ace12c1a4af4e0096e745f7532c",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-button-pressed.webp",
+    "sha256": "1b8fec2df61b9df9a5effe8fb60367157fee3467334143091b8535ffe02129da",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-1.webp",
+    "sha256": "8dceb6eff5e68c197c39dc15314212c4f59bb0d607e5769a9d0a542dc785cc4c",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-2.webp",
+    "sha256": "1d8f4dcf2f998a6b3bb4172d6120501fb877a6123c1b6f98533c506deca6f9b0",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-3.webp",
+    "sha256": "a00961a80fcaa66555cf1a0faadca74ab61ebc8bcefa00e434027c96e7400f2a",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-4.webp",
+    "sha256": "a9881097543e8cf88b73862adaba8d792ecb7a7b5ea6183190515fc36932178f",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-5.webp",
+    "sha256": "0430ad6e8ba2a09061d6c25f4c47e28677a9de592f5a4439ba5c87012fc0b70d",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-badge-6.webp",
+    "sha256": "f8efb6ec0230c50fe3dcde5fb71f511905009ffd2c37ea68851fa590e83b5ab5",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-1.webp",
+    "sha256": "4325ffaca183b8ee32b0e6c63d1017900928bedded610287025d541baa2222c2",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-2.webp",
+    "sha256": "099475c124747317944da183f657c8df561744435c9ca497a64b380362da5af7",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-3.webp",
+    "sha256": "12cfc82fb1060e58d340f5fb3c5616d4edc3813a9258a6ae59307eeb55859ddd",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-4.webp",
+    "sha256": "2ac1a5addf8060596bddc3c45d5b408657fdab18afd1a3f974b6a040a7236060",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-5.webp",
+    "sha256": "9e323cdc68f044df3a87e2a3506b0734c641cce1afa28c6ad005ee56d0d18b06",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-cards/case-card-6.webp",
+    "sha256": "e9e2c7d9c117ac9a688a0bf2d191111eb689ab2159d30f19f6c285c3bbe91f3a",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-next-arrow-hover.webp",
+    "sha256": "d6b708bb05ea63b3988e6dafcb58e322c9ebad543f39f0e5050dd30860f26ae8",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-next-arrow-idle.webp",
+    "sha256": "0128690f25f8dad74fe47b1ed8ab10f032badfd5e523e008f9b97b002d4b1a8a",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/case-next-arrow-pressed.webp",
+    "sha256": "67d19065ef4d396dc1eda41a46dc13ea20f04affe967c6d247145ce2d3805c7c",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/cover.webp",
+    "sha256": "d9f275c8262892befd60661a4ec9ff78196fe21be629a09a7e0fef887087e509",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/login.webp",
+    "sha256": "e359da03d87fd554a1a917df702d067e4a39155a59d4aebdf57591b4630502d7",
+    "source": "art/medical-illustration/raw/01_Login_แก้.ai",
+    "sourceSha256": "89abe7320093d0bae347a96e26f2b91bb7cb9316730ea1bfff3e5527fd92d45e",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/logo.webp",
+    "sha256": "cdcbc812f721518d233856c3a3cf438a59c03ed401a6f6e962a97b3771692604",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/start-hover.webp",
+    "sha256": "91b59f6ba3da184b9480bfd547603fa520ec21d520dfc87470bcfb171c4a78f7",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/start-idle.webp",
+    "sha256": "62bf810740091a35ee948bc7af87f77cbad3eb8609a649cd7d09c5937d4da69d",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/assets/ui/start-pressed.webp",
+    "sha256": "83b7782e0ca313e11b7881df037ad3dc87488113eb4994f2ec398712e14ec923",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/favicon.ico",
+    "sha256": "806a8c829de89dafecdcdf39b1bdab8b6f04ac9ea77b7c35d857e8d70f18dcb6",
+    "source": "art/branding/cardiosim-icon.webp",
+    "sourceSha256": "900e315709f2e35c0ec07df1cf48be4fbc9864e034a2220eb07035cfd8f440f6",
+    "provider": "user-supplied-branding"
+  },
+  {
+    "file": "/game/medical-illustration/case-board.webp",
+    "sha256": "05310a0ec499ca7217858ffd2a2e1a36458168800e2f8876593dde46b6d5b9f0",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/case-button-hover.webp",
+    "sha256": "cf54e2fe04f78cbf577cd5e6cd41e78fa2b3f5af0744b887f9e1e5ca1ff6b9c1",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/case-button-idle.webp",
+    "sha256": "8f7940aeaac2cb2dd09d47a15932912418e1b4d5c7ef4086a2520d57ed628daa",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/case-button-pressed.webp",
+    "sha256": "7cde193f4964ba678938a002bb4938e04b15d37667bb6d46f1d269d57c171278",
+    "source": "art/medical-illustration/raw/02_Case_แก้.ai",
+    "sourceSha256": "d82d7c9783241786bfd39c89a6a93c8eef47a68134ce2e04d6132b4cc5dc3e56",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/cover.webp",
+    "sha256": "63d7b3b6b3aee94edcbb2b12b6604d29e21aa2769ff31d3e690b57a24460771c",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/login.webp",
+    "sha256": "e359da03d87fd554a1a917df702d067e4a39155a59d4aebdf57591b4630502d7",
+    "source": "art/medical-illustration/raw/01_Login_แก้.ai",
+    "sourceSha256": "89abe7320093d0bae347a96e26f2b91bb7cb9316730ea1bfff3e5527fd92d45e",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/logo.webp",
+    "sha256": "97fa4a2960610cd51c76a8f06b6b260a5d82e19a431c4d139a2762e47aa2b9e0",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/patient-case-02-bed.webp",
+    "sha256": "973e8827373be396bd8b287e7736c354e2f0e132c9ce4c8eda7b5a1d0eb55646",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/patient-case-02-pillow.webp",
+    "sha256": "2c9412750e597222f64932d40efc114b4f45dc19740c10651da9e8b562bded80",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/patient-case-02.webp",
+    "sha256": "34228eae5b8483098d11a2dc44d2848e89be35a8f510299fe431bee5d04941a3",
+    "source": "art/medical-illustration/raw/Patient_แยกเลเยอร์คนไข้.psd",
+    "sourceSha256": "1e23d8f739c6782e26780f6b6350e36c8302fd7a5dd0eea0f43f2a3d3605e609",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/patient-room.webp",
+    "sha256": "10ab68e529be66b13abecae51ad030018ee4fbb80cd1a8a79837601788d544a5",
+    "source": "art/medical-illustration/raw/03_รับข้อมูลผู้ป่วย_แก้.ai",
+    "sourceSha256": "afc7d6273306ff6c0b3f503a766b9cfbac403863c312b9df01bd79477df6f1e0",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/start-hover.webp",
+    "sha256": "dc13815965a97099177ff439bdc5078ac18aaea4879f0375a619a5de42892b63",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/start-idle.webp",
+    "sha256": "c192967f001481b71b91f358b9774abb50bcc9ab38c84623fdc3ae64d18403df",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/game/medical-illustration/start-pressed.webp",
+    "sha256": "ce277f46cd47c2da07c015b8d5d42d8d7052e25df601274128c576c4149f3570",
+    "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",
+    "sourceSha256": "79529ff33788ad4e7833eb4351ab40e73a0dfc8d1f7a492ce6d5f5a4a838d412",
+    "provider": "medical-illustration"
+  },
+  {
+    "file": "/icons/apple-touch-icon.png",
+    "sha256": "e1b004833594880b968c2151216c3c4e73fac8ef49655a94a454682f40f9cfde",
+    "source": "art/branding/cardiosim-icon.webp",
+    "sourceSha256": "900e315709f2e35c0ec07df1cf48be4fbc9864e034a2220eb07035cfd8f440f6",
+    "provider": "user-supplied-branding"
+  },
+  {
+    "file": "/icons/favicon-32.png",
+    "sha256": "8ce74edf15e02913dc682e37501cbfab07bb0ec2a28676d5ab1dc52e7722b094",
+    "source": "art/branding/cardiosim-icon.webp",
+    "sourceSha256": "900e315709f2e35c0ec07df1cf48be4fbc9864e034a2220eb07035cfd8f440f6",
+    "provider": "user-supplied-branding"
+  },
+  {
+    "file": "/icons/icon-192.png",
+    "sha256": "f33af717f7b9880e9c664a6f65b5158fb3db144791888146c3916b87d0a9b629",
+    "source": "art/branding/cardiosim-icon.webp",
+    "sourceSha256": "900e315709f2e35c0ec07df1cf48be4fbc9864e034a2220eb07035cfd8f440f6",
+    "provider": "user-supplied-branding"
+  },
+  {
+    "file": "/icons/icon-512.png",
+    "sha256": "ce79c9fb127b2b9ab9dbdaa2bbb81313c1734c5f8f52a772a3999681633eb876",
+    "source": "art/branding/cardiosim-icon.webp",
+    "sourceSha256": "900e315709f2e35c0ec07df1cf48be4fbc9864e034a2220eb07035cfd8f440f6",
+    "provider": "user-supplied-branding"
+  }
+]

@@ -1,5 +1,7 @@
 # Supplied patient artwork: Case 2
 
+> Updated by the [supplied-only art pass](supplied-only-art.md): both cases now use the supplied layered patient and source room.
+
 The older patient supplied by the medical illustration team is now used for the
 65-year-old Case 2. Case 1 retains its existing patient and room. The source is
 `Patient_แยกเลเยอร์คนไข้.psd` (3840 x 2160) and the empty room embedded in artboard 1

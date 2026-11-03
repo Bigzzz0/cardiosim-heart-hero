@@ -1,5 +1,7 @@
 # Bedside art pass — 16 October 2026
 
+> Historical generated-art record. These images are retired from the shipped game. See [current supplied-only policy](supplied-only-art.md).
+
 White/sky-blue illustrated hospital, soft painted volume, consistent dark blue-grey linework. One generation per new asset; no retries of the same asset. Original source packs and cancelled stash are not inputs. Clinical labels and values remain code/configuration.
 
 | Key / runtime filename | Role / requested artboard | Pivot and contact | Generation |

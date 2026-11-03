@@ -1,5 +1,5 @@
 import {worldToClient} from '../presentationCoordinates';
-import {Plus} from 'lucide-react';
+import { ASSETS } from '../../constants/assets';
 import React, { useEffect, useState } from 'react';
 import type { Hotspot, MedicalTool, Point } from '../types';
 
@@ -80,6 +80,6 @@ export function PatientHotspotLayer({ hotspots, active, dragging, debug, tutoria
       aria-label={`${hotspot.label}${selectedTool ? ` · ใช้ ${selectedTool.name}` : ' · เลือกเครื่องมือก่อน'}`}
       title={selectedTool ? `ใช้ ${selectedTool.name} ที่ ${hotspot.label}` : `จุดตรวจ ${hotspot.label}`}
       onClick={() => onActivate({ x: hotspot.x, y: hotspot.y })}
-    ><span className="patient-marker" aria-hidden="true"><span className="marker-lens"><Plus size={21}/></span><i/></span></button>)}
+    ><span className="patient-marker" aria-hidden="true"><img className="supplied-hotspot-art" src={ASSETS.handover.examMagnifier} alt=""/></span></button>)}
   </div>;
 }

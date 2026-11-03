@@ -84,7 +84,7 @@
 .storybook-game .medication-procedure.has-syringe-activity {grid-template-columns:1fr;}
 .storybook-game .has-syringe-activity .medication-step.current {min-height:60px!important;}
 .storybook-game .has-syringe-activity .medication-equipment-tray {min-height:0;}
-.storybook-game .ecg-attached-lead {position:absolute;z-index:5;transform:translate(-50%,-50%);width:44px;height:44px;border:2px solid #749cb5;border-radius:50%;background:#fff url('/assets/bedside/electrode.webp') center/100% 100% no-repeat;color:#254861;font-size:13px;font-weight:800;text-shadow:0 1px 2px white;touch-action:none;}
+.storybook-game .ecg-attached-lead {position:absolute;z-index:5;transform:translate(-50%,-50%);width:44px;height:44px;border:2px solid #749cb5;border-radius:50%;background:#fff none center/100% 100% no-repeat;color:#254861;font-size:13px;font-weight:800;text-shadow:0 1px 2px white;touch-action:none;}
 .storybook-game .ecg-attached-lead.validated {border-color:#5d9a77;opacity:1;}
 .storybook-game .ecg-mobile-lead.placed {background:#dfedf6;color:#466d86;border-color:#97b7cb;}
 .storybook-game .ecg-return-lead {min-height:44px;padding:6px 14px;background:#f4f9fc;border:1px solid #9dbacd;color:#426a82;border-radius:12px;}

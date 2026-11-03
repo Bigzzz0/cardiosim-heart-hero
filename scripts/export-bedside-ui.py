@@ -19,6 +19,10 @@ def main():
     image = image.crop(image.getbbox())
     image.thumbnail((480, 480))
     image.save(OUTPUT / 'stethoscope.webp', quality=94, method=6)
+    syringe = reader.pages[0].images['/Im10'].image.convert('RGBA')
+    syringe = syringe.crop(syringe.getbbox())
+    syringe.thumbnail((480, 480))
+    syringe.save(OUTPUT / 'syringe.webp', quality=94, method=6)
     # MC7 contains the source toolbar. Exclude all placed images (equipment)
     # so that real, individually accessible buttons can sit above the empty tray.
     writer = PdfWriter()

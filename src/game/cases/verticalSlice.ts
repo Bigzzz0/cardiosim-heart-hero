@@ -2,6 +2,7 @@ import type { GameCase } from '../types';
 import { CASE_1_DETAILS } from '../../data/case1Data';
 import { medicationInteractions } from './medicationWorkbench';
 import { MEDICATION_PREPARATION_STEPS } from '../../data/medicationStepsData';
+import { registerSuppliedPatientHotspots, suppliedPatientPresentation } from '../suppliedPatientPresentation';
 import { ASSETS } from '../../constants/assets';
 import { suppliedECGLayout, suppliedECGTargets } from '../suppliedECGLayout';
 
@@ -22,8 +23,8 @@ export const verticalSlice: GameCase = {
   clinicalStatus: 'CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง',
   gradable: true,
   sources: [storyboard, spec],
-  assets: { room: ASSETS.environments.bedsideRoom, patient: ASSETS.patients.patient01, patientCritical: ASSETS.patients.patient01, ecgLeads: ASSETS.ecg.chestLeads[0].electrode, ecgChest: ASSETS.ecg.playTorso },
-  presentation: { background: { x:550,y:410,width:1500,height:1000 }, patient: { x:550,y:515,width:360,height:630 }, camera: { center:{x:550,y:390}, procedureCenter:{x:575,y:360}, transitionCenter:{x:550,y:400}, contextFocus:{point:{x:550,y:280},radius:53} } },
+  assets: { room: ASSETS.environments.patientRoom, patient: ASSETS.patients.patientCase02, patientCritical: ASSETS.patients.patientCase02, patientSupport: {bed:ASSETS.patients.patientCase02Bed,pillow:ASSETS.patients.patientCase02Pillow}, ecgLeads: ASSETS.ecg.chestLeads[0].electrode, ecgChest: ASSETS.ecg.playTorso },
+  presentation: suppliedPatientPresentation,
   initialVitals: { hr: 112, bpSystolic: 168, bpDiastolic: 98, rr: 24, spo2: 95 },
   initialPatient: { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' },
   monitorTraces: {
@@ -35,19 +36,19 @@ export const verticalSlice: GameCase = {
   scenarios: [
     { id: 'case-01', title: 'Hypertensive Acute Heart Failure', summary: 'NORMAL STAGE · CASE 01', enabled: true, status: 'DEMO · เนื้อหาคลินิกรอตรวจรับรอง' },
   ],
-  hotspots: [
+  hotspots: registerSuppliedPatientHotspots([
     { id: 'head', label: 'ศีรษะ / ทางเดินหายใจ', x: 550, y: 280, radius: 53 },
     { id: 'chest', label: 'ทรวงอก', x: 550, y: 395, radius: 62 },
     { id: 'arm', label: 'ต้นแขน', x: 455, y: 470, radius: 34 },
     { id: 'wrist', label: 'ข้อมือ / การไหลเวียน', x: 655, y: 553, radius: 30 },
     { id: 'finger', label: 'ปลายนิ้ว', x: 445, y: 584, radius: 30 },
-  ],
+  ]),
   tools: [
     { id: 'interview', name: 'ซักประวัติ', icon: 'interview', allowedTargets: ['head'], duration: 700 },
     { id: 'stethoscope', name: 'Stethoscope', icon: 'stethoscope', sprite: ASSETS.handover.playStethoscope, visual: { heldSize: { x: 68, y: 68 }, heldOffset: { x: 18, y: -20 }, contactSize: { x: 100, y: 100 }, contactOffset: { x: 0, y: 0 }, contactAngle: -12, contactAnchor: {x:.915,y:.4}, contactEffect: 'listen' }, allowedTargets: ['chest'], duration: 1500 },
-    { id: 'bp', name: 'BP cuff', icon: 'bp', sprite: ASSETS.bedside.cuff, visual: { heldSize: { x: 72, y: 64 }, heldOffset: { x: 16, y: -16 }, contactSize: { x: 64, y: 56 }, contactOffset: { x: 0, y: 0 }, contactAngle: 8, contactEffect: 'pressure' }, allowedTargets: ['arm'], duration: 1100 },
-    { id: 'spo2', name: 'SpO₂', icon: 'spo2', sprite: ASSETS.bedside.sensor, visual: { heldSize: { x: 58, y: 58 }, heldOffset: { x: 15, y: -18 }, contactSize: { x: 46, y: 46 }, contactOffset: { x: 0, y: 0 }, contactAngle: 0, contactEffect: 'sensor' }, allowedTargets: ['finger'], duration: 900 },
-    { id: 'hand', name: 'ประเมิน ABC', icon: 'hand', sprite: ASSETS.bedside.assessmentHand, visual:{heldSize:{x:70,y:70},heldOffset:{x:15,y:-15},contactSize:{x:65,y:65},contactOffset:{x:0,y:0},contactAngle:0,contactAnchor:{x:.17,y:.83},contactEffect:'inspect'}, allowedTargets: ['head', 'chest', 'wrist'], duration: 900 },
+    { id: 'bp', name: 'BP cuff', icon: 'bp', visual: { heldSize: { x: 72, y: 64 }, heldOffset: { x: 16, y: -16 }, contactSize: { x: 64, y: 56 }, contactOffset: { x: 0, y: 0 }, contactAngle: 8, contactEffect: 'pressure' }, allowedTargets: ['arm'], duration: 1100 },
+    { id: 'spo2', name: 'SpO₂', icon: 'spo2', visual: { heldSize: { x: 58, y: 58 }, heldOffset: { x: 15, y: -18 }, contactSize: { x: 46, y: 46 }, contactOffset: { x: 0, y: 0 }, contactAngle: 0, contactEffect: 'sensor' }, allowedTargets: ['finger'], duration: 900 },
+    { id: 'hand', name: 'ประเมิน ABC', icon: 'hand', sprite: ASSETS.handover.examMagnifier, visual:{heldSize:{x:70,y:70},heldOffset:{x:15,y:-15},contactSize:{x:65,y:65},contactOffset:{x:0,y:0},contactAngle:0,contactAnchor:{x:.5,y:.45},contactEffect:'inspect'}, allowedTargets: ['head', 'chest', 'wrist'], duration: 900 },
   ],
   findings: [
     { id: 'history', section: 'History', title: 'อาการที่ผู้ป่วยบอก', text: '“หายใจไม่ออกค่ะ…” — ข้อความตัวอย่างจากสเปก ยังไม่มี CC / PI / PH ที่รับรอง', source: 'Pasted specification §20' },

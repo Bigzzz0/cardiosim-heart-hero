@@ -29,6 +29,7 @@ import './care-ui.css';
 import './ecg-art.css';
 import './supplied-bedside.css';
 import './supplied-care.css';
+import './supplied-only.css';
 
 const activeCase = getGameCase(new URLSearchParams(location.search).get('case'));
 const launchedFromWeb = new URLSearchParams(location.search).get('from') === 'web';

@@ -27,7 +27,7 @@ test('interaction preview is side-effect-free and reports the same target and ou
   assert.equal(validPreview.targetId, 'head');
   assert.equal(validPreview.objectiveId, 'history');
   assert.deepEqual(validPreview.point, { x: 550, y: 280 });
-  const wrongPreview = game.previewAt({ x: 550, y: 395 });
+  const wrongPreview = game.previewAt(verticalSlice.hotspots.find(target => target.id === 'chest')!);
   assert.equal(wrongPreview.outcome, 'invalid');
   assert.equal(wrongPreview.targetId, 'chest');
   assert.ok(wrongPreview.reason);

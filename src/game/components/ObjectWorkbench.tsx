@@ -1,6 +1,6 @@
 import { DocumentArt } from '../../components/ui/DocumentArt';
 import { ASSETS } from '../../constants/assets';
-import { WorkbenchObjectArt } from './WorkbenchObjectArt';
+
 import React, { useRef, useState } from 'react';
 import { Check, ClipboardList, Hand, IdCard, Monitor, Pill, Syringe } from 'lucide-react';
 import type { ActivityConfig, ActivityStep, ActivityStepProgress, ObjectWorkbenchInteraction, VitalSigns, WorkbenchObject } from '../types';
@@ -18,9 +18,9 @@ interface Props {
 function ObjectGraphic({object}:{object:WorkbenchObject}) {
  const Icon=object.icon==='syringe'?Syringe:object.icon==='patient-id'?IdCard:object.icon==='monitor'?Monitor:object.icon==='aseptic'?Hand:object.icon==='ampoule'?Pill:ClipboardList;
  if(object.icon==='order'&&!object.visual)return <DocumentArt kind="order"/>;
- if(object.visual)return <WorkbenchObjectArt visual={object.visual}/>;
- if(object.icon==='ampoule')return <img src={ASSETS.bedside.ampoule} alt="" draggable="false"/>;
- if(object.icon==='syringe')return <img src={ASSETS.bedside.syringeBody} alt="" draggable="false"/>;
+ if(object.visual)return <span className="workbench-text-symbol">{object.label}</span>;
+ if(object.icon==='ampoule')return <span className="workbench-text-symbol">แอมพูล</span>;
+ if(object.icon==='syringe')return <img src={ASSETS.handover.syringe} alt="" draggable="false"/>;
  return <Icon size={27}/>;
 }
 
@@ -53,7 +53,7 @@ export function ObjectWorkbench({step,interaction,activity,progress,readings,onA
    </button>;
   })}</div>
   {interaction.targets.length>0 && <div className="workbench-target-tray">{interaction.targets.map(target=><button type="button" key={target.id} data-workbench-target={target.id} className={`workbench-target ${interaction.kind==='label'?'syringe-label-target':''}`} onClick={()=>{if(selected){onAction(step.id,selected,target.id);setSelected(null);}}}>
-   {interaction.kind==='label'&&<img src={ASSETS.bedside.syringeBody} alt="" draggable="false"/>}<b>{target.label}</b>
+   {interaction.kind==='label'&&<img src={ASSETS.handover.syringe} alt="" draggable="false"/>}<b>{target.label}</b>
    <span>{interaction.objects.filter(object=>actions[object.id]===target.id).map(object=><i key={object.id}><ObjectGraphic object={object}/><span>{object.label}</span></i>)}</span>
    <small>{selected?'แตะเพื่อวางชิ้นที่เลือก':'ลากอุปกรณ์มาวาง · หรือแตะเลือกแล้วแตะช่อง'}</small>
   </button>)}</div>}

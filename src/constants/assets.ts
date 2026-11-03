@@ -9,26 +9,9 @@ import suppliedECGArt from '../game/suppliedECGArt.json';
 
 export const ASSETS = {
   /**
-   * Bedside clinical instruments and interactive objects
-   */
-  bedside: {
-    ampoule: '/assets/bedside/ampoule.webp',
-    assessmentHand: '/assets/bedside/assessment-hand.webp',
-    clipboard: '/assets/bedside/bedside-clipboard.webp',
-    cuff: '/assets/bedside/cuff.webp',
-    ecgBody: '/assets/bedside/ecg-body.webp',
-    electrode: '/assets/bedside/electrode.webp',
-    sensor: '/assets/bedside/sensor.webp',
-    stethoscope: '/assets/bedside/stethoscope.webp',
-    syringeBody: '/assets/bedside/syringe-body.webp',
-    syringePlunger: '/assets/bedside/syringe-plunger.webp',
-  },
-
-  /**
    * Room and environment backgrounds
    */
   environments: {
-    bedsideRoom: '/assets/environments/bedside-room.webp',
     patientRoom: '/assets/environments/patient-room.webp',
     caseSelectionBg: '/assets/environments/case-selection-bg.webp',
   },
@@ -38,8 +21,6 @@ export const ASSETS = {
    */
   patients: {
     patientCharacter: '/assets/patients/patient-character.webp',
-    patient01: '/assets/patients/patient-01.webp',
-    patient02: '/assets/patients/patient-02.webp',
     patientCase02: '/assets/patients/patient-case-02.webp',
     patientCase02Bed: '/assets/patients/patient-case-02-bed.webp',
     patientCase02Pillow: '/assets/patients/patient-case-02-pillow.webp',
@@ -49,6 +30,7 @@ export const ASSETS = {
    * Clinical Handover & Bedside Information (from 03_รับข้อมูลผู้ป่วย)
    */
   handover: {
+    syringe: '/assets/clinical-handover/play/syringe.webp',
     playStethoscope: '/assets/clinical-handover/play/stethoscope.webp',
     playToolbar: '/assets/clinical-handover/play/equipment-tray.webp',
     sceneOverview: '/assets/clinical-handover/handover-scene-full.webp',
@@ -138,24 +120,8 @@ export const ASSETS = {
    */
   props: {
     nurseCharacter: '/assets/props/nurse-character.webp',
-    equipmentCart: '/assets/props/equipment-cart.webp',
-    hospitalMonitor: '/assets/props/hospital-monitor.webp',
   },
 
-  /**
-   * Legacy prototype assets (reference only)
-   */
-  legacy: {
-    room: '/assets/legacy/room.webp',
-    patient: '/assets/legacy/patient.webp',
-    patientCritical: '/assets/legacy/patient-critical.webp',
-    patientCase02: '/assets/legacy/patient-case-02.png',
-    stethoscope: '/assets/legacy/stethoscope.webp',
-    bpCuff: '/assets/legacy/bp-cuff.webp',
-    spo2: '/assets/legacy/spo2.webp',
-    ecgChest: '/assets/legacy/ecg-chest.png',
-    ecgLeads: '/assets/legacy/ecg-leads.webp',
-  },
 } as const;
 
 export type AssetRegistry = typeof ASSETS;

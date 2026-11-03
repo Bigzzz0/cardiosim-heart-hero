@@ -47,7 +47,7 @@ export function MedicationStation({ activity, readings, onStepAction, decision, 
   const [overview,setOverview]=useState(false);
   if (activity.dataStatus === 'missing' && activity.allowMissingDataAcknowledgement) return <MissingDataCard activity={activity} acknowledged={responses['missing-data-ack'] === 'recorded'} onAcknowledge={onAcknowledgeMissing}/>;
   const nextStep = activity.steps?.[completedSteps.length];
-  const equipmentSprites: Partial<Record<ActivityEquipmentIcon,string>> = {aseptic:suppliedArt.equipmentCart,monitor:suppliedArt.hospitalMonitor};
+  const equipmentSprites: Partial<Record<ActivityEquipmentIcon,string>> = {monitor:suppliedArt.hospitalMonitor};
   const equipmentSprite = nextStep ? equipmentSprites[nextStep.icon] : undefined;
   const NextEquipment = nextStep ? stepIcons[nextStep.icon] : ShieldCheck;
   return <section className="activity-card medication-station-card">

@@ -8,8 +8,8 @@ import { parseCheckpoint } from '../core/checkpoint';
 
 test('supplied patient targets are distinct, reachable and preserve ungraded Case 2 assessment and resume', () => {
   assert(case02.assets.patientSupport, 'bed and pillow must be separate from breathing patient');
-  assert.notEqual(case02.assets.room, verticalSlice.assets.room);
-  assert.equal(verticalSlice.assets.patientSupport, undefined, 'Case 1 keeps its original art');
+  assert.equal(case02.assets.room, verticalSlice.assets.room);
+  assert(verticalSlice.assets.patientSupport, 'Both cases must use the supplied layered patient');
   const hitTest = new HotspotSystem(case02.hotspots);
   const bounds = case02.presentation.patient;
   for (const target of case02.hotspots) {
