@@ -532,6 +532,13 @@
     "provider": "medical-illustration"
   },
   {
+    "file": "/assets/ui/certificate-frame.webp",
+    "sha256": "fd872373abf3eb2200ebb438a64e4b1e629c83edc236594a78fe3972fa42c6e1",
+    "source": "เนื้อหาsimulation/เกียรติบัตรCardiosim heart hero simulation .pdf",
+    "sourceSha256": "c791e4e1557d5481fd95955b525cd003bcea0e95bfef364e6c4e9bb3f75c35ae",
+    "provider": "user-supplied-branding"
+  },
+  {
     "file": "/assets/ui/cover.webp",
     "sha256": "d9f275c8262892befd60661a4ec9ff78196fe21be629a09a7e0fef887087e509",
     "source": "art/medical-illustration/raw/01_ปกเกม_แก้.ai",

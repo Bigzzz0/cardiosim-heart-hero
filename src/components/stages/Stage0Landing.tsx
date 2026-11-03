@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Award } from 'lucide-react';
 import { StudentProfile } from '../../types/game';
 import { clinicalAudio } from '../../services/clinicalAudioEngine';
 import { IllustratedButton } from '../ui/IllustratedButton';
+import { CertificateModal } from '../common/CertificateModal';
 import { ASSETS } from '../../constants/assets';
 import '../../illustrated-entry.css';
 
@@ -10,6 +11,14 @@ interface Stage0LandingProps { onStartGame: (profile: StudentProfile) => void; }
 
 export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => {
   const [showLogin, setShowLogin] = useState(false);
+  const [showCertificateTest, setShowCertificateTest] = useState(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      return p.get('test') === 'certificate' || p.get('certificate') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const [studentId, setStudentId] = useState('');
   const [name, setName] = useState('');
   const [institution, setInstitution] = useState('');
@@ -38,6 +47,16 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
             </div>
           </div>
           <p className="illustrated-cover-caption">ฝึกคิด ตัดสินใจ และดูแลผู้ป่วยในสถานการณ์จำลอง</p>
+          <div className="illustrated-cover-cert-test" style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
+            <button
+              type="button"
+              onClick={() => setShowCertificateTest(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/95 hover:bg-white text-slate-800 text-xs font-bold border border-slate-300 shadow-sm hover:shadow transition-all"
+            >
+              <Award className="w-4 h-4 text-amber-500" />
+              ทดสอบพิมพ์ใบประกาศนียบัตร (Certificate Preview)
+            </button>
+          </div>
         </div>
       ) : (
         <div className="illustrated-login">
@@ -61,6 +80,20 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
           </form>
         </div>
       )}
+
+      {/* Standalone Certificate Testing Modal */}
+      <CertificateModal
+        isOpen={showCertificateTest}
+        onClose={() => setShowCertificateTest(false)}
+        student={{
+          studentId: studentId.trim() || '66010204',
+          name: name.trim() || 'พว. ณัฐชา พงษ์ไพศาล',
+          institution: institution.trim() || 'คณะพยาบาลศาสตร์'
+        }}
+        preScore={4}
+        postScore={10}
+        gain={0.86}
+      />
     </section>
   );
 };

@@ -85,6 +85,7 @@ export const ASSETS = {
     cover: '/assets/ui/cover.webp',
     login: '/assets/ui/login.webp',
     logo: '/assets/ui/logo.webp',
+    certificateFrame: '/assets/ui/certificate-frame.webp',
     btnStart: '/assets/ui/btn-start.webp',
     btnAction1: '/assets/ui/btn-action-1.webp',
     btnAction2: '/assets/ui/btn-action-2.webp',

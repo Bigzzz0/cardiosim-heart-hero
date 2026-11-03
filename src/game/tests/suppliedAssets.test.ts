@@ -19,7 +19,7 @@ test('every shipped image and case illustration has reviewed supplied-source pro
     assert(record, `Unreviewed image in public bundle: ${file}`);
     assert.equal(digest(absolute), record.sha256, `Runtime art changed: ${file}`);
     assert(['medical-illustration', 'user-supplied-branding'].includes(record.provider));
-    assert(record.source.startsWith('art/medical-illustration/raw/') || record.source === 'art/branding/cardiosim-icon.webp');
+    assert(record.source.startsWith('art/medical-illustration/raw/') || record.source === 'art/branding/cardiosim-icon.webp' || record.source.startsWith('เนื้อหาsimulation/'));
     if (!sourceHashes.has(record.source)) sourceHashes.set(record.source, digest(record.source));
     assert.equal(sourceHashes.get(record.source), record.sourceSha256, `Source changed: ${record.source}`);
   }

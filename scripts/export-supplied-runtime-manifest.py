@@ -31,6 +31,8 @@ def source_for(path):
             source = '01_Login_แก้.ai'
         elif name.startswith(('case-', 'case-board')):
             source = '02_Case_แก้.ai'
+        elif name == 'certificate-frame.webp':
+            return ROOT / 'เนื้อหาsimulation/เกียรติบัตรCardiosim heart hero simulation .pdf', 'user-supplied-branding'
         else:
             assert name.startswith(('cover', 'start-', 'btn-', 'logo')), f'Unreviewed UI image: {relative}'
             source = '01_ปกเกม_แก้.ai'
