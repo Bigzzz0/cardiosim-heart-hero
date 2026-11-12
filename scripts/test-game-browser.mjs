@@ -345,7 +345,11 @@ try {
   await page.getByRole('button',{name:'บันทึกการอ่าน ECG'}).click(); await page.locator('.feedback.success').waitFor();
   await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.locator('.surface-instruction b').getByText('เลือกการตอบสนอง แล้วดูผลที่ผู้ป่วย').waitFor();
+  const emergencyBoard=page.locator('[data-room-surface="monitor-response"]');
+  await emergencyBoard.getByText('จัดการ์ดข้อความลงกรอบ').waitFor();
+  if(await emergencyBoard.locator('.answer-card svg, .answer-card .drag-grip').count())throw new Error('Emergency answer cards should display text without icons');
   await dragCardTo('จัดให้นอนราบและให้ดื่มน้ำ','response');
+  if(await emergencyBoard.locator('.answer-slot.filled b svg').count())throw new Error('An emergency answer should stay text-only after dropping it');
   await page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
   await page.locator('.feedback.error').waitFor();
   await dragCardTo('High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน','response');
