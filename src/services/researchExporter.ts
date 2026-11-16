@@ -1,4 +1,9 @@
 import { GameTelemetry } from '../types/game';
+import { ALL_SURVEY_ITEMS, computeSurveySummary } from '../data/surveyData';
+
+function csvEscape(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
 
 export function calculateHakeGain(preScore: number, postScore: number, maxScore = 10): number {
   if (maxScore - preScore <= 0) return 0;
@@ -7,6 +12,7 @@ export function calculateHakeGain(preScore: number, postScore: number, maxScore 
 }
 
 export function exportTelemetryToCSV(telemetry: GameTelemetry) {
+  const surveyHeaders = ALL_SURVEY_ITEMS.map((item) => `survey_${item.id}`);
   const headers = [
     'student_id',
     'student_name',
@@ -24,11 +30,12 @@ export function exportTelemetryToCSV(telemetry: GameTelemetry) {
     'prioritization_errors',
     'medication_errors',
     'io_errors',
-    'sus_q1',
-    'sus_q2',
-    'sus_q3',
-    'sus_q4',
-    'sus_q5',
+    ...surveyHeaders,
+    'survey_domain1_mean',
+    'survey_domain2_mean',
+    'survey_domain3_mean',
+    'survey_overall_mean',
+    'feedback_text',
     'completed_timestamp'
   ];
 
@@ -41,9 +48,14 @@ export function exportTelemetryToCSV(telemetry: GameTelemetry) {
     evaluateOutcomes: 90
   };
 
+  const surveySummary = computeSurveySummary(telemetry.surveyScores);
+  const surveyValues = ALL_SURVEY_ITEMS.map(
+    (item) => telemetry.surveyScores[item.id] ?? ''
+  );
+
   const values = [
-    `"${telemetry.student.studentId || 'ANONYMOUS'}"`,
-    `"${telemetry.student.name || 'ไม่ระบุ'}"`,
+    csvEscape(telemetry.student.studentId || 'ANONYMOUS'),
+    csvEscape(telemetry.student.name || 'ไม่ระบุ'),
     telemetry.preTestScore,
     telemetry.postTestScore,
     telemetry.learningGain,
@@ -58,12 +70,13 @@ export function exportTelemetryToCSV(telemetry: GameTelemetry) {
     telemetry.prioritizationErrors,
     telemetry.medicationErrors,
     telemetry.ioErrors,
-    telemetry.surveyScores['sus_1'] || 5,
-    telemetry.surveyScores['sus_2'] || 1,
-    telemetry.surveyScores['sus_3'] || 5,
-    telemetry.surveyScores['sus_4'] || 1,
-    telemetry.surveyScores['sus_5'] || 5,
-    `"${telemetry.completedAt || new Date().toISOString()}"`
+    ...surveyValues,
+    surveySummary.domainMeans.domain1 ?? '',
+    surveySummary.domainMeans.domain2 ?? '',
+    surveySummary.domainMeans.domain3 ?? '',
+    surveySummary.overallMean ?? '',
+    csvEscape(telemetry.feedbackText || ''),
+    csvEscape(telemetry.completedAt || new Date().toISOString())
   ];
 
   const csvContent = '\uFEFF' + headers.join(',') + '\n' + values.join(',');
@@ -80,6 +93,7 @@ export function exportTelemetryToCSV(telemetry: GameTelemetry) {
 export function exportTelemetryToJSON(telemetry: GameTelemetry) {
   const dataToExport = {
     ...telemetry,
+    surveySummary: computeSurveySummary(telemetry.surveyScores),
     ncjmmScores: telemetry.ncjmmScores || {
       recognizeCues: 95,
       analyzeCues: 90,
