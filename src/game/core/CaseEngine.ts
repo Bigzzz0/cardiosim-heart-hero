@@ -69,6 +69,7 @@ export class CaseEngine {
       if (current.activity?.allowMissingDataAcknowledgement) return this.mission.decisionConfirmed || this.activityReady(current.activity);
       if (current.activity?.kind === 'medication' || current.activity?.kind === 'text-response') return this.mission.decisionConfirmed || this.activityReady(current.activity);
       if (current.activity?.kind === 'fluid-balance') return this.mission.decisionConfirmed || (this.mission.decisions.length > 0 && this.activityReady(current.activity));
+      if (current.gradable === false && current.decision?.slots?.length) return this.mission.decisionConfirmed || current.decision.slots.every(slot => this.mission.decisions.some(value => value.startsWith(`${slot.id}::`)));
       return this.mission.decisionConfirmed || this.mission.decisions.length > 0;
     }
     if (current.kind === 'transition') return !current.autoAfter && this.mission.phaseElapsed >= (current.minDuration ?? 0);
@@ -321,8 +322,9 @@ export class CaseEngine {
     const activity = this.mission.current.activity;
     if (activity && !this.activityReady(activity)) return false;
     if (this.mission.current.gradable === false) {
+      if (!this.canContinue) return false;
       this.mission.decisionConfirmed = true;
-      this.feedback = { kind: 'info', text: 'บันทึกคำตอบเพื่อฝึกแล้ว · Case นี้ยังไม่มีข้อมูลทางคลินิกสำหรับตรวจถูกหรือผิด' };
+      this.feedback = { kind: 'info', text: this.mission.current.decision?.success ?? 'บันทึกคำตอบเพื่อฝึกแล้ว' };
       this.emit('DECISION_RECORDED_UNSCORED', this.mission.current.id);
       return true;
     }

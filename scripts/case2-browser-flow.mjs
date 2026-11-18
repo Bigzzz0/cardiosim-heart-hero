@@ -56,6 +56,8 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
     await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ประเมิน ABC'}),target);
     await case2Page.waitForFunction(count=>document.querySelectorAll('.objective.done').length>=count,await case2Page.locator('.objective.done').count()+1);
   }
+  await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'เริ่ม CPR'}),{x:550,y:395});
+  await case2Page.waitForFunction(()=>document.querySelectorAll('.objective.done').length===4);
   await case2Page.getByRole('button',{name:'เตรียมติด ECG'}).click();
   const case2Targets=JSON.parse(await case2Page.locator('main').getAttribute('data-ecg-targets')??'[]');
   const case2Layout=JSON.parse(await case2Page.locator('main').getAttribute('data-ecg-layout')??'{}');
@@ -70,7 +72,11 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
   await case2Page.getByRole('button',{name:'ต่อไป'}).click();
   await case2Page.locator('.surface-instruction b').getByText('เลือกการตอบสนอง แล้วดูผลที่ผู้ป่วย').waitFor();
   if(!await case2Page.locator('[data-room-surface="monitor-response"]').isVisible())throw new Error('Case 2 emergency response should still use the in-room monitor surface');
-  await case2Page.locator('.answer-card').first().click();
+  for (const [slot, option] of [['response', 'priority-response'], ['equipment', 'defibrillator'], ['team', 'emergency-team'], ['monitor', 'monitor-patient']]) {
+    await case2Page.locator(`[data-answer-slot="${slot}"]`).click();
+    await case2Page.locator(`[data-answer-option="${option}"]`).click();
+  }
+  if(await case2Page.locator('.answer-slot.filled').count()!==4)throw new Error('Case 2 should record all four emergency care cards');
   await case2Page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
   if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 treatment choice must be recorded without a clinical judgment');
   await case2Page.getByRole('button',{name:'ต่อไป'}).click();

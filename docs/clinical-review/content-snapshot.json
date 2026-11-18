@@ -1,6 +1,6 @@
 {
   "reviewDate": "2026-11-03",
-  "baseCommit": "b97a0a677a9478bae9e56b7cfcf35414856e6897",
+  "baseCommit": "1829879fe4aaee8ce3e95b62b52758fe5d313d67",
   "status": "pending-expert-review",
   "sourceHashNormalization": "utf8-lf",
   "sourceFiles": [
@@ -34,7 +34,7 @@
     },
     {
       "file": "src/game/cases/case02.ts",
-      "sha256": "bfba86226eac1b5aaf9da906324ddb055ae0db19c9cb3a4ada4a33e2dcb5d4c5"
+      "sha256": "512ee76999971564cdc3cea454044143f0aa3ebd850f94c2ed9d042e7b3aa413"
     },
     {
       "file": "src/game/cases/medicationWorkbench.ts",
@@ -42,7 +42,7 @@
     },
     {
       "file": "src/game/core/CaseEngine.ts",
-      "sha256": "e93c86b05a777b4fc7608e1204edfc81185822da420090685d01ff7ee38fbac3"
+      "sha256": "47bbcc9ffd44f363681bc22193827d7fddf624c56ba7c2747fc134fad21e1326"
     },
     {
       "file": "src/components/stages/Stage11IORecord.tsx",
@@ -1260,7 +1260,7 @@
       "id": "case-02-acute-decompensated-heart-failure",
       "title": "ภาวะหัวใจล้มเหลวกำเริบและน้ำคั่งในปอด",
       "gradable": false,
-      "clinicalStatus": "CASE 02 · STORY-SUMMARY DEMO · ไม่มีค่า vital หรือ answer key",
+      "clinicalStatus": "CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม",
       "initialVitals": {
         "hr": null,
         "bpSystolic": null,
@@ -1317,8 +1317,8 @@
           "id": "circulation",
           "section": "Perfusion Assessment",
           "title": "C · Circulation",
-          "text": "บันทึกการประเมิน C · ไม่มีผลตรวจการไหลเวียนหรือตัวเลข vital ในเรื่องย่อ",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "คลำชีพจรไม่พบ → เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator",
+          "source": "เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026"
         },
         {
           "id": "diagnosis",
@@ -1366,8 +1366,15 @@
           "id": "emergency-treatment",
           "section": "Care Plan",
           "title": "Emergency treatment · demo response",
-          "text": "บันทึกการตอบสนองใน simulation · ไม่มี protocol หรือผลการรักษาที่ผ่านการรับรองในเรื่องย่อ Case 2",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "ทีมกำหนดให้เน้น CPR การเตรียม Defibrillator และการเรียกทีมฉุกเฉิน โดยติดตาม EKG และสัญญาณชีพ ยาที่ระบุในคำสั่งแพทย์เป็นข้อมูลประกอบของสถานการณ์",
+          "source": "เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026"
+        },
+        {
+          "id": "cpr-started",
+          "section": "Care Plan",
+          "title": "เริ่มช่วยชีวิต",
+          "text": "ผู้เล่นเริ่ม CPR หลังประเมินว่าคลำชีพจรไม่พบ ก่อนเข้าสู่กิจกรรมฝึก EKG",
+          "source": "เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026"
         }
       ],
       "missions": [
@@ -1642,8 +1649,8 @@
           "kind": "transition",
           "phase": "EMERGENCY",
           "title": "อาการผู้ป่วย\nกำลังเปลี่ยนไป",
-          "description": "เข้าสู่ช่วงฉุกเฉินของ simulation · เรื่องย่อไม่มีตัวเลข vital ให้แสดง",
-          "hint": "สังเกตสถานะผู้ป่วยและเสียงเตือน โดย Monitor จะแสดง “ไม่มีข้อมูล”",
+          "description": "ผู้ป่วยเข้าสู่ช่วงฉุกเฉิน ประเมินผู้ป่วยและคลำชีพจร หากคลำชีพจรไม่ได้ให้เริ่ม CPR ทันที",
+          "hint": "คลื่นบน Monitor อาจยังปรากฏแม้คลำชีพจรไม่ได้ ให้ยึดผลประเมินผู้ป่วย",
           "autoAfter": 5000,
           "onEnter": {
             "emergency": true,
@@ -1663,8 +1670,8 @@
           "ordered": true,
           "phase": "07 · EMERGENCY / ABC",
           "title": "ประเมิน ABC\nอย่างเป็นลำดับ",
-          "description": "ใช้เครื่องมือ “ประเมิน ABC” ตรวจผู้ป่วยตามลำดับ A → B → C ไม่ต้องเปลี่ยนออกจากห้อง",
-          "hint": "A → ศีรษะ · B → ทรวงอก · C → ข้อมือ เลือกเครื่องมือประเมิน ABC",
+          "description": "ประเมิน A → B → C เมื่อคลำชีพจรไม่พบให้เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator",
+          "hint": "ทีมคงขั้นฝึกติด EKG เพื่อวัตถุประสงค์การเรียนรู้ การช่วยชีวิตต้องเริ่มทันทีเมื่อคลำชีพจรไม่ได้",
           "button": "เตรียมติด ECG",
           "objectives": [
             {
@@ -1689,7 +1696,15 @@
               "tool": "hand",
               "target": "wrist",
               "finding": "circulation",
-              "feedback": "C ประเมินการไหลเวียนแล้ว"
+              "feedback": "คลำชีพจรไม่พบ → เริ่ม CPR ทันที เรียกทีมฉุกเฉินและเตรียม Defibrillator"
+            },
+            {
+              "id": "case2-start-cpr",
+              "label": "เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่พบ",
+              "tool": "cpr",
+              "target": "chest",
+              "finding": "cpr-started",
+              "feedback": "บันทึกการเริ่ม CPR แล้ว กิจกรรมถัดไปเป็นขั้นฝึกติด EKG ตามวัตถุประสงค์การเรียนรู้"
             }
           ]
         },
@@ -1698,8 +1713,8 @@
           "kind": "placement",
           "phase": "08 · ECG / CHEST LEADS",
           "title": "เชื่อมต่อ\nสัญญาณหัวใจ",
-          "description": "ลาก V1–V6 จากถาดไปวางบนผังทรวงอกให้ครบ หรือเลือก lead แล้วแตะตำแหน่ง กด Confirm เมื่อติดครบ",
-          "hint": "ขวาของผู้ป่วยอยู่ซ้ายของภาพ ใช้ปุ่ม Hint เพื่อแสดงชื่อและตำแหน่งของแต่ละ lead",
+          "description": "ฝึกติด EKG ตามวัตถุประสงค์การเรียนรู้ ระหว่างสถานการณ์ที่ต้องเริ่ม CPR แล้วเมื่อคลำชีพจรไม่ได้",
+          "hint": "ขั้น EKG นี้เป็นกิจกรรมฝึกที่ทีมกำหนด ให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้",
           "button": "Confirm · บันทึก ECG"
         },
         {
@@ -1707,8 +1722,8 @@
           "kind": "decision",
           "phase": "09 · ECG REVIEW",
           "title": "อ่านผล ECG\nและบันทึกคำตอบ",
-          "description": "บันทึกข้อความเพื่อฝึก · เรื่องย่อ Case 2 ไม่มีคลื่น ECG หรือผลอ่าน",
-          "hint": "ไม่มี rhythm strip หรือ answer key · ข้อความที่กรอกจะไม่ถูกตรวจทางคลินิก",
+          "description": "บันทึกการอ่าน EKG ระหว่างการฝึก คลื่นไฟฟ้าหัวใจอาจยังปรากฏแม้คลำชีพจรไม่ได้",
+          "hint": "เมื่อคลำชีพจรไม่ได้ให้เริ่ม CPR ทันที ขั้นฝึก EKG นี้คงไว้ตามวัตถุประสงค์การเรียนรู้",
           "chartFinding": "ecg-read",
           "gradable": false,
           "activity": {
@@ -1718,7 +1733,7 @@
             "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
             "eyebrow": "ECG NOTES · CASE 02 PRACTICE",
             "title": "บันทึกข้อความฝึก",
-            "notice": "เรื่องย่อ Case 2 ไม่มี ECG rhythm strip หรือ answer key · ข้อความจะถูกบันทึกเพื่อฝึกเท่านั้น",
+            "notice": "คลำชีพจรไม่พบ → เริ่ม CPR ทันที ทีมคงกิจกรรม EKG เพื่อฝึกการติดและบันทึกผล",
             "rows": [
               {
                 "label": "Crisis event · ECG rhythm",
@@ -1744,8 +1759,8 @@
           "kind": "decision",
           "phase": "10 · EMERGENCY TREATMENT",
           "title": "เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย",
-          "description": "เลือกการตอบสนองทั่วไปเพื่อดู transition ของ simulation · ไม่มี treatment sequence ในเรื่องย่อ Case 2",
-          "hint": "ตัวเลือกเป็นกลไกสำหรับจบช่วงฝึก ไม่ใช่แนวทางรักษา",
+          "description": "จัดการ์ดการพยาบาลลงกรอบ โดยเริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เน้นการเตรียม Defibrillator และเรียกทีมฉุกเฉิน",
+          "hint": "ยาที่ระบุในคำสั่งแพทย์เป็นข้อมูลประกอบ ให้เน้นการช่วยชีวิตตามที่ทีมกำหนด",
           "button": "Confirm · ตรวจคำตอบ",
           "chartFinding": "emergency-treatment",
           "gradable": false,
@@ -1753,21 +1768,23 @@
             "options": [
               {
                 "id": "priority-response",
-                "label": "การตอบสนองฝึก 1",
-                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
-                "icon": "device"
+                "label": "เริ่ม CPR ทันที",
+                "detail": "เมื่อประเมินแล้วคลำชีพจรไม่พบ"
               },
               {
-                "id": "supine-water",
-                "label": "การตอบสนองฝึก 2",
-                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
-                "icon": "care"
+                "id": "defibrillator",
+                "label": "เตรียม Defibrillator และ Emergency Trolley",
+                "detail": "เตรียมอุปกรณ์สำหรับทีมช่วยชีวิต"
               },
               {
-                "id": "wait-and-observe",
-                "label": "การตอบสนองฝึก 3",
-                "detail": "ตัวเลือกทั่วไปสำหรับ simulation · ไม่มี protocol ในข้อมูล Case 2",
-                "icon": "monitor"
+                "id": "emergency-team",
+                "label": "เรียกทีมฉุกเฉินและรายงานแพทย์ทันที",
+                "detail": "ขอความช่วยเหลือเมื่อพบผู้ป่วยไม่มีชีพจร"
+              },
+              {
+                "id": "monitor-patient",
+                "label": "ติดตาม EKG และสัญญาณชีพอย่างต่อเนื่อง",
+                "detail": "ติดตามระหว่างการช่วยชีวิต"
               }
             ],
             "expected": [],
@@ -1777,14 +1794,28 @@
             "slots": [
               {
                 "id": "response",
-                "label": "ช่องฝึก 1",
+                "label": "การช่วยชีวิตทันที",
+                "expected": ""
+              },
+              {
+                "id": "equipment",
+                "label": "การเตรียมอุปกรณ์",
+                "expected": ""
+              },
+              {
+                "id": "team",
+                "label": "การเรียกทีมช่วยเหลือ",
+                "expected": ""
+              },
+              {
+                "id": "monitor",
+                "label": "การติดตามผู้ป่วย",
                 "expected": ""
               }
             ],
-            "explanation": "Case 2 ไม่มี treatment sequence · เลือกเพื่อฝึกและยืนยันเท่านั้น",
-            "success": "บันทึกการตอบสนองเพื่อฝึกแล้ว · simulation จะเข้าสู่ช่วงสรุป"
-          },
-          "dataStatus": "missing"
+            "explanation": "จัดการ์ดการช่วยชีวิตให้ครบก่อนยืนยัน",
+            "success": "บันทึกการฝึกช่วยชีวิตตามคำตอบทีมแล้ว"
+          }
         },
         {
           "id": "PATIENT_STABILIZED",
@@ -2656,13 +2687,13 @@
       "id": "CLIN-10",
       "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน",
       "status": "pending",
-      "question": "Case 2 มีเพียงเรื่องย่อ ค่าสัญญาณชีพ Order, ECG strip และ answer key ยังไม่มี ยังคงเล่นฝึกและไม่ให้คะแนนทางคลินิก ผู้รับผิดชอบต้องส่งเคสที่รับรองแล้ว ห้ามนำค่าจาก Case 1 ไปเติมเพื่อทำให้ดูสมบูรณ์",
+      "question": "คำยืนยันทีมผ่านแชตวันที่ 18 พฤศจิกายน 2026 ให้คงลำดับประเมินผู้ป่วย → EKG → จัดการพยาบาลเพื่อวัตถุประสงค์การเรียนรู้ และให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เกมเพิ่มการบันทึกเริ่ม CPR ก่อนขั้นฝึก EKG และการ์ดข้อความ CPR, เตรียม Defibrillator/Emergency Trolley, เรียกทีมฉุกเฉิน และติดตาม EKG/สัญญาณชีพ โดยบันทึกการจัดวางเพื่อฝึก ยาตามคำสั่งแพทย์เป็นข้อมูลประกอบ ยังรอยืนยันว่าต้องเลือกยาเป็นกิจกรรมหรือไม่ คะแนนส่วนเลือกยา 20 คะแนน ลำดับ/คะแนนการ์ด และเกณฑ์ใบประกาศ รายละเอียดอื่นของ Case 2 ยังอยู่ระหว่างนำเข้าจากเนื้อหาSim.pdf ฉบับ 32 หน้า",
       "reviewerRole": "เจ้าของเคส Case 2",
       "locations": [
         {
           "file": "src/game/cases/case02.ts",
           "anchor": "case02.initialVitals",
-          "line": 19
+          "line": 20
         },
         {
           "file": "src/game/cases/case02.ts",

@@ -187,7 +187,7 @@ test('Case 2 loads from the registry with qualitative-only data and logs choices
   const mistakesBefore = game.score.data.mistakeCount;
   assert.equal(game.confirmDecision(), true, 'Case 2 choices are logged but not marked clinically right or wrong');
   assert.equal(game.score.data.mistakeCount, mistakesBefore);
-  assert.match(game.feedback.text, /ไม่มีข้อมูลทางคลินิก/);
+  assert.match(game.feedback.text, /ไม่มีการตัดสินถูกหรือผิดทางคลินิก/);
 });
 
 test('Case 2 can be completed from briefing to result without inventing numeric vitals or grading missing clinical answers', () => {
@@ -210,11 +210,18 @@ test('Case 2 can be completed from briefing to result without inventing numeric 
   assert.equal(game.confirmActivity(),true); assert.equal(game.score.data.attempts,beforeUnscoredAnswers); game.next();
   game.update(5000);
   for (const target of ['head','chest','wrist']) { game.selectTool('hand'); game.interact(target); game.update(950); }
+  assert.equal(game.canContinue,false,'Case 2 must record CPR before its retained teaching ECG step');
+  game.selectTool('cpr'); game.interact('chest'); game.update(950);
+  assert(game.chart.some(entry=>entry.id==='cpr-started'));
   game.next();
   for (const lead of case02.ecg.targets) assert.equal(game.placeLead(lead.id,lead),true);
   assert.equal(game.confirmECG(),true);
   game.next(); game.setResponse('rhythm-answer','unavailable source'); assert.equal(game.confirmActivity(),true); game.next();
   game.chooseForSlot('response',case02.missions.find(mission=>mission.id==='EMERGENCY_TREATMENT')?.decision?.options[0]?.id ?? '');
+  assert.equal(game.confirmDecision(),false,'all emergency care slots must be filled before recording');
+  game.chooseForSlot('equipment','defibrillator');
+  game.chooseForSlot('team','emergency-team');
+  game.chooseForSlot('monitor','monitor-patient');
   assert.equal(game.confirmDecision(),true); game.next(); game.update(6500); game.next();
   assert.equal(game.mission.current.id,'CASE_SUMMARY');
   assert.deepEqual(Object.values(game.vitals.current),[null,null,null,null,null]);
