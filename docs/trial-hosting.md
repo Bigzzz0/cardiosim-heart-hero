@@ -5,7 +5,9 @@
 - [Case 1](https://cardiosim-heart-hero-trial-0032640.navyball41.chatgpt.site/game.html?case=case-01)
 - [Case 2](https://cardiosim-heart-hero-trial-0032640.navyball41.chatgpt.site/game.html?case=case-02)
 
-เผยแพร่ด้วย Sites และเปิดให้คนที่มี URL เข้าได้ สถานะ deployment สำเร็จจาก native Sites API รุ่นเผยแพร่ 1 ใช้แอปจาก commit `003264020c406a1a97258c7075689a49a1656709` รายละเอียด project/version/deployment อยู่ใน [trial-hosting.json](trial-hosting.json) และเก็บ identity ใน `.openai/hosting.json`
+เผยแพร่ด้วย Sites และเปิดให้คนที่มี URL เข้าได้ สถานะ deployment สำเร็จจาก native Sites API รุ่นเผยแพร่ 2 ใช้แอปจาก commit `3696904fc5dc34e802fdef1a79d13cc0f954b4f0` เผยแพร่วันที่ 19 พฤศจิกายน 2026 รายละเอียด project/version/deployment อยู่ใน [trial-hosting.json](trial-hosting.json) และเก็บ identity ใน `.openai/hosting.json`
+
+รุ่นนี้เพิ่มขั้นบันทึกเริ่ม CPR ก่อนกิจกรรมฝึก EKG ของเคส 2 พร้อมการ์ดข้อความช่วยชีวิต 4 ใบ รวมหน้าใบประกาศสำหรับทดลองพิมพ์และแบบประเมินความพึงพอใจ 10 ข้อของทีม ผ่านเทสต์โค้ด 16 ข้อและ build สำเร็จ ทดสอบเล่นเคส 2 ครบเส้นทางใน Edge ก่อนรวมงานแบบประเมิน โดย build ที่เผยแพร่รวมงานแบบประเมินแล้ว
 
 ## สถานะเนื้อหา
 
