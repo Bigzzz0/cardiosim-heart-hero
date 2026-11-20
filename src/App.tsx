@@ -51,7 +51,7 @@ export const App: React.FC = () => {
         return {
           studentId: '66010204',
           name: 'พว. ณัฐชา พงษ์ไพศาล',
-          institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยมหิดล'
+          institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น'
         };
       }
     } catch {
@@ -75,7 +75,7 @@ export const App: React.FC = () => {
     student: {
       studentId: '66010204',
       name: 'พว. ณัฐชา พงษ์ไพศาล',
-      institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยมหิดล'
+      institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น'
     },
     preTestScore: 4,
     preTestAnswers: {},

@@ -88,7 +88,7 @@ export const Stage0Landing: React.FC<Stage0LandingProps> = ({ onStartGame }) => 
         student={{
           studentId: studentId.trim() || '66010204',
           name: name.trim() || 'พว. ณัฐชา พงษ์ไพศาล',
-          institution: institution.trim() || 'คณะพยาบาลศาสตร์'
+          institution: institution.trim() || 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น'
         }}
         preScore={4}
         postScore={10}
