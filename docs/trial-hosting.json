@@ -7,13 +7,13 @@
   "app_source": {
     "repository": "https://github.com/Bigzzz0/cardiosim-heart-hero",
     "branch": "codex/cardiosim-game-module",
-    "commit": "84ee2b677065e39b0cc4495fce772a14bac1c76f"
+    "commit": "6e9ae035fad809fc7c45a1389e37052f30557cde"
   },
-  "publication_source_commit": "22d62d7691211a1c6695056696c360a5f74d7fa3",
-  "version_id": "appgprj_6aea013040588191ba0f9e97d5834224~appgver_fe8f275857088191a5bc1655a1d8932a",
-  "version_number": 4,
-  "deployment_id": "appgdep_6affcc8e4c888191adf4d09eb9eb5cdf",
-  "updated_at": "2026-11-20T04:29:19.264468+00:00",
+  "publication_source_commit": "015de563a3d6ba8ae819afeb2ac5140dd3465ebe",
+  "version_id": "appgprj_6aea013040588191ba0f9e97d5834224~appgver_fa3f50c6476881918a05495f2be090e0",
+  "version_number": 5,
+  "deployment_id": "appgdep_6affcfe9cbf081918f9aa02b6212a46d",
+  "updated_at": "2026-11-20T04:43:37.842223+00:00",
   "clinical_approval": "pending",
   "publication_checkout": "../sites/cardiosim-trial-0032640"
 }
