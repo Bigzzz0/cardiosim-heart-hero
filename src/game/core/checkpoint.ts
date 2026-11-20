@@ -27,7 +27,13 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     if(data.ecgConfirmed===true && data.leads.length!==config.ecg.targets.length)return null;
     const legacyECG = data.mission==='ECG_PLACEMENT' && leadPlacements===undefined;
     const active = config.missions.find(m => m.id === data.mission)!;
-    if (data.decisions.some(value => {
+    const legacyMatchingOptions = active.id === 'DIAGNOSIS' ? ['breathing-problem','other-problem','respiratory-evidence','unrelated-evidence'] : active.id === 'NURSING_INTERVENTION' ? ['position-care','monitor-care','skip-monitoring'] : [];
+    const legacyMatchingSlots = active.id === 'DIAGNOSIS' ? ['problem','support'] : ['intervention-1','intervention-2'];
+    const legacyCase2Matching = config.id === 'case-02-acute-decompensated-heart-failure' && data.decisions.length > 0 && data.decisions.every(value => {
+      const [slot, option] = value.split('::');
+      return legacyMatchingSlots.includes(slot) && legacyMatchingOptions.includes(option);
+    });
+    if (!legacyCase2Matching && data.decisions.some(value => {
       const [slotId, optionId] = value.split('::');
       if (!active.decision?.slots?.length) return !active.decision?.options.some(option => option.id === value);
       // Accept a legacy single-choice checkpoint so restore() can reset this
@@ -68,7 +74,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     const sourceVitals = { ...config.initialVitals };
     for (const mission of config.missions.slice(0, config.missions.indexOf(active) + 1)) Object.assign(sourceVitals, mission.onEnter?.vitals);
     const savedVitals = !config.gradable && Object.values(data.vitals).every(value => value === null) ? sourceVitals : data.vitals;
-    return { ...data, vitals: savedVitals, ...(replacedMissingData?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
+    return { ...data, vitals: savedVitals, ...(replacedMissingData || legacyCase2Matching?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep || legacyCase2Matching?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
   } catch { return null; }
 }
 export function readCheckpoint(config: GameCase): Checkpoint | null { try { const raw = localStorage.getItem(key(config.id)); return raw ? parseCheckpoint(raw, config) : null; } catch { return null; } }

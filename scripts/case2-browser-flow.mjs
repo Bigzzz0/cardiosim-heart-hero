@@ -29,13 +29,21 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
   await case2Page.waitForFunction(()=>document.querySelectorAll('.objective.done').length===3);
   if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 assessment should record actions as ungraded practice');
   await case2Page.getByRole('button',{name:'บันทึกการประเมิน'}).click();
-  for(const [title,first,second] of [['จัดวางปัญหาและ ข้อมูลสนับสนุน',0,1],['เลือกการพยาบาล ให้สัมพันธ์กับปัญหา',0,1]]){
+  const diagnosisAnswers=['output','gas','fluid','electrolyte'].flatMap((id,index)=>[[`diagnosis-${index+1}`,`diagnosis-${id}`],[`evidence-${index+1}`,`evidence-${id}`]]);
+  const careAnswers=[['care-gas','care-oxygen'],['care-output','care-monitoring'],['care-fluid','care-diuresis'],['care-electrolyte','care-labs']];
+  for(const [title,answers] of [['จัดวางปัญหาและ ข้อมูลสนับสนุน',diagnosisAnswers],['เลือกการพยาบาล ให้สัมพันธ์กับปัญหา',careAnswers]]){
+    if(answers===careAnswers)await case2Page.setViewportSize({width:390,height:844});
     await case2Page.locator('.surface-instruction b').getByText(title).waitFor();
-    await case2Page.locator('.answer-card').nth(first).click(); await case2Page.locator('.answer-card').nth(second).click();
+    for(const [slot,option] of answers){
+      await case2Page.locator(`[data-answer-slot="${slot}"]`).click();
+      await case2Page.locator(`[data-answer-option="${option}"]`).click();
+    }
+    if(await case2Page.locator('.answer-slot.filled').count()!==answers.length)throw new Error('Every source-documented matching slot should be filled');
     await case2Page.getByRole('button',{name:'ยืนยันคำตอบ'}).click();
     if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 decisions must be recorded without a clinically correct/incorrect judgment');
     await case2Page.getByRole('button',{name:'ต่อไป'}).click();
   }
+  await case2Page.setViewportSize({width:1440,height:900});
   await case2Page.locator('main[data-mission="MEDICATION"]').waitFor();
   if(await case2Page.locator('.activity-card select').count()!==2||await case2Page.locator('.activity-equipment-token').count())throw new Error('Case 2 medication safety should use two response fields and its own order');
   await case2Page.locator('.medication-order-card summary').click();

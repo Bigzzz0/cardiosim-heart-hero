@@ -12,6 +12,7 @@ case02.gradable = false;
 case02.tools.push({ id: 'cpr', name: 'เริ่ม CPR', icon: 'hand', allowedTargets: ['chest'], duration: 950 });
 case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2', 'เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026', 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac'];
 case02.sources.push('เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac');
+case02.sources.push('เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 7–13 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac');
 case02.assets.room = ASSETS.environments.patientRoom;
 case02.assets.patient = ASSETS.patients.patientCase02;
 case02.assets.patientCritical = case02.assets.patient;
@@ -32,8 +33,8 @@ case02.findings = case02.findings.map(finding => {
     case 'airway': return { ...finding, text: 'บันทึกการประเมิน A · เรื่องย่อไม่มีผลตรวจทางเดินหายใจ', source: case02.sources[0] };
     case 'breathing': return { ...finding, text: 'บันทึกการประเมิน B · เรื่องย่อระบุเหนื่อยเมื่อออกแรงและนอนราบไม่ได้ โดยไม่มีค่า RR หรือ SpO₂', source: case02.sources[0] };
     case 'circulation': return { ...finding, text: 'คลำชีพจรไม่พบ → เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator', source: case02.sources[1] };
-    case 'diagnosis': return { ...finding, text: 'มีการบันทึกคำตอบเพื่อฝึก · Case 2 ไม่มี answer key ทางคลินิก', source: case02.sources[0] };
-    case 'nursing-care': return { ...finding, text: 'มีการบันทึกตัวเลือกเพื่อฝึก · Case 2 ไม่มีเฉลย nursing care ทางคลินิก', source: case02.sources[0] };
+    case 'diagnosis': return { ...finding, text: 'บันทึกการจัดลำดับข้อวินิจฉัย 4 ข้อและจับคู่ข้อมูลสนับสนุนตามแบบฝึกเคส 2 หน้า 7–10', source: case02.sources[4] };
+    case 'nursing-care': return { ...finding, text: 'บันทึกการจับคู่การพยาบาลกับข้อวินิจฉัย 4 ข้อตามแบบฝึกเคส 2 หน้า 11–13', source: case02.sources[4] };
     case 'medication': return { ...finding, text: 'อ่าน Doctor Order ของเคส 2 และบันทึกคำตอบเรื่องผลข้างเคียงกับการเฝ้าระวังจากแบบฝึก Amiodarone', source: case02.sources[2] };
     case 'io': return { ...finding, text: 'I/O 24 ชั่วโมงตามเอกสารเคส 2: น้ำดื่ม 1,000 mL + IV 300 mL รวมเข้า 1,300 mL ปัสสาวะออก 600 mL ผลต่าง +700 mL (Positive fluid balance)', source: case02.sources[2] };
     case 'ecg': return { ...finding, text: 'ติด lead ครบในผังเพื่อฝึกการลาก · เรื่องย่อไม่มีคลื่น ECG หรือผลอ่าน', source: case02.sources[0] };
@@ -54,16 +55,54 @@ case02.missions = case02.missions.map(mission => {
     onEnter: { duration: 0, vitals: { hr: 144, bpSystolic: 148, bpDiastolic: 88, rr: 26, spo2: 90 } },
     objectives: mission.objectives?.map(objective => ({ ...objective, sound: undefined, feedback: objective.tool === 'stethoscope' ? 'ตรวจหน้าอกพบ fine crackles' : objective.tool === 'bp' ? 'บันทึก BP 148/88 mmHg แล้ว' : 'บันทึก SpO₂ 90% Room air แล้ว' })),
   };
-  if (mission.id === 'DIAGNOSIS' || mission.id === 'NURSING_INTERVENTION') return {
-    ...mission, dataStatus: 'missing', gradable: false,
-    description: 'วางตัวเลือกทั่วไปลงในแฟ้มฝึก · เรื่องย่อ Case 2 ไม่มีเฉลยการวินิจฉัยหรือแผนการพยาบาล',
-    hint: 'ตัวเลือกนี้ใช้ฝึกการลากและยืนยันเท่านั้น · ไม่มีการตัดสินทางคลินิก',
+  if (mission.id === 'DIAGNOSIS') return {
+    ...mission, dataStatus: 'demo-derived', gradable: false,
+    description: 'จัดลำดับข้อวินิจฉัย 4 ข้อ แล้วจับคู่ข้อมูลสนับสนุนของแต่ละลำดับให้ครบก่อนบันทึก',
+    hint: 'ใช้ข้อมูลหัวใจ การหายใจ สารน้ำ และ Electrolyte จากเอกสารเคส 2 หน้า 7–10',
     decision: mission.decision ? {
-      ...mission.decision,
-      options: mission.decision.options.map((option,index) => ({ ...option, label: `ตัวเลือกฝึก ${index + 1}`, detail: 'การ์ดสำหรับฝึกจัดวาง · ไม่มีคำตอบทางคลินิกในข้อมูล Case 2' })),
-      expected: [], slots: mission.decision.slots?.map((slot,index) => ({ ...slot, label: `ช่องฝึก ${index + 1}`, expected: '' })),
-      explanation: 'Case 2 ไม่มี answer key · ใช้ฝึกการจัดวางและยืนยันเท่านั้น',
-      success: 'บันทึกคำตอบเพื่อฝึกแล้ว · ไม่มีการตัดสินถูกหรือผิดทางคลินิก',
+      ...mission.decision, expected: [],
+      options: [
+        { id: 'diagnosis-fluid', label: 'Excess Fluid Volume', detail: 'ข้อวินิจฉัยทางการพยาบาล' },
+        { id: 'diagnosis-electrolyte', label: 'Electrolyte Imbalance', detail: 'ข้อวินิจฉัยทางการพยาบาล' },
+        { id: 'diagnosis-output', label: 'Decreased Cardiac Output', detail: 'ข้อวินิจฉัยทางการพยาบาล' },
+        { id: 'diagnosis-gas', label: 'Impaired Gas Exchange', detail: 'ข้อวินิจฉัยทางการพยาบาล' },
+        { id: 'evidence-fluid', label: 'ขาบวม pitting edema 2+, fine crackles, orthopnea, pulmonary vascular congestion', detail: 'ข้อมูลให้เลือกจับคู่' },
+        { id: 'evidence-output', label: 'HR 145–148 ครั้ง/นาที ชีพจรไม่สม่ำเสมอ ECG พบ AF with RVR และใจสั่น', detail: 'ข้อมูลให้เลือกจับคู่' },
+        { id: 'evidence-abdominal', label: 'ปวดท้อง คลื่นไส้อาเจียน มีผื่นคันตามแขน', detail: 'ข้อมูลให้เลือกจับคู่' },
+        { id: 'evidence-gas', label: 'SpO₂ 90% หอบเหนื่อย ใช้กล้ามเนื้อช่วยหายใจ', detail: 'ข้อมูลให้เลือกจับคู่' },
+        { id: 'evidence-secretions', label: 'มีเสมหะมากขึ้น คัดจมูก ปวดศีรษะ', detail: 'ข้อมูลให้เลือกจับคู่' },
+        { id: 'evidence-electrolyte', label: 'หัวใจเต้นผิดจังหวะ K⁺ 3.2 mEq/L และ Na⁺ 133 mEq/L', detail: 'ข้อมูลให้เลือกจับคู่' },
+      ],
+      slots: [1,2,3,4].flatMap(rank => [
+        { id: `diagnosis-${rank}`, label: `ข้อวินิจฉัยลำดับ ${rank}`, expected: '' },
+        { id: `evidence-${rank}`, label: `ข้อมูลสนับสนุนลำดับ ${rank}`, expected: '' },
+      ]),
+      explanation: 'จัดข้อวินิจฉัยและข้อมูลสนับสนุนให้ครบทุกช่องก่อนบันทึก',
+      success: 'บันทึกข้อวินิจฉัยและข้อมูลสนับสนุนครบ 4 ลำดับแล้ว · รอบฝึกบันทึกคำตอบ',
+    } : undefined,
+  };
+  if (mission.id === 'NURSING_INTERVENTION') return {
+    ...mission, dataStatus: 'demo-derived', gradable: false,
+    description: 'ลากการพยาบาลไปจับคู่กับข้อวินิจฉัยที่กำหนดทั้ง 4 ข้อ แล้วบันทึกคำตอบ',
+    hint: 'ข้อวินิจฉัยในหน้านี้จัดไว้ตามเอกสารหน้า 11 ให้เลือกการพยาบาลที่สัมพันธ์กัน',
+    decision: mission.decision ? {
+      ...mission.decision, expected: [],
+      slots: [
+        { id: 'care-gas', label: 'Impaired Gas Exchange', expected: '' },
+        { id: 'care-output', label: 'Decreased Cardiac Output', expected: '' },
+        { id: 'care-fluid', label: 'Excess Fluid Volume', expected: '' },
+        { id: 'care-electrolyte', label: 'Electrolyte Imbalance', expected: '' },
+      ],
+      options: [
+        { id: 'care-labs', label: 'ติดตาม ECG ดูแลให้ได้รับยาหรือสารน้ำ ติดตามผล Lab', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+        { id: 'care-supine', label: 'ติดตาม ECG จัดท่านอนราบยกปลายเท้าสูง', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+        { id: 'care-oxygen', label: 'ให้ออกซิเจน จัดท่า Semi-Fowler 45 องศา ติดตาม SpO₂, RR และเสียงปอด', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+        { id: 'care-diuresis', label: 'ให้ยาขับปัสสาวะ บันทึก Intake และ Output', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+        { id: 'care-drinking', label: 'ส่งเสริมให้ผู้ป่วยดื่มน้ำ บันทึก Intake และ Output', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+        { id: 'care-monitoring', label: 'ติดตาม ECG และ cardiac monitor รายงานแพทย์เมื่อ HR สูงต่อเนื่องหรือมี hemodynamic instability', detail: 'เลือกการพยาบาลให้สัมพันธ์กับข้อวินิจฉัย' },
+      ],
+      explanation: 'จับคู่การพยาบาลให้ครบทั้ง 4 ช่องก่อนบันทึก',
+      success: 'บันทึกการจับคู่การพยาบาลครบ 4 ข้อแล้ว · รอบฝึกบันทึกคำตอบ',
     } : undefined,
   };
   if (mission.id === 'MEDICATION') return {

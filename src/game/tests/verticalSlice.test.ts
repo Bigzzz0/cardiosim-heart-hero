@@ -184,11 +184,17 @@ test('Case 2 uses source-documented admission and assessment vitals while record
   assert.deepEqual(game.vitals.current, { hr:144,bpSystolic:148,bpDiastolic:88,rr:26,spo2:90 });
   for (const [tool,target,duration] of [['stethoscope','chest',1550],['bp','arm',1150],['spo2','finger',950]] as const) { game.selectTool(tool); game.interact(target); game.update(duration); }
   assert.equal(game.chart.some(entry => /SpO₂ 90%/.test(entry.text)), true);
-  game.next(); game.chooseForSlot('problem','other-problem'); game.chooseForSlot('support','unrelated-evidence');
+  game.next();
+  game.chooseForSlot('diagnosis-1','diagnosis-output');
+  assert.equal(game.confirmDecision(),false,'diagnosis and supporting evidence must fill all eight slots');
+  for (const [rank,id] of ['output','gas','fluid','electrolyte'].entries()) {
+    game.chooseForSlot(`diagnosis-${rank+1}`,`diagnosis-${id}`);
+    game.chooseForSlot(`evidence-${rank+1}`,`evidence-${id}`);
+  }
   const mistakesBefore = game.score.data.mistakeCount;
   assert.equal(game.confirmDecision(), true, 'Case 2 choices are logged but not marked clinically right or wrong');
   assert.equal(game.score.data.mistakeCount, mistakesBefore);
-  assert.match(game.feedback.text, /ไม่มีการตัดสินถูกหรือผิดทางคลินิก/);
+  assert.match(game.feedback.text, /รอบฝึกบันทึกคำตอบ/);
 });
 
 test('Case 2 completes sourced activities and CPR while clearing assessment vitals during the pulseless emergency', () => {
@@ -197,9 +203,12 @@ test('Case 2 completes sourced activities and CPR while clearing assessment vita
   game.next(); game.selectTool('interview'); game.interact('head'); game.update(750); game.next();
   for (const [tool,target,duration] of [['stethoscope','chest',1550],['bp','arm',1150],['spo2','finger',950]] as const) { game.selectTool(tool); game.interact(target); game.update(duration); }
   game.next();
-  for (const [slot,option] of [['problem','other-problem'],['support','unrelated-evidence']] as const) game.chooseForSlot(slot,option);
+  for (const [rank,id] of ['output','gas','fluid','electrolyte'].entries()) {
+    game.chooseForSlot(`diagnosis-${rank+1}`,`diagnosis-${id}`);
+    game.chooseForSlot(`evidence-${rank+1}`,`evidence-${id}`);
+  }
   assert.equal(game.confirmDecision(),true); game.next();
-  for (const [slot,option] of [['intervention-1','position-care'],['intervention-2','skip-monitoring']] as const) game.chooseForSlot(slot,option);
+  for (const [slot,option] of [['care-gas','care-oxygen'],['care-output','care-monitoring'],['care-fluid','care-diuresis'],['care-electrolyte','care-labs']] as const) game.chooseForSlot(slot,option);
   assert.equal(game.confirmDecision(),true); game.next();
   assert.equal(case02.missions.find(mission=>mission.id==='MEDICATION')?.activity?.fields?.length,2);
   assert.equal(game.confirmActivity(),false,'both medication safety responses are required');
@@ -274,6 +283,28 @@ test('legacy blank Case 2 vitals migrate by phase and remain blank during the pu
     const restored = new CaseEngine(case02);
     restored.restore(migrated);
     assert.deepEqual(restored.vitals.current, expected);
+  }
+});
+
+test('legacy two-slot Case 2 matching saves reopen the expanded activity and keep earlier progress', () => {
+  for (const [mission, decisions] of [
+    ['DIAGNOSIS',['problem::other-problem','support::unrelated-evidence']],
+    ['NURSING_INTERVENTION',['intervention-1::position-care','intervention-2::monitor-care']],
+  ] as const) {
+    const game = new CaseEngine(case02);
+    game.mission.jumpTo(mission);
+    const old = game.checkpoint();
+    old.decisions = [...decisions];
+    old.decisionConfirmed = true;
+    old.completed = ['history'];
+    const migrated = parseCheckpoint(JSON.stringify(old),case02);
+    assert(migrated);
+    assert.deepEqual(migrated.decisions,[]);
+    assert.equal(migrated.decisionConfirmed,false);
+    assert.deepEqual(migrated.completed,['history']);
+    assert.equal(migrated.mission,mission);
+    const tampered = { ...old, decisions:['unknown-slot::unknown-option'] };
+    assert.equal(parseCheckpoint(JSON.stringify(tampered),case02),null);
   }
 });
 

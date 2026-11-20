@@ -147,10 +147,7 @@ function App() {
         answerDrag.current = null; setAnswerGhost(null); document.body.classList.remove('dragging');
         if (didDrag) {
           skipAnswerClick.current = true;
-          const slot = [...document.querySelectorAll<HTMLElement>('[data-answer-slot]')].find(candidate => {
-            const bounds = candidate.getBoundingClientRect();
-            return event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
-          });
+          const slot = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>('[data-answer-slot]');
           if (slot?.dataset.answerSlot) app.chooseForSlot(slot.dataset.answerSlot, heldAnswer.id);
         }
         return;
@@ -190,10 +187,7 @@ function App() {
     };
     const onDown = (event: PointerEvent) => {
       if (event.button !== 0 || app.mission.current.kind !== 'decision' || app.mission.decisionConfirmed) return;
-      const option = [...document.querySelectorAll<HTMLButtonElement>('[data-answer-option]')].find(candidate => {
-        const bounds = candidate.getBoundingClientRect();
-        return event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
-      });
+      const option = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLButtonElement>('[data-answer-option]');
       const id = option?.dataset.answerOption;
       if (!option || !id) return;
       event.preventDefault();
