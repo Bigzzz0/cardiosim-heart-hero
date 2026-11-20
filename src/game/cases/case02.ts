@@ -6,28 +6,29 @@ import { ASSETS } from '../../constants/assets';
 const case02 = structuredClone(verticalSlice) satisfies GameCase;
 case02.id = 'case-02-acute-decompensated-heart-failure';
 case02.version = 1;
-case02.title = 'ภาวะหัวใจล้มเหลวกำเริบและน้ำคั่งในปอด';
+case02.title = 'AF with RVR ร่วมกับภาวะหัวใจล้มเหลวกำเริบ';
 case02.clinicalStatus = 'CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม';
 case02.gradable = false;
 case02.tools.push({ id: 'cpr', name: 'เริ่ม CPR', icon: 'hand', allowedTargets: ['chest'], duration: 950 });
 case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2', 'เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026', 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac'];
+case02.sources.push('เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac');
 case02.assets.room = ASSETS.environments.patientRoom;
 case02.assets.patient = ASSETS.patients.patientCase02;
 case02.assets.patientCritical = case02.assets.patient;
 case02.assets.patientSupport = { bed: ASSETS.patients.patientCase02Bed, pillow: ASSETS.patients.patientCase02Pillow };
 case02.presentation = suppliedPatientPresentation;
 case02.hotspots = registerSuppliedPatientHotspots(case02.hotspots);
-case02.initialVitals = { hr: null, bpSystolic: null, bpDiastolic: null, rr: null, spo2: null };
+case02.initialVitals = { hr: 148, bpSystolic: 156, bpDiastolic: 92, rr: 28, spo2: 90 };
 case02.initialPatient = { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' };
 case02.monitorTraces = undefined;
 case02.scenarios = [{ id: 'case-02', title: case02.title, summary: 'CASE 02', enabled: true, status: case02.clinicalStatus }];
 case02.findings.push({ id: 'cpr-started', section: 'Care Plan', title: 'เริ่มช่วยชีวิต', text: 'ผู้เล่นเริ่ม CPR หลังประเมินว่าคลำชีพจรไม่พบ ก่อนเข้าสู่กิจกรรมฝึก EKG', source: case02.sources[1] });
 case02.findings = case02.findings.map(finding => {
   switch (finding.id) {
-    case 'history': return { ...finding, text: 'เรื่องย่อระบุ: เหนื่อยเมื่อเดินระยะสั้น นอนราบไม่ได้และหนุนหมอน 3 ใบ น้ำหนักเพิ่ม 3 กก. ใน 1 สัปดาห์ · ไม่มีประวัติส่วนอื่นในข้อมูล Case 2', source: case02.sources[0] };
-    case 'lungs': return { ...finding, text: 'บันทึกว่าทำการประเมินทรวงอกแล้ว · เรื่องย่อไม่มีผลฟังปอด จึงไม่แสดงเสียงหรือผลวินิจฉัย', source: case02.sources[0] };
-    case 'bp': return { ...finding, text: 'ไม่มีค่าความดันในเรื่องย่อ Case 2', source: case02.sources[0] };
-    case 'oxygen': return { ...finding, text: 'ไม่มีค่า SpO₂ ในเรื่องย่อ Case 2', source: case02.sources[0] };
+    case 'history': return { ...finding, text: 'ผู้ป่วยชายอายุ 68 ปี เป็น Heart Failure มา 3 ปี และ Hypertension ประมาณ 10 ปี รับประทานยาประจำ มีใจสั่น เหนื่อยหอบ นอนราบไม่ได้ 2 ชั่วโมงก่อนมาโรงพยาบาล แรกรับรู้สึกตัวดี พูดเป็นประโยคสั้น ๆ ได้ ขาบวมสองข้าง pitting edema 2+ เอกสารระบุ EKG เป็น AF with RVR อัตราประมาณ 145 ครั้ง/นาที', source: case02.sources[3] };
+    case 'lungs': return { ...finding, text: 'ฟังหน้าอกพบ fine crackles ร่วมกับหายใจเหนื่อยหอบและขาบวมทั้งสองข้าง', source: case02.sources[3] };
+    case 'bp': return { ...finding, text: 'ช่วงประเมินผู้ป่วย BP 148/88 mmHg, HR 144 ครั้ง/นาที ตามหน้า 3', source: case02.sources[3] };
+    case 'oxygen': return { ...finding, text: 'ช่วงประเมินผู้ป่วย SpO₂ 90% ขณะหายใจ Room air และ RR 26 ครั้ง/นาที ตามหน้า 3', source: case02.sources[3] };
     case 'airway': return { ...finding, text: 'บันทึกการประเมิน A · เรื่องย่อไม่มีผลตรวจทางเดินหายใจ', source: case02.sources[0] };
     case 'breathing': return { ...finding, text: 'บันทึกการประเมิน B · เรื่องย่อระบุเหนื่อยเมื่อออกแรงและนอนราบไม่ได้ โดยไม่มีค่า RR หรือ SpO₂', source: case02.sources[0] };
     case 'circulation': return { ...finding, text: 'คลำชีพจรไม่พบ → เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator', source: case02.sources[1] };
@@ -43,9 +44,16 @@ case02.findings = case02.findings.map(finding => {
 });
 
 case02.missions = case02.missions.map(mission => {
-  if (mission.id === 'CASE_INTRO') return { ...mission, title: 'รับช่วงต่อ\nดูแลผู้ป่วย', description: 'หญิงอายุ 65 ปี มีประวัติหัวใจล้มเหลวเรื้อรัง ความดันโลหิตสูง และเบาหวาน · เริ่มจากฟังข้อมูลที่มีในเรื่องย่อ', hint: 'ข้อมูล Case 2 เป็นเรื่องย่อสำหรับเล่นเดโม; vital และเฉลยที่ไม่มีต้นทางจะไม่ถูกเติม', button: 'เริ่มดูแลผู้ป่วย' };
-  if (mission.id === 'PATIENT_INFORMATION') return { ...mission, title: 'ฟังผู้ป่วย\nและค้นข้อมูลตั้งต้น', description: 'ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดเรื่องย่อใน Chart', hint: 'Case 2 ระบุเหนื่อยเมื่อเดินไม่กี่ก้าว นอนราบไม่ได้ และหนุนหมอน 3 ใบ' };
-  if (mission.id === 'ASSESSMENT') return { ...mission, title: 'ประเมินผู้ป่วย\nจากข้อมูลที่มี', description: 'ใช้เครื่องมือกับผู้ป่วยเพื่อบันทึกว่าทำการประเมินแล้ว · เรื่องย่อไม่มีค่าความดัน SpO₂ หรือผลฟังปอด', hint: 'ผลที่ไม่ปรากฏใน Case 2 จะถูกบันทึกเป็น “ไม่มีข้อมูล”', dataStatus: 'missing', gradable: false, objectives: mission.objectives?.map(objective => ({ ...objective, sound:undefined, feedback: objective.tool === 'stethoscope' ? 'บันทึกการตรวจทรวงอกแล้ว · ไม่มีผลฟังปอดใน Case 2' : `บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้`, })) };
+  if (mission.id === 'CASE_INTRO') return { ...mission, title: 'รับช่วงต่อ\nดูแลผู้ป่วย', description: 'ชายอายุ 68 ปี มีประวัติ Heart Failure และ Hypertension ใจสั่น เหนื่อยหอบ นอนราบไม่ได้ 2 ชั่วโมงก่อนมาโรงพยาบาล เอกสารระบุ AF with RVR', hint: 'แรกรับ PR 148 ครั้ง/นาที, BP 156/92 mmHg, RR 28 ครั้ง/นาที, SpO₂ 90% Room air ตามหน้า 2', button: 'เริ่มดูแลผู้ป่วย' };
+  if (mission.id === 'PATIENT_INFORMATION') return { ...mission, title: 'ฟังผู้ป่วย\nและค้นข้อมูลตั้งต้น', description: 'ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดข้อมูลประวัติใน Chart', hint: 'Heart Failure 3 ปี และ Hypertension ประมาณ 10 ปี มีใจสั่น เหนื่อยหอบ นอนราบไม่ได้และขาบวม' };
+  if (mission.id === 'ASSESSMENT') return {
+    ...mission, title: 'ประเมินผู้ป่วย\nจากข้อมูลที่มี',
+    description: 'ตรวจหน้าอก ความดัน และ SpO₂ โดยใช้ข้อมูลช่วงประเมินผู้ป่วยตามเอกสารหน้า 3–4',
+    hint: 'BP 148/88 mmHg, HR 144 ครั้ง/นาที, RR 26 ครั้ง/นาที, SpO₂ 90% Room air และ fine crackles',
+    dataStatus: 'demo-derived', gradable: false,
+    onEnter: { duration: 0, vitals: { hr: 144, bpSystolic: 148, bpDiastolic: 88, rr: 26, spo2: 90 } },
+    objectives: mission.objectives?.map(objective => ({ ...objective, sound: undefined, feedback: objective.tool === 'stethoscope' ? 'ตรวจหน้าอกพบ fine crackles' : objective.tool === 'bp' ? 'บันทึก BP 148/88 mmHg แล้ว' : 'บันทึก SpO₂ 90% Room air แล้ว' })),
+  };
   if (mission.id === 'DIAGNOSIS' || mission.id === 'NURSING_INTERVENTION') return {
     ...mission, dataStatus: 'missing', gradable: false,
     description: 'วางตัวเลือกทั่วไปลงในแฟ้มฝึก · เรื่องย่อ Case 2 ไม่มีเฉลยการวินิจฉัยหรือแผนการพยาบาล',
@@ -105,7 +113,7 @@ case02.missions = case02.missions.map(mission => {
       success: 'บันทึกคำตอบแล้ว · ตามเอกสาร สารน้ำเข้า 1,300 − ออก 600 = +700 mL เป็น Positive fluid balance',
     } : undefined,
   };
-  if (mission.id === 'EMERGENCY_TRANSITION') return { ...mission, description: 'ผู้ป่วยเข้าสู่ช่วงฉุกเฉิน ประเมินผู้ป่วยและคลำชีพจร หากคลำชีพจรไม่ได้ให้เริ่ม CPR ทันที', hint: 'คลื่นบน Monitor อาจยังปรากฏแม้คลำชีพจรไม่ได้ ให้ยึดผลประเมินผู้ป่วย', onEnter: { emergency: true, alarm: true, duration: 5000, vitals: {}, patient: { condition: 'critical', breathing: 'severe', animation: 'critical' } } };
+  if (mission.id === 'EMERGENCY_TRANSITION') return { ...mission, description: 'ผู้ป่วยเข้าสู่ช่วงฉุกเฉิน ประเมินผู้ป่วยและคลำชีพจร หากคลำชีพจรไม่ได้ให้เริ่ม CPR ทันที', hint: 'คลื่นบน Monitor อาจยังปรากฏแม้คลำชีพจรไม่ได้ ให้ยึดผลประเมินผู้ป่วย', onEnter: { emergency: true, alarm: true, duration: 0, vitals: { hr: null, bpSystolic: null, bpDiastolic: null, rr: null, spo2: null }, patient: { condition: 'critical', breathing: 'severe', animation: 'critical' } } };
   if (mission.id === 'ABC_ASSESSMENT') return {
     ...mission,
     description: 'ประเมิน A → B → C เมื่อคลำชีพจรไม่พบให้เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator',

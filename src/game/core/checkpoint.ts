@@ -65,7 +65,10 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     for (const entry of data.chart) if (!record(entry) || !config.findings.some(f => f.id === entry.id) || !nonnegative(entry.at) || !config.missions.some(m => m.id === entry.mission) || (entry.vitals !== undefined && !vitals(entry.vitals))) return null;
     // Replace saved text with trusted configuration text; storage only owns progress.
     const chart = data.chart.map(entry => ({ ...config.findings.find(f => f.id === entry.id)!, at: entry.at as number, mission: entry.mission as Checkpoint['mission'], ...(entry.vitals ? { vitals: entry.vitals as VitalSigns } : {}) }));
-    return { ...data, ...(replacedMissingData?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
+    const sourceVitals = { ...config.initialVitals };
+    for (const mission of config.missions.slice(0, config.missions.indexOf(active) + 1)) Object.assign(sourceVitals, mission.onEnter?.vitals);
+    const savedVitals = !config.gradable && Object.values(data.vitals).every(value => value === null) ? sourceVitals : data.vitals;
+    return { ...data, vitals: savedVitals, ...(replacedMissingData?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
   } catch { return null; }
 }
 export function readCheckpoint(config: GameCase): Checkpoint | null { try { const raw = localStorage.getItem(key(config.id)); return raw ? parseCheckpoint(raw, config) : null; } catch { return null; } }

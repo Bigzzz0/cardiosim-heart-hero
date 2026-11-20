@@ -171,18 +171,19 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.equal(resumed.score.data.mistakeCount,game.score.data.mistakeCount);
 });
 
-test('Case 2 loads from the registry with qualitative-only data and logs choices without clinical grading', () => {
+test('Case 2 uses source-documented admission and assessment vitals while recording choices without grading', () => {
   assert.equal(caseRegistry.find(item => item.scenarios[0]?.id === 'case-02'), case02);
   assert.equal(getGameCase('case-02'), case02,'case ids must resolve to the configured case, not the first case with stale scenario metadata');
   validateCase(case02);
   const game = new CaseEngine(case02);
-  assert.deepEqual(Object.values(game.vitals.current), [null,null,null,null,null]);
+  assert.deepEqual(game.vitals.current, { hr:148,bpSystolic:156,bpDiastolic:92,rr:28,spo2:90 });
   assert.equal(case02.monitorTraces, undefined);
   game.next(); game.selectTool('interview'); game.interact('head'); game.update(750);
-  assert.match(game.chart[0]?.text ?? '', /หนุนหมอน 3 ใบ/);
+  assert.match(game.chart[0]?.text ?? '', /ชายอายุ 68 ปี/);
   game.next();
+  assert.deepEqual(game.vitals.current, { hr:144,bpSystolic:148,bpDiastolic:88,rr:26,spo2:90 });
   for (const [tool,target,duration] of [['stethoscope','chest',1550],['bp','arm',1150],['spo2','finger',950]] as const) { game.selectTool(tool); game.interact(target); game.update(duration); }
-  assert.equal(game.chart.some(entry => /ไม่มีค่า SpO₂/.test(entry.text)), true);
+  assert.equal(game.chart.some(entry => /SpO₂ 90%/.test(entry.text)), true);
   game.next(); game.chooseForSlot('problem','other-problem'); game.chooseForSlot('support','unrelated-evidence');
   const mistakesBefore = game.score.data.mistakeCount;
   assert.equal(game.confirmDecision(), true, 'Case 2 choices are logged but not marked clinically right or wrong');
@@ -190,7 +191,7 @@ test('Case 2 loads from the registry with qualitative-only data and logs choices
   assert.match(game.feedback.text, /ไม่มีการตัดสินถูกหรือผิดทางคลินิก/);
 });
 
-test('Case 2 can be completed from briefing to result without inventing numeric vitals or grading missing clinical answers', () => {
+test('Case 2 completes sourced activities and CPR while clearing assessment vitals during the pulseless emergency', () => {
   const game = new CaseEngine(case02);
   const clinicalScore = game.score.total;
   game.next(); game.selectTool('interview'); game.interact('head'); game.update(750); game.next();
@@ -253,6 +254,26 @@ test('old missing-data checkpoints reopen the source-documented activity without
     const restored = new CaseEngine(case02);
     restored.restore(migrated);
     assert.equal(restored.canContinue,false);
+  }
+});
+
+test('legacy blank Case 2 vitals migrate by phase and remain blank during the pulseless emergency', () => {
+  for (const [mission, expected] of [
+    ['CASE_INTRO', {hr:148,bpSystolic:156,bpDiastolic:92,rr:28,spo2:90}],
+    ['ASSESSMENT', {hr:144,bpSystolic:148,bpDiastolic:88,rr:26,spo2:90}],
+    ['EMERGENCY_TRANSITION', {hr:null,bpSystolic:null,bpDiastolic:null,rr:null,spo2:null}],
+    ['ABC_ASSESSMENT', {hr:null,bpSystolic:null,bpDiastolic:null,rr:null,spo2:null}],
+  ] as const) {
+    const game = new CaseEngine(case02);
+    game.mission.jumpTo(mission);
+    const old = game.checkpoint();
+    old.vitals = {hr:null,bpSystolic:null,bpDiastolic:null,rr:null,spo2:null};
+    const migrated = parseCheckpoint(JSON.stringify(old),case02);
+    assert(migrated);
+    assert.deepEqual(migrated.vitals, expected);
+    const restored = new CaseEngine(case02);
+    restored.restore(migrated);
+    assert.deepEqual(restored.vitals.current, expected);
   }
 });
 

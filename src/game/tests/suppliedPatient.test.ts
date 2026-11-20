@@ -33,8 +33,8 @@ test('supplied patient targets are distinct, reachable and preserve ungraded Cas
   }
   assert.equal(game.mission.completed.size, 4, 'history and all three assessment actions are retained');
   assert.equal(game.score.data.mistakeCount, 0);
-  assert(Object.values(game.vitals.current).every(value => value === null));
-  assert(game.chart.every(finding => !finding.vitals || Object.values(finding.vitals).every(value => value === null)));
+  assert.deepEqual(game.vitals.current, { hr:144,bpSystolic:148,bpDiastolic:88,rr:26,spo2:90 });
+  assert(game.chart.every(finding => !finding.vitals || finding.vitals.spo2 === 90));
   const restored = new CaseEngine(case02);
   const checkpoint = parseCheckpoint(JSON.stringify(game.checkpoint()), case02);
   assert(checkpoint);

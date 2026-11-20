@@ -23,7 +23,7 @@ for (const finding of snapshot.findings) {
   for (const location of finding.locations) assert(readFileSync(location.file, 'utf8').split('\n')[location.line - 1]?.includes(location.anchor), `Review location moved: ${finding.id}`);
 }
 assert.equal(snapshot.cases[1].gradable, false, 'Case 2 must retain its unscored status');
-assert(Object.values(snapshot.cases[1].initialVitals).every(value => value === null));
+assert.deepEqual(snapshot.cases[1].initialVitals, { hr:148,bpSystolic:156,bpDiastolic:92,rr:28,spo2:90 }, 'Case 2 admission vitals must match page 2 of the supplied scenario');
 const csv = readFileSync('docs/clinical-review/review-checklist.csv', 'utf8');
 assert(csv.startsWith('\ufeff'), 'Checklist must preserve Thai text in spreadsheet applications');
 assert.equal(csv.trim().split(/\r?\n/).length, 41, 'Expected header and 40 review rows');

@@ -13,7 +13,7 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
   await case2Page.locator('.phaser-host canvas').waitFor();
   if(await case2Page.locator('.brand small').innerText()!=='CASE-02')throw new Error('Web scenario selection did not load the Case 2 patient room');
   const case2VitalText=()=>case2Page.locator('.monitor .vital-large b, .monitor .vital-small b').allTextContents();
-  if(await case2Page.locator('.monitor-no-trace').count()!==1||JSON.stringify(await case2VitalText())!==JSON.stringify(['—','—','—/—','—']))throw new Error('Case 2 must not invent an ECG trace or numeric vital signs');
+  if(await case2Page.locator('.monitor-no-trace').count()!==1||JSON.stringify(await case2VitalText())!==JSON.stringify(['148','90%','156/92','28']))throw new Error('Case 2 admission must show the sourced vitals without fabricating a rhythm strip');
   const case2Canvas=case2Page.locator('.phaser-host canvas');
   const case2Point=async(x,y)=>case2Page.evaluate(({x,y})=>{const id={'550,280':'head','550,395':'chest','490,442':'arm','526,575':'finger','602,558':'wrist'}[`${x},${y}`];const at=id?JSON.parse(document.querySelector('main')?.getAttribute('data-patient-targets')??'[]').find(t=>t.id===id):null;if(at){x=at.x;y=at.y;}const canvas=document.querySelector('.phaser-host canvas');const view=JSON.parse(document.querySelector('.room-stage')?.getAttribute('data-world-view')??'null');if(!canvas||!view)throw Error('Case 2 Phaser world view unavailable');const bounds=canvas.getBoundingClientRect();return{x:bounds.left+(x-view.x)/view.width*bounds.width,y:bounds.top+(y-view.y)/view.height*bounds.height};},{x,y});
   const case2Drag=async(source,target)=>{const from=await source.boundingBox();if(!from)throw Error('Case 2 drag source bounds unavailable');const end=await case2Point(target.x,target.y);await case2Page.mouse.move(from.x+from.width/2,from.y+from.height/2);await case2Page.mouse.down();await case2Page.mouse.move(end.x,end.y,{steps:9});await case2Page.mouse.up();};
@@ -21,6 +21,7 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
   await case2Drag(case2Page.locator('.toolbar button').filter({hasText:'ซักประวัติ'}),{x:550,y:280});
   await case2Page.waitForFunction(()=>document.querySelectorAll('.objective.done').length===1);
   await case2Page.getByRole('button',{name:'เริ่มประเมิน'}).click();
+  if(JSON.stringify(await case2VitalText())!==JSON.stringify(['144','90%','148/88','26']))throw new Error('Case 2 assessment vitals must match page 3');
   for(const [index,[name,target]] of [['Stethoscope',{x:550,y:395}],['BP cuff',{x:490,y:442}],['SpO₂',{x:526,y:575}]].entries()){
     await case2Drag(case2Page.locator('.toolbar button').filter({hasText:name}),target);
     await case2Page.waitForFunction(count=>document.querySelectorAll('.objective.done').length>=count,index+1);

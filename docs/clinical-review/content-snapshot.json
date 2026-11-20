@@ -1,6 +1,6 @@
 {
   "reviewDate": "2026-11-03",
-  "baseCommit": "2dff36bc6887d65885c9afb8433c298d85d13bcf",
+  "baseCommit": "37ec5b4bfd3a1306cd7659bfdecb35c0b52efd7e",
   "status": "pending-expert-review",
   "sourceHashNormalization": "utf8-lf",
   "sourceFiles": [
@@ -34,7 +34,7 @@
     },
     {
       "file": "src/game/cases/case02.ts",
-      "sha256": "d8c5aa28547421bd9d4c96c60990d95ef1281f6f780cfeef8339bdd784757800"
+      "sha256": "062c047b612c77eaa4d52ca00e12d699083ba470216c3bf9be03b7f664e847bb"
     },
     {
       "file": "src/game/cases/medicationWorkbench.ts",
@@ -1258,45 +1258,45 @@
     },
     {
       "id": "case-02-acute-decompensated-heart-failure",
-      "title": "ภาวะหัวใจล้มเหลวกำเริบและน้ำคั่งในปอด",
+      "title": "AF with RVR ร่วมกับภาวะหัวใจล้มเหลวกำเริบ",
       "gradable": false,
       "clinicalStatus": "CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม",
       "initialVitals": {
-        "hr": null,
-        "bpSystolic": null,
-        "bpDiastolic": null,
-        "rr": null,
-        "spo2": null
+        "hr": 148,
+        "bpSystolic": 156,
+        "bpDiastolic": 92,
+        "rr": 28,
+        "spo2": 90
       },
       "findings": [
         {
           "id": "history",
           "section": "History",
           "title": "อาการที่ผู้ป่วยบอก",
-          "text": "เรื่องย่อระบุ: เหนื่อยเมื่อเดินระยะสั้น นอนราบไม่ได้และหนุนหมอน 3 ใบ น้ำหนักเพิ่ม 3 กก. ใน 1 สัปดาห์ · ไม่มีประวัติส่วนอื่นในข้อมูล Case 2",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "ผู้ป่วยชายอายุ 68 ปี เป็น Heart Failure มา 3 ปี และ Hypertension ประมาณ 10 ปี รับประทานยาประจำ มีใจสั่น เหนื่อยหอบ นอนราบไม่ได้ 2 ชั่วโมงก่อนมาโรงพยาบาล แรกรับรู้สึกตัวดี พูดเป็นประโยคสั้น ๆ ได้ ขาบวมสองข้าง pitting edema 2+ เอกสารระบุ EKG เป็น AF with RVR อัตราประมาณ 145 ครั้ง/นาที",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "lungs",
           "section": "Respiratory Assessment",
           "title": "Auscultation",
-          "text": "บันทึกว่าทำการประเมินทรวงอกแล้ว · เรื่องย่อไม่มีผลฟังปอด จึงไม่แสดงเสียงหรือผลวินิจฉัย",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "ฟังหน้าอกพบ fine crackles ร่วมกับหายใจเหนื่อยหอบและขาบวมทั้งสองข้าง",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "bp",
           "section": "Vital Signs",
           "title": "วัดความดันโลหิต",
-          "text": "ไม่มีค่าความดันในเรื่องย่อ Case 2",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+          "text": "ช่วงประเมินผู้ป่วย BP 148/88 mmHg, HR 144 ครั้ง/นาที ตามหน้า 3",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
           "captureVitals": true
         },
         {
           "id": "oxygen",
           "section": "Vital Signs",
           "title": "วัด SpO₂",
-          "text": "ไม่มีค่า SpO₂ ในเรื่องย่อ Case 2",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+          "text": "ช่วงประเมินผู้ป่วย SpO₂ 90% ขณะหายใจ Room air และ RR 26 ครั้ง/นาที ตามหน้า 3",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 2–4 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
           "captureVitals": true
         },
         {
@@ -1383,8 +1383,8 @@
           "kind": "intro",
           "phase": "เริ่มต้นการดูแล",
           "title": "รับช่วงต่อ\nดูแลผู้ป่วย",
-          "description": "หญิงอายุ 65 ปี มีประวัติหัวใจล้มเหลวเรื้อรัง ความดันโลหิตสูง และเบาหวาน · เริ่มจากฟังข้อมูลที่มีในเรื่องย่อ",
-          "hint": "ข้อมูล Case 2 เป็นเรื่องย่อสำหรับเล่นเดโม; vital และเฉลยที่ไม่มีต้นทางจะไม่ถูกเติม",
+          "description": "ชายอายุ 68 ปี มีประวัติ Heart Failure และ Hypertension ใจสั่น เหนื่อยหอบ นอนราบไม่ได้ 2 ชั่วโมงก่อนมาโรงพยาบาล เอกสารระบุ AF with RVR",
+          "hint": "แรกรับ PR 148 ครั้ง/นาที, BP 156/92 mmHg, RR 28 ครั้ง/นาที, SpO₂ 90% Room air ตามหน้า 2",
           "button": "เริ่มดูแลผู้ป่วย"
         },
         {
@@ -1392,8 +1392,8 @@
           "kind": "interaction",
           "phase": "01 · PATIENT INFORMATION",
           "title": "ฟังผู้ป่วย\nและค้นข้อมูลตั้งต้น",
-          "description": "ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดเรื่องย่อใน Chart",
-          "hint": "Case 2 ระบุเหนื่อยเมื่อเดินไม่กี่ก้าว นอนราบไม่ได้ และหนุนหมอน 3 ใบ",
+          "description": "ลากหรือแตะซักประวัติที่ศีรษะผู้ป่วยเพื่อเปิดข้อมูลประวัติใน Chart",
+          "hint": "Heart Failure 3 ปี และ Hypertension ประมาณ 10 ปี มีใจสั่น เหนื่อยหอบ นอนราบไม่ได้และขาบวม",
           "button": "เริ่มประเมิน",
           "objectives": [
             {
@@ -1411,8 +1411,8 @@
           "kind": "interaction",
           "phase": "02 · PATIENT ASSESSMENT",
           "title": "ประเมินผู้ป่วย\nจากข้อมูลที่มี",
-          "description": "ใช้เครื่องมือกับผู้ป่วยเพื่อบันทึกว่าทำการประเมินแล้ว · เรื่องย่อไม่มีค่าความดัน SpO₂ หรือผลฟังปอด",
-          "hint": "ผลที่ไม่ปรากฏใน Case 2 จะถูกบันทึกเป็น “ไม่มีข้อมูล”",
+          "description": "ตรวจหน้าอก ความดัน และ SpO₂ โดยใช้ข้อมูลช่วงประเมินผู้ป่วยตามเอกสารหน้า 3–4",
+          "hint": "BP 148/88 mmHg, HR 144 ครั้ง/นาที, RR 26 ครั้ง/นาที, SpO₂ 90% Room air และ fine crackles",
           "button": "บันทึกการประเมิน",
           "objectives": [
             {
@@ -1421,7 +1421,7 @@
               "tool": "stethoscope",
               "target": "chest",
               "finding": "lungs",
-              "feedback": "บันทึกการตรวจทรวงอกแล้ว · ไม่มีผลฟังปอดใน Case 2"
+              "feedback": "ตรวจหน้าอกพบ fine crackles"
             },
             {
               "id": "bp",
@@ -1429,7 +1429,7 @@
               "tool": "bp",
               "target": "arm",
               "finding": "bp",
-              "feedback": "บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้"
+              "feedback": "บันทึก BP 148/88 mmHg แล้ว"
             },
             {
               "id": "oxygen",
@@ -1437,11 +1437,21 @@
               "tool": "spo2",
               "target": "finger",
               "finding": "oxygen",
-              "feedback": "บันทึกการประเมินแล้ว · เรื่องย่อไม่มีค่าที่วัดได้"
+              "feedback": "บันทึก SpO₂ 90% Room air แล้ว"
             }
           ],
-          "dataStatus": "missing",
-          "gradable": false
+          "dataStatus": "demo-derived",
+          "gradable": false,
+          "onEnter": {
+            "duration": 0,
+            "vitals": {
+              "hr": 144,
+              "bpSystolic": 148,
+              "bpDiastolic": 88,
+              "rr": 26,
+              "spo2": 90
+            }
+          }
         },
         {
           "id": "DIAGNOSIS",
@@ -1709,8 +1719,14 @@
           "onEnter": {
             "emergency": true,
             "alarm": true,
-            "duration": 5000,
-            "vitals": {},
+            "duration": 0,
+            "vitals": {
+              "hr": null,
+              "bpSystolic": null,
+              "bpDiastolic": null,
+              "rr": null,
+              "spo2": null
+            },
             "patient": {
               "condition": "critical",
               "breathing": "severe",
@@ -2741,13 +2757,13 @@
       "id": "CLIN-10",
       "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน",
       "status": "pending",
-      "question": "คำยืนยันทีมผ่านแชตวันที่ 18 พฤศจิกายน 2026 ให้คงลำดับประเมินผู้ป่วย → EKG → จัดการพยาบาลเพื่อวัตถุประสงค์การเรียนรู้ และให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เกมเพิ่มการบันทึกเริ่ม CPR ก่อนขั้นฝึก EKG และการ์ดข้อความ CPR, เตรียม Defibrillator/Emergency Trolley, เรียกทีมฉุกเฉิน และติดตาม EKG/สัญญาณชีพ โดยบันทึกการจัดวางเพื่อฝึก ยาตามคำสั่งแพทย์เป็นข้อมูลประกอบ ยังรอยืนยันว่าต้องเลือกยาเป็นกิจกรรมหรือไม่ คะแนนส่วนเลือกยา 20 คะแนน ลำดับ/คะแนนการ์ด และเกณฑ์ใบประกาศ รายละเอียดอื่นของ Case 2 ยังอยู่ระหว่างนำเข้าจากเนื้อหาSim.pdf ฉบับ 32 หน้า วันที่ 20 พฤศจิกายน 2026 นำเข้า Doctor Order และคำถามผลข้างเคียง/การเฝ้าระวังจากหน้า 14–16 พร้อม I/O 24 ชั่วโมงจากหน้า 17 (น้ำดื่ม 1,000 + IV 300 − ปัสสาวะ 600 = +700 mL) เป็นแบบฝึกบันทึกคำตอบ เกณฑ์คะแนนและกิจกรรมอื่นยังรอทีมยืนยัน",
+      "question": "คำยืนยันทีมผ่านแชตวันที่ 18 พฤศจิกายน 2026 ให้คงลำดับประเมินผู้ป่วย → EKG → จัดการพยาบาลเพื่อวัตถุประสงค์การเรียนรู้ และให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เกมเพิ่มการบันทึกเริ่ม CPR ก่อนขั้นฝึก EKG และการ์ดข้อความ CPR, เตรียม Defibrillator/Emergency Trolley, เรียกทีมฉุกเฉิน และติดตาม EKG/สัญญาณชีพ โดยบันทึกการจัดวางเพื่อฝึก ยาตามคำสั่งแพทย์เป็นข้อมูลประกอบ ยังรอยืนยันว่าต้องเลือกยาเป็นกิจกรรมหรือไม่ คะแนนส่วนเลือกยา 20 คะแนน ลำดับ/คะแนนการ์ด และเกณฑ์ใบประกาศ รายละเอียดอื่นของ Case 2 ยังอยู่ระหว่างนำเข้าจากเนื้อหาSim.pdf ฉบับ 32 หน้า วันที่ 20 พฤศจิกายน 2026 นำเข้า Doctor Order และคำถามผลข้างเคียง/การเฝ้าระวังจากหน้า 14–16 พร้อม I/O 24 ชั่วโมงจากหน้า 17 (น้ำดื่ม 1,000 + IV 300 − ปัสสาวะ 600 = +700 mL) เป็นแบบฝึกบันทึกคำตอบ เกณฑ์คะแนนและกิจกรรมอื่นยังรอทีมยืนยัน นำเข้าข้อมูลแรกรับและผลตรวจจากหน้า 2–4 แล้ว โดยหน้า 2 ใช้ PR 148, BP 156/92, RR 28, SpO2 90% RA และช่วงประเมินหน้า 3 ใช้ HR 144, BP 148/88, RR 26, SpO2 90% RA ปรับชื่อเคสเป็น AF with RVR ผู้ป่วยชาย 68 ปี ภาพคลื่น ECG ยังรอจากทีม ช่วงไม่มีชีพจรแสดงค่าว่างเพื่อไม่คงค่าสัญญาณชีพจากช่วงประเมิน",
       "reviewerRole": "เจ้าของเคส Case 2",
       "locations": [
         {
           "file": "src/game/cases/case02.ts",
           "anchor": "case02.initialVitals",
-          "line": 20
+          "line": 21
         },
         {
           "file": "src/game/cases/case02.ts",
