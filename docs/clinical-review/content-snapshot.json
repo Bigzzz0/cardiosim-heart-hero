@@ -1,6 +1,6 @@
 {
   "reviewDate": "2026-11-03",
-  "baseCommit": "1829879fe4aaee8ce3e95b62b52758fe5d313d67",
+  "baseCommit": "2dff36bc6887d65885c9afb8433c298d85d13bcf",
   "status": "pending-expert-review",
   "sourceHashNormalization": "utf8-lf",
   "sourceFiles": [
@@ -34,7 +34,7 @@
     },
     {
       "file": "src/game/cases/case02.ts",
-      "sha256": "512ee76999971564cdc3cea454044143f0aa3ebd850f94c2ed9d042e7b3aa413"
+      "sha256": "d8c5aa28547421bd9d4c96c60990d95ef1281f6f780cfeef8339bdd784757800"
     },
     {
       "file": "src/game/cases/medicationWorkbench.ts",
@@ -1338,15 +1338,15 @@
           "id": "medication",
           "section": "Medication",
           "title": "Medication worksheet · draft",
-          "text": "ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ Case 2 · แบบฟอร์มนี้ไม่ได้ตรวจขนาดยาหรือแนะนำการใช้ยา",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "อ่าน Doctor Order ของเคส 2 และบันทึกคำตอบเรื่องผลข้างเคียงกับการเฝ้าระวังจากแบบฝึก Amiodarone",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "io",
           "section": "Intake / Output",
           "title": "Fluid-balance decision · example",
-          "text": "ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · ไม่คำนวณหรือเฉลยสมดุลสารน้ำ",
-          "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2"
+          "text": "I/O 24 ชั่วโมงตามเอกสารเคส 2: น้ำดื่ม 1,000 mL + IV 300 mL รวมเข้า 1,300 mL ปัสสาวะออก 600 mL ผลต่าง +700 mL (Positive fluid balance)",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "ecg",
@@ -1556,93 +1556,147 @@
           "kind": "decision",
           "phase": "05 · MEDICATION",
           "title": "ตรวจคำสั่งยา\nและบันทึกการเตรียม",
-          "description": "กรอกแบบฝึกการบันทึกตามช่อง · เรื่องย่อ Case 2 ไม่มี Doctor Order หรือข้อมูลยา",
-          "hint": "ไม่มี Doctor Order ในเรื่องย่อ Case 2 · การกรอกจะไม่ถูกตรวจหรือแนะนำการใช้ยา",
+          "description": "อ่าน Doctor Order จากเอกสารเคส 2 แล้วเลือกผลข้างเคียงและการพยาบาลที่ต้องเฝ้าระวัง",
+          "hint": "เปิดใบคำสั่งแพทย์และเลือกคำตอบทั้งสองช่องก่อนบันทึก",
           "chartFinding": "medication",
           "gradable": false,
           "activity": {
             "kind": "medication",
             "presentation": "medication-station",
             "gradable": false,
-            "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+            "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
             "eyebrow": "MEDICATION PREP STATION · CASE 01 DEMO",
-            "title": "สถานีเตรียมยา",
+            "title": "ทบทวนความปลอดภัยของยา",
             "steps": [],
-            "notice": "ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ · ช่องด้านล่างเป็นแบบฝึกเปล่า ไม่มีคำแนะนำการใช้ยา",
+            "notice": "คำสั่งจากเอกสารสถานการณ์ที่ 2 หน้า 14–16 · รอบฝึกบันทึกคำตอบ",
             "rows": [
               {
-                "label": "Doctor Order",
-                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+                "label": "O₂",
+                "value": "Cannula 3 L/min เป้าหมาย SpO₂ ≥ 94%"
               },
               {
-                "label": "ประวัติแพ้ยา",
-                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+                "label": "Doctor Order",
+                "value": "Amiodarone 150 mg + D5W 100 mL IV drip over 1 hr then Amiodarone 900 mg + D5W 500 mL IV drip in 24 hr"
+              },
+              {
+                "label": "การติดตาม",
+                "value": "Monitor V/S และ SpO₂ ทุก 2 ชั่วโมง · Strict I/O · Electrolyte TMR"
               }
             ],
-            "fields": [],
-            "success": "บันทึกแบบฝึกแล้ว · ช่องผลข้างเคียงเก็บคำตอบเพื่อทบทวนโดยยังไม่ตัดสินถูกผิด",
+            "fields": [
+              {
+                "id": "side-effect",
+                "label": "ผลข้างเคียงที่ต้องเฝ้าระวัง",
+                "placeholder": "เลือกคำตอบ",
+                "type": "select",
+                "assessmentMode": "record-only",
+                "options": [
+                  "หัวใจเต้นช้าและความดันโลหิตตก",
+                  "หัวใจเต้นเร็วและความดันโลหิตตก",
+                  "ความดันโลหิตสูง",
+                  "ปัสสาวะออกมากผิดปกติ"
+                ]
+              },
+              {
+                "id": "monitoring",
+                "label": "การพยาบาลที่ต้องเฝ้าระวัง",
+                "placeholder": "เลือกคำตอบ",
+                "type": "select",
+                "assessmentMode": "record-only",
+                "options": [
+                  "Monitor EKG และเฝ้าระวัง Phlebitis",
+                  "ประเมิน bowel sound",
+                  "ติดตามระดับน้ำตาลในเลือดและเฝ้าระวัง Infiltrate",
+                  "เฝ้าระวัง K⁺ ต่ำ"
+                ]
+              }
+            ],
+            "success": "บันทึกคำตอบรอบฝึกเรื่องความปลอดภัยของยาแล้ว",
             "explanation": "ตรวจช่องยา ขนาด วิธีให้ และการติดตามกับข้อมูลเดโมอีกครั้ง",
-            "dataStatus": "missing",
-            "allowMissingDataAcknowledgement": true
+            "dataStatus": "demo-derived",
+            "allowMissingDataAcknowledgement": false
           },
-          "dataStatus": "missing"
+          "dataStatus": "demo-derived"
         },
         {
           "id": "IO_BALANCE",
           "kind": "decision",
           "phase": "06 · INTAKE / OUTPUT",
           "title": "คำนวณสมดุล\nสารน้ำเข้าและออก",
-          "description": "บันทึกลงแบบฝึกโดยใช้ข้อมูลที่มี · เรื่องย่อ Case 2 ไม่มีตัวเลข intake หรือ output",
-          "hint": "ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · การเลือกจะไม่ถูกตรวจทางคลินิก",
+          "description": "จัดรายการสารน้ำเข้าและออกใน 24 ชั่วโมง แล้วเลือกว่าสมดุลเป็นบวกหรือลบ",
+          "hint": "รวมน้ำดื่ม 1,000 mL กับ IV 300 mL แล้วเทียบกับปัสสาวะ 600 mL",
           "chartFinding": "io",
           "gradable": false,
           "activity": {
             "kind": "fluid-balance",
             "presentation": "io-board",
             "gradable": false,
-            "source": "Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2",
+            "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
             "eyebrow": "BEDSIDE I/O BOARD · CASE 01 DEMO",
             "title": "บันทึกสารน้ำข้างเตียง",
-            "items": [],
-            "zones": [],
-            "notice": "ไม่มีตัวเลข intake หรือ output ในเรื่องย่อ · แบบฝึกนี้ไม่คำนวณหรือเฉลยสมดุลสารน้ำ",
+            "items": [
+              {
+                "id": "oral-intake",
+                "label": "น้ำดื่ม · 1,000 mL",
+                "zoneId": "intake"
+              },
+              {
+                "id": "iv-intake",
+                "label": "IV Fluid · 300 mL",
+                "zoneId": "intake"
+              },
+              {
+                "id": "urine-output",
+                "label": "ปัสสาวะ · 600 mL",
+                "zoneId": "output"
+              }
+            ],
+            "zones": [
+              {
+                "id": "intake",
+                "label": "INTAKE · สารน้ำเข้า"
+              },
+              {
+                "id": "output",
+                "label": "OUTPUT · สารน้ำออก"
+              }
+            ],
+            "notice": "ข้อมูล I/O 24 ชั่วโมงจากเอกสารสถานการณ์ที่ 2 หน้า 17 · รอบฝึกบันทึกคำตอบ",
             "rows": [
               {
                 "label": "INTAKE",
-                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+                "value": "น้ำดื่ม 1,000 mL + IV 300 mL"
               },
               {
                 "label": "OUTPUT",
-                "value": "ไม่มีข้อมูลในเรื่องย่อ"
+                "value": "ปัสสาวะ 600 mL"
               }
             ],
             "fields": [],
-            "success": "คำนวณตรงกับข้อมูล I/O เดโม · บันทึกผลแล้ว",
+            "success": "บันทึกคำตอบแล้ว · ตามเอกสาร สารน้ำเข้า 1,300 − ออก 600 = +700 mL เป็น Positive fluid balance",
             "explanation": "รวม IV 100 mL กับ oral 50 mL แล้วหัก urine output 350 mL · ตรวจตัวเลขอีกครั้ง",
-            "dataStatus": "missing",
-            "allowMissingDataAcknowledgement": true
+            "dataStatus": "demo-derived",
+            "allowMissingDataAcknowledgement": false
           },
           "decision": {
             "options": [
               {
                 "id": "positive",
-                "label": "ตัวเลือกฝึก 1",
-                "detail": "ไม่มีตัวเลขในเรื่องย่อ · ไม่ระบุแนวโน้ม I/O",
-                "icon": "assessment"
+                "label": "POSITIVE",
+                "detail": "สารน้ำเข้ามากกว่าสารน้ำออก"
               },
               {
                 "id": "negative",
-                "label": "ตัวเลือกฝึก 2",
-                "detail": "ไม่มีตัวเลขในเรื่องย่อ · ไม่ระบุแนวโน้ม I/O",
-                "icon": "assessment"
+                "label": "NEGATIVE",
+                "detail": "สารน้ำออกมากกว่าสารน้ำเข้า"
               }
             ],
             "expected": [],
             "ordered": false,
-            "explanation": "บันทึกการเลือกเพื่อฝึกแล้ว · ไม่มีตัวเลขหรือเฉลย I/O ใน Case 2",
-            "success": "บันทึกการเลือกแล้ว · ไม่มีการตัดสินผลสมดุลสารน้ำ"
+            "explanation": "จัดรายการและเลือกแนวโน้มก่อนบันทึก",
+            "success": "บันทึกคำตอบแล้ว · ตามเอกสาร สารน้ำเข้า 1,300 − ออก 600 = +700 mL เป็น Positive fluid balance"
           },
-          "dataStatus": "missing"
+          "dataStatus": "demo-derived"
         },
         {
           "id": "EMERGENCY_TRANSITION",
@@ -2687,7 +2741,7 @@
       "id": "CLIN-10",
       "title": "Case 2 ยังขาดข้อมูลสำหรับเฉลยและการให้คะแนน",
       "status": "pending",
-      "question": "คำยืนยันทีมผ่านแชตวันที่ 18 พฤศจิกายน 2026 ให้คงลำดับประเมินผู้ป่วย → EKG → จัดการพยาบาลเพื่อวัตถุประสงค์การเรียนรู้ และให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เกมเพิ่มการบันทึกเริ่ม CPR ก่อนขั้นฝึก EKG และการ์ดข้อความ CPR, เตรียม Defibrillator/Emergency Trolley, เรียกทีมฉุกเฉิน และติดตาม EKG/สัญญาณชีพ โดยบันทึกการจัดวางเพื่อฝึก ยาตามคำสั่งแพทย์เป็นข้อมูลประกอบ ยังรอยืนยันว่าต้องเลือกยาเป็นกิจกรรมหรือไม่ คะแนนส่วนเลือกยา 20 คะแนน ลำดับ/คะแนนการ์ด และเกณฑ์ใบประกาศ รายละเอียดอื่นของ Case 2 ยังอยู่ระหว่างนำเข้าจากเนื้อหาSim.pdf ฉบับ 32 หน้า",
+      "question": "คำยืนยันทีมผ่านแชตวันที่ 18 พฤศจิกายน 2026 ให้คงลำดับประเมินผู้ป่วย → EKG → จัดการพยาบาลเพื่อวัตถุประสงค์การเรียนรู้ และให้เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เกมเพิ่มการบันทึกเริ่ม CPR ก่อนขั้นฝึก EKG และการ์ดข้อความ CPR, เตรียม Defibrillator/Emergency Trolley, เรียกทีมฉุกเฉิน และติดตาม EKG/สัญญาณชีพ โดยบันทึกการจัดวางเพื่อฝึก ยาตามคำสั่งแพทย์เป็นข้อมูลประกอบ ยังรอยืนยันว่าต้องเลือกยาเป็นกิจกรรมหรือไม่ คะแนนส่วนเลือกยา 20 คะแนน ลำดับ/คะแนนการ์ด และเกณฑ์ใบประกาศ รายละเอียดอื่นของ Case 2 ยังอยู่ระหว่างนำเข้าจากเนื้อหาSim.pdf ฉบับ 32 หน้า วันที่ 20 พฤศจิกายน 2026 นำเข้า Doctor Order และคำถามผลข้างเคียง/การเฝ้าระวังจากหน้า 14–16 พร้อม I/O 24 ชั่วโมงจากหน้า 17 (น้ำดื่ม 1,000 + IV 300 − ปัสสาวะ 600 = +700 mL) เป็นแบบฝึกบันทึกคำตอบ เกณฑ์คะแนนและกิจกรรมอื่นยังรอทีมยืนยัน",
       "reviewerRole": "เจ้าของเคส Case 2",
       "locations": [
         {

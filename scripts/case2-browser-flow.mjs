@@ -36,15 +36,24 @@ export async function runCase2Flow(browser,baseURL,errors=[]) {
     await case2Page.getByRole('button',{name:'ต่อไป'}).click();
   }
   await case2Page.locator('main[data-mission="MEDICATION"]').waitFor();
-  if(await case2Page.locator('.activity-card input, .activity-card select').count()||await case2Page.locator('.activity-equipment-token').count())throw new Error('Case 2 must not expose medication fields or equipment without a Doctor Order');
-  if(await case2Page.locator('.missing-data-card').getByText('ไม่มีข้อมูลในเรื่องย่อ').count()<2)throw new Error('Case 2 medication station should identify the missing order and allergy source');
-  await case2Page.getByRole('button',{name:'บันทึกว่าไม่มีข้อมูลใน Case'}).click();
-  await case2Page.getByRole('button',{name:'บันทึกข้อมูลที่ขาด'}).click();
+  if(await case2Page.locator('.activity-card select').count()!==2||await case2Page.locator('.activity-equipment-token').count())throw new Error('Case 2 medication safety should use two response fields and its own order');
+  await case2Page.locator('.medication-order-card summary').click();
+  await case2Page.getByText('Amiodarone 150 mg + D5W 100 mL IV drip over 1 hr then Amiodarone 900 mg + D5W 500 mL IV drip in 24 hr',{exact:true}).waitFor();
+  const medicationSave=case2Page.getByRole('button',{name:'บันทึกการเตรียมยา',exact:true});
+  if(!await medicationSave.isDisabled())throw new Error('Both safety responses must be supplied before saving');
+  await case2Page.locator('.activity-card select').nth(0).selectOption({label:'หัวใจเต้นช้าและความดันโลหิตตก'});
+  await case2Page.locator('.activity-card select').nth(1).selectOption({label:'Monitor EKG และเฝ้าระวัง Phlebitis'});
+  await medicationSave.click();
   await case2Page.getByRole('button',{name:'ต่อไป'}).click();
   await case2Page.locator('.activity-surface-instruction b').getByText('คำนวณสมดุล สารน้ำเข้าและออก').waitFor();
-  if(await case2Page.locator('.io-item-token,.io-zone,.activity-card input,.balance-options').count())throw new Error('Case 2 I/O board must not fabricate numeric items or a calculation worksheet');
-  await case2Page.getByRole('button',{name:'บันทึกว่าไม่มีข้อมูลใน Case'}).click();
-  await case2Page.getByRole('button',{name:'บันทึกข้อมูลที่ขาด'}).click();
+  if(await case2Page.locator('.io-item-token').count()!==3)throw new Error('Case 2 I/O should expose the three source-documented items');
+  for(const [item,zone] of [['oral-intake','intake'],['iv-intake','intake'],['urine-output','output']]){
+    await case2Page.locator(`[data-activity-item="${item}"]`).click();
+    await case2Page.locator(`[data-activity-zone="${zone}"]`).click();
+  }
+  await case2Page.locator('.balance-options button').filter({hasText:'POSITIVE'}).click();
+  await case2Page.getByRole('button',{name:'ยืนยันคำตอบ',exact:true}).click();
+  await case2Page.locator('.feedback').getByText(/\+700 mL/).waitFor();
   if(await case2Page.locator('.feedback.error').count())throw new Error('Case 2 I/O entry should be ungraded');
   await case2Page.getByRole('button',{name:'ต่อไป'}).click();
   await case2Page.getByRole('heading',{name:'อาการผู้ป่วย กำลังเปลี่ยนไป',level:1}).waitFor();

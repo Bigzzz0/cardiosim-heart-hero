@@ -200,14 +200,19 @@ test('Case 2 can be completed from briefing to result without inventing numeric 
   assert.equal(game.confirmDecision(),true); game.next();
   for (const [slot,option] of [['intervention-1','position-care'],['intervention-2','skip-monitoring']] as const) game.chooseForSlot(slot,option);
   assert.equal(game.confirmDecision(),true); game.next();
-  assert.equal(case02.missions.find(mission=>mission.id==='MEDICATION')?.activity?.fields?.length,0,'Case 2 must not expose medication fields without an order');
-  assert.equal(game.acknowledgeMissingActivity(),true);
+  assert.equal(case02.missions.find(mission=>mission.id==='MEDICATION')?.activity?.fields?.length,2);
+  assert.equal(game.confirmActivity(),false,'both medication safety responses are required');
+  game.setResponse('side-effect','หัวใจเต้นช้าและความดันโลหิตตก');
+  game.setResponse('monitoring','Monitor EKG และเฝ้าระวัง Phlebitis');
   assert.equal(game.confirmActivity(),true); game.next();
-  assert.equal(case02.missions.find(mission=>mission.id==='IO_BALANCE')?.activity?.items?.length,0,'Case 2 must not invent intake/output items');
-  assert.equal(game.canContinue,false,'Case 2 requires an explicit acknowledgement that the source data is missing');
-  game.acknowledgeMissingActivity();
+  assert.equal(case02.missions.find(mission=>mission.id==='IO_BALANCE')?.activity?.items?.length,3);
+  assert.equal(game.canContinue,false,'I/O requires placing the documented items and selecting a balance');
+  game.placeActivityItem('oral-intake','intake');
+  game.placeActivityItem('iv-intake','intake');
+  game.placeActivityItem('urine-output','output');
+  game.choose('positive');
   const beforeUnscoredAnswers = game.score.data.attempts;
-  assert.equal(game.confirmActivity(),true); assert.equal(game.score.data.attempts,beforeUnscoredAnswers); game.next();
+  assert.equal(game.confirmDecision(),true); assert.equal(game.score.data.attempts,beforeUnscoredAnswers); game.next();
   game.update(5000);
   for (const target of ['head','chest','wrist']) { game.selectTool('hand'); game.interact(target); game.update(950); }
   assert.equal(game.canContinue,false,'Case 2 must record CPR before its retained teaching ECG step');
@@ -229,6 +234,26 @@ test('Case 2 can be completed from briefing to result without inventing numeric 
   assert.equal(game.score.data.mistakeCount,0,'ungraded Case 2 answer choices are practice, not mistakes');
   assert.ok(game.chart.some(entry=>entry.id==='history'));
   assert.ok(game.chart.some(entry=>entry.id==='ecg-read'));
+});
+
+test('old missing-data checkpoints reopen the source-documented activity without losing earlier progress', () => {
+  for (const mission of ['MEDICATION','IO_BALANCE'] as const) {
+    const game = new CaseEngine(case02);
+    game.mission.jumpTo(mission);
+    const old = game.checkpoint();
+    old.responses = { 'missing-data-ack': 'recorded' };
+    old.decisionConfirmed = true;
+    old.completed = ['history'];
+    const migrated = parseCheckpoint(JSON.stringify(old),case02);
+    assert(migrated);
+    assert.equal(migrated.mission,mission);
+    assert.equal(migrated.decisionConfirmed,false);
+    assert.deepEqual(migrated.responses,{});
+    assert.deepEqual(migrated.completed,['history']);
+    const restored = new CaseEngine(case02);
+    restored.restore(migrated);
+    assert.equal(restored.canContinue,false);
+  }
 });
 
 test('case validation rejects missing ECG leads and checkpoint validation rejects edited data', () => {

@@ -10,7 +10,7 @@ case02.title = 'ภาวะหัวใจล้มเหลวกำเริ�
 case02.clinicalStatus = 'CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม';
 case02.gradable = false;
 case02.tools.push({ id: 'cpr', name: 'เริ่ม CPR', icon: 'hand', allowedTargets: ['chest'], duration: 950 });
-case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2', 'เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026'];
+case02.sources = ['Stage3ScenarioSelect.tsx · เรื่องย่อ Case 2', 'เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026', 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · หน้า 14–17 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac'];
 case02.assets.room = ASSETS.environments.patientRoom;
 case02.assets.patient = ASSETS.patients.patientCase02;
 case02.assets.patientCritical = case02.assets.patient;
@@ -33,8 +33,8 @@ case02.findings = case02.findings.map(finding => {
     case 'circulation': return { ...finding, text: 'คลำชีพจรไม่พบ → เริ่ม CPR ทันที พร้อมเรียกทีมฉุกเฉินและเตรียม Defibrillator', source: case02.sources[1] };
     case 'diagnosis': return { ...finding, text: 'มีการบันทึกคำตอบเพื่อฝึก · Case 2 ไม่มี answer key ทางคลินิก', source: case02.sources[0] };
     case 'nursing-care': return { ...finding, text: 'มีการบันทึกตัวเลือกเพื่อฝึก · Case 2 ไม่มีเฉลย nursing care ทางคลินิก', source: case02.sources[0] };
-    case 'medication': return { ...finding, text: 'ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ Case 2 · แบบฟอร์มนี้ไม่ได้ตรวจขนาดยาหรือแนะนำการใช้ยา', source: case02.sources[0] };
-    case 'io': return { ...finding, text: 'ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · ไม่คำนวณหรือเฉลยสมดุลสารน้ำ', source: case02.sources[0] };
+    case 'medication': return { ...finding, text: 'อ่าน Doctor Order ของเคส 2 และบันทึกคำตอบเรื่องผลข้างเคียงกับการเฝ้าระวังจากแบบฝึก Amiodarone', source: case02.sources[2] };
+    case 'io': return { ...finding, text: 'I/O 24 ชั่วโมงตามเอกสารเคส 2: น้ำดื่ม 1,000 mL + IV 300 mL รวมเข้า 1,300 mL ปัสสาวะออก 600 mL ผลต่าง +700 mL (Positive fluid balance)', source: case02.sources[2] };
     case 'ecg': return { ...finding, text: 'ติด lead ครบในผังเพื่อฝึกการลาก · เรื่องย่อไม่มีคลื่น ECG หรือผลอ่าน', source: case02.sources[0] };
     case 'ecg-read': return { ...finding, text: 'บันทึกข้อความที่ผู้เล่นกรอก · Case 2 ไม่มี rhythm strip หรือ answer key', source: case02.sources[0] };
     case 'emergency-treatment': return { ...finding, text: 'ทีมกำหนดให้เน้น CPR การเตรียม Defibrillator และการเรียกทีมฉุกเฉิน โดยติดตาม EKG และสัญญาณชีพ ยาที่ระบุในคำสั่งแพทย์เป็นข้อมูลประกอบของสถานการณ์', source: case02.sources[1] };
@@ -59,31 +59,50 @@ case02.missions = case02.missions.map(mission => {
     } : undefined,
   };
   if (mission.id === 'MEDICATION') return {
-    ...mission, dataStatus: 'missing', gradable: false,
-    description: 'กรอกแบบฝึกการบันทึกตามช่อง · เรื่องย่อ Case 2 ไม่มี Doctor Order หรือข้อมูลยา',
-    hint: 'ไม่มี Doctor Order ในเรื่องย่อ Case 2 · การกรอกจะไม่ถูกตรวจหรือแนะนำการใช้ยา',
+    ...mission, dataStatus: 'demo-derived', gradable: false,
+    description: 'อ่าน Doctor Order จากเอกสารเคส 2 แล้วเลือกผลข้างเคียงและการพยาบาลที่ต้องเฝ้าระวัง',
+    hint: 'เปิดใบคำสั่งแพทย์และเลือกคำตอบทั้งสองช่องก่อนบันทึก',
     activity: mission.activity ? {
-      ...mission.activity, dataStatus: 'missing', source: case02.sources[0], gradable: false, expectedResponses: undefined,
-      steps: [], allowMissingDataAcknowledgement: true,
-      notice: 'ไม่มี Doctor Order หรือข้อมูลยาในเรื่องย่อ · ช่องด้านล่างเป็นแบบฝึกเปล่า ไม่มีคำแนะนำการใช้ยา',
-      rows: [{ label: 'Doctor Order', value: 'ไม่มีข้อมูลในเรื่องย่อ' }, { label: 'ประวัติแพ้ยา', value: 'ไม่มีข้อมูลในเรื่องย่อ' }],
-      fields: [],
+      ...mission.activity, dataStatus: 'demo-derived', source: case02.sources[2], gradable: false, expectedResponses: undefined,
+      steps: [], allowMissingDataAcknowledgement: false,
+      title: 'ทบทวนความปลอดภัยของยา',
+      notice: 'คำสั่งจากเอกสารสถานการณ์ที่ 2 หน้า 14–16 · รอบฝึกบันทึกคำตอบ',
+      rows: [
+        { label: 'O₂', value: 'Cannula 3 L/min เป้าหมาย SpO₂ ≥ 94%' },
+        { label: 'Doctor Order', value: 'Amiodarone 150 mg + D5W 100 mL IV drip over 1 hr then Amiodarone 900 mg + D5W 500 mL IV drip in 24 hr' },
+        { label: 'การติดตาม', value: 'Monitor V/S และ SpO₂ ทุก 2 ชั่วโมง · Strict I/O · Electrolyte TMR' },
+      ],
+      fields: [
+        { id: 'side-effect', label: 'ผลข้างเคียงที่ต้องเฝ้าระวัง', placeholder: 'เลือกคำตอบ', type: 'select', assessmentMode: 'record-only', options: ['หัวใจเต้นช้าและความดันโลหิตตก', 'หัวใจเต้นเร็วและความดันโลหิตตก', 'ความดันโลหิตสูง', 'ปัสสาวะออกมากผิดปกติ'] },
+        { id: 'monitoring', label: 'การพยาบาลที่ต้องเฝ้าระวัง', placeholder: 'เลือกคำตอบ', type: 'select', assessmentMode: 'record-only', options: ['Monitor EKG และเฝ้าระวัง Phlebitis', 'ประเมิน bowel sound', 'ติดตามระดับน้ำตาลในเลือดและเฝ้าระวัง Infiltrate', 'เฝ้าระวัง K⁺ ต่ำ'] },
+      ],
+      success: 'บันทึกคำตอบรอบฝึกเรื่องความปลอดภัยของยาแล้ว',
     } : undefined,
   };
   if (mission.id === 'IO_BALANCE') return {
-    ...mission, dataStatus: 'missing', gradable: false,
-    description: 'บันทึกลงแบบฝึกโดยใช้ข้อมูลที่มี · เรื่องย่อ Case 2 ไม่มีตัวเลข intake หรือ output',
-    hint: 'ไม่มีตัวเลข intake/output ในเรื่องย่อ Case 2 · การเลือกจะไม่ถูกตรวจทางคลินิก',
+    ...mission, dataStatus: 'demo-derived', gradable: false,
+    description: 'จัดรายการสารน้ำเข้าและออกใน 24 ชั่วโมง แล้วเลือกว่าสมดุลเป็นบวกหรือลบ',
+    hint: 'รวมน้ำดื่ม 1,000 mL กับ IV 300 mL แล้วเทียบกับปัสสาวะ 600 mL',
     activity: mission.activity ? {
-      ...mission.activity, dataStatus: 'missing', source: case02.sources[0], gradable: false, expectedResponses: undefined,
-      items: [], zones: [], fields: [], allowMissingDataAcknowledgement: true,
-      notice: 'ไม่มีตัวเลข intake หรือ output ในเรื่องย่อ · แบบฝึกนี้ไม่คำนวณหรือเฉลยสมดุลสารน้ำ',
-      rows: [{ label: 'INTAKE', value: 'ไม่มีข้อมูลในเรื่องย่อ' }, { label: 'OUTPUT', value: 'ไม่มีข้อมูลในเรื่องย่อ' }],
+      ...mission.activity, dataStatus: 'demo-derived', source: case02.sources[2], gradable: false, expectedResponses: undefined,
+      items: [
+        { id: 'oral-intake', label: 'น้ำดื่ม · 1,000 mL', zoneId: 'intake' },
+        { id: 'iv-intake', label: 'IV Fluid · 300 mL', zoneId: 'intake' },
+        { id: 'urine-output', label: 'ปัสสาวะ · 600 mL', zoneId: 'output' },
+      ],
+      fields: [], allowMissingDataAcknowledgement: false,
+      notice: 'ข้อมูล I/O 24 ชั่วโมงจากเอกสารสถานการณ์ที่ 2 หน้า 17 · รอบฝึกบันทึกคำตอบ',
+      rows: [{ label: 'INTAKE', value: 'น้ำดื่ม 1,000 mL + IV 300 mL' }, { label: 'OUTPUT', value: 'ปัสสาวะ 600 mL' }],
+      success: 'บันทึกคำตอบแล้ว · ตามเอกสาร สารน้ำเข้า 1,300 − ออก 600 = +700 mL เป็น Positive fluid balance',
     } : undefined,
     decision: mission.decision ? {
-      ...mission.decision, expected: [], options: mission.decision.options.map((option,index) => ({ ...option, label: `ตัวเลือกฝึก ${index + 1}`, detail: 'ไม่มีตัวเลขในเรื่องย่อ · ไม่ระบุแนวโน้ม I/O' })),
-      explanation: 'บันทึกการเลือกเพื่อฝึกแล้ว · ไม่มีตัวเลขหรือเฉลย I/O ใน Case 2',
-      success: 'บันทึกการเลือกแล้ว · ไม่มีการตัดสินผลสมดุลสารน้ำ',
+      ...mission.decision, expected: [],
+      options: [
+        { id: 'positive', label: 'POSITIVE', detail: 'สารน้ำเข้ามากกว่าสารน้ำออก' },
+        { id: 'negative', label: 'NEGATIVE', detail: 'สารน้ำออกมากกว่าสารน้ำเข้า' },
+      ],
+      explanation: 'จัดรายการและเลือกแนวโน้มก่อนบันทึก',
+      success: 'บันทึกคำตอบแล้ว · ตามเอกสาร สารน้ำเข้า 1,300 − ออก 600 = +700 mL เป็น Positive fluid balance',
     } : undefined,
   };
   if (mission.id === 'EMERGENCY_TRANSITION') return { ...mission, description: 'ผู้ป่วยเข้าสู่ช่วงฉุกเฉิน ประเมินผู้ป่วยและคลำชีพจร หากคลำชีพจรไม่ได้ให้เริ่ม CPR ทันที', hint: 'คลื่นบน Monitor อาจยังปรากฏแม้คลำชีพจรไม่ได้ ให้ยึดผลประเมินผู้ป่วย', onEnter: { emergency: true, alarm: true, duration: 5000, vitals: {}, patient: { condition: 'critical', breathing: 'severe', animation: 'critical' } } };

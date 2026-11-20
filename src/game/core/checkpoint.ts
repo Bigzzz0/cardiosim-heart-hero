@@ -39,6 +39,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     let activityPlacements = (data.activityPlacements as Record<string, string> | undefined) ?? {};
     let activityStepProgress = (data.activityStepProgress as Checkpoint['activityStepProgress'] | undefined) ?? {};
     let responses = data.responses as Record<string, string>;
+    const replacedMissingData = responses['missing-data-ack'] === 'recorded' && active.activity !== undefined && !active.activity.allowMissingDataAcknowledgement;
     const allowedStepIds = new Set(active.activity?.steps?.map(step => step.id) ?? []);
     const interactiveSteps = active.activity?.steps?.filter(step => step.interaction) ?? [];
     const allowedInteractionStepIds = new Set(interactiveSteps.map(step => step.id));
@@ -48,7 +49,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
       || Object.entries(activityPlacements).some(([itemId,zoneId]) => !allowedItemIds.has(itemId) || !allowedZoneIds.has(zoneId))
       || Object.entries(activityStepProgress).some(([id,progress]) => !allowedInteractionStepIds.has(id) || progress.amount > (()=>{const interaction=active.activity?.steps?.find(step=>step.id===id)?.interaction;return interaction?.kind==='syringe-withdrawal'?interaction.scaleMax:0;})())
       || Boolean(active.activity?.steps?.length && activitySteps.length === 0 && Object.keys(responses).length > 0);
-    if (incompatibleActivity) { activitySteps = []; activityPlacements = {}; activityStepProgress = {}; responses = {}; }
+    if (incompatibleActivity || replacedMissingData) { activitySteps = []; activityPlacements = {}; activityStepProgress = {}; responses = {}; }
     let resetCurrentStep = false;
     activityStepProgress = Object.fromEntries(Object.entries(activityStepProgress).flatMap(([id,progress]) => {
       const interaction = active.activity?.steps?.find(step=>step.id===id)?.interaction;
@@ -64,7 +65,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     for (const entry of data.chart) if (!record(entry) || !config.findings.some(f => f.id === entry.id) || !nonnegative(entry.at) || !config.missions.some(m => m.id === entry.mission) || (entry.vitals !== undefined && !vitals(entry.vitals))) return null;
     // Replace saved text with trusted configuration text; storage only owns progress.
     const chart = data.chart.map(entry => ({ ...config.findings.find(f => f.id === entry.id)!, at: entry.at as number, mission: entry.mission as Checkpoint['mission'], ...(entry.vitals ? { vitals: entry.vitals as VitalSigns } : {}) }));
-    return { ...data, ...(resetCurrentStep?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
+    return { ...data, ...(replacedMissingData?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses, chart } as unknown as Checkpoint;
   } catch { return null; }
 }
 export function readCheckpoint(config: GameCase): Checkpoint | null { try { const raw = localStorage.getItem(key(config.id)); return raw ? parseCheckpoint(raw, config) : null; } catch { return null; } }

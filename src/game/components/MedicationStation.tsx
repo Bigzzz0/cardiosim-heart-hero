@@ -59,7 +59,7 @@ export function MedicationStation({ activity, readings, onStepAction, decision, 
       {activity.rows?.map(row => <div className="activity-rows" key={row.label}><div><span>{row.label}</span><b>{row.value}</b></div></div>)}
       </div>
     </details>
-    <div className={`medication-procedure ${nextStep?.interaction ? 'has-syringe-activity' : ''}`}>
+    {Boolean(activity.steps?.length) && <div className={`medication-procedure ${nextStep?.interaction ? 'has-syringe-activity' : ''}`}>
       <div><button type="button" className="medication-overview" aria-expanded={overview} onClick={()=>setOverview(value=>!value)}>{overview?'ย่อรายการ':'ดูขั้นตอนทั้งหมด'} · {completedSteps.length}/{activity.steps?.length??0}</button>
       <div className={`medication-step-list ${overview?'expanded':''}`} aria-label="ลำดับเตรียมยา">
         {activity.steps?.map((step,index) => {
@@ -77,11 +77,11 @@ export function MedicationStation({ activity, readings, onStepAction, decision, 
         <span className="equipment-tray-label">อุปกรณ์ถัดไป</span>
         {nextStep?.interaction?.kind === 'syringe-withdrawal' ? <SyringeWithdrawalMinigame stepId={nextStep.id} equipmentLabel={nextStep.equipmentLabel} interaction={nextStep.interaction} progress={stepProgress[nextStep.id]} confirmed={confirmed} onStartDrag={onStartSyringeToolDrag} onPlaceTool={onPlaceSyringeTool} onSetAmount={onSetSyringeAmount} onComplete={onCompleteStep}/> : nextStep?.interaction ? <ObjectWorkbench key={nextStep.id} step={nextStep} interaction={nextStep.interaction} activity={activity} progress={stepProgress[nextStep.id]} readings={readings} onAction={onStepAction} onComplete={onCompleteStep}/> : nextStep ? <button type="button" className="activity-equipment-token" onPointerDown={event => onStartStepDrag(nextStep.id,event)} onClick={() => onCompleteStep(nextStep.id)} disabled={confirmed} aria-label={`ลาก ${nextStep.equipmentLabel} ไปยังขั้นตอนที่กำลังทำ หรือแตะเพื่อใช้`}>
           <span className="equipment-token-art">{equipmentSprite?<img src={equipmentSprite} alt="" draggable="false"/>:<NextEquipment size={28}/>}</span><b>{nextStep.equipmentLabel}</b><small>กดค้างลากไปขั้นปัจจุบัน · หรือแตะ</small>
-        </button> : <div className="equipment-ready"><ShieldCheck size={23}/><b>ครบ 7 ขั้น</b><small>ทบทวนรายการก่อนยืนยัน</small></div>}
+        </button> : <div className="equipment-ready"><ShieldCheck size={23}/><b>ครบ {activity.steps?.length} ขั้น</b><small>ทบทวนรายการก่อนยืนยัน</small></div>}
         <div className="procedure-count"><span>{completedSteps.length}</span> / {activity.steps?.length ?? 0} ขั้นเสร็จ</div>
       </div>
-    </div>
-    {!nextStep&&<div className="station-check-fields"><div className="station-subhead"><Syringe size={16}/> ตรวจข้อมูลการเตรียมก่อนบันทึก</div>
+    </div>}
+    {!nextStep&&<div className="station-check-fields"><div className="station-subhead"><Syringe size={16}/> {activity.steps?.length ? 'ตรวจข้อมูลการเตรียมก่อนบันทึก' : 'บันทึกคำตอบเรื่องความปลอดภัยของยา'}</div>
       <ActivityFields activity={activity} responses={responses} confirmed={confirmed} onSetResponse={onSetResponse}/>
     </div>
     }
