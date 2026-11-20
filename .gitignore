@@ -31,6 +31,9 @@ dist-ssr
 /screenshots/
 /tmp/
 
+# Personal local work plan (not committed)
+/PERSONAL_WORK_PLAN.md
+
 # Supplied source packs stay local; ship only the assets embedded in this game.
 /DEMO_Cozy_UI_Pack_doboui/
 /FREE Healthcare Character/
