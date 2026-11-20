@@ -69,37 +69,62 @@ export const App: React.FC = () => {
   const [prioritizationErrors, setPrioritizationErrors] = useState(0);
 
   // Telemetry
-  const [telemetry, setTelemetry] = useState<GameTelemetry>(() => {
-    const returned = readGameReturn()?.telemetry;
-    const defaults: GameTelemetry = {
-    student: {
-      studentId: '66010204',
-      name: 'พว. ณัฐชา พงษ์ไพศาล',
-      institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น'
-    },
-    preTestScore: 4,
+  const createEmptyTelemetry = (profile: StudentProfile): GameTelemetry => ({
+    student: profile,
+    preTestScore: 0,
     preTestAnswers: {},
-    postTestScore: 10,
+    postTestScore: 0,
     postTestAnswers: {},
-    learningGain: 0.86,
-    discoveredHotspots: ['SOB', 'Crackles', 'PND', 'JVD'],
+    learningGain: 0,
+    discoveredHotspots: [],
     prioritizationErrors: 0,
     medicationErrors: 0,
     ioErrors: 0,
-    crisisResponseTimeSeconds: 42,
-    totalTimeSeconds: 1240,
+    crisisResponseTimeSeconds: 0,
+    totalTimeSeconds: 0,
     surveyScores: {},
     feedbackText: '',
-    ncjmmScores: {
-      recognizeCues: 95,
-      analyzeCues: 90,
-      prioritizeHypotheses: 85,
-      generateSolutions: 90,
-      takeAction: 95,
-      evaluateOutcomes: 90
+  });
+
+  const [telemetry, setTelemetry] = useState<GameTelemetry>(() => {
+    const gameReturn = readGameReturn();
+    const returned = gameReturn?.telemetry;
+    let fallbackGameResult = returned?.gameResult;
+    if (!fallbackGameResult) {
+      try {
+        const raw = sessionStorage.getItem('cardiosim.game.result.v1');
+        if (raw) fallbackGameResult = JSON.parse(raw);
+      } catch {
+        // ignore storage errors
+      }
     }
-    };
-    return returned ? { ...defaults, ...returned } : defaults;
+
+    if (returned) {
+      return {
+        ...createEmptyTelemetry(gameReturn?.student || student),
+        ...returned,
+        student: gameReturn?.student || returned.student || student,
+        gameResult: fallbackGameResult,
+      };
+    }
+
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('stage')) {
+        return {
+          ...createEmptyTelemetry({
+            studentId: '66010204',
+            name: 'พว. ณัฐชา พงษ์ไพศาล',
+            institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
+          }),
+          gameResult: fallbackGameResult,
+        };
+      }
+    } catch {
+      // ignore
+    }
+
+    return createEmptyTelemetry(student);
   });
 
   useEffect(() => {
@@ -148,7 +173,7 @@ export const App: React.FC = () => {
   // Stage Handlers
   const handleStartGame = (profile: StudentProfile) => {
     setStudent(profile);
-    setTelemetry(prev => ({ ...prev, student: profile }));
+    setTelemetry(createEmptyTelemetry(profile));
     setCurrentStage('PRETEST');
   };
 
@@ -242,6 +267,13 @@ export const App: React.FC = () => {
   };
 
   const handleRestart = () => {
+    setTelemetry(createEmptyTelemetry({ studentId: '', name: '', institution: '' }));
+    setStudent({ studentId: '', name: '', institution: '' });
+    try {
+      sessionStorage.removeItem('cardiosim.game.result.v1');
+    } catch {
+      // ignore
+    }
     setCurrentStage('LANDING');
   };
 
@@ -330,6 +362,7 @@ export const App: React.FC = () => {
             student={student}
             preScore={telemetry.preTestScore}
             postScore={telemetry.postTestScore}
+            telemetry={telemetry}
             onProceedToSurvey={handleProceedToSurvey}
           />
         )}
