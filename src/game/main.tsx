@@ -55,7 +55,7 @@ function App() {
   const stationDrag = useRef<{ kind: 'medication-step' | 'io-item' | 'syringe-tool'; id: string; x: number; y: number; pointerId: number } | null>(null);
   const skipAnswerClick = useRef(false);
   const skipLeadClick = useRef(false);
-  const skipStationClick = useRef(false);
+  const skipStationClick = useRef<'medication-step' | 'syringe-tool' | 'io-item' | null>(null);
   const activityProgressSaveTimer = useRef<number | null>(null);
   const [chartOpen, setChartOpen] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -157,8 +157,11 @@ function App() {
         const didDrag = Math.hypot(event.clientX - heldStationItem.x, event.clientY - heldStationItem.y) > 8;
         stationDrag.current = null; setStationGhost(null); document.body.classList.remove('dragging');
         if (didDrag) {
-          skipStationClick.current = true;
-          window.setTimeout(() => { skipStationClick.current = false; }, 120);
+          const draggedKind = heldStationItem.kind;
+          skipStationClick.current = draggedKind;
+          window.setTimeout(() => {
+            if (skipStationClick.current === draggedKind) skipStationClick.current = null;
+          }, 120);
           const element = document.elementFromPoint(event.clientX,event.clientY);
           if (heldStationItem.kind === 'medication-step') {
             const target = element?.closest<HTMLElement>('[data-activity-step-target]')?.dataset.activityStepTarget;
@@ -332,21 +335,21 @@ function App() {
   };
   const startActivityStepDrag = (id: string, event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0 || mission.kind !== 'decision' || app.mission.decisionConfirmed) return;
-    event.preventDefault(); capturePointer(event); skipStationClick.current = false;
+    event.preventDefault(); capturePointer(event); skipStationClick.current = null;
     stationDrag.current = { kind: 'medication-step', id, x: event.clientX, y: event.clientY, pointerId: event.pointerId };
   };
   const startActivityItemDrag = (id: string, event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0 || mission.kind !== 'decision' || app.mission.decisionConfirmed) return;
-    event.preventDefault(); capturePointer(event); skipStationClick.current = false;
+    event.preventDefault(); capturePointer(event); skipStationClick.current = null;
     stationDrag.current = { kind: 'io-item', id, x: event.clientX, y: event.clientY, pointerId: event.pointerId };
   };
   const startSyringeToolDrag = (id: string, event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0 || mission.kind !== 'decision' || app.mission.decisionConfirmed) return;
-    event.preventDefault(); capturePointer(event); skipStationClick.current = false;
+    event.preventDefault(); capturePointer(event); skipStationClick.current = null;
     stationDrag.current = { kind: 'syringe-tool', id, x: event.clientX, y: event.clientY, pointerId: event.pointerId };
   };
   const placeSyringeTool = (stepId: string, targetId: string) => {
-    if (skipStationClick.current) { skipStationClick.current = false; return; }
+    if (skipStationClick.current === 'syringe-tool') { skipStationClick.current = null; return; }
     app.placeActivityStepTool(stepId,targetId);
   };
   const setSyringeAmount = (stepId: string, amount: number) => {
@@ -355,11 +358,11 @@ function App() {
     activityProgressSaveTimer.current = window.setTimeout(() => { saveCheckpoint(app.checkpoint()); setResumeAvailable(true); activityProgressSaveTimer.current = null; },250);
   };
   const completeActivityStep = (id: string) => {
-    if (skipStationClick.current) { skipStationClick.current = false; return; }
+    if (skipStationClick.current === 'medication-step') { skipStationClick.current = null; return; }
     app.completeActivityStep(id);
   };
   const selectActivityItem = (id: string) => {
-    if (skipStationClick.current) { skipStationClick.current = false; return; }
+    if (skipStationClick.current === 'io-item') { skipStationClick.current = null; return; }
     setSelectedActivityItemId(id);
   };
   const placeActivityItem = (id: string, zoneId: string) => {
