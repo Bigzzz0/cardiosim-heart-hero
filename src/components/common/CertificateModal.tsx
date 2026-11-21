@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Award, Printer, X, Edit3 } from 'lucide-react';
+import { Award, Printer, X, Edit3, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import { StudentProfile } from '../../types/game';
 import { ShinyButton } from '../ui/ShinyButton';
 import { ASSETS } from '../../constants/assets';
@@ -13,6 +13,9 @@ interface CertificateModalProps {
   postScore?: number;
   gain?: number;
 }
+
+const CERT_BASE_WIDTH = 842;
+const CERT_BASE_HEIGHT = 595;
 
 const DEFAULT_STUDENT: StudentProfile = {
   studentId: '66010204',
@@ -47,7 +50,7 @@ const CertificateSheet: React.FC<CertificateSheetProps> = ({
       className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
     />
 
-    {/* Content Container (Percentage padding keeps identical safe margins on both 842x595 preview and A4 297x210mm print) */}
+    {/* Content Container (Percentage padding keeps identical safe margins on both preview and A4 297x210mm print) */}
     <div
       className="relative z-10 w-full h-full flex flex-col justify-between select-none"
       style={{ padding: '7.5% 9% 13.5% 9%' }}
@@ -131,6 +134,11 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
 }) => {
   const [editableStudent, setEditableStudent] = useState<StudentProfile>(student);
   const [isEditing, setIsEditing] = useState(false);
+  const [zoomMultiplier, setZoomMultiplier] = useState(1);
+  const previewHostRef = useRef<HTMLDivElement>(null);
+  const [hostWidth, setHostWidth] = useState(() =>
+    typeof window !== 'undefined' ? Math.min(CERT_BASE_WIDTH, window.innerWidth - 48) : CERT_BASE_WIDTH
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -139,8 +147,28 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
         name: student.name || DEFAULT_STUDENT.name,
         institution: student.institution || DEFAULT_STUDENT.institution,
       });
+      setZoomMultiplier(1);
     }
   }, [isOpen, student]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const host = previewHostRef.current;
+    if (!host) return;
+
+    const measure = () => {
+      const style = getComputedStyle(host);
+      const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+      const available = Math.max(240, host.clientWidth - padX);
+      setHostWidth(available);
+    };
+
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -153,6 +181,15 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
     month: 'long',
     day: 'numeric',
   });
+
+  const fitScale = hostWidth > 0 ? Math.min(1, hostWidth / CERT_BASE_WIDTH) : 1;
+  const effectiveScale = Math.min(2.5, fitScale * zoomMultiplier);
+  const scaledWidth = Math.round(CERT_BASE_WIDTH * effectiveScale);
+  const scaledHeight = Math.round(CERT_BASE_HEIGHT * effectiveScale);
+
+  const zoomIn = () => setZoomMultiplier((z) => Math.min(2.5, Number((z + 0.5).toFixed(2))));
+  const zoomOut = () => setZoomMultiplier((z) => Math.max(1, Number((z - 0.5).toFixed(2))));
+  const toggleFitOrRead = () => setZoomMultiplier((z) => (z === 1 ? 2 : 1));
 
   return (
     <>
@@ -213,13 +250,13 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
         )}
 
       <div className="certificate-no-print fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
-        <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-4xl w-full p-4 sm:p-6 shadow-2xl relative my-auto">
+        <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-4xl w-full p-3.5 sm:p-6 shadow-2xl relative my-auto">
           {/* Top Control Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
             <div className="flex items-center gap-2 text-white">
-              <Award className="w-5 h-5 text-amber-400" />
-              <h2 className="text-base sm:text-lg font-bold">
-                พิมพ์ใบประกาศนียบัตร (Certificate of Achievement)
+              <Award className="w-5 h-5 text-amber-400 shrink-0" />
+              <h2 className="text-sm sm:text-lg font-bold leading-snug">
+                พิมพ์ใบประกาศนียบัตร (Certificate)
               </h2>
             </div>
             <div className="flex items-center gap-2">
@@ -236,6 +273,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
                 onClick={onClose}
                 className="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-slate-800 transition-colors"
                 title="ปิดหน้าต่าง"
+                aria-label="ปิดหน้าต่าง"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -244,11 +282,11 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
 
           {/* Quick Edit Fields (if editing) */}
           {isEditing && (
-            <div className="bg-slate-800/90 border border-amber-500/30 rounded-2xl p-4 my-4 animate-in fade-in duration-150">
-              <p className="text-xs text-amber-300 font-semibold mb-3 flex items-center gap-1.5">
+            <div className="bg-slate-800/90 border border-amber-500/30 rounded-2xl p-3.5 my-3 animate-in fade-in duration-150">
+              <p className="text-xs text-amber-300 font-semibold mb-2.5 flex items-center gap-1.5">
                 <Edit3 className="w-4 h-4" /> ปรับแต่งข้อมูลสำหรับแสดงบนใบประกาศ (พิมพ์ได้ทันที):
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
                   <label className="text-[11px] text-slate-400 block mb-1">ชื่อ–นามสกุล</label>
                   <input
@@ -289,34 +327,94 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
             </div>
           )}
 
-          {/* Certificate Interactive Canvas Preview */}
-          <div className="overflow-x-auto my-4 py-2 flex justify-start lg:justify-center">
-            <CertificateSheet
-              id="certificate-canvas"
-              student={editableStudent}
-              currentDate={currentDate}
-              className="shadow-2xl rounded-2xl"
-              style={{
-                width: '842px',
-                height: '595px',
-                minWidth: '842px',
-                minHeight: '595px',
-                aspectRatio: '842 / 595',
+          {/* PDF-Style Viewer Toolbar (Fit-to-Screen + Zoom Controls) */}
+          <div className="flex flex-wrap items-center justify-between gap-2 my-2.5 px-2.5 py-1.5 rounded-xl bg-slate-800/70 border border-slate-700/70">
+            <span className="text-[11px] text-slate-300">
+              แตะใบประกาศเพื่อซูมดูชื่อ · เลื่อนนิ้วดูรายละเอียดเมื่อขยาย
+            </span>
+            <div className="flex items-center gap-1.5 ml-auto">
+              <button
+                type="button"
+                onClick={zoomOut}
+                disabled={zoomMultiplier <= 1}
+                aria-label="ซูมออก"
+                className="p-1.5 rounded-lg bg-slate-900/90 border border-slate-700 text-slate-200 hover:bg-slate-700 disabled:opacity-40 transition-colors"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-[11px] font-mono font-semibold text-slate-200 min-w-[46px] text-center">
+                {zoomMultiplier === 1 ? 'พอดีจอ' : `${Math.round(zoomMultiplier * 100)}%`}
+              </span>
+              <button
+                type="button"
+                onClick={zoomIn}
+                disabled={zoomMultiplier >= 2.5}
+                aria-label="ซูมเข้า"
+                className="p-1.5 rounded-lg bg-slate-900/90 border border-slate-700 text-slate-200 hover:bg-slate-700 disabled:opacity-40 transition-colors"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={toggleFitOrRead}
+                className="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-400/40 text-amber-200 hover:bg-amber-500/25 text-[11px] font-semibold flex items-center gap-1 transition-colors"
+              >
+                <Maximize2 className="w-3 h-3" />
+                <span>{zoomMultiplier === 1 ? 'ขยายดูชื่อ' : 'พอดีจอ'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Certificate Fit-to-Screen & Zoomable PDF-Style Preview */}
+          <div
+            ref={previewHostRef}
+            className="w-full overflow-auto rounded-2xl bg-slate-950/60 border border-slate-800/80 p-1.5 sm:p-2 max-h-[62vh] mb-3"
+            style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
+          >
+            <div
+              onClick={toggleFitOrRead}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleFitOrRead();
+                }
               }}
-            />
+              aria-label={zoomMultiplier === 1 ? 'แตะเพื่อขยายดูรายละเอียดใบประกาศ' : 'แตะเพื่อย่อพอดีจอ'}
+              className={`relative mx-auto overflow-hidden rounded-xl shadow-2xl ${
+                zoomMultiplier === 1 ? 'cursor-zoom-in' : 'cursor-zoom-out'
+              }`}
+              style={{
+                width: `${scaledWidth}px`,
+                height: `${scaledHeight}px`,
+              }}
+            >
+              <CertificateSheet
+                id="certificate-canvas"
+                student={editableStudent}
+                currentDate={currentDate}
+                style={{
+                  width: `${CERT_BASE_WIDTH}px`,
+                  height: `${CERT_BASE_HEIGHT}px`,
+                  transform: `scale(${effectiveScale})`,
+                  transformOrigin: 'top left',
+                }}
+              />
+            </div>
           </div>
 
           {/* Bottom Actions Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
-            <div className="text-xs text-slate-400">
-              💡 กดปุ่มเพื่อสั่งพิมพ์ลงกระดาษจริง หรือเลือก{' '}
-              <span className="text-amber-300 font-semibold">&quot;Save as PDF&quot;</span> ในเบราว์เซอร์
+          <div className="flex flex-wrap items-center justify-between gap-2.5 pt-3 border-t border-slate-800">
+            <div className="text-[11px] sm:text-xs text-slate-400">
+              💡 กดปุ่มเพื่อพิมพ์ หรือเลือก{' '}
+              <span className="text-amber-300 font-semibold">&quot;Save as PDF&quot;</span> เพื่อเก็บไฟล์เต็มหน้า
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-auto">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-800 transition-colors"
+                className="px-3.5 py-2 rounded-xl border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-800 transition-colors"
               >
                 ปิด
               </button>

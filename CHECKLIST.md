@@ -13,10 +13,10 @@
 | 1. เส้นทางเว็บหลัก (Entry, Pre-test, ใบความรู้, เลือกเคส) | 🟡 ใช้งานได้ / รอสื่อ & รับรอง | 6 | 5 |
 | 2. ตัวเกม Case 1 (`verticalSlice.ts`) | 🟡 เล่นจบได้ + มีเอกสารเทียบฉบับแก้ไขแล้ว | 10 | 8 |
 | 3. ตัวเกม Case 2 (`case02.ts`) | 🟡 นำเข้าแล้วส่วนใหญ่ (โหมดรอบฝึก) | 9 | 6 |
-| 4. Post-test, สรุปผล, ใบประกาศ, แบบประเมิน & Export วิจัย | 🟢 ระบบโค้ดครบ (เหลือเฉพาะเกณฑ์/เฉลยจากอาจารย์) | 15 | 3 |
+| 4. Post-test, สรุปผล, ใบประกาศ, แบบประเมิน & Export วิจัย | 🟢 ระบบโค้ดครบ (เหลือเฉพาะเกณฑ์/เฉลยจากอาจารย์) | 16 | 3 |
 | 5. สื่อ ภาพเวชนิทัศน์ เสียง และ Asset Provenance | 🟡 ภาพหลักครบ / ขาด ECG Strip & วิดีโอ | 7 | 7 |
 | 6. การตรวจรับรองทางคลินิก (`docs/clinical-review/`) | 🔴 รอผู้เชี่ยวชาญลงมติ (0/40 รายการ) | 5 | 14 |
-| 7. การทดสอบ (QA) และการเผยแพร่ (Release & Hosting) | 🟢 ผ่าน 25 Unit + Entry/Postgame/Case2 E2E + Print PDF + มือถือ 390px | 9 | 6 |
+| 7. การทดสอบ (QA) และการเผยแพร่ (Release & Hosting) | 🟢 ผ่าน 25 Unit + ครบทุก E2E (`test:entry` / `test:postgame` / `test:game:browser`) | 10 | 5 |
 
 ---
 
@@ -104,6 +104,7 @@
 - [x] **อัปเดตตัวส่งออกข้อมูลวิจัย CSV/JSON (`src/services/researchExporter.ts`)** ให้มีคอลัมน์ `survey_q1`–`survey_q10`, ค่าเฉลี่ยรายด้าน/รวม, `feedback_text` (พร้อม CSV quote escaping และ UTF-8 BOM สำหรับ Excel/SPSS) (`6f94f4f`)
 - [x] **เพิ่ม Unit Test ของแบบประเมิน, หน้าสรุปผล และตัวส่งออก CSV** (`src/game/tests/survey.test.ts`, `resultsSummary.test.ts`, `researchExporter.test.ts`)
 - [x] **ปรับ Print Engine ใบประกาศเป็น React Portal (`document.body`) + สัดส่วน margin แบบเปอร์เซ็นต์ และตรวจ Print PDF จริงด้วย Playwright** — ออกเป็น A4 แนวนอน **1 หน้าเป๊ะ** ไม่ทับคลื่นล่าง ไม่เป็นหน้าขาว (`src/components/common/CertificateModal.tsx`, `scripts/test-postgame-certificate-survey.mjs`)
+- [x] **เพิ่มมุมมองใบประกาศแบบ PDF-viewer บนมือถือ (`พอดีจอ` เต็มหน้า + แตะใบประกาศหรือกดปุ่ม `ขยายดูชื่อ` / `+` / `-` เพื่อซูม)** (`src/components/common/CertificateModal.tsx`)
 - [x] **ส่ง `telemetry` (พร้อม `gameResult` จริง) จาก `src/App.tsx` เข้า `Stage15Results.tsx`** และยกเลิกค่า default ปลอม (`preTestScore: 4`, `totalTimeSeconds: 1240`, `ncjmmScores: 95/90`) ในโหมดเล่นจริง
 - [x] **อัปเกรด `Stage15Results.tsx` + `src/data/resultsSummary.ts` ให้รองรับทั้ง Case 1 และ Case 2** — แสดงชื่อเคส สถานะเดโม/รอบฝึก สถิติจริงจากห้องผู้ป่วย และ Milestones แยกตามเคส (เลิก hardcode NCJMM 90.8% และ `-200 mL` / `SVT`)
 - [x] **เพิ่มคอลัมน์ผลเล่นเกมจริงจาก `telemetry.gameResult` ลง CSV/JSON Export (`src/services/researchExporter.ts`)** (`case_id`, `game_score_status`, `game_demo_score`, `game_duration_minutes`, `game_attempts`, `game_mistakes`, `game_hints`, `game_findings_count`, `student_institution`) พร้อมเอา fallback NCJMM ปลอมออก
@@ -175,11 +176,11 @@
 - [x] **ชุดทดสอบ Responsive & Touch บนมือถือ 390×844px** สำหรับ `Stage15Results`, `CertificateModal` และปุ่ม Likert 5 ระดับใน `Stage16Survey` (ไร้ horizontal overflow, touch target ≥ 44px) ผ่านใน `npm run test:postgame`
 - [x] **ตรวจ parse ไฟล์ `.CSV` ที่ดาวน์โหลดจริงด้วย Python (`utf-8-sig`)** — ยืนยัน 2 แถว × 42 คอลัมน์ ภาษาไทยสมบูรณ์พร้อมใช้ใน Excel/SPSS
 - [x] **ชุดทดสอบ E2E เส้นทาง Case 2 เต็มรูปแบบ (`npm run test:game:case2`)** ผ่านทั้งหมด
+- [x] **ชุดทดสอบ E2E ตัวเกมเต็มเส้นทาง Case 1 + Case 2 + มือถือ (`npm run test:game:browser`)** ผ่านทั้งหมด (แก้ race condition ของ `skipStationClick` ใน `src/game/main.tsx` ที่เคยกลืนคลิก `.syringe-confirm` หลังลาก Syringe เรียบร้อยแล้ว)
 - [x] **เผยแพร่เว็บทดลองสาธารณะถึงรุ่นที่ 5** (`docs/trial-hosting.md`, `docs/trial-hosting.json` — รวม Case 1, Case 2 หน้า 2–17 + CPR, ใบประกาศ และแบบประเมิน 10 ข้อ)
 
 ### ⬜ ยังไม่ได้ทำ / รอดำเนินการ
 - [ ] **ทดสอบเปิดใช้งานจริงบนมือถือ iOS/Android** และเปิดไฟล์ `.CSV` ที่ดาวน์โหลดในโปรแกรม Excel/SPSS จริง
-- [ ] **ตรวจสอบเหตุขัดข้องค้างเดิมใน `npm run test:game:browser`** — พบ timeout ที่ `scripts/test-game-browser.mjs:270` (`step_draw_med` syringe `.feedback.error` ไม่แสดงหลังลากทดสอบ, ไม่เกี่ยวกับไฟล์ post-game ของ branch นี้) ให้เจ้าของส่วนเกมช่วยตรวจซ้ำ
 - [ ] **Merge งานจาก branch `tankun/cardiosim-dev` เข้า `codex/cardiosim-game-module`** เมื่อตรวจทานพร้อมกันแล้ว
 - [ ] **เผยแพร่เว็บสาธารณะรุ่นที่ 6+ (`npm run trial:package` + Sites deploy)** โดยประสานกับ `sarunph-ctrl` เพื่อให้งานใบประกาศ มข. + หน้าสรุปผล + CSV Export ขึ้นเว็บจริง
 - [ ] **Pilot Playtest กับนักศึกษาพยาบาลจริง** เพื่อเก็บข้อสังเกตด้านการใช้งาน (Usability) ก่อนเก็บข้อมูลวิจัยจริง

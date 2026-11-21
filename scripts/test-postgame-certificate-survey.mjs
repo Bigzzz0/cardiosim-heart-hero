@@ -310,11 +310,47 @@ try {
 
     await page.getByRole('button', { name: /รับใบประกาศนียบัตร/ }).click();
     await page.locator('#certificate-canvas').waitFor();
+    await page.waitForTimeout(150);
     assert(
       await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
       'Mobile Certificate modal causes document horizontal overflow'
     );
+
+    const fitBox = await page.locator('#certificate-canvas').boundingBox();
+    assert(
+      fitBox &&
+        fitBox.width <= 375 &&
+        fitBox.x >= 0 &&
+        fitBox.x + fitBox.width <= 390 &&
+        fitBox.height >= 160 &&
+        fitBox.height <= 290,
+      `Mobile certificate must fit full page inside 390px viewport, got ${JSON.stringify(fitBox)}`
+    );
+    const printBtnBox = await page.getByRole('button', { name: /พิมพ์ใบประกาศนียบัตร/ }).boundingBox();
+    assert(
+      printBtnBox && printBtnBox.y + printBtnBox.height <= 844,
+      `Print/PDF button should fit in mobile viewport, got ${JSON.stringify(printBtnBox)}`
+    );
     await page.screenshot({ path: 'screenshots/postgame/mobile-certificate.png' });
+
+    // Zoom in to verify readability of student name on mobile
+    await page.getByRole('button', { name: 'ขยายดูชื่อ', exact: true }).click();
+    await page.waitForTimeout(100);
+    const zoomedBox = await page.locator('#certificate-canvas').boundingBox();
+    assert(
+      zoomedBox && zoomedBox.width >= fitBox.width * 1.7,
+      `Zoomed certificate width (${zoomedBox?.width}) should be >= 1.7x fit width (${fitBox.width})`
+    );
+    await page.screenshot({ path: 'screenshots/postgame/mobile-certificate-zoomed.png' });
+
+    // Return to fit-to-screen
+    await page.getByRole('button', { name: 'พอดีจอ', exact: true }).click();
+    await page.waitForTimeout(100);
+    const refitBox = await page.locator('#certificate-canvas').boundingBox();
+    assert(
+      refitBox && Math.abs(refitBox.width - fitBox.width) <= 5,
+      `Refit certificate width (${refitBox?.width}) did not return to fit width (${fitBox.width})`
+    );
     await page.getByRole('button', { name: 'ปิด', exact: true }).click();
 
     await page.getByRole('button', { name: /ทำแบบประเมินความพึงพอใจ/ }).click();
