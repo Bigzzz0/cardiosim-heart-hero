@@ -338,10 +338,10 @@ try {
   await page.getByRole('button',{name:'Confirm · บันทึก ECG'}).click();
   await page.locator('.activity-surface-instruction b').getByText('อ่านผล ECG และบันทึกคำตอบ').waitFor();
   const rhythmSelect=page.locator('.ecg-review-console select');
-  if(!await page.locator('.ecg-readout').getByText(/SVT/).isVisible())throw new Error('ECG console should show the rhythm sourced from Case 1 configuration');
-  await rhythmSelect.selectOption({label:'ยังระบุไม่ได้'});
+  if(!await page.locator('.ecg-readout').getByText(/Sinus tachycardia/).isVisible())throw new Error('ECG console should show the rhythm sourced from Case 1 configuration');
+  await rhythmSelect.selectOption({label:'Atrial fibrillation'});
   await page.getByRole('button',{name:'บันทึกการอ่าน ECG'}).click(); await page.locator('.feedback.error').waitFor();
-  await rhythmSelect.selectOption({label:'SVT'});
+  await rhythmSelect.selectOption({label:'Sinus tachycardia'});
   await page.getByRole('button',{name:'บันทึกการอ่าน ECG'}).click(); await page.locator('.feedback.success').waitFor();
   await page.getByRole('button',{name:'ต่อไป'}).click();
   await page.locator('.surface-instruction b').getByText('เลือกการตอบสนอง แล้วดูผลที่ผู้ป่วย').waitFor();

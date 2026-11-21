@@ -128,11 +128,11 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.equal(game.emergency.alarm, true);
   game.update(5000);
   assert.equal(game.mission.current.id, 'ABC_ASSESSMENT');
-  assert.equal(game.vitals.current.bpSystolic, 220);
-  assert.equal(game.vitals.current.bpDiastolic, 130);
+  assert.equal(game.vitals.current.bpSystolic, 180);
+  assert.equal(game.vitals.current.bpDiastolic, 105);
   assert.equal(game.vitals.current.spo2, 82);
-  assert.equal(game.vitals.current.hr, 148);
-  assert.equal(game.vitals.current.rr, 36);
+  assert.equal(game.vitals.current.hr, 125);
+  assert.equal(game.vitals.current.rr, 34);
   assert.equal(game.patient.state.condition, 'critical');
 
   game.selectTool('hand'); game.interact('chest');
@@ -148,16 +148,16 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   assert.equal(game.ecg.complete,true);
   game.next(); assert.equal(game.mission.current.id, 'ECG_INTERPRETATION');
   game.setResponse('rhythm-answer','not a rhythm'); assert.equal(game.confirmActivity(),false,'ECG interpretation checks the Case 1 demo key');
-  game.setResponse('rhythm-answer','SVT'); assert.equal(game.confirmActivity(),true); game.next();
+  game.setResponse('rhythm-answer','Sinus tachycardia'); assert.equal(game.confirmActivity(),true); game.next();
   assert.equal(game.mission.current.id, 'EMERGENCY_TREATMENT');
   game.chooseForSlot('response','supine-water'); assert.equal(game.confirmDecision(),false);
   game.chooseForSlot('response','priority-response'); assert.equal(game.confirmDecision(),true); game.next();
   assert.equal(game.mission.current.id, 'PATIENT_STABILIZED');
   game.update(6500);
   assert.equal(game.vitals.current.spo2,94);
-  assert.equal(game.vitals.current.hr,96);
-  assert.equal(game.vitals.current.bpSystolic,145);
-  assert.equal(game.vitals.current.rr,22);
+  assert.equal(game.vitals.current.hr,92);
+  assert.equal(game.vitals.current.bpSystolic,150);
+  assert.equal(game.vitals.current.rr,24);
   assert.equal(game.emergency.alarm,false);
   game.next(); assert.equal(game.mission.current.id, 'CASE_SUMMARY');
   assert.ok(game.score.data.completionTime);
@@ -305,6 +305,37 @@ test('legacy two-slot Case 2 matching saves reopen the expanded activity and kee
     assert.equal(migrated.mission,mission);
     const tampered = { ...old, decisions:['unknown-slot::unknown-option'] };
     assert.equal(parseCheckpoint(JSON.stringify(tampered),case02),null);
+  }
+});
+
+test('Case 1 version 2 checkpoints migrate vitals by phase and reopen the superseded rhythm answer', () => {
+  for (const [mission, expected] of [
+    ['PATIENT_INFORMATION', {hr:108,bpSystolic:165,bpDiastolic:95,rr:24,spo2:92}],
+    ['ECG_INTERPRETATION', {hr:125,bpSystolic:180,bpDiastolic:105,rr:34,spo2:82}],
+    ['PATIENT_STABILIZED', {hr:92,bpSystolic:150,bpDiastolic:90,rr:24,spo2:94}],
+  ] as const) {
+    const game = new CaseEngine(verticalSlice);
+    game.mission.jumpTo(mission);
+    const old = game.checkpoint();
+    old.version = 2;
+    old.vitals = {hr:148,bpSystolic:220,bpDiastolic:130,rr:36,spo2:82};
+    old.completed = ['history'];
+    if(mission==='ECG_INTERPRETATION'){
+      old.responses = {'rhythm-answer':'SVT'};
+      old.decisionConfirmed = true;
+    }
+    const migrated = parseCheckpoint(JSON.stringify(old),verticalSlice);
+    assert(migrated);
+    assert.equal(migrated.version,3);
+    assert.deepEqual(migrated.vitals,expected);
+    assert.deepEqual(migrated.completed,['history']);
+    if(mission==='ECG_INTERPRETATION'){
+      assert.equal(migrated.decisionConfirmed,false);
+      assert.deepEqual(migrated.responses,{});
+    }
+    const restored = new CaseEngine(verticalSlice);
+    restored.restore(migrated);
+    assert.deepEqual(restored.vitals.current,expected);
   }
 });
 

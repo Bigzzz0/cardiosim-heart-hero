@@ -7,7 +7,7 @@ import '../../illustrated-entry.css';
 
 interface Stage3ScenarioSelectProps { onSelectScenario: (scenarioId: string) => void; }
 const scenarios = [
-  { id: 'case-01', number: 1, status: 'เคสหลัก', title: 'หัวใจล้มเหลวจากความดันโลหิตสูงวิกฤต', patient: 'หญิงไทย 39 ปี · HT, DM, Dyslipidemia', description: 'ผู้ป่วยหอบเหนื่อย แน่นหน้าอก และใจสั่น ฝึกประเมินอาการ จัดลำดับการพยาบาล และรับมือภาวะวิกฤต', skills: 'ตรวจร่างกาย · ECG · ให้ยา · บันทึก I/O', note: 'สถานการณ์สาธิต พร้อมระบบประเมินผล' },
+  { id: 'case-01', number: 1, status: 'เคสหลัก', title: 'หัวใจล้มเหลวกำเริบร่วมกับภาวะน้ำเกิน', patient: 'หญิง 65 ปี · Chronic Heart Failure, Hypertension', description: 'ผู้ป่วยเหนื่อยหอบ นอนราบไม่ได้ น้ำหนักเพิ่มและขาบวม ฝึกประเมินและดูแลเมื่ออาการเปลี่ยนแปลง', skills: 'ตรวจร่างกาย · ECG · ให้ยา · บันทึก I/O', note: 'สถานการณ์สาธิต พร้อมระบบประเมินผล' },
   { id: 'case-02', number: 2, status: 'เคสทางเลือก', title: 'AF with RVR ร่วมกับภาวะหัวใจล้มเหลวกำเริบ', patient: 'ชาย 68 ปี · Heart Failure, Hypertension', description: 'ผู้ป่วยใจสั่น เหนื่อยหอบ นอนราบไม่ได้ 2 ชั่วโมงก่อนมาโรงพยาบาล ฝึกประเมินผู้ป่วยและช่วยชีวิตเมื่อคลำชีพจรไม่ได้', skills: 'ประเมินผู้ป่วย · ความปลอดภัยของยา · I/O · CPR และ EKG', note: 'รอบฝึกบันทึกคำตอบ' },
 ];
 export const Stage3ScenarioSelect: React.FC<Stage3ScenarioSelectProps> = ({ onSelectScenario }) => (

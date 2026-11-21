@@ -1,5 +1,4 @@
 import type { GameCase } from '../types';
-import { CASE_1_DETAILS } from '../../data/case1Data';
 import { medicationInteractions } from './medicationWorkbench';
 import { MEDICATION_PREPARATION_STEPS } from '../../data/medicationStepsData';
 import { registerSuppliedPatientHotspots, suppliedPatientPresentation } from '../suppliedPatientPresentation';
@@ -8,6 +7,7 @@ import { suppliedECGLayout, suppliedECGTargets } from '../suppliedECGLayout';
 
 const spec = 'Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)';
 const storyboard = '6 Panel Storyboard.pdf pp.3-7';
+const suppliedCase = 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac';
 const medicationEquipment = [
   { label: 'ตรวจ Doctor Order', equipmentLabel: 'แฟ้มคำสั่งยา', icon: 'order' as const },
   { label: 'ตรวจฉลากแอมพูล', equipmentLabel: 'แอมพูล / ฉลาก', icon: 'ampoule' as const },
@@ -18,23 +18,23 @@ const medicationEquipment = [
   { label: 'ตรวจ Monitor และบันทึก MAR', equipmentLabel: 'Monitor / MAR', icon: 'monitor' as const },
 ];
 export const verticalSlice: GameCase = {
-  id: 'cardiosim-vertical-slice', version: 2,
-  title: 'การประเมินและดูแลผู้ป่วย',
+  id: 'cardiosim-vertical-slice', version: 3,
+  title: 'หัวใจล้มเหลวกำเริบร่วมกับภาวะน้ำเกิน',
   clinicalStatus: 'CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง',
   gradable: true,
-  sources: [storyboard, spec],
+  sources: [storyboard, spec, suppliedCase],
   assets: { room: ASSETS.environments.patientRoom, patient: ASSETS.patients.patientCase02, patientCritical: ASSETS.patients.patientCase02, patientSupport: {bed:ASSETS.patients.patientCase02Bed,pillow:ASSETS.patients.patientCase02Pillow}, ecgLeads: ASSETS.ecg.chestLeads[0].electrode, ecgChest: ASSETS.ecg.playTorso },
   presentation: suppliedPatientPresentation,
-  initialVitals: { hr: 112, bpSystolic: 168, bpDiastolic: 98, rr: 24, spo2: 95 },
+  initialVitals: { hr: 108, bpSystolic: 165, bpDiastolic: 95, rr: 24, spo2: 92 },
   initialPatient: { condition: 'unstable', breathing: 'labored', posture: 'semi_fowler', animation: 'dyspnea' },
   monitorTraces: {
-    unstable: { rhythm: 'SINUS_TACHY', heartRate: 112 },
-    critical: { rhythm: 'SVT', heartRate: 148 },
-    stable: { rhythm: 'NORMAL', heartRate: 96 },
+    unstable: { rhythm: 'SINUS_TACHY', heartRate: 108 },
+    critical: { rhythm: 'SINUS_TACHY', heartRate: 125 },
+    stable: { rhythm: 'NORMAL', heartRate: 92 },
   },
   scoring: { initial: 100, mistakePenalty: 3, hintPenalty: 2 },
   scenarios: [
-    { id: 'case-01', title: 'Hypertensive Acute Heart Failure', summary: 'NORMAL STAGE · CASE 01', enabled: true, status: 'DEMO · เนื้อหาคลินิกรอตรวจรับรอง' },
+    { id: 'case-01', title: 'Acute Decompensated Heart Failure with Fluid Overload and Pulmonary Congestion', summary: 'NORMAL STAGE · CASE 01', enabled: true, status: 'DEMO · เนื้อหาคลินิกรอตรวจรับรอง' },
   ],
   hotspots: registerSuppliedPatientHotspots([
     { id: 'head', label: 'ศีรษะ / ทางเดินหายใจ', x: 550, y: 280, radius: 53 },
@@ -51,19 +51,19 @@ export const verticalSlice: GameCase = {
     { id: 'hand', name: 'ประเมิน ABC', icon: 'hand', sprite: ASSETS.handover.examMagnifier, visual:{heldSize:{x:70,y:70},heldOffset:{x:15,y:-15},contactSize:{x:65,y:65},contactOffset:{x:0,y:0},contactAngle:0,contactAnchor:{x:.5,y:.45},contactEffect:'inspect'}, allowedTargets: ['head', 'chest', 'wrist'], duration: 900 },
   ],
   findings: [
-    { id: 'history', section: 'History', title: 'อาการที่ผู้ป่วยบอก', text: '“หายใจไม่ออกค่ะ…” — ข้อความตัวอย่างจากสเปก ยังไม่มี CC / PI / PH ที่รับรอง', source: 'Pasted specification §20' },
-    { id: 'lungs', section: 'Respiratory Assessment', title: 'Auscultation', text: 'Fine crackles, bilateral lower lobes — ผลตัวอย่างจากสเปก เสียงประกอบสังเคราะห์ไม่ใช่เสียงปอดสำหรับฝึกวินิจฉัย', source: spec },
-    { id: 'bp', section: 'Vital Signs', title: 'วัดความดันโลหิต', text: 'บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ', source: spec, captureVitals: true },
-    { id: 'oxygen', section: 'Vital Signs', title: 'วัด SpO₂', text: 'บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ', source: spec, captureVitals: true },
-    { id: 'airway', section: 'Respiratory Assessment', title: 'A · Airway', text: 'ประเมินทางเดินหายใจแล้ว — รายละเอียดผลตรวจรอผู้เชี่ยวชาญกำหนด', source: storyboard },
-    { id: 'breathing', section: 'Respiratory Assessment', title: 'B · Breathing', text: 'ประเมินการหายใจแล้ว — breathing state: severe จากตัวอย่างสเปก', source: spec },
-    { id: 'circulation', section: 'Perfusion Assessment', title: 'C · Circulation', text: 'ประเมินการไหลเวียนแล้ว — รายละเอียดผลตรวจรอผู้เชี่ยวชาญกำหนด', source: storyboard },
+    { id: 'history', section: 'History', title: 'อาการที่ผู้ป่วยบอก', text: 'ผู้ป่วยหญิงอายุ 65 ปี มี Chronic Heart Failure และ Hypertension หนึ่งสัปดาห์ก่อนมาโรงพยาบาลน้ำหนักเพิ่ม 3 กก. ขาบวมและปัสสาวะลดลง สองวันก่อนมาโรงพยาบาลเหนื่อยมากขึ้น นอนราบไม่ได้ และตื่นกลางดึกจากหายใจหอบเหนื่อย ตรวจพบ pitting edema 2+, JVP โป่ง และ capillary refill time 3 วินาที', source: suppliedCase },
+    { id: 'lungs', section: 'Respiratory Assessment', title: 'Auscultation', text: 'Bibasal fine crackles ตามข้อมูลประเมินเคส 1 หน้า 2–4', source: suppliedCase },
+    { id: 'bp', section: 'Vital Signs', title: 'วัดความดันโลหิต', text: 'บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ', source: suppliedCase, captureVitals: true },
+    { id: 'oxygen', section: 'Vital Signs', title: 'วัด SpO₂', text: 'บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ', source: suppliedCase, captureVitals: true },
+    { id: 'airway', section: 'Respiratory Assessment', title: 'A · Airway', text: 'ผู้ป่วยยังรู้สึกตัว พูดเป็นประโยคยาวไม่ได้ ไอมีเสมหะเป็นฟองสีชมพู ต้องประเมินความโล่งของทางเดินหายใจ', source: suppliedCase },
+    { id: 'breathing', section: 'Respiratory Assessment', title: 'B · Breathing', text: 'RR 34 ครั้ง/นาที, SpO₂ 82% ขณะ On O₂ Cannula 3 LPM ใช้กล้ามเนื้อช่วยหายใจ และมี fine crackles ทั้งสองข้าง', source: suppliedCase },
+    { id: 'circulation', section: 'Perfusion Assessment', title: 'C · Circulation', text: 'HR 125 ครั้ง/นาที และ BP 180/105 mmHg ในช่วงฉุกเฉิน', source: suppliedCase },
     { id: 'diagnosis', section: 'Care Plan', title: 'Nursing Diagnosis · demo', text: 'ตัวเลือกและเฉลยเป็นชุดทดสอบ interaction จากข้อมูลตัวอย่าง ยังไม่ใช่คำวินิจฉัยที่ผ่านการรับรอง', source: spec },
     { id: 'nursing-care', section: 'Care Plan', title: 'Nursing Care · demo', text: 'บันทึกการเลือกการพยาบาลตัวอย่างเพื่อทดสอบ flow; clinical key รอผู้เชี่ยวชาญตรวจ', source: storyboard },
     { id: 'medication', section: 'Medication', title: 'Medication worksheet · draft', text: 'Storyboard ไม่ระบุ Doctor Order, ชื่อยา, ขนาดยา, ผลข้างเคียง หรือการติดตาม; แบบฟอร์มนี้ยังไม่ใช่คำสั่งรักษา', source: storyboard },
     { id: 'io', section: 'Intake / Output', title: 'Fluid-balance decision · example', text: 'Storyboard ระบุเฉลยตัวอย่าง NEGATIVE แต่ไม่แสดงตัวเลข intake/output จึงยังใช้คำนวณสมดุลจริงไม่ได้', source: storyboard },
     { id: 'ecg', section: 'ECG', title: 'Chest leads V1–V6', text: 'ติดครบทั้ง 6 ตำแหน่งในผังจำลอง คลื่นบน Monitor เป็นภาพประกอบ ยังไม่มีคลื่นและเฉลย ECG ที่รับรอง', source: storyboard },
-    { id: 'ecg-read', section: 'ECG', title: 'ECG interpretation · draft', text: 'คำตอบที่ผู้เล่นพิมพ์ถูกบันทึกไว้ แต่ไม่ได้ตัดสินถูก/ผิด เพราะ Storyboard ไม่มี rhythm strip หรือ answer key', source: storyboard },
+    { id: 'ecg-read', section: 'ECG', title: 'ECG interpretation · draft', text: 'เอกสารเคส 1 หน้า 26 ระบุ Sinus tachycardia คลื่นบน Monitor เป็นภาพประกอบสำหรับสถานการณ์ฝึก', source: suppliedCase },
     { id: 'emergency-treatment', section: 'Care Plan', title: 'Emergency treatment · demo response', text: 'ใช้แสดงผล patient-response เท่านั้น; ไม่มี treatment sequence หรือ protocol ที่ผ่านการรับรอง', source: storyboard },
   ],
   ecg: {
@@ -72,9 +72,9 @@ export const verticalSlice: GameCase = {
     targets: suppliedECGTargets,
   },
   missions: [
-    { id: 'CASE_INTRO', kind: 'intro', phase: 'เริ่มต้นการดูแล', title: 'รับช่วงต่อ\nการดูแลผู้ป่วย', description: 'ฝึกสังเกต ประเมิน และตอบสนองต่ออาการที่เปลี่ยนไป ในห้องผู้ป่วยเดียวกัน', hint: 'ใช้เมาส์หรือนิ้วเลือกเครื่องมือ แล้วแตะบริเวณผู้ป่วย ลองใหม่ได้เสมอ', button: 'เริ่มดูแลผู้ป่วย' },
+    { id: 'CASE_INTRO', kind: 'intro', phase: 'เริ่มต้นการดูแล', title: 'รับช่วงต่อ\nการดูแลผู้ป่วย', description: 'หญิงอายุ 65 ปี มี Chronic Heart Failure และ Hypertension เหนื่อยหอบ นอนราบไม่ได้ น้ำหนักเพิ่มและขาบวม', hint: 'ข้อมูลแรกรับ HR 108, BP 165/95 mmHg, RR 24 และ SpO₂ 92% Room air ตามเอกสารหน้า 2', button: 'เริ่มดูแลผู้ป่วย' },
     { id: 'PATIENT_INFORMATION', kind: 'interaction', phase: '01 · PATIENT INFORMATION', title: 'ฟังผู้ป่วย\nก่อนเริ่มประเมิน', description: 'เลือกซักประวัติ แล้วแตะบริเวณศีรษะเพื่อรับข้อมูล ข้อมูลที่ค้นพบจะบันทึกลง Patient chart', hint: 'เลือก “ซักประวัติ” แล้วแตะศีรษะผู้ป่วย', button: 'เริ่มประเมิน', objectives: [
-      { id: 'history', label: 'รับข้อมูลจากผู้ป่วย', tool: 'interview', target: 'head', finding: 'history', feedback: '“หายใจไม่ออกค่ะ…” · บันทึกประวัติแล้ว' },
+      { id: 'history', label: 'รับข้อมูลจากผู้ป่วย', tool: 'interview', target: 'head', finding: 'history', feedback: 'บันทึกประวัติเหนื่อยหอบ นอนราบไม่ได้ และภาวะน้ำเกินแล้ว' },
     ] },
     { id: 'ASSESSMENT', kind: 'interaction', phase: '02 · PATIENT ASSESSMENT', title: 'ค้นหาข้อมูล\nจากการตรวจ', description: 'ตรวจการหายใจ ความดัน และออกซิเจนด้วยเครื่องมือใน Toolbar เลือกแล้วแตะ หรือลากไปยังผู้ป่วย', hint: 'Stethoscope → ทรวงอก · BP cuff → ต้นแขน · SpO₂ → ปลายนิ้ว', button: 'บันทึกการประเมิน', objectives: [
       { id: 'lungs', label: 'Respiratory assessment', tool: 'stethoscope', target: 'chest', finding: 'lungs', feedback: 'พบ fine crackles · บันทึกผลฟังปอดแล้ว', sound: 'auscultation' },
@@ -136,19 +136,19 @@ export const verticalSlice: GameCase = {
         { id: 'negative', label: 'NEGATIVE · −200 mL', detail: 'สารน้ำออกมากกว่าสารน้ำเข้า', icon: 'assessment' },
       ], expected: ['negative'], ordered: false, explanation: 'ตัวเลขหรือผลรวมยังไม่ตรงกับข้อมูล I/O เดโม · ตรวจคำตอบแล้วลองใหม่', success: 'ผลคำนวณตรงกับข้อมูล I/O เดโม',
     } },
-    { id: 'EMERGENCY_TRANSITION', kind: 'transition', phase: 'EMERGENCY', title: 'อาการผู้ป่วย\nกำลังเปลี่ยนไป', description: 'สังเกตการหายใจและ Monitor เตรียมประเมิน ABC ในห้องผู้ป่วยเดิม', hint: 'ดู BP, HR, RR และ SpO₂ ที่กำลังเปลี่ยนแปลง · ระบบเข้าสู่ ABC อัตโนมัติ', autoAfter: 5000, onEnter: { emergency: true, alarm: true, duration: 5000, vitals: { bpSystolic: 220, bpDiastolic: 130, hr: 148, rr: 36, spo2: 82 }, patient: { condition: 'critical', breathing: 'severe', animation: 'critical' } } },
+    { id: 'EMERGENCY_TRANSITION', kind: 'transition', phase: 'EMERGENCY', title: 'อาการผู้ป่วย\nกำลังเปลี่ยนไป', description: 'สังเกตการหายใจและ Monitor เตรียมประเมิน ABC ในห้องผู้ป่วยเดิม', hint: 'ดู BP, HR, RR และ SpO₂ ที่กำลังเปลี่ยนแปลง · ระบบเข้าสู่ ABC อัตโนมัติ', autoAfter: 5000, onEnter: { emergency: true, alarm: true, duration: 5000, vitals: { bpSystolic: 180, bpDiastolic: 105, hr: 125, rr: 34, spo2: 82 }, patient: { condition: 'critical', breathing: 'severe', animation: 'critical' } } },
     { id: 'ABC_ASSESSMENT', kind: 'interaction', ordered: true, phase: '07 · EMERGENCY / ABC', title: 'ประเมิน ABC\nอย่างเป็นลำดับ', description: 'ใช้เครื่องมือ “ประเมิน ABC” ตรวจผู้ป่วยตามลำดับ A → B → C ไม่ต้องเปลี่ยนออกจากห้อง', hint: 'A → ศีรษะ · B → ทรวงอก · C → ข้อมือ เลือกเครื่องมือประเมิน ABC', button: 'เตรียมติด ECG', objectives: [
       { id: 'a', label: 'A · Airway', tool: 'hand', target: 'head', finding: 'airway', feedback: 'A ประเมินทางเดินหายใจแล้ว' },
       { id: 'b', label: 'B · Breathing', tool: 'hand', target: 'chest', finding: 'breathing', feedback: 'B ประเมินการหายใจแล้ว' },
       { id: 'c', label: 'C · Circulation', tool: 'hand', target: 'wrist', finding: 'circulation', feedback: 'C ประเมินการไหลเวียนแล้ว' },
     ] },
     { id: 'ECG_PLACEMENT', kind: 'placement', phase: '08 · ECG / CHEST LEADS', title: 'เชื่อมต่อ\nสัญญาณหัวใจ', description: 'ลาก V1–V6 จากถาดไปวางบนผังทรวงอกให้ครบ หรือเลือก lead แล้วแตะตำแหน่ง กด Confirm เมื่อติดครบ', hint: 'ขวาของผู้ป่วยอยู่ซ้ายของภาพ ใช้ปุ่ม Hint เพื่อแสดงชื่อและตำแหน่งของแต่ละ lead', button: 'Confirm · บันทึก ECG' },
-    { id: 'ECG_INTERPRETATION', kind: 'decision', phase: '09 · ECG REVIEW', title: 'อ่านผล ECG\nและบันทึกคำตอบ', description: 'อ่านจังหวะที่ระบุใน Case 1 demo แล้วกรอกคำตอบก่อน Confirm', hint: 'คำตอบและคลื่นนี้มาจากข้อมูล Case 1 เดิมและรอผู้เชี่ยวชาญตรวจรับรอง', chartFinding: 'ecg-read', gradable: true, activity: {
-      kind: 'text-response', presentation: 'ecg-console', gradable: true, source: 'case1Data.ts · rhythm SVT 148 bpm', eyebrow: 'ECG REVIEW CONSOLE · CASE 01 DEMO', title: 'ทบทวนจังหวะจาก Monitor',
+    { id: 'ECG_INTERPRETATION', kind: 'decision', phase: '09 · ECG REVIEW', title: 'อ่านผล ECG\nและบันทึกคำตอบ', description: 'อ่านจังหวะที่ระบุใน Case 1 demo แล้วกรอกคำตอบก่อน Confirm', hint: 'ใช้จังหวะที่เอกสารเคส 1 หน้า 26 ระบุ คลื่นบน Monitor เป็นภาพประกอบ', chartFinding: 'ecg-read', gradable: true, activity: {
+      kind: 'text-response', presentation: 'ecg-console', gradable: true, source: suppliedCase, eyebrow: 'ECG REVIEW CONSOLE · CASE 01 DEMO', title: 'ทบทวนจังหวะจาก Monitor',
       notice: 'คลื่นเป็นภาพประกอบเดโม · คำตอบตรวจเทียบกับ Case 1 draft เท่านั้น',
-      rows: [{ label: 'Crisis event · ECG rhythm', value: CASE_1_DETAILS.crisisEvent.ekgRhythm }],
-      fields: [{ id: 'rhythm-answer', label: 'จังหวะที่บันทึกใน Case', placeholder: 'เลือกคำตอบจากข้อมูลเดโม', type: 'select', options: ['SVT', 'ยังระบุไม่ได้'] }],
-      expectedResponses: { 'rhythm-answer': 'SVT' },
+      rows: [{ label: 'Crisis event · ECG rhythm', value: 'Sinus tachycardia · 125 ครั้ง/นาที ตามเอกสารหน้า 26' }],
+      fields: [{ id: 'rhythm-answer', label: 'จังหวะที่บันทึกใน Case', placeholder: 'เลือกคำตอบจากข้อมูลเดโม', type: 'select', options: ['Atrial fibrillation', 'Sinus tachycardia', 'Ventricular tachycardia'] }],
+      expectedResponses: { 'rhythm-answer': 'Sinus tachycardia' },
       success: 'อ่านตรงกับคำตอบใน Case 1 demo · บันทึกลง Chart แล้ว',
       explanation: 'ลองตรวจ rhythm ที่ระบุใน Case 1 demo อีกครั้ง',
     } },
@@ -161,7 +161,7 @@ export const verticalSlice: GameCase = {
       slots: [{ id: 'response', label: 'แผนตอบสนอง', expected: 'priority-response' }],
       explanation: 'คำตอบยังไม่ตรงกับ emergency demo ในข้อมูล Case 1 · เลือกใหม่แล้ว Confirm', success: 'ตรงกับ emergency response ใน Case 1 demo · สังเกตผู้ป่วยและ Monitor',
     } },
-    { id: 'PATIENT_STABILIZED', kind: 'transition', phase: '11 · PATIENT RESPONSE', title: 'ผู้ป่วยตอบสนอง\nต่อการดูแล', description: 'Vitals ค่อย ๆ เปลี่ยนไปตาม recovery values ที่ระบุใน Stage12 Case 1 demo', hint: 'สังเกตการหายใจ สีหน้าและเสียงเตือน · ตัวเลขยังเป็นเนื้อหาเดโม', minDuration: 6500, button: 'ดูผลภารกิจ', onEnter: { alarm: false, duration: 6000, vitals: { bpSystolic: 145, bpDiastolic: 88, hr: 96, rr: 22, spo2: 94 }, patient: { condition: 'stable', breathing: 'normal', animation: 'recovering' } } },
+    { id: 'PATIENT_STABILIZED', kind: 'transition', phase: '11 · PATIENT RESPONSE', title: 'ผู้ป่วยตอบสนอง\nต่อการดูแล', description: 'สัญญาณชีพเปลี่ยนตามผลลัพธ์จำลองที่เอกสารเคส 1 หน้า 30–31 กำหนด', hint: 'สังเกตการหายใจ สีหน้าและเสียงเตือน · ตัวเลขยังเป็นเนื้อหาเดโม', minDuration: 6500, button: 'ดูผลภารกิจ', onEnter: { alarm: false, duration: 6000, vitals: { bpSystolic: 150, bpDiastolic: 90, hr: 92, rr: 24, spo2: 94 }, patient: { condition: 'stable', breathing: 'normal', animation: 'recovering' } } },
     { id: 'CASE_SUMMARY', kind: 'summary', phase: '12 · MISSION RESULT', title: 'ดูแลครบ\nจบภารกิจจำลอง', description: 'ผลนี้สรุปเส้นทางในห้องผู้ป่วยเดียว ตั้งแต่ Normal Stage ไป Emergency Stage · คะแนนยังไม่ใช่สมรรถนะทางคลินิก', hint: 'ทบทวน Chart หรือเริ่มใหม่ได้' },
   ],
 };
