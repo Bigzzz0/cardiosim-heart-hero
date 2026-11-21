@@ -273,7 +273,7 @@ export const Stage15Results: React.FC<Stage15ResultsProps> = ({
           {summary.milestones.map((milestone) => (
             <div
               key={milestone.id}
-              className="flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200"
+              className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200"
             >
               <div className="flex items-start gap-2.5">
                 {milestone.completed ? (

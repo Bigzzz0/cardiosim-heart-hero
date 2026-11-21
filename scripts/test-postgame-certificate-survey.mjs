@@ -11,6 +11,117 @@ const server = spawn(
   { stdio: 'ignore' }
 );
 
+function makeBridgePayload(caseKind) {
+  if (caseKind === 'case-01') {
+    return {
+      student: {
+        studentId: '66010111',
+        name: 'นศ.พ. ทดสอบ เคสหนึ่ง',
+        institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
+      },
+      telemetry: {
+        student: {
+          studentId: '66010111',
+          name: 'นศ.พ. ทดสอบ เคสหนึ่ง',
+          institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
+        },
+        preTestScore: 4,
+        preTestAnswers: {},
+        postTestScore: 8,
+        postTestAnswers: {},
+        learningGain: 0.67,
+        discoveredHotspots: [],
+        prioritizationErrors: 0,
+        medicationErrors: 0,
+        ioErrors: 0,
+        crisisResponseTimeSeconds: 0,
+        totalTimeSeconds: 310,
+        surveyScores: {},
+        feedbackText: '',
+        gameResult: {
+          caseId: 'case-01',
+          completedAt: '2026-11-21T02:20:00.000Z',
+          durationMs: 260_000,
+          attempts: 13,
+          mistakes: 2,
+          hints: 0,
+          findings: [
+            'history',
+            'lungs',
+            'bp',
+            'oxygen',
+            'diagnosis',
+            'nursing-care',
+            'medication',
+            'io',
+            'airway',
+            'breathing',
+            'circulation',
+            'ecg',
+            'ecg-read',
+            'emergency-treatment',
+          ],
+          clinicalStatus: 'CASE 01 · DEMO DATA · รอผู้เชี่ยวชาญตรวจรับรอง',
+          demoScore: 94,
+          scoreStatus: 'demo',
+        },
+      },
+    };
+  }
+
+  return {
+    student: {
+      studentId: '66010999',
+      name: 'นศ.พ. ทดสอบ เคสสอง',
+      institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
+    },
+    telemetry: {
+      student: {
+        studentId: '66010999',
+        name: 'นศ.พ. ทดสอบ เคสสอง',
+        institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
+      },
+      preTestScore: 5,
+      preTestAnswers: {},
+      postTestScore: 9,
+      postTestAnswers: {},
+      learningGain: 0.8,
+      discoveredHotspots: [],
+      prioritizationErrors: 0,
+      medicationErrors: 0,
+      ioErrors: 0,
+      crisisResponseTimeSeconds: 0,
+      totalTimeSeconds: 240,
+      surveyScores: {},
+      feedbackText: '',
+      gameResult: {
+        caseId: 'case-02',
+        completedAt: '2026-11-21T02:30:00.000Z',
+        durationMs: 215_000,
+        attempts: 11,
+        mistakes: 0,
+        hints: 1,
+        findings: [
+          'history',
+          'lungs',
+          'bp',
+          'oxygen',
+          'diagnosis',
+          'nursing-care',
+          'medication',
+          'io',
+          'cpr-started',
+          'ecg',
+          'emergency-treatment',
+        ],
+        clinicalStatus: 'CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม',
+        demoScore: null,
+        scoreStatus: 'unscored',
+      },
+    },
+  };
+}
+
 let browser;
 try {
   let ready = false;
@@ -31,7 +142,7 @@ try {
 
   await mkdir('screenshots/postgame', { recursive: true });
 
-  // 1. Certificate preview & print-media verification
+  // 1. Certificate preview & 1-page A4 print-media verification (Desktop)
   {
     const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
     const page = await context.newPage();
@@ -50,7 +161,6 @@ try {
 
     await page.screenshot({ path: 'screenshots/postgame/certificate-modal.png' });
 
-    // Switch to print media and confirm dedicated print portal is visible and #root is hidden
     await page.emulateMedia({ media: 'print' });
     const printMetrics = await page.evaluate(() => {
       const root = document.querySelector('#root');
@@ -62,7 +172,6 @@ try {
         rootDisplay: root ? getComputedStyle(root).display : null,
         portalDisplay: portal ? getComputedStyle(portal).display : null,
         visibility: style?.visibility,
-        display: style?.display,
         width: rect?.width ?? 0,
         height: rect?.height ?? 0,
       };
@@ -85,11 +194,34 @@ try {
     assert(pdfBytes.byteLength > 20_000, 'Generated certificate PDF looks unexpectedly small/blank');
     await page.screenshot({ path: 'screenshots/postgame/certificate-print.png' });
 
-    assert.deepEqual(errors, [], `Certificate page errors: ${errors.join('; ')}`);
+    assert.deepEqual(errors, [], `Certificate desktop errors: ${errors.join('; ')}`);
     await context.close();
   }
 
-  // 2. Case 2 Stage15Results -> Stage16Survey (10 items) -> CSV download verification
+  // 2. Case 1 Stage15Results (Desktop)
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+
+    await page.addInitScript((payload) => {
+      sessionStorage.setItem('cardiosim.game.return.v1', JSON.stringify(payload));
+    }, makeBridgePayload('case-01'));
+
+    await page.goto(`${base}/?stage=RESULTS_DASHBOARD`, { waitUntil: 'networkidle' });
+    const resultsText = await page.locator('main').innerText();
+    assert(resultsText.includes('CASE 01'), 'Case 1 results should show CASE 01');
+    assert(resultsText.includes('94/100'), 'Case 1 results should show demo score 94/100');
+    assert(resultsText.includes('Furosemide'), 'Case 1 results should show Furosemide milestone');
+    assert(!resultsText.includes('Amiodarone'), 'Case 1 results must not leak Case 2 Amiodarone');
+    assert(!resultsText.includes('90.8%'), 'Must not show hardcoded 90.8% fake NCJMM score');
+    await page.screenshot({ path: 'screenshots/postgame/results-case1.png', fullPage: true });
+    assert.deepEqual(errors, [], `Case 1 desktop errors: ${errors.join('; ')}`);
+    await context.close();
+  }
+
+  // 3. Case 2 Stage15Results -> Stage16Survey (10 items) -> CSV download verification (Desktop)
   {
     const context = await browser.newContext({
       viewport: { width: 1440, height: 1000 },
@@ -99,61 +231,9 @@ try {
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
 
-    const bridgePayload = {
-      student: {
-        studentId: '66010999',
-        name: 'นศ.พ. ทดสอบ เคสสอง',
-        institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
-      },
-      telemetry: {
-        student: {
-          studentId: '66010999',
-          name: 'นศ.พ. ทดสอบ เคสสอง',
-          institution: 'คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น',
-        },
-        preTestScore: 5,
-        preTestAnswers: {},
-        postTestScore: 9,
-        postTestAnswers: {},
-        learningGain: 0.8,
-        discoveredHotspots: [],
-        prioritizationErrors: 0,
-        medicationErrors: 0,
-        ioErrors: 0,
-        crisisResponseTimeSeconds: 0,
-        totalTimeSeconds: 240,
-        surveyScores: {},
-        feedbackText: '',
-        gameResult: {
-          caseId: 'case-02',
-          completedAt: '2026-11-21T02:30:00.000Z',
-          durationMs: 215_000,
-          attempts: 11,
-          mistakes: 0,
-          hints: 1,
-          findings: [
-            'history',
-            'lungs',
-            'bp',
-            'oxygen',
-            'diagnosis',
-            'nursing-care',
-            'medication',
-            'io',
-            'cpr-started',
-            'ecg',
-            'emergency-treatment',
-          ],
-          clinicalStatus: 'CASE 02 · รอบฝึก · อัปเดตการช่วยชีวิตตามคำตอบทีม',
-          demoScore: null,
-          scoreStatus: 'unscored',
-        },
-      },
-    };
-
     await page.addInitScript((payload) => {
       sessionStorage.setItem('cardiosim.game.return.v1', JSON.stringify(payload));
-    }, bridgePayload);
+    }, makeBridgePayload('case-02'));
 
     await page.goto(`${base}/?stage=RESULTS_DASHBOARD`, { waitUntil: 'networkidle' });
     const resultsText = await page.locator('main').innerText();
@@ -168,17 +248,14 @@ try {
 
     await page.screenshot({ path: 'screenshots/postgame/results-case2.png', fullPage: true });
 
-    // Proceed to Stage16Survey
     await page.getByRole('button', { name: /ทำแบบประเมินความพึงพอใจ/ }).click();
     await page.getByText('ด้านที่ 1 ความชัดเจนของเนื้อหาและความเข้าใจ').waitFor();
     await page.getByText('ด้านที่ 2 การลดความวิตกกังวลก่อนขึ้นฝึกปฏิบัติ').waitFor();
     await page.getByText('ด้านที่ 3 ความพึงพอใจโดยรวมและความตั้งใจใช้ต่อ').waitFor();
 
-    // Validation should block empty submit
     await page.getByRole('button', { name: 'ส่งแบบประเมิน', exact: true }).click();
     await page.getByText(/ยังขาดอีก 10 ข้อ/).waitFor();
 
-    // Select score 5 for all 10 items
     const fiveButtons = page.locator('form button[aria-pressed]', { hasText: /^5/ });
     assert.equal(await fiveButtons.count(), 10, 'Expected 10 Likert score-5 buttons');
     for (let i = 0; i < 10; i++) {
@@ -190,14 +267,12 @@ try {
 
     await page.screenshot({ path: 'screenshots/postgame/survey-submitted.png', fullPage: true });
 
-    // Download CSV and verify real columns/values
     const [download] = await Promise.all([
       page.waitForEvent('download'),
       page.getByRole('button', { name: /SPSS \.CSV/ }).click(),
     ]);
-    const csvPath = await download.path();
-    assert(csvPath, 'CSV download failed');
-    const csv = await readFile(csvPath, 'utf8');
+    await download.saveAs('screenshots/postgame/exported-case2.csv');
+    const csv = await readFile('screenshots/postgame/exported-case2.csv', 'utf8');
     assert(csv.startsWith('\uFEFF'), 'CSV missing UTF-8 BOM');
     assert(csv.includes('survey_q10'), 'CSV missing survey_q10 header');
     assert(csv.includes('game_score_status'), 'CSV missing game_score_status header');
@@ -206,11 +281,58 @@ try {
     assert(csv.includes('คณะพยาบาลศาสตร์ มหาวิทยาลัยขอนแก่น'), 'CSV missing KKU institution');
     assert(csv.includes('ฝึกเคส 2 ได้ชัดเจนมาก'), 'CSV missing feedback text');
 
-    assert.deepEqual(errors, [], `Results/Survey page errors: ${errors.join('; ')}`);
+    assert.deepEqual(errors, [], `Case 2 desktop errors: ${errors.join('; ')}`);
     await context.close();
   }
 
-  console.log('PASS: Certificate print-mode PDF, Case 2 Stage15Results, 10-item Stage16Survey, and SPSS CSV download verified.');
+  // 4. Mobile (390x844) responsive & touch checks for Results, Certificate Modal, and Survey
+  {
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+
+    await page.addInitScript((payload) => {
+      sessionStorage.setItem('cardiosim.game.return.v1', JSON.stringify(payload));
+    }, makeBridgePayload('case-02'));
+
+    await page.goto(`${base}/?stage=RESULTS_DASHBOARD`, { waitUntil: 'networkidle' });
+    await page.evaluate(async () => { await document.fonts.ready; });
+    assert(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      'Mobile Results page has horizontal overflow'
+    );
+    await page.screenshot({ path: 'screenshots/postgame/mobile-results-case2.png', fullPage: true });
+
+    await page.getByRole('button', { name: /รับใบประกาศนียบัตร/ }).click();
+    await page.locator('#certificate-canvas').waitFor();
+    assert(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      'Mobile Certificate modal causes document horizontal overflow'
+    );
+    await page.screenshot({ path: 'screenshots/postgame/mobile-certificate.png' });
+    await page.getByRole('button', { name: 'ปิด', exact: true }).click();
+
+    await page.getByRole('button', { name: /ทำแบบประเมินความพึงพอใจ/ }).click();
+    await page.getByText('ด้านที่ 1 ความชัดเจนของเนื้อหาและความเข้าใจ').waitFor();
+    assert(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      'Mobile Survey page has horizontal overflow'
+    );
+    const firstScoreBtn = page.locator('form button[aria-pressed]').first();
+    const box = await firstScoreBtn.boundingBox();
+    assert(box && box.width >= 44 && box.height >= 44, `Mobile Likert button too small: ${box?.width}x${box?.height}`);
+    await page.screenshot({ path: 'screenshots/postgame/mobile-survey.png', fullPage: true });
+
+    assert.deepEqual(errors, [], `Mobile postgame errors: ${errors.join('; ')}`);
+    await context.close();
+  }
+
+  console.log('PASS: Certificate 1-page A4 PDF, Case 1 & Case 2 Results, 10-item Survey, SPSS CSV download, and 390px mobile responsive checks verified.');
 } finally {
   await browser?.close();
   server.kill();

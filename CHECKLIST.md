@@ -16,7 +16,7 @@
 | 4. Post-test, สรุปผล, ใบประกาศ, แบบประเมิน & Export วิจัย | 🟢 ระบบโค้ดครบ (เหลือเฉพาะเกณฑ์/เฉลยจากอาจารย์) | 15 | 3 |
 | 5. สื่อ ภาพเวชนิทัศน์ เสียง และ Asset Provenance | 🟡 ภาพหลักครบ / ขาด ECG Strip & วิดีโอ | 7 | 7 |
 | 6. การตรวจรับรองทางคลินิก (`docs/clinical-review/`) | 🔴 รอผู้เชี่ยวชาญลงมติ (0/40 รายการ) | 5 | 14 |
-| 7. การทดสอบ (QA) และการเผยแพร่ (Release & Hosting) | 🟢 ผ่าน 25 Unit + E2E + Print PDF / รอ Pilot จริง | 7 | 4 |
+| 7. การทดสอบ (QA) และการเผยแพร่ (Release & Hosting) | 🟢 ผ่าน 25 Unit + Entry/Postgame/Case2 E2E + Print PDF + มือถือ 390px | 9 | 6 |
 
 ---
 
@@ -171,11 +171,15 @@
 - [x] **TypeScript Check & Production Build ผ่าน** (`npm run typecheck`, `npm run build`)
 - [x] **Clinical Snapshot Integrity Check ผ่าน** (`npm run clinical:review:check` → `PASS: 20 source hashes, 2 cases, 20 questions, 6 topics and 40 checklist rows`)
 - [x] **ชุดทดสอบ E2E Entry ครบ 4 ขนาดจอ (1440 / 1024 / 768 / 390px)** (`npm run test:entry`) ผ่านทั้งหมด
-- [x] **ชุดทดสอบ E2E Post-game, Certificate Print PDF (1 หน้า A4) และ Survey CSV Download** (`npm run test:postgame`) ผ่านทั้งหมด
+- [x] **ชุดทดสอบ E2E Post-game (Case 1 + Case 2), Certificate Print PDF (1 หน้า A4) และ Survey CSV Download** (`npm run test:postgame`) ผ่านทั้งหมด
+- [x] **ชุดทดสอบ Responsive & Touch บนมือถือ 390×844px** สำหรับ `Stage15Results`, `CertificateModal` และปุ่ม Likert 5 ระดับใน `Stage16Survey` (ไร้ horizontal overflow, touch target ≥ 44px) ผ่านใน `npm run test:postgame`
+- [x] **ตรวจ parse ไฟล์ `.CSV` ที่ดาวน์โหลดจริงด้วย Python (`utf-8-sig`)** — ยืนยัน 2 แถว × 42 คอลัมน์ ภาษาไทยสมบูรณ์พร้อมใช้ใน Excel/SPSS
+- [x] **ชุดทดสอบ E2E เส้นทาง Case 2 เต็มรูปแบบ (`npm run test:game:case2`)** ผ่านทั้งหมด
 - [x] **เผยแพร่เว็บทดลองสาธารณะถึงรุ่นที่ 5** (`docs/trial-hosting.md`, `docs/trial-hosting.json` — รวม Case 1, Case 2 หน้า 2–17 + CPR, ใบประกาศ และแบบประเมิน 10 ข้อ)
 
 ### ⬜ ยังไม่ได้ทำ / รอดำเนินการ
-- [ ] **ทดสอบเปิดใช้งานจริงบนมือถือ iOS/Android** + เปิดไฟล์ `.CSV` ที่ดาวน์โหลดใน Excel/SPSS เพื่อตรวจภาษาไทยและการพิมพ์ใบประกาศ
+- [ ] **ทดสอบเปิดใช้งานจริงบนมือถือ iOS/Android** และเปิดไฟล์ `.CSV` ที่ดาวน์โหลดในโปรแกรม Excel/SPSS จริง
+- [ ] **ตรวจสอบเหตุขัดข้องค้างเดิมใน `npm run test:game:browser`** — พบ timeout ที่ `scripts/test-game-browser.mjs:270` (`step_draw_med` syringe `.feedback.error` ไม่แสดงหลังลากทดสอบ, ไม่เกี่ยวกับไฟล์ post-game ของ branch นี้) ให้เจ้าของส่วนเกมช่วยตรวจซ้ำ
 - [ ] **Merge งานจาก branch `tankun/cardiosim-dev` เข้า `codex/cardiosim-game-module`** เมื่อตรวจทานพร้อมกันแล้ว
 - [ ] **เผยแพร่เว็บสาธารณะรุ่นที่ 6+ (`npm run trial:package` + Sites deploy)** โดยประสานกับ `sarunph-ctrl` เพื่อให้งานใบประกาศ มข. + หน้าสรุปผล + CSV Export ขึ้นเว็บจริง
 - [ ] **Pilot Playtest กับนักศึกษาพยาบาลจริง** เพื่อเก็บข้อสังเกตด้านการใช้งาน (Usability) ก่อนเก็บข้อมูลวิจัยจริง

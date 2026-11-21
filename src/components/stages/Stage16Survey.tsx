@@ -177,7 +177,7 @@ export const Stage16Survey: React.FC<Stage16SurveyProps> = ({ telemetry, onResta
                       <p className="text-xs sm:text-sm text-slate-800 mb-3 font-semibold leading-relaxed">
                         {item.text}
                       </p>
-                      <div className="grid grid-cols-5 gap-2 max-w-lg">
+                      <div className="grid grid-cols-5 gap-1.5 sm:gap-2 max-w-lg">
                         {SURVEY_SCALE_OPTIONS.map((opt) => {
                           const isSelected = currentScore === opt.score;
                           return (
@@ -186,7 +186,7 @@ export const Stage16Survey: React.FC<Stage16SurveyProps> = ({ telemetry, onResta
                               type="button"
                               onClick={() => handleSetRating(item.id, opt.score)}
                               aria-pressed={isSelected}
-                              className={`py-2 px-1.5 rounded-xl transition-all border flex flex-col items-center justify-center gap-0.5 ${
+                              className={`min-h-[48px] py-2 px-1 sm:px-1.5 rounded-xl transition-all border flex flex-col items-center justify-center gap-0.5 ${
                                 isSelected
                                   ? 'bg-rose-500 text-white border-rose-400 shadow-md ring-2 ring-rose-200'
                                   : 'bg-white text-slate-600 border-slate-200 hover:border-rose-300 hover:text-rose-600'
@@ -235,11 +235,11 @@ export const Stage16Survey: React.FC<Stage16SurveyProps> = ({ telemetry, onResta
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
               onClick={onRestart}
-              className="py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-2 border border-slate-200 transition-all shadow-sm"
+              className="py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 border border-slate-200 transition-all shadow-sm"
             >
               <RotateCcw className="w-4 h-4" />
               <span>เริ่มเล่นใหม่ตั้งแต่ต้น (Restart)</span>
@@ -248,7 +248,7 @@ export const Stage16Survey: React.FC<Stage16SurveyProps> = ({ telemetry, onResta
             <button
               type="submit"
               disabled={isSubmitted}
-              className="py-3 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-rose-200 transition-all disabled:opacity-50"
+              className="py-3 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-rose-200 transition-all disabled:opacity-50"
             >
               {isSubmitted ? <CheckCircle2 className="w-4 h-4" /> : <Send className="w-4 h-4" />}
               <span>{isSubmitted ? 'ส่งแบบประเมินเรียบร้อย' : 'ส่งแบบประเมิน'}</span>

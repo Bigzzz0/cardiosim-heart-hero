@@ -290,7 +290,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
           )}
 
           {/* Certificate Interactive Canvas Preview */}
-          <div className="overflow-x-auto my-4 py-2 flex justify-center">
+          <div className="overflow-x-auto my-4 py-2 flex justify-start lg:justify-center">
             <CertificateSheet
               id="certificate-canvas"
               student={editableStudent}
