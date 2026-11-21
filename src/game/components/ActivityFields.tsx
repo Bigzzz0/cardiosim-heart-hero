@@ -13,7 +13,7 @@ export function ActivityFields({ activity, responses, confirmed, onSetResponse }
     <span>{field.label}</span>
     {field.assessmentMode === 'record-only' && <small className="field-review-note">บันทึกการฝึก · รอผู้เชี่ยวชาญยืนยันเฉลย ช่องนี้ยังไม่ตัดสินถูกผิด</small>}
     {field.type === 'select'
-      ? <select value={responses[field.id] ?? ''} onChange={event => onSetResponse(field.id, event.target.value)} disabled={confirmed}>
+      ? <select aria-label={field.label} value={responses[field.id] ?? ''} onChange={event => onSetResponse(field.id, event.target.value)} disabled={confirmed}>
           <option value="">{field.placeholder}</option>
           {field.options?.map(option => <option value={option} key={option}>{option}</option>)}
         </select>

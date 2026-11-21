@@ -69,6 +69,7 @@ export class CaseEngine {
       if (current.activity?.allowMissingDataAcknowledgement) return this.mission.decisionConfirmed || this.activityReady(current.activity);
       if (current.activity?.kind === 'medication' || current.activity?.kind === 'text-response') return this.mission.decisionConfirmed || this.activityReady(current.activity);
       if (current.activity?.kind === 'fluid-balance') return this.mission.decisionConfirmed || (this.mission.decisions.length > 0 && this.activityReady(current.activity));
+      if (current.activity?.kind === 'matching') return this.mission.decisionConfirmed || (this.activityReady(current.activity) && (current.decision?.slots ?? []).every(slot => this.mission.decisions.some(value => value.startsWith(`${slot.id}::`))));
       if (current.gradable === false && current.decision?.slots?.length) return this.mission.decisionConfirmed || current.decision.slots.every(slot => this.mission.decisions.some(value => value.startsWith(`${slot.id}::`)));
       return this.mission.decisionConfirmed || this.mission.decisions.length > 0;
     }

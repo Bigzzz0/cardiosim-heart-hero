@@ -150,8 +150,14 @@ test('the storyboard missions share one room and support retry, confirm, emergen
   game.setResponse('rhythm-answer','not a rhythm'); assert.equal(game.confirmActivity(),false,'ECG interpretation checks the Case 1 demo key');
   game.setResponse('rhythm-answer','Sinus tachycardia'); assert.equal(game.confirmActivity(),true); game.next();
   assert.equal(game.mission.current.id, 'EMERGENCY_TREATMENT');
-  game.chooseForSlot('response','supine-water'); assert.equal(game.confirmDecision(),false);
-  game.chooseForSlot('response','priority-response'); assert.equal(game.confirmDecision(),true); game.next();
+  game.chooseForSlot('response','rapid-iv-fluid');
+  game.chooseForSlot('monitoring','monitor-ecg-vitals');
+  game.chooseForSlot('oxygen','oxygen-support');
+  game.chooseForSlot('medication','ordered-furosemide');
+  assert.equal(game.canContinue,false,'all care cards still require an explicit medication selection');
+  game.setResponse('emergency-medication','Furosemide (Lasix)');
+  assert.equal(game.confirmDecision(),false);
+  game.chooseForSlot('response','position-high-fowler'); assert.equal(game.confirmDecision(),true); game.next();
   assert.equal(game.mission.current.id, 'PATIENT_STABILIZED');
   game.update(6500);
   assert.equal(game.vitals.current.spo2,94);
@@ -370,6 +376,22 @@ test('case validation rejects missing ECG leads and checkpoint validation reject
   assert.equal(treatmentResume.mission.decisionConfirmed, false);
   assert.equal(treatmentResume.chart[0]?.id, 'history', 'previously discovered chart data is preserved');
   assert.equal(treatmentResume.mission.completed.has('history'), true, 'completed mission objectives are preserved');
+  const slottedLegacy = parseCheckpoint(JSON.stringify({...legacyTreatment, decisions:['response::priority-response']}),verticalSlice);
+  assert(slottedLegacy);
+  assert.deepEqual(slottedLegacy.decisions,[]);
+  assert.equal(slottedLegacy.decisionConfirmed,false);
+});
+
+test('emergency orders and required medication selection stay specific to their case', () => {
+  const case1Treatment = verticalSlice.missions.find(mission=>mission.id==='EMERGENCY_TREATMENT')!;
+  const case2Treatment = case02.missions.find(mission=>mission.id==='EMERGENCY_TREATMENT')!;
+  assert.equal(case1Treatment.decision?.slots?.length,4);
+  assert.equal(case1Treatment.activity?.expectedResponses?.['emergency-medication'],'Furosemide (Lasix)');
+  assert(case1Treatment.decision?.rows?.some(row=>row.value.includes('Furosemide 40 mg')));
+  assert(case2Treatment.decision?.rows?.some(row=>row.value.includes('Amiodarone 150 mg')));
+  assert(!case2Treatment.decision?.rows?.some(row=>row.value.includes('Furosemide')));
+  assert.equal(case2Treatment.activity,undefined);
+  assert.equal(case2Treatment.gradable,false);
 });
 
 

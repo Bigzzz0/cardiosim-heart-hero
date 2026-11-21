@@ -178,6 +178,9 @@ export function MissionPanel({
     {mission.kind === 'decision' && decision && (decision.slots || !mission.activity) && (decision.presentation
       ? <InRoomDecisionSurface findings={engine.chart} presentation={decision.presentation} missionTitle={mission.title} instruction={mission.description}><DecisionBoard
           decision={decision}
+          activity={mission.activity?.kind === 'matching' ? mission.activity : undefined}
+          responses={engine.responses}
+          onSetResponse={(id,value)=>engine.setResponse(id,value)}
           selections={engine.mission.decisions}
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
@@ -188,6 +191,9 @@ export function MissionPanel({
         /></InRoomDecisionSurface>
       : <DecisionBoard
           decision={decision}
+          activity={mission.activity?.kind === 'matching' ? mission.activity : undefined}
+          responses={engine.responses}
+          onSetResponse={(id,value)=>engine.setResponse(id,value)}
           selections={engine.mission.decisions}
           confirmed={engine.mission.decisionConfirmed}
           onStartDrag={onStartAnswerDrag}
@@ -196,7 +202,7 @@ export function MissionPanel({
         onClickAnswer={onClickAnswer}
           onChoose={optionId => engine.choose(optionId)}
         />)}
-    {mission.kind === 'decision' && mission.activity && (mission.activity.presentation
+    {mission.kind === 'decision' && mission.activity && !(mission.activity.kind === 'matching' && decision?.slots) && (mission.activity.presentation
       ? <InRoomActivitySurface presentation={mission.activity.presentation} missionTitle={mission.title} instruction={mission.description}>{worksheet}</InRoomActivitySurface>
       : worksheet)}
     {mission.kind !== 'summary' && <button className="primary full-primary" onClick={onMainAction} disabled={!engine.canContinue}>{primaryLabel} <ChevronRight size={18}/></button>}

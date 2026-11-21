@@ -179,11 +179,15 @@ case02.missions = case02.missions.map(mission => {
     } : undefined,
   };
   if (mission.id === 'EMERGENCY_TREATMENT') return {
-    ...mission, gradable: false,
+    ...mission, gradable: false, activity: undefined,
     description: 'จัดการ์ดการพยาบาลลงกรอบ โดยเริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เน้นการเตรียม Defibrillator และเรียกทีมฉุกเฉิน',
     hint: 'ยาที่ระบุในคำสั่งแพทย์เป็นข้อมูลประกอบ ให้เน้นการช่วยชีวิตตามที่ทีมกำหนด',
     decision: mission.decision ? {
       ...mission.decision, expected: [],
+      rows: [
+        { label: 'Doctor Order · ข้อมูลประกอบ', value: 'Amiodarone 150 mg + D5W 100 mL IV drip over 1 hr then Amiodarone 900 mg + D5W 500 mL IV drip in 24 hr' },
+        { label: 'จุดเน้นของสถานการณ์', value: 'เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เตรียม Defibrillator และเรียกทีมฉุกเฉิน' },
+      ],
       slots: [
         { id: 'response', label: 'การช่วยชีวิตทันที', expected: '' },
         { id: 'equipment', label: 'การเตรียมอุปกรณ์', expected: '' },

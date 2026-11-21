@@ -1,6 +1,6 @@
 {
   "reviewDate": "2026-11-03",
-  "baseCommit": "ba604f8fb0d9b738a612483e07fb8abb563834f9",
+  "baseCommit": "eec615bcc943861056ffbd47f73f2a99bb8f314a",
   "status": "pending-expert-review",
   "sourceHashNormalization": "utf8-lf",
   "sourceFiles": [
@@ -30,11 +30,11 @@
     },
     {
       "file": "src/game/cases/verticalSlice.ts",
-      "sha256": "2ef1b2fa1448b850aa39707b9abf56125188242d44faaa28fc57c842263c92d2"
+      "sha256": "c0c81bf24c859aafe578d2ede81bbdcd2bd7388470d48d5b5e1ff2f60f17e6dd"
     },
     {
       "file": "src/game/cases/case02.ts",
-      "sha256": "e09efa1677bf9feaff6b1703776fa984d1ec5fe35ccb28a571a3613a4f9641bb"
+      "sha256": "28481cbd2721628459089aa0ed3d26e02b07885cea125d87179592fbfa24a402"
     },
     {
       "file": "src/game/cases/medicationWorkbench.ts",
@@ -42,7 +42,7 @@
     },
     {
       "file": "src/game/core/CaseEngine.ts",
-      "sha256": "47bbcc9ffd44f363681bc22193827d7fddf624c56ba7c2747fc134fad21e1326"
+      "sha256": "997432ad097741617ee6b8498dc86556d10ef62c282125b3c1252f0d98d2c78c"
     },
     {
       "file": "src/components/stages/Stage11IORecord.tsx",
@@ -54,7 +54,7 @@
     },
     {
       "file": "src/game/types.ts",
-      "sha256": "4d0f48da859a12a5b56d532f81f9c4ac941de2b991fd649633d05a3b430a80cc"
+      "sha256": "73b594d3b9e48f5691ffdd9f687d73383d78287feaea1dc1273aeb28fb1f0bcd"
     },
     {
       "file": "src/game/core/validateCase.ts",
@@ -62,7 +62,7 @@
     },
     {
       "file": "src/game/components/ActivityFields.tsx",
-      "sha256": "c9ef1c6a351ea7d0e20e269158b0f8436516abc5630aacc7f18066fc0537a9da"
+      "sha256": "cb60e3deb6c53c7836f3312ae27da78379e45b8725d4e611bf92ce212204c314"
     },
     {
       "file": "src/game/suppliedECGArt.json",
@@ -382,21 +382,21 @@
           "section": "History",
           "title": "อาการที่ผู้ป่วยบอก",
           "text": "ผู้ป่วยหญิงอายุ 65 ปี มี Chronic Heart Failure และ Hypertension หนึ่งสัปดาห์ก่อนมาโรงพยาบาลน้ำหนักเพิ่ม 3 กก. ขาบวมและปัสสาวะลดลง สองวันก่อนมาโรงพยาบาลเหนื่อยมากขึ้น นอนราบไม่ได้ และตื่นกลางดึกจากหายใจหอบเหนื่อย ตรวจพบ pitting edema 2+, JVP โป่ง และ capillary refill time 3 วินาที",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "lungs",
           "section": "Respiratory Assessment",
           "title": "Auscultation",
           "text": "Bibasal fine crackles ตามข้อมูลประเมินเคส 1 หน้า 2–4",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "bp",
           "section": "Vital Signs",
           "title": "วัดความดันโลหิต",
           "text": "บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
           "captureVitals": true
         },
         {
@@ -404,7 +404,7 @@
           "section": "Vital Signs",
           "title": "วัด SpO₂",
           "text": "บันทึกสัญญาณชีพ ณ เวลาที่ตรวจ",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
           "captureVitals": true
         },
         {
@@ -412,21 +412,21 @@
           "section": "Respiratory Assessment",
           "title": "A · Airway",
           "text": "ผู้ป่วยยังรู้สึกตัว พูดเป็นประโยคยาวไม่ได้ ไอมีเสมหะเป็นฟองสีชมพู ต้องประเมินความโล่งของทางเดินหายใจ",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "breathing",
           "section": "Respiratory Assessment",
           "title": "B · Breathing",
           "text": "RR 34 ครั้ง/นาที, SpO₂ 82% ขณะ On O₂ Cannula 3 LPM ใช้กล้ามเนื้อช่วยหายใจ และมี fine crackles ทั้งสองข้าง",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "circulation",
           "section": "Perfusion Assessment",
           "title": "C · Circulation",
           "text": "HR 125 ครั้ง/นาที และ BP 180/105 mmHg ในช่วงฉุกเฉิน",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "diagnosis",
@@ -468,14 +468,14 @@
           "section": "ECG",
           "title": "ECG interpretation · draft",
           "text": "เอกสารเคส 1 หน้า 26 ระบุ Sinus tachycardia คลื่นบน Monitor เป็นภาพประกอบสำหรับสถานการณ์ฝึก",
-          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         },
         {
           "id": "emergency-treatment",
           "section": "Care Plan",
-          "title": "Emergency treatment · demo response",
-          "text": "ใช้แสดงผล patient-response เท่านั้น; ไม่มี treatment sequence หรือ protocol ที่ผ่านการรับรอง",
-          "source": "6 Panel Storyboard.pdf pp.3-7"
+          "title": "การพยาบาลฉุกเฉิน",
+          "text": "คำตอบตามเอกสารเคส 1 หน้า 27–29 ประกอบด้วยจัดท่า High Fowler’s ติดตาม EKG และสัญญาณชีพ เตรียม/เพิ่มระดับออกซิเจนตามอาการ และให้ Furosemide ตามแผนการรักษา",
+          "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac"
         }
       ],
       "missions": [
@@ -1143,7 +1143,7 @@
             "kind": "text-response",
             "presentation": "ecg-console",
             "gradable": true,
-            "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
+            "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
             "eyebrow": "ECG REVIEW CONSOLE · CASE 01 DEMO",
             "title": "ทบทวนจังหวะจาก Monitor",
             "notice": "คลื่นเป็นภาพประกอบเดโม · คำตอบตรวจเทียบกับ Case 1 draft เท่านั้น",
@@ -1178,34 +1178,82 @@
           "kind": "decision",
           "phase": "10 · EMERGENCY TREATMENT",
           "title": "เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย",
-          "description": "เลือกการตอบสนองจากข้อมูล Case 1 demo แล้วกด Confirm เพื่อดูผลจำลอง",
-          "hint": "แผนนี้มาจาก Stage12CrisisEvent.tsx และยังรอผู้เชี่ยวชาญตรวจรับรอง",
+          "description": "อ่านคำสั่งแพทย์ เลือกยา แล้วลากการพยาบาลไปจับคู่กับทั้ง 4 กรอบก่อนยืนยัน",
+          "hint": "เลือกการดูแลเรื่องท่า การติดตาม ออกซิเจน และยาตามข้อมูลเคส 1 หน้า 27–29",
           "button": "Confirm · ตรวจคำตอบ",
           "chartFinding": "emergency-treatment",
           "gradable": true,
+          "activity": {
+            "kind": "matching",
+            "eyebrow": "Doctor Order",
+            "title": "เลือกยาตามคำสั่งแพทย์",
+            "source": "เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac",
+            "gradable": true,
+            "fields": [
+              {
+                "id": "emergency-medication",
+                "label": "เลือกยาตาม Doctor Order",
+                "placeholder": "เลือกยา",
+                "type": "select",
+                "options": [
+                  "Furosemide (Lasix)",
+                  "Dobutamine",
+                  "Amiodarone"
+                ]
+              }
+            ],
+            "expectedResponses": {
+              "emergency-medication": "Furosemide (Lasix)"
+            }
+          },
           "decision": {
+            "rows": [
+              {
+                "label": "Doctor Order",
+                "value": "Furosemide 40 mg IV stat"
+              },
+              {
+                "label": "O₂",
+                "value": "Cannula 5 L/min เป้าหมาย SpO₂ ≥ 94%"
+              }
+            ],
             "options": [
               {
-                "id": "priority-response",
-                "label": "High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน",
-                "detail": "ตัวเลือกจากเนื้อหา Case 1 เดิม · รอผู้เชี่ยวชาญตรวจรับรอง",
-                "icon": "device"
+                "id": "position-high-fowler",
+                "label": "จัดท่า High Fowler’s position",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
               },
               {
-                "id": "supine-water",
-                "label": "จัดให้นอนราบและให้ดื่มน้ำ",
-                "detail": "ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม",
-                "icon": "care"
+                "id": "rapid-iv-fluid",
+                "label": "เพิ่มสารน้ำ IV อย่างรวดเร็ว",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
               },
               {
-                "id": "wait-and-observe",
-                "label": "รอดูอาการ 30 นาที",
-                "detail": "ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม",
-                "icon": "monitor"
+                "id": "monitor-ecg-vitals",
+                "label": "Monitor EKG และ Vital signs อย่างต่อเนื่อง",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
+              },
+              {
+                "id": "patient-walking",
+                "label": "ให้ผู้ป่วยลุกเดินเพื่อประเมินอาการ",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
+              },
+              {
+                "id": "oxygen-support",
+                "label": "เตรียม/เพิ่มระดับการให้ออกซิเจนตามอาการ",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
+              },
+              {
+                "id": "ordered-furosemide",
+                "label": "ให้ Furosemide ตามแผนการรักษา",
+                "detail": "เลือกการพยาบาลให้สัมพันธ์กับกรอบ"
               }
             ],
             "expected": [
-              "priority-response"
+              "position-high-fowler",
+              "monitor-ecg-vitals",
+              "oxygen-support",
+              "ordered-furosemide"
             ],
             "ordered": false,
             "answerMode": "drag-slot",
@@ -1213,12 +1261,27 @@
             "slots": [
               {
                 "id": "response",
-                "label": "แผนตอบสนอง",
-                "expected": "priority-response"
+                "label": "การจัดท่า",
+                "expected": "position-high-fowler"
+              },
+              {
+                "id": "monitoring",
+                "label": "การติดตามผู้ป่วย",
+                "expected": "monitor-ecg-vitals"
+              },
+              {
+                "id": "oxygen",
+                "label": "การให้ออกซิเจน",
+                "expected": "oxygen-support"
+              },
+              {
+                "id": "medication",
+                "label": "ยาตามคำสั่งแพทย์",
+                "expected": "ordered-furosemide"
               }
             ],
-            "explanation": "คำตอบยังไม่ตรงกับ emergency demo ในข้อมูล Case 1 · เลือกใหม่แล้ว Confirm",
-            "success": "ตรงกับ emergency response ใน Case 1 demo · สังเกตผู้ป่วยและ Monitor"
+            "explanation": "ทบทวนการพยาบาลทั้ง 4 กรอบตามเอกสารเคส 1 หน้า 29 แล้วลองใหม่",
+            "success": "จับคู่ตรงกับคำตอบในเอกสารเคส 1 แล้ว · ดูผลตอบสนองจำลองของผู้ป่วย"
           }
         },
         {
@@ -1366,7 +1429,7 @@
         {
           "id": "emergency-treatment",
           "section": "Care Plan",
-          "title": "Emergency treatment · demo response",
+          "title": "การพยาบาลฉุกเฉิน",
           "text": "ทีมกำหนดให้เน้น CPR การเตรียม Defibrillator และการเรียกทีมฉุกเฉิน โดยติดตาม EKG และสัญญาณชีพ ยาที่ระบุในคำสั่งแพทย์เป็นข้อมูลประกอบของสถานการณ์",
           "source": "เนื้อหาSim.pdf · หน้า 23 และ 27–30 · คำยืนยันทีมผ่านแชต 18 พฤศจิกายน 2026"
         },
@@ -1914,6 +1977,16 @@
           "chartFinding": "emergency-treatment",
           "gradable": false,
           "decision": {
+            "rows": [
+              {
+                "label": "Doctor Order · ข้อมูลประกอบ",
+                "value": "Amiodarone 150 mg + D5W 100 mL IV drip over 1 hr then Amiodarone 900 mg + D5W 500 mL IV drip in 24 hr"
+              },
+              {
+                "label": "จุดเน้นของสถานการณ์",
+                "value": "เริ่ม CPR ทันทีเมื่อคลำชีพจรไม่ได้ เตรียม Defibrillator และเรียกทีมฉุกเฉิน"
+              }
+            ],
             "options": [
               {
                 "id": "priority-response",
@@ -2743,7 +2816,7 @@
       "id": "CLIN-06",
       "title": "แยกการตอบสนองเริ่มต้นของพยาบาลจากแผนฉุกเฉินครบวงจร",
       "status": "pending",
-      "question": "เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี",
+      "question": "เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี ห้องผู้ป่วยเคส 1 เปลี่ยนเป็นเลือก Furosemide ตาม Doctor Order และจับคู่การพยาบาล 4 กรอบตามเนื้อหาSim.pdf หน้า 27–29 แล้ว แสดง Furosemide 40 mg IV stat กับ O2 cannula 5 L/min เป้าหมาย SpO2 ≥ 94% ในหน้านั้น เคส 2 แสดงคำสั่ง Amiodarone เป็นข้อมูลประกอบ โดยไม่มีช่องเลือกยาบังคับในกิจกรรมช่วยชีวิต คะแนนที่ตรวจยังเป็นกลไกเดโมเดิม รอกำหนดเกณฑ์ 20/80 และคะแนนรวมต่อ",
       "reviewerRole": "แพทย์/ผู้สอนกู้ชีพและอาจารย์พยาบาล",
       "locations": [
         {
@@ -2759,7 +2832,7 @@
         {
           "file": "src/game/cases/verticalSlice.ts",
           "anchor": "PATIENT_STABILIZED",
-          "line": 164
+          "line": 182
         }
       ],
       "referenceIds": [
@@ -2777,12 +2850,12 @@
         {
           "file": "src/game/cases/verticalSlice.ts",
           "anchor": "duration: 6000",
-          "line": 164
+          "line": 182
         },
         {
           "file": "src/game/cases/verticalSlice.ts",
           "anchor": "bpSystolic: 150",
-          "line": 164
+          "line": 182
         }
       ],
       "referenceIds": []

@@ -60,13 +60,13 @@ Case 1 ใช้ป้าย SVT และคลื่นสร้างจา�
 
 ## CLIN-06 · แยกการตอบสนองเริ่มต้นของพยาบาลจากแผนฉุกเฉินครบวงจร
 
-เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี
+เกมให้คำตอบ High Fowler’s/Non-rebreather/เรียกทีม แล้วเปลี่ยนผู้ป่วยเป็น stable ขณะที่หน้าเว็บเดิมเรียกคำตอบนี้ว่าตาม ACLS โปรดกำหนดขอบเขตว่าทดสอบเพียง initial nursing response หรือการดูแลทั้งเหตุการณ์ และให้ผู้เชี่ยวชาญระบุการประเมิน/การรักษาโดยทีมที่ยังขาด แนวทาง AHA พิจารณาความสัมพันธ์ระหว่าง arrhythmia กับภาวะไม่คงที่ ไม่ใช่เหมารวม HF ทุกกรณี ห้องผู้ป่วยเคส 1 เปลี่ยนเป็นเลือก Furosemide ตาม Doctor Order และจับคู่การพยาบาล 4 กรอบตามเนื้อหาSim.pdf หน้า 27–29 แล้ว แสดง Furosemide 40 mg IV stat กับ O2 cannula 5 L/min เป้าหมาย SpO2 ≥ 94% ในหน้านั้น เคส 2 แสดงคำสั่ง Amiodarone เป็นข้อมูลประกอบ โดยไม่มีช่องเลือกยาบังคับในกิจกรรมช่วยชีวิต คะแนนที่ตรวจยังเป็นกลไกเดโมเดิม รอกำหนดเกณฑ์ 20/80 และคะแนนรวมต่อ
 
 **ผู้ตรวจ:** แพทย์/ผู้สอนกู้ชีพและอาจารย์พยาบาล · **สถานะ:** pending
 
 - [src/components/stages/Stage12CrisisEvent.tsx:37](../../src/components/stages/Stage12CrisisEvent.tsx#L37)
 - [src/game/cases/verticalSlice.ts:155](../../src/game/cases/verticalSlice.ts#L155)
-- [src/game/cases/verticalSlice.ts:164](../../src/game/cases/verticalSlice.ts#L164)
+- [src/game/cases/verticalSlice.ts:182](../../src/game/cases/verticalSlice.ts#L182)
 
 **อ้างอิง:** REF-ACLS, REF-HF — ดู references.md
 
@@ -76,8 +76,8 @@ Case 1 ใช้ป้าย SVT และคลื่นสร้างจา�
 
 **ผู้ตรวจ:** เจ้าของเคสและผู้เชี่ยวชาญการจำลองสถานการณ์ · **สถานะ:** pending
 
-- [src/game/cases/verticalSlice.ts:164](../../src/game/cases/verticalSlice.ts#L164)
-- [src/game/cases/verticalSlice.ts:164](../../src/game/cases/verticalSlice.ts#L164)
+- [src/game/cases/verticalSlice.ts:182](../../src/game/cases/verticalSlice.ts#L182)
+- [src/game/cases/verticalSlice.ts:182](../../src/game/cases/verticalSlice.ts#L182)
 
 **อ้างอิง:** ข้อมูลภายในโครงการ/รอเอกสารของทีม
 

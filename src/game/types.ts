@@ -44,7 +44,7 @@ export interface ActivityStepProgress { toolPlaced: boolean; amount: number; act
 export interface ActivityStep { id: string; label: string; detail: string; equipmentLabel: string; icon: ActivityEquipmentIcon; interaction?: ActivityStepInteraction }
 export interface ActivityItem { visual?: 'iv'|'drink'|'urine'; id: string; label: string; zoneId: string }
 export interface ActivityZone { id: string; label: string }
-export interface Decision { options: { id: string; label: string; detail: string; icon?: 'assessment' | 'position' | 'monitor' | 'medication' | 'care' | 'device' }[]; expected: string[]; ordered: boolean; explanation: string; success: string; slots?: DecisionSlot[]; answerMode?: 'select' | 'drag-slot'; presentation?: DecisionPresentation }
+export interface Decision { rows?: { label: string; value: string }[]; options: { id: string; label: string; detail: string; icon?: 'assessment' | 'position' | 'monitor' | 'medication' | 'care' | 'device' }[]; expected: string[]; ordered: boolean; explanation: string; success: string; slots?: DecisionSlot[]; answerMode?: 'select' | 'drag-slot'; presentation?: DecisionPresentation }
 export interface ActivityConfig {
   kind: 'matching' | 'fluid-balance' | 'medication' | 'text-response';
   presentation?: ActivityPresentation;

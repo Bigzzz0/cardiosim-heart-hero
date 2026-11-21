@@ -34,7 +34,8 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
       const [slot, option] = value.split('::');
       return legacyMatchingSlots.includes(slot) && legacyMatchingOptions.includes(option);
     });
-    if (!legacyCase2Matching && data.decisions.some(value => {
+    const legacyCase1Treatment = config.id === 'cardiosim-vertical-slice' && active.id === 'EMERGENCY_TREATMENT' && data.decisions.length > 0 && data.decisions.every(value => ['priority-response','supine-water','wait-and-observe','response::priority-response','response::supine-water','response::wait-and-observe'].includes(value));
+    if (!legacyCase2Matching && !legacyCase1Treatment && data.decisions.some(value => {
       const [slotId, optionId] = value.split('::');
       if (!active.decision?.slots?.length) return !active.decision?.options.some(option => option.id === value);
       // Accept a legacy single-choice checkpoint so restore() can reset this
@@ -76,7 +77,7 @@ export function parseCheckpoint(raw: string, config: GameCase): Checkpoint | nul
     for (const mission of config.missions.slice(0, config.missions.indexOf(active) + 1)) Object.assign(sourceVitals, mission.onEnter?.vitals);
     const savedVitals = legacyCase1Content || (!config.gradable && Object.values(data.vitals).every(value => value === null)) ? sourceVitals : data.vitals;
     const resetLegacyRhythm = legacyCase1Content && active.id === 'ECG_INTERPRETATION';
-    return { ...data, version: config.version, vitals: savedVitals, ...(replacedMissingData || legacyCase2Matching || resetLegacyRhythm?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep || legacyCase2Matching || resetLegacyRhythm?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses: resetLegacyRhythm ? {} : responses, chart } as unknown as Checkpoint;
+    return { ...data, version: config.version, vitals: savedVitals, ...(replacedMissingData || legacyCase2Matching || legacyCase1Treatment || resetLegacyRhythm?{decisions:[],decisionConfirmed:false}:{}), ...(resetCurrentStep || legacyCase2Matching || legacyCase1Treatment || resetLegacyRhythm?{restartNotice:'activity-step'}:{}), ...(legacyECG?{restartNotice:'ecg-placement',leads:[],leadPlacements:{},ecgConfirmed:false,ecgValidated:[]}:{}), activitySteps, activityPlacements, activityStepProgress, responses: resetLegacyRhythm ? {} : responses, chart } as unknown as Checkpoint;
   } catch { return null; }
 }
 export function readCheckpoint(config: GameCase): Checkpoint | null { try { const raw = localStorage.getItem(key(config.id)); return raw ? parseCheckpoint(raw, config) : null; } catch { return null; } }

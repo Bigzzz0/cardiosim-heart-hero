@@ -1,12 +1,16 @@
 import React,{useState} from 'react';
 import { Check, ClipboardCheck, X } from 'lucide-react';
-import type { Decision } from '../types';
+import type { ActivityConfig, Decision } from '../types';
 import { decisionIcons } from './gameIcons';
+import { ActivityFields } from './ActivityFields';
 
 type DecisionBoardProps = {
   decision: Decision;
   selections: readonly string[];
   confirmed: boolean;
+  activity?: ActivityConfig;
+  responses: Readonly<Record<string,string>>;
+  onSetResponse: (id:string,value:string)=>void;
   onStartDrag: (optionId: string, event: React.PointerEvent<HTMLButtonElement>) => void;
   onClickAnswer: (optionId: string) => void;
   onChoose: (optionId: string) => void;
@@ -14,7 +18,7 @@ type DecisionBoardProps = {
   onAssignSlot: (slotId:string,optionId:string)=>void;
 };
 
-export function DecisionBoard({ decision, selections, confirmed, onStartDrag, onClickAnswer, onChoose, onAssignSlot, onRemoveSlot }: DecisionBoardProps) {
+export function DecisionBoard({ decision, selections, confirmed, activity, responses, onSetResponse, onStartDrag, onClickAnswer, onChoose, onAssignSlot, onRemoveSlot }: DecisionBoardProps) {
   const [activeSlot,setActiveSlot]=useState<string|null>(null);
   if (!decision.slots) {
     return <div className="decision-list">{decision.options.map(option => {
@@ -28,7 +32,8 @@ export function DecisionBoard({ decision, selections, confirmed, onStartDrag, on
   }
 
   const textOnly = decision.presentation === 'monitor-response';
-  return <div className="matching-board">
+  return <div className={`matching-board ${decision.rows?.length || activity?.fields?.length ? 'has-order' : ''}`}>
+    {Boolean(decision.rows?.length || activity?.fields?.length) && <section className="decision-order" aria-label="คำสั่งแพทย์ช่วงฉุกเฉิน"><dl>{decision.rows?.map(row => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>{activity && <ActivityFields activity={activity} responses={responses} confirmed={confirmed} onSetResponse={onSetResponse}/>}</section>}
     <div className="panel-title">{textOnly ? 'จัดการ์ดข้อความลงกรอบ' : 'จัดบัตรลงแฟ้ม'} <span>{selections.length}/{decision.slots.length}</span></div>
     <div className="answer-slots">{decision.slots.map((slot, index) => {
       const optionId = selections.find(value => value.startsWith(`${slot.id}::`))?.split('::')[1];

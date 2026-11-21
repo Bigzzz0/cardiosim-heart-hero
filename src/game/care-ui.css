@@ -41,6 +41,12 @@
 }
 
 /* Card inventory states describe placement, never correctness before Confirm. */
+.storybook-game .surface-content .matching-board.has-order {grid-template-areas:"order order" "heading heading" "options slots" "help help";}
+.storybook-game .decision-order {grid-area:order;margin:0;padding:10px 12px;border:1px solid #a6bdc8;border-radius:9px;background:#fff;color:var(--care-ink);font-size:14px;line-height:1.5;}
+.storybook-game .decision-order>dl {margin:0;}
+.storybook-game .decision-order>dl>div {display:grid;grid-template-columns:minmax(100px,1fr) minmax(0,3fr);gap:8px;padding:4px 0;}
+.storybook-game .decision-order dt {font-weight:700;}
+.storybook-game .decision-order dd {margin:0;overflow-wrap:anywhere;}
 .storybook-game .answer-slot-wrap {position:relative;min-width:0;}
 .storybook-game .answer-slot-wrap>.answer-slot {width:100%;height:100%;}
 .storybook-game .answer-slot-wrap:has(.answer-remove)>.answer-slot {padding-right:49px;}
@@ -55,6 +61,8 @@
 .storybook-game .tool-tutorial-tip>b {display:none;}
 .storybook-game .tool-tutorial-tip>span {font-size:14px;}
 @media(max-width:760px) {
+ .storybook-game .surface-content .matching-board.has-order {grid-template-areas:"order" "heading" "slots" "options" "help";}
+ .storybook-game .decision-order>dl>div {grid-template-columns:1fr;gap:2px;}
  .storybook-game .mission-panel:is(.mode-bedside-clipboard,.mode-monitor-response) {top:clamp(265px,34dvh,310px)!important;bottom:8px!important;max-height:none!important;height:auto!important;}
  .storybook-game .surface-content .answer-slot {min-height:72px;}
  .storybook-game .surface-content .answer-card {min-height:44px;padding:5px 8px;}

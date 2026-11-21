@@ -7,7 +7,7 @@ import { suppliedECGLayout, suppliedECGTargets } from '../suppliedECGLayout';
 
 const spec = 'Case1 draft sources in src/data/case1Data.ts, ehrCase1Data.ts, medicationStepsData.ts, nursingDiagnosesData.ts, Stage11IORecord.tsx, Stage12CrisisEvent.tsx (demo only; clinician review pending)';
 const storyboard = '6 Panel Storyboard.pdf pp.3-7';
-const suppliedCase = 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4, 22–26 และ 30–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac';
+const suppliedCase = 'เนื้อหาSim.pdf · ฉบับ 32 หน้า · เคส 1 หน้า 2–4 และ 22–31 · SHA256 c0c6e960c54d50104cd1de548354e7e7b38332ffc076a0978bd408c973951aac';
 const medicationEquipment = [
   { label: 'ตรวจ Doctor Order', equipmentLabel: 'แฟ้มคำสั่งยา', icon: 'order' as const },
   { label: 'ตรวจฉลากแอมพูล', equipmentLabel: 'แอมพูล / ฉลาก', icon: 'ampoule' as const },
@@ -64,7 +64,7 @@ export const verticalSlice: GameCase = {
     { id: 'io', section: 'Intake / Output', title: 'Fluid-balance decision · example', text: 'Storyboard ระบุเฉลยตัวอย่าง NEGATIVE แต่ไม่แสดงตัวเลข intake/output จึงยังใช้คำนวณสมดุลจริงไม่ได้', source: storyboard },
     { id: 'ecg', section: 'ECG', title: 'Chest leads V1–V6', text: 'ติดครบทั้ง 6 ตำแหน่งในผังจำลอง คลื่นบน Monitor เป็นภาพประกอบ ยังไม่มีคลื่นและเฉลย ECG ที่รับรอง', source: storyboard },
     { id: 'ecg-read', section: 'ECG', title: 'ECG interpretation · draft', text: 'เอกสารเคส 1 หน้า 26 ระบุ Sinus tachycardia คลื่นบน Monitor เป็นภาพประกอบสำหรับสถานการณ์ฝึก', source: suppliedCase },
-    { id: 'emergency-treatment', section: 'Care Plan', title: 'Emergency treatment · demo response', text: 'ใช้แสดงผล patient-response เท่านั้น; ไม่มี treatment sequence หรือ protocol ที่ผ่านการรับรอง', source: storyboard },
+    { id: 'emergency-treatment', section: 'Care Plan', title: 'การพยาบาลฉุกเฉิน', text: 'คำตอบตามเอกสารเคส 1 หน้า 27–29 ประกอบด้วยจัดท่า High Fowler’s ติดตาม EKG และสัญญาณชีพ เตรียม/เพิ่มระดับออกซิเจนตามอาการ และให้ Furosemide ตามแผนการรักษา', source: suppliedCase },
   ],
   ecg: {
     finding: 'ecg', label: 'CHEST LEAD PLACEMENT · ผังจากเวชนิทัศน์ รอตรวจตำแหน่งโดยผู้เชี่ยวชาญ',
@@ -152,14 +152,32 @@ export const verticalSlice: GameCase = {
       success: 'อ่านตรงกับคำตอบใน Case 1 demo · บันทึกลง Chart แล้ว',
       explanation: 'ลองตรวจ rhythm ที่ระบุใน Case 1 demo อีกครั้ง',
     } },
-    { id: 'EMERGENCY_TREATMENT', kind: 'decision', phase: '10 · EMERGENCY TREATMENT', title: 'เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย', description: 'เลือกการตอบสนองจากข้อมูล Case 1 demo แล้วกด Confirm เพื่อดูผลจำลอง', hint: 'แผนนี้มาจาก Stage12CrisisEvent.tsx และยังรอผู้เชี่ยวชาญตรวจรับรอง', button: 'Confirm · ตรวจคำตอบ', chartFinding: 'emergency-treatment', gradable: true, decision: {
+    { id: 'EMERGENCY_TREATMENT', kind: 'decision', phase: '10 · EMERGENCY TREATMENT', title: 'เลือกการตอบสนอง\nแล้วดูผลที่ผู้ป่วย', description: 'อ่านคำสั่งแพทย์ เลือกยา แล้วลากการพยาบาลไปจับคู่กับทั้ง 4 กรอบก่อนยืนยัน', hint: 'เลือกการดูแลเรื่องท่า การติดตาม ออกซิเจน และยาตามข้อมูลเคส 1 หน้า 27–29', button: 'Confirm · ตรวจคำตอบ', chartFinding: 'emergency-treatment', gradable: true, activity: {
+      kind: 'matching', eyebrow: 'Doctor Order', title: 'เลือกยาตามคำสั่งแพทย์',
+      source: suppliedCase, gradable: true,
+      fields: [{ id: 'emergency-medication', label: 'เลือกยาตาม Doctor Order', placeholder: 'เลือกยา', type: 'select', options: ['Furosemide (Lasix)', 'Dobutamine', 'Amiodarone'] }],
+      expectedResponses: { 'emergency-medication': 'Furosemide (Lasix)' },
+    }, decision: {
+      rows: [
+        { label: 'Doctor Order', value: 'Furosemide 40 mg IV stat' },
+        { label: 'O₂', value: 'Cannula 5 L/min เป้าหมาย SpO₂ ≥ 94%' },
+      ],
       options: [
-        { id: 'priority-response', label: 'High Fowler’s · Non-rebreather · เรียกทีมฉุกเฉิน', detail: 'ตัวเลือกจากเนื้อหา Case 1 เดิม · รอผู้เชี่ยวชาญตรวจรับรอง', icon: 'device' },
-        { id: 'supine-water', label: 'จัดให้นอนราบและให้ดื่มน้ำ', detail: 'ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม', icon: 'care' },
-        { id: 'wait-and-observe', label: 'รอดูอาการ 30 นาที', detail: 'ตัวเลือกฝึกการลองผิดตาม Stage12 เดิม', icon: 'monitor' },
-      ], expected: ['priority-response'], ordered: false, answerMode: 'drag-slot', presentation: 'monitor-response',
-      slots: [{ id: 'response', label: 'แผนตอบสนอง', expected: 'priority-response' }],
-      explanation: 'คำตอบยังไม่ตรงกับ emergency demo ในข้อมูล Case 1 · เลือกใหม่แล้ว Confirm', success: 'ตรงกับ emergency response ใน Case 1 demo · สังเกตผู้ป่วยและ Monitor',
+        { id: 'position-high-fowler', label: 'จัดท่า High Fowler’s position', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+        { id: 'rapid-iv-fluid', label: 'เพิ่มสารน้ำ IV อย่างรวดเร็ว', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+        { id: 'monitor-ecg-vitals', label: 'Monitor EKG และ Vital signs อย่างต่อเนื่อง', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+        { id: 'patient-walking', label: 'ให้ผู้ป่วยลุกเดินเพื่อประเมินอาการ', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+        { id: 'oxygen-support', label: 'เตรียม/เพิ่มระดับการให้ออกซิเจนตามอาการ', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+        { id: 'ordered-furosemide', label: 'ให้ Furosemide ตามแผนการรักษา', detail: 'เลือกการพยาบาลให้สัมพันธ์กับกรอบ' },
+      ], expected: ['position-high-fowler','monitor-ecg-vitals','oxygen-support','ordered-furosemide'], ordered: false, answerMode: 'drag-slot', presentation: 'monitor-response',
+      slots: [
+        { id: 'response', label: 'การจัดท่า', expected: 'position-high-fowler' },
+        { id: 'monitoring', label: 'การติดตามผู้ป่วย', expected: 'monitor-ecg-vitals' },
+        { id: 'oxygen', label: 'การให้ออกซิเจน', expected: 'oxygen-support' },
+        { id: 'medication', label: 'ยาตามคำสั่งแพทย์', expected: 'ordered-furosemide' },
+      ],
+      explanation: 'ทบทวนการพยาบาลทั้ง 4 กรอบตามเอกสารเคส 1 หน้า 29 แล้วลองใหม่',
+      success: 'จับคู่ตรงกับคำตอบในเอกสารเคส 1 แล้ว · ดูผลตอบสนองจำลองของผู้ป่วย',
     } },
     { id: 'PATIENT_STABILIZED', kind: 'transition', phase: '11 · PATIENT RESPONSE', title: 'ผู้ป่วยตอบสนอง\nต่อการดูแล', description: 'สัญญาณชีพเปลี่ยนตามผลลัพธ์จำลองที่เอกสารเคส 1 หน้า 30–31 กำหนด', hint: 'สังเกตการหายใจ สีหน้าและเสียงเตือน · ตัวเลขยังเป็นเนื้อหาเดโม', minDuration: 6500, button: 'ดูผลภารกิจ', onEnter: { alarm: false, duration: 6000, vitals: { bpSystolic: 150, bpDiastolic: 90, hr: 92, rr: 24, spo2: 94 }, patient: { condition: 'stable', breathing: 'normal', animation: 'recovering' } } },
     { id: 'CASE_SUMMARY', kind: 'summary', phase: '12 · MISSION RESULT', title: 'ดูแลครบ\nจบภารกิจจำลอง', description: 'ผลนี้สรุปเส้นทางในห้องผู้ป่วยเดียว ตั้งแต่ Normal Stage ไป Emergency Stage · คะแนนยังไม่ใช่สมรรถนะทางคลินิก', hint: 'ทบทวน Chart หรือเริ่มใหม่ได้' },
