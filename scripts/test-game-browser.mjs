@@ -218,7 +218,7 @@ try {
   if(!await page.evaluate(()=>document.activeElement instanceof HTMLElement&&document.activeElement.classList.contains('chart-button')))throw new Error('Closing Patient Chart should restore focus to its opener');
   await page.getByRole('button',{name:/Patient chart/}).click();
   await page.locator('.unknown').first().waitFor();
-  await page.locator('.chart-entry').getByText(/หายใจไม่ออกค่ะ/).waitFor();
+  await page.locator('.chart-entry').getByText(/ผู้ป่วยหญิงอายุ 65 ปี/).waitFor();
   await chartClose.click();
   await page.getByRole('button',{name:'เริ่มประเมิน'}).click();
   await drag(tool('Stethoscope'),{x:550,y:280});
